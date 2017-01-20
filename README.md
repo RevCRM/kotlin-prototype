@@ -1,14 +1,18 @@
 # revcrm
 RevCRM - Open-source CRM solution built on RevJS
 
-This repository holds just the RevCRM Server and base UI. No data models are included.
+This repository will hold just the RevCRM Server and base UI. For the RevCRM entities you'll need to install additional modules (such as `revcrm-opportunity`).
+
+**RevCRM is still in the planning stages and this module is just a placeholder. Watch this space!!**
 
 ## Requirements
 
 * NodeJS 6
-* Yarn package manager (`npm install yarn -g`)
+* Yarn package manager
 
 ## Installation
+
+**RevCRM is still in the planning stages and this module is just a placeholder. Watch this space!!**
 
 ```
 mkdir my_crm
@@ -18,6 +22,8 @@ yarn run revcrm
 ```
 
 ## Customising
+
+**RevCRM is still in the planning stages and this module is just a placeholder. Watch this space!!**
 
 To cusomise your installation, create `crm.json` with content as below:
 

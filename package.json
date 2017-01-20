@@ -1,6 +1,6 @@
 {
   "name": "revcrm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "RevCRM - Open-source CRM solution built on RevJS",
   "main": "index.js",
   "repository": "https://github.com/RevCRM/revcrm.git",
