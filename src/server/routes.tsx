@@ -10,6 +10,7 @@ const clientScripts = [
 
 const clientCss = [
     'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
+    '/static/flexboxgrid.min.css',
     '/static/style.css'
 ];
 

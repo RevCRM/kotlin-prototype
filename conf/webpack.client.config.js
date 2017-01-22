@@ -11,7 +11,8 @@ config.plugins.push(
         manifest: require(path.join(config.output.path, 'static', 'clientlibs.json'))
     }),
     new CopyWebpackPlugin([
-        { from: 'static', to: 'static', context: './src' }
+        { from: 'static', to: 'static', context: './src' },
+        { from: 'node_modules/flexboxgrid/css/flexboxgrid.min.css', to: 'static'}
     ])
 )
 
