@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "noImplicitAny": true,
+        "outDir": "./dist",
+        "sourceMap": true,
+        "listEmittedFiles": true,
+        "noUnusedLocals": true
+    },
+    "include": [
+        "./src/**/*"
+    ]
+}
