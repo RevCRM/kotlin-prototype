@@ -4,6 +4,7 @@ import * as React from 'react';
 interface IBasePageProps {
     title: string;
     scripts: string[];
+    css: string[];
 }
 
 export default function BasePage(props: IBasePageProps) {
@@ -11,6 +12,9 @@ export default function BasePage(props: IBasePageProps) {
         <html>
             <head>
                 <title>{props.title}</title>
+                {props.css.map((url, idx) => (
+                    <link rel="stylesheet" href={url} key={idx} />
+                ))}
             </head>
             <body>
                 <div id="app">Loading...</div>

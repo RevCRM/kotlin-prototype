@@ -1,7 +1,12 @@
 import * as React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default function LoginPage() {
     return (
-        <h3>Login Page</h3>
+        <div>
+            <h3>Login Page</h3>
+
+            <RaisedButton label="Default" />
+        </div>
     );
 }

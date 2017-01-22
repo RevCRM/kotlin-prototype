@@ -9,7 +9,8 @@ module.exports = {
         clientlibs: [
             'react', 
             'react-dom', 
-            'react-router'
+            'react-router',
+            'material-ui'
         ]
     },
 

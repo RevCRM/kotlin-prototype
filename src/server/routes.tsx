@@ -8,6 +8,11 @@ const clientScripts = [
     '/static/client.js'
 ];
 
+const clientCss = [
+    'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
+    '/static/style.css'
+];
+
 export default function registerRoutes(server: Hapi.Server) {
     return new Promise((resolve, reject) => {
 
@@ -26,7 +31,7 @@ export default function registerRoutes(server: Hapi.Server) {
             path: '/{param*}',
             handler: (request: Hapi.Request, reply: Hapi.IReply) => {
                 reply(renderToStaticMarkup(
-                    <BasePage title="RevCRM" scripts={clientScripts} />
+                    <BasePage title="RevCRM" scripts={clientScripts} css={clientCss} />
                 ));
             }
         });
