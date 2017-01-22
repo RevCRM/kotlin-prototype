@@ -6,6 +6,7 @@ import { Router, browserHistory } from 'react-router';
 import { getStore } from '../store/index';
 
 import Routes from '../components/Routes';
+import '../components/models';
 
 // Required for onTouchTap event
 import * as injectTapEventPlugin from 'react-tap-event-plugin';

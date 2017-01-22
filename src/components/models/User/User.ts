@@ -1,5 +1,7 @@
 
-import * as rev from 'rev-models';
+import * as models from 'rev-models';
+import * as forms from 'rev-forms';
+// import * as api from 'rev-api-client';
 
 export default class User {
     username: string;
@@ -9,13 +11,29 @@ export default class User {
     lastLogin: Date;
 }
 
-rev.register(User, {
+models.register(User, {
     fields: [
-        new rev.TextField('username', 'User Name'),
-        new rev.PasswordField('password', 'Password'),
-        new rev.PasswordField('password_repeat', 'Password', {stored: false}),
-        new rev.EmailField('email', 'Email Address', {required: false}),
-        new rev.BooleanField('active', 'Active?'),
-        new rev.DateField('lastLogin', 'Last Login')
+        new models.TextField('username', 'User Name'),
+        new models.PasswordField('password', 'Password'),
+        new models.EmailField('email', 'Email Address', {required: false}),
+        new models.BooleanField('active', 'Active?'),
+        new models.DateField('lastLogin', 'Last Login'),
     ]
+});
+
+forms.register(User, 'login_form', {
+    title: 'Log In',
+    fields: [
+        'username',
+        'password'
+    ] /*,
+    actions: {
+        login: {
+            label: 'Log In',
+            validateFirst: true,
+            method: (model: any) => {
+                api.call(model, 'do_login');
+            }
+        }
+    }*/
 });
