@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
 import Divider from 'material-ui/Divider';
-import TextField from 'material-ui/TextField';
+
+import { RevForm } from 'rev-forms-redux-mui';
 
 export default function LoginPage() {
     return (
@@ -17,11 +17,8 @@ export default function LoginPage() {
 
                     <Divider />
 
-                    <div style={{padding: 20}}>
-                        <TextField hintText="Username" fullWidth={true} />
-                        <TextField hintText="Password" fullWidth={true} type="password" />
-                        <RaisedButton label="Log In" primary={true} style={{marginTop: 15}} />
-                    </div>
+                    <RevForm model="TestModel" form="login" />
+
                 </Paper>
             </div>
         </div>
