@@ -11,3 +11,7 @@ body {
 .nomargin {
     margin: 0;
 }
+
+form {
+    padding: 0 20px;
+}

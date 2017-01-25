@@ -8,7 +8,7 @@ export default class User {
     password: string;
     email: string;
     active: boolean;
-    lastLogin: Date;
+    last_login: Date;
 }
 
 models.register(User, {
@@ -17,7 +17,7 @@ models.register(User, {
         new models.PasswordField('password', 'Password'),
         new models.EmailField('email', 'Email Address', {required: false}),
         new models.BooleanField('active', 'Active?'),
-        new models.DateField('lastLogin', 'Last Login'),
+        new models.DateField('last_login', 'Last Login'),
     ]
 });
 
