@@ -3,7 +3,7 @@ import * as React from 'react';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 
-import { RevForm } from 'rev-forms-redux-mui';
+import { RevForm, RevField } from 'rev-forms-redux-mui';
 
 export default function LoginPage() {
     return (
@@ -17,7 +17,9 @@ export default function LoginPage() {
 
                     <Divider />
 
-                    <RevForm model="TestModel" form="login" />
+                    <RevForm model="User" form="login_form">
+                        <RevField name="user" />
+                    </RevForm>
 
                 </Paper>
             </div>

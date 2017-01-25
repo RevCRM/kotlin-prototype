@@ -67,6 +67,13 @@
   version "15.0.1"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.1.tgz#af128796b3205cc5c8d22640f8a5444187c30ab7"
 
+"@types/redux-form@6.3.2":
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/@types/redux-form/-/redux-form-6.3.2.tgz#e0652c75be0fda01cb12dcf690ef6e8de3691196"
+  dependencies:
+    "@types/react" "*"
+    redux "^3.6.0"
+
 abbrev@1:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.0.9.tgz#91b4792588a7738c25f35dd6f63752a2f8776135"
