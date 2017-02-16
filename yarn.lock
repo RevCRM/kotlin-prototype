@@ -2435,6 +2435,10 @@ resolve@^1.1.7:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.2.0.tgz#9589c3f2f6149d1417a40becc1663db6ec6bc26c"
 
+rev-api@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/rev-api/-/rev-api-0.0.1.tgz#1eb036408ce1a5d76ecc0489f68b6b97da9eb1f3"
+
 rev-forms-redux-mui@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/rev-forms-redux-mui/-/rev-forms-redux-mui-0.0.1.tgz#fdc3f6ea0a96028409ee4feddaa14774ea1d88bc"
@@ -2526,9 +2530,9 @@ source-list-map@~0.1.7:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-0.1.8.tgz#c550b2ab5427f6b3f21f5afead88c4f5587b2106"
 
-source-map-support@^0.4.0:
-  version "0.4.10"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.10.tgz#d7b19038040a14c0837a18e630a196453952b378"
+source-map-support@0.4.11, source-map-support@^0.4.0:
+  version "0.4.11"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.11.tgz#647f939978b38535909530885303daf23279f322"
   dependencies:
     source-map "^0.5.3"
 

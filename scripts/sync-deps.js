@@ -34,3 +34,5 @@ function syncDependency(depName) {
 syncDependency('rev-models');
 syncDependency('rev-forms');
 syncDependency('rev-forms-redux-mui');
+syncDependency('rev-api');
+syncDependency('rev-api-hapi');

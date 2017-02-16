@@ -4,7 +4,7 @@ import * as path from 'path';
 
 import registerMiddleware from './middleware';
 import registerRoutes from './routes';
-import '../components/models';
+import '../models/api';
 
 const server = new Hapi.Server();
 

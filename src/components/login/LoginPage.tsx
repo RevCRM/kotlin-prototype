@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
-import { LoginForm } from '../models/User/forms';
+import { LoginForm } from '../../models/User/forms';
 
 export default function LoginPage() {
     return (
