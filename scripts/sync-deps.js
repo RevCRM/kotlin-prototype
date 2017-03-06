@@ -13,7 +13,7 @@
 var path = require('path');
 var fs = require('fs-extra');
 
-var depPath = path.resolve(__dirname, '..', '..', '..', 'revjs');
+var depPath = path.resolve(__dirname, '..', '..', '..', 'revjs', 'packages');
 var modulesPath = path.resolve(__dirname, '..', 'node_modules');
 
 function syncDependency(depName) {
@@ -22,8 +22,8 @@ function syncDependency(depName) {
         path.join(modulesPath, depName)
     );
     fs.copySync(
-        path.join(depPath, depName, 'dist'),
-        path.join(modulesPath, depName)
+        path.join(depPath, depName, 'lib'),
+        path.join(modulesPath, depName, 'lib')
     );
     fs.copySync(
         path.join(depPath, depName, 'package.json'),
