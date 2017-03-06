@@ -32,7 +32,8 @@
     "rev-forms": "0.0.1",
     "rev-forms-redux-mui": "0.0.1",
     "rev-models": "0.0.1",
-    "source-map-support": "0.4.11"
+    "source-map-support": "0.4.11",
+    "yar": "8.1.2"
   },
   "devDependencies": {
     "@types/es6-promise": "0.0.32",

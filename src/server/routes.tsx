@@ -31,6 +31,13 @@ export default function registerRoutes(server: Hapi.Server) {
             method: 'GET',
             path: '/{param*}',
             handler: (request: Hapi.Request, reply: Hapi.IReply) => {
+
+                const session = (request as any).yar;
+                if (!session.get('userkey')) {
+                    session.set('userkey', new Date().getTime());
+                }
+                console.log(session.get('userkey'));
+
                 reply(renderToStaticMarkup(
                     <BasePage title="RevCRM" scripts={clientScripts} css={clientCss} />
                 ));
