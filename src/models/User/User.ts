@@ -9,19 +9,19 @@ const TYPES = [
 ];
 
 export default class User {
-    @rev.TextField('Username')
+    @rev.TextField({ label: 'Username' })
         username: string;
-    @rev.PasswordField('Password')
+    @rev.PasswordField({ label: 'Password' })
         password: string;
-    @rev.NumberField('Age')
+    @rev.NumberField({ label: 'Age' })
         age: number;
-    @rev.EmailField('Email', {required: false})
+    @rev.EmailField({ label: 'Email', required: false})
         email: string;
-    @rev.BooleanField('Active?')
+    @rev.BooleanField({ label: 'Active?' })
         active: boolean;
-    @rev.DateField('Last Login')
+    @rev.DateField({ label: 'Last Login' })
         last_login: Date;
-    @rev.SelectionField('User Type', TYPES)
+    @rev.SelectionField({ label: 'User Type', selection: TYPES })
         user_type: string;
 }
 

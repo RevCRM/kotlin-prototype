@@ -5,11 +5,10 @@ import User from './User/User';
 
 api.register(User, {
     operations: 'all',
-    methods: [
-        {
-            name: 'login',
+    methods: {
+        login: {
             args: ['username', 'password'],
-            handler: (context, username, password) => {
+            handler: async(context, username, password) => {
                 if (username == 'admin' && password == 'admin') {
                     return true;
                 }
@@ -18,12 +17,11 @@ api.register(User, {
                 }
             }
         },
-        {
-            name: 'logout',
+        logout: {
             args: [],
-            handler: (context) => {
+            handler: async(context) => {
                 return true;
             }
         }
-    ]
+    }
 });

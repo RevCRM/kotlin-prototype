@@ -1,13 +1,15 @@
 import * as Hapi from 'hapi';
 import * as Inert from 'inert';
 import * as yar from 'yar';
-// import RevApi from 'rev-api-hapi';
+import '../models/api';
+import { RevApiPlugin } from 'rev-api-hapi';
 
 export default function registerMiddleware(server: Hapi.Server) {
     return new Promise((resolve, reject) => {
 
         server.register([
                 Inert,
+                RevApiPlugin,
                 {
                     register: yar,
                     options: {
