@@ -4,11 +4,14 @@ import * as api from 'rev-api';
 import User from './User/User';
 
 api.register(User, {
-    operations: 'all',
     methods: {
+        read: true,
+        create: true,
+        update: true,
+        remove: true,
         login: {
             args: ['username', 'password'],
-            handler: async(context, username, password) => {
+            handler: async (context, username, password) => {
                 if (username == 'admin' && password == 'admin') {
                     return true;
                 }
@@ -19,7 +22,7 @@ api.register(User, {
         },
         logout: {
             args: [],
-            handler: async(context) => {
+            handler: async (context) => {
                 return true;
             }
         }
