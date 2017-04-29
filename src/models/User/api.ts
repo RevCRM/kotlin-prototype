@@ -1,14 +1,11 @@
 
-import * as api from 'rev-api';
+import { IApiDefinition } from 'rev-api';
+import { User } from './User';
 
-import User from './User/User';
-
-api.register(User, {
+export const UserApi: IApiDefinition<User> = {
+    model: User,
+    operations: [ 'create', 'read', 'update', 'remove' ],
     methods: {
-        read: true,
-        create: true,
-        update: true,
-        remove: true,
         login: {
             args: ['username', 'password'],
             handler: async (context, username, password) => {
@@ -27,4 +24,4 @@ api.register(User, {
             }
         }
     }
-});
+};

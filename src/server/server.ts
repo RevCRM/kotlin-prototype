@@ -4,7 +4,8 @@ import * as path from 'path';
 
 import registerMiddleware from './middleware';
 import registerRoutes from './routes';
-import '../models/api';
+import { serverModels } from '../models/server';
+import { populateTestData } from '../models/test_data';
 
 const server = new Hapi.Server();
 
@@ -19,7 +20,8 @@ server.connection({
 
 Promise.all([
     registerMiddleware(server),
-    registerRoutes(server)
+    registerRoutes(server),
+    populateTestData(serverModels)
 ])
 .then(() => {
     server.start((err) => {

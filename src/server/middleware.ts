@@ -1,15 +1,22 @@
 import * as Hapi from 'hapi';
 import * as Inert from 'inert';
 import * as yar from 'yar';
-import '../models/api';
-import { RevApiPlugin } from 'rev-api-hapi';
+import { api } from '../models/server';
+import { ModelApiPlugin } from 'rev-api-hapi';
 
 export default function registerMiddleware(server: Hapi.Server) {
     return new Promise((resolve, reject) => {
 
         server.register([
                 Inert,
-                RevApiPlugin,
+                {
+                    register: ModelApiPlugin,
+                    options: {
+                        registry: api,
+                        url: '/api',
+                        graphiqlEnabled: true
+                    }
+                },
                 {
                     register: yar,
                     options: {
