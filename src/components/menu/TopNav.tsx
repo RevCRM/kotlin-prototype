@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 import { setLeftNavOpen } from './store/index';
 
-interface ITopNavProps {
+export interface ITopNavDispatchProps {
     onMenuButtonTouchTap: () => void;
 }
 
-class TopNav extends React.Component<ITopNavProps, void> {
+export class TopNavC extends React.Component<void & ITopNavDispatchProps, void> {
 
     render() {
         return (
@@ -18,7 +18,7 @@ class TopNav extends React.Component<ITopNavProps, void> {
 
 }
 
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch: any): ITopNavDispatchProps {
     return {
         onMenuButtonTouchTap: () => {
             dispatch(setLeftNavOpen(true));
@@ -26,4 +26,4 @@ function mapDispatchToProps(dispatch: any) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(TopNav);
+export const TopNav = connect(null, mapDispatchToProps)(TopNavC) as any;

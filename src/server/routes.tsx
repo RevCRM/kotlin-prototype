@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Hapi from 'hapi';
-import BasePage from './BasePage';
+import { BasePage } from './BasePage';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 const clientScripts = [
@@ -14,7 +14,7 @@ const clientCss = [
     '/static/style.css'
 ];
 
-export default function registerRoutes(server: Hapi.Server) {
+export function registerRoutes(server: Hapi.Server) {
     return new Promise((resolve, reject) => {
 
         server.route({
@@ -30,7 +30,7 @@ export default function registerRoutes(server: Hapi.Server) {
         server.route({
             method: 'GET',
             path: '/{param*}',
-            handler: (request: Hapi.Request, reply: Hapi.IReply) => {
+            handler: (request: Hapi.Request, reply: Hapi.ReplyNoContinue) => {
 
                 const session = (request as any).yar;
                 if (!session.get('userkey')) {

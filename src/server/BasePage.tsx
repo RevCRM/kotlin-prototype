@@ -7,7 +7,7 @@ interface IBasePageProps {
     css: string[];
 }
 
-export default function BasePage(props: IBasePageProps) {
+export function BasePage(props: IBasePageProps) {
     return (
         <html>
             <head>

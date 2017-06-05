@@ -2,8 +2,8 @@
 import * as Hapi from 'hapi';
 import * as path from 'path';
 
-import registerMiddleware from './middleware';
-import registerRoutes from './routes';
+import { registerMiddleware } from './middleware';
+import { registerRoutes } from './routes';
 import { serverModels } from '../models/server';
 import { populateTestData } from '../models/test_data';
 

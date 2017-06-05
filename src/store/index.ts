@@ -1,7 +1,7 @@
 
 import { Action, createStore, combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-import menuReducer from '../components/menu/store';
+import { menuReducer } from '../components/menu/store';
 import { IMenuState } from '../components/menu/store/index';
 
 export interface IAction extends Action {

@@ -2,11 +2,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { getStore } from '../store/index';
 
-import Routes from '../components/Routes';
-import '../models';
+import { App } from '../components/App';
+
+import { ModelProvider } from 'rev-forms-redux-mui';
+import { clientModels } from '../models/client';
 
 // Required for onTouchTap event
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
@@ -16,9 +18,11 @@ const store = getStore();
 
 ReactDOM.render((
         <Provider store={store} >
-            <Router history={browserHistory}>
-                {Routes}
-            </Router>
+            <ModelProvider registry={clientModels} >
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </ModelProvider>
         </Provider>
     ),
     document.getElementById('app')

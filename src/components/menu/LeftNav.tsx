@@ -5,13 +5,14 @@ import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import { IState } from '../../store/index';
 import { setLeftNavOpen } from './store/index';
+import { Dispatch } from 'redux';
 
 export interface ILeftNavProps {
     isOpen: boolean;
     onRequestChange: (open: boolean, reason: string) => void;
 }
 
-class LeftNav extends React.Component<ILeftNavProps, void> {
+export class LeftNavC extends React.Component<ILeftNavProps, void> {
     render() {
         return (
             <Drawer
@@ -33,7 +34,7 @@ function mapStateToProps(state: IState) {
     };
 }
 
-function mapDispatchToProps(dispatch: any) {
+function mapDispatchToProps(dispatch: Dispatch<IState>) {
     return {
         onRequestChange: (open: boolean, reason: string) => {
             dispatch(setLeftNavOpen(open));
@@ -41,4 +42,4 @@ function mapDispatchToProps(dispatch: any) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LeftNav);
+export const LeftNav = connect(mapStateToProps, mapDispatchToProps)(LeftNavC) as any;

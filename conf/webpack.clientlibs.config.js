@@ -9,7 +9,7 @@ module.exports = {
         clientlibs: [
             'react', 
             'react-dom', 
-            'react-router',
+            'react-router-dom',
             'redux',
             'react-redux',
             'redux-form',
@@ -27,6 +27,16 @@ module.exports = {
         new webpack.DllPlugin({ 
             name: '[name]', 
             path: path.join(outputPath, '[name].json') 
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
         })
     ]
 }

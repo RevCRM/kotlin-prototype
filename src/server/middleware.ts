@@ -4,10 +4,10 @@ import * as yar from 'yar';
 import { api } from '../models/server';
 import { ModelApiPlugin } from 'rev-api-hapi';
 
-export default function registerMiddleware(server: Hapi.Server) {
+export function registerMiddleware(server: Hapi.Server) {
     return new Promise((resolve, reject) => {
 
-        server.register([
+        server.register<any>([
                 Inert,
                 {
                     register: ModelApiPlugin,

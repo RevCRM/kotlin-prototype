@@ -10,7 +10,7 @@ export const initialState: IMenuState = {
 
 export const SET_LEFT_NAV_OPEN = '@menu/SET_LEFT_NAV_OPEN';
 
-export default function menuReducer(state: IMenuState = initialState, action: IAction): IMenuState {
+export function menuReducer(state: IMenuState = initialState, action: IAction): IMenuState {
     switch (action.type) {
         case SET_LEFT_NAV_OPEN:
             return {

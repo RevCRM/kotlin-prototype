@@ -4,7 +4,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import { LoginForm } from '../../models/User/forms';
 
-export default function LoginPage() {
+export function LoginPage() {
     return (
         <div className="revcrm-login row nomargin center-xs" style={{paddingTop: 50}}>
             <div className="col-xs-11 col-md-5">
