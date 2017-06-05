@@ -1,7 +1,10 @@
 
 import * as rev from 'rev-models';
-// import * as forms from 'rev-forms';
-// import * as api from 'rev-api-client';
+
+interface IValidationContext {
+    operation: any;
+    result: any;
+}
 
 export class User extends rev.Model {
     @rev.TextField({ label: 'Username' })
@@ -14,14 +17,10 @@ export class User extends rev.Model {
         active: boolean;
     @rev.DateField({ label: 'Last Login', required: false })
         last_login: Date;
-}
 
-/*
-rev.register(User, {
-    validate: (model, operation, result) => {
-        if (model.username == 'Bryan') {
-            result.addModelError('Bryan is not allowed!');
+    validate(vc: IValidationContext) {
+        if (this.username == 'bryan') {
+            vc.result.addModelError('Username is not valid');
         }
     }
-});
-*/
+}

@@ -1,7 +1,7 @@
 
 import { ModelRegistry, InMemoryBackend } from 'rev-models';
 import { ModelApiRegistry } from 'rev-api';
-import { User } from './User/User';
+import { User } from './User/BackendUser';
 import { UserApi } from './User/api';
 
 export const serverModels = new ModelRegistry();

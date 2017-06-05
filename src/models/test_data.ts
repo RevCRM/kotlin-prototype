@@ -1,5 +1,5 @@
 import { ModelRegistry } from 'rev-models';
-import { User } from './User/User';
+import { User } from './User/BackendUser';
 
 export function populateTestData(models: ModelRegistry) {
 
@@ -8,7 +8,8 @@ export function populateTestData(models: ModelRegistry) {
             username: 'admin',
             password: 'admin',
             email: 'admin@admin.com',
-            active: true
+            active: true,
+            secret_field: 'shhhhh'
         }))
     ]);
 
