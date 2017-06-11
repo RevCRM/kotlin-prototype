@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
-import { LoginForm } from '../../models/User/forms';
+import { UserLoginForm } from '../../models/User/forms/UserLoginForm';
 
 export function LoginPage() {
     return (
@@ -16,7 +16,7 @@ export function LoginPage() {
 
                     <Divider />
 
-                    <LoginForm />
+                    <UserLoginForm />
 
                 </Paper>
             </div>

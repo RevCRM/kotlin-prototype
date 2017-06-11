@@ -1,8 +1,8 @@
 
 import { ModelRegistry, InMemoryBackend } from 'rev-models';
-import { User } from './User/User';
+import { UserLogin } from './User/UserLogin';
 
 export const clientModels = new ModelRegistry();
 clientModels.registerBackend('default', new InMemoryBackend());
 
-clientModels.register(User);
+clientModels.register(UserLogin);

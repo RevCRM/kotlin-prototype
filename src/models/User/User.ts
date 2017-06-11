@@ -1,26 +1,35 @@
 
 import * as rev from 'rev-models';
+import { UserMeta } from './UserMeta';
+import { ModelRegistry } from 'rev-models';
+import { ModelOperationResult } from 'rev-models/lib/operations/operationresult';
 
-interface IValidationContext {
-    operation: any;
-    result: any;
-}
+// Stored User Model
 
-export class User extends rev.Model {
-    @rev.TextField({ label: 'Username' })
-        username: string;
-    @rev.PasswordField({ label: 'Password' })
+export class User extends UserMeta {
+    _registry: ModelRegistry;
+
+    @rev.PasswordField()
         password: string;
-    @rev.EmailField({ label: 'Email', required: false })
-        email: string;
-    @rev.BooleanField({ label: 'Active?' })
-        active: boolean;
-    @rev.DateField({ label: 'Last Login', required: false })
-        last_login: Date;
 
-    validate(vc: IValidationContext) {
-        if (this.username == 'bryan') {
-            vc.result.addModelError('Username is not valid');
+    async login() {
+        const result = new ModelOperationResult({ operation: 'login' });
+        if (!this.username || !this.password) {
+            result.addError('Username / password not found');
         }
+        else {
+            const matches = await this._registry.read(User, {
+                username: this.username,
+                password: this.password,
+                active: true
+            });
+            if (matches.results.length == 1) {
+                result.addError('Username / password not found');
+            }
+            else {
+                console.log('logged in!');
+            }
+        }
+        return result;
     }
 }

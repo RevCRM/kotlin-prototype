@@ -1,5 +1,6 @@
 import { ModelRegistry } from 'rev-models';
-import { User } from './User/BackendUser';
+import { User } from './User/User';
+import { ModelOperationResult } from 'rev-models/lib/operations/operationresult';
 
 export function populateTestData(models: ModelRegistry) {
 
@@ -8,9 +9,14 @@ export function populateTestData(models: ModelRegistry) {
             username: 'admin',
             password: 'admin',
             email: 'admin@admin.com',
-            active: true,
-            secret_field: 'shhhhh'
+            active: true
         }))
-    ]);
+    ])
+    .catch((err) => {
+        if (err.result) {
+            const res: ModelOperationResult<any, any> = err.result;
+            console.log(res.validation);
+        }
+    });
 
 }
