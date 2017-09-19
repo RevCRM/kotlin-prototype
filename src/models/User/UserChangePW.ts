@@ -1,12 +1,10 @@
 
 import * as rev from 'rev-models';
 
-// User Metadata
+// User Change Password form model
 
-export class UserMeta extends rev.Model {
+export class UserChangePW {
 
-    @rev.TextField({ label: 'Username' })
-        username: string;
     @rev.PasswordField({ label: 'New Password' })
         new_password: string;
     @rev.PasswordField({ label: 'Re-type New Password' })

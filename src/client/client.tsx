@@ -18,7 +18,7 @@ const store = getStore();
 
 ReactDOM.render((
         <Provider store={store} >
-            <ModelProvider registry={clientModels} >
+            <ModelProvider modelManager={clientModels} >
                 <BrowserRouter>
                     <App />
                 </BrowserRouter>

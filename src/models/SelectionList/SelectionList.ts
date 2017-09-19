@@ -1,14 +1,12 @@
 
 import * as rev from 'rev-models';
 
-export class Company {
+export class SelectionList {
 
     @rev.AutoNumberField({ primaryKey: true })
         id: number;
     @rev.TextField()
         name: string;
-    @rev.URLField()
-        url: string;
 
     validate(vc: rev.IValidationContext) {
         if (this.name.toLowerCase().includes('test')) {

@@ -1,10 +1,10 @@
 
 import { IApiDefinition } from 'rev-api';
-import { User } from './User';
+import { UserLoginBackend } from './UserLoginBackend';
 
-export const UserApi: IApiDefinition<User> = {
-    model: User,
-    operations: [ 'create', 'read', 'update', 'remove' ],
+export const UserApi: IApiDefinition<UserLoginBackend> = {
+    model: UserLoginBackend,
+    operations: [],
     methods: {
         login: {
             args: ['username', 'password'],
