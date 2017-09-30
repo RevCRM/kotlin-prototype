@@ -12,7 +12,7 @@ export function registerMiddleware(server: Hapi.Server) {
                 {
                     register: ModelApiPlugin,
                     options: {
-                        registry: api,
+                        apiManager: api,
                         url: '/api',
                         graphiqlEnabled: true
                     }
