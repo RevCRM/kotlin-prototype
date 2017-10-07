@@ -1,6 +1,8 @@
 
 import * as rev from 'rev-models';
+import { ApiOperations } from 'rev-api';
 
+@ApiOperations(['create', 'read', 'update', 'remove'])
 export class SelectionList {
 
     @rev.AutoNumberField({ primaryKey: true })

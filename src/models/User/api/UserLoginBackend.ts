@@ -1,14 +1,12 @@
 import { UserLogin } from '../UserLogin';
 import { IMethodContext } from 'rev-models';
+import { ApiMethod } from 'rev-api';
 
 export class UserLoginBackend extends UserLogin {
 
+    @ApiMethod({ validateModel: true })
     async login(ctx: IMethodContext<any>) {
-        const validation = await ctx.manager.validate(this);
-        if (!validation.valid) {
-            throw new Error('model invalid');
-        }
-        console.log('UserLoginBackend.login called', this);
+        console.log('UserLoginBackend.login called with valid model', this);
     }
 
 }
