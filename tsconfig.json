@@ -7,7 +7,6 @@
         "noImplicitAny": true,
         "outDir": "./dist",
         "sourceMap": true,
-        "listEmittedFiles": true,
         "noUnusedLocals": true,
         "lib": [
             "dom",

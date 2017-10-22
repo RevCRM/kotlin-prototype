@@ -8,14 +8,12 @@ export interface ITopNavDispatchProps {
     onMenuButtonTouchTap: () => void;
 }
 
-export class TopNavC extends React.Component<void & ITopNavDispatchProps, void> {
-
+export class TopNavC extends React.Component<ITopNavDispatchProps> {
     render() {
         return (
             <AppBar title="RevCRM" onLeftIconButtonTouchTap={this.props.onMenuButtonTouchTap} />
         );
     }
-
 }
 
 function mapDispatchToProps(dispatch: any): ITopNavDispatchProps {

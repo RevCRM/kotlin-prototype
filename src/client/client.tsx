@@ -7,8 +7,8 @@ import { getStore } from '../store/index';
 
 import { App } from '../components/App';
 
-import { ModelProvider } from 'rev-forms-redux-mui';
-import { clientModels } from '../models/client';
+// import { ModelProvider } from 'rev-forms-redux-mui';
+// import { clientModels } from '../models/client';
 
 // Required for onTouchTap event
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
@@ -18,11 +18,11 @@ const store = getStore();
 
 ReactDOM.render((
         <Provider store={store} >
-            <ModelProvider modelManager={clientModels} >
+            {/* <ModelProvider modelManager={clientModels} > */}
                 <BrowserRouter>
                     <App />
                 </BrowserRouter>
-            </ModelProvider>
+            {/* </ModelProvider> */}
         </Provider>
     ),
     document.getElementById('app')

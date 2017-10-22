@@ -7,12 +7,15 @@ import { IState } from '../../store/index';
 import { setLeftNavOpen } from './store/index';
 import { Dispatch } from 'redux';
 
-export interface ILeftNavProps {
+export interface ILeftNavStateProps {
     isOpen: boolean;
+}
+
+export interface ILeftNavDispatchProps {
     onRequestChange: (open: boolean, reason: string) => void;
 }
 
-export class LeftNavC extends React.Component<ILeftNavProps, void> {
+export class LeftNavC extends React.Component<ILeftNavStateProps & ILeftNavDispatchProps> {
     render() {
         return (
             <Drawer
@@ -28,13 +31,13 @@ export class LeftNavC extends React.Component<ILeftNavProps, void> {
     }
 }
 
-function mapStateToProps(state: IState) {
+function mapStateToProps(state: IState): ILeftNavStateProps {
     return {
         isOpen: state.menu.leftNavOpen
     };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<IState>) {
+function mapDispatchToProps(dispatch: Dispatch<IState>): ILeftNavDispatchProps {
     return {
         onRequestChange: (open: boolean, reason: string) => {
             dispatch(setLeftNavOpen(open));

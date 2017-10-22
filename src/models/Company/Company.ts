@@ -1,7 +1,6 @@
 
 import * as rev from 'rev-models';
 import { ApiOperations, ApiMethod } from 'rev-api';
-import { IMethodContext } from 'rev-models';
 
 @ApiOperations(['create', 'read', 'update', 'remove'])
 export class Company {
@@ -19,7 +18,7 @@ export class Company {
             new rev.fields.IntegerField('copies')
         ]
     })
-    printInvoice(ctx: IMethodContext<any>) {
+    printInvoice(ctx: rev.IMethodContext<any>) {
         // Do clever stuff
     }
 
