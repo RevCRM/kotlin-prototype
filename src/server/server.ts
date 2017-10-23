@@ -1,6 +1,9 @@
 
+import * as path from 'path';
+
 import * as Koa from 'koa';
-import * as Router from 'koa-router';
+import * as mount from 'koa-mount';
+import * as serve from 'koa-static';
 
 import { logger } from './logging';
 import { config } from './config';
@@ -12,15 +15,13 @@ import { serverModels } from '../models/server';
 import { populateTestData } from '../models/test_data';
 */
 
+
 const app = new Koa();
 
 app.use(logger);
 
-const router = new Router();
-router.get('/*', async (ctx) => {
-    ctx.body = 'Hello World!';
-});
-app.use(router.routes());
+const staticPath = path.join(__dirname, '..', '..', 'dist', 'static');
+app.use(mount('/static', serve(staticPath)));
 
 app.listen(config.port);
 
