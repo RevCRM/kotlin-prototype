@@ -30,8 +30,8 @@ module.exports = function() {
                 manifest: require(path.join(outputPath, 'clientlibs.json'))
             }),
             new CopyWebpackPlugin([
-                { from: 'static', to: 'static', context: './src' },
-                { from: 'node_modules/flexboxgrid/css/flexboxgrid.min.css', to: 'static'}
+                { from: 'static', context: './src' },
+                { from: 'node_modules/flexboxgrid/css/flexboxgrid.min.css'}
             ])
         ]
     }
