@@ -1,4 +1,5 @@
 import * as Router from 'koa-router';
+import * as passport from 'koa-passport';
 
 import { graphqlKoa, graphiqlKoa } from 'graphql-server-koa';
 import { api } from '../models/server';
@@ -18,23 +19,30 @@ router.post('/api', graphqlKoa({ schema: schema }));
 router.get('/api', graphqlKoa({ schema: schema }));
 router.get('/graphiql', graphiqlKoa({ endpointURL: '/api' }));
 
-router.get('/*', async (ctx) => {
+const clientScripts = [
+    '/static/clientlibs.js',
+    '/static/client.js'
+];
 
-    const clientScripts = [
-        '/static/clientlibs.js',
-        '/static/client.js'
-    ];
+const clientCss = [
+    'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
+    '/static/flexboxgrid.min.css',
+    '/static/style.css'
+];
 
-    const clientCss = [
-        'https://fonts.googleapis.com/css?family=Roboto:300,400,500',
-        '/static/flexboxgrid.min.css',
-        '/static/style.css'
-    ];
+router.get('/', async (ctx) => {
+    ctx.body = 'are ya logged in?... ' + (ctx.isAuthenticated() ? 'Yup!' : 'Nope!');
+});
 
+router.post('/login', passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/'
+}));
+
+router.get('/crm/*', async (ctx) => {
     ctx.body = renderToStaticMarkup(
         <BasePage title="RevCRM" scripts={clientScripts} css={clientCss} />
     );
-
 });
 
 export { router };
