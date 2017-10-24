@@ -1,4 +1,8 @@
 import * as Router from 'koa-router';
+
+import { graphqlKoa, graphiqlKoa } from 'graphql-server-koa';
+import { api } from '../models/server';
+
 import * as React from 'react';
 import { BasePage } from './BasePage';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -8,6 +12,11 @@ const router = new Router();
 router.get('/static/*', async (ctx) => {
     ctx.status = 404;
 });
+
+const schema = api.getGraphQLSchema();
+router.post('/api', graphqlKoa({ schema: schema }));
+router.get('/api', graphqlKoa({ schema: schema }));
+router.get('/graphiql', graphiqlKoa({ endpointURL: '/api' }));
 
 router.get('/*', async (ctx) => {
 

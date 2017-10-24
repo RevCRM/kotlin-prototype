@@ -14,6 +14,6 @@ serverModels.register(Company);
 serverModels.register(SelectionList);
 
 export const api = new ModelApiManager(serverModels);
-api.register(UserLogin, { model: 'UserLogin' });
+api.register(UserLogin);
 api.register(Company);
 api.register(SelectionList);
