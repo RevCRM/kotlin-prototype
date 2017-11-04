@@ -7,6 +7,7 @@ import { api } from '../models/server';
 import * as React from 'react';
 import { BasePage } from './BasePage';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { UserAuthData } from '../models/User/backend/UserAuthData';
 
 const router = new Router();
 
@@ -36,10 +37,18 @@ router.get('/login', async (ctx) => {
     );
 });
 
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-}));
+router.post('/login', async (ctx, next) => {
+    return passport.authenticate('local', (err: any, user: UserAuthData) => {
+        if (user && user.id) {
+            ctx.body = '';
+            return ctx.login(user);
+        }
+        else if (err) {
+            console.log('Error occured validating login', err);
+        }
+        ctx.throw(401, '');
+    })(ctx, next);
+});
 
 router.get('/*', async (ctx) => {
     ctx.body = renderToStaticMarkup(

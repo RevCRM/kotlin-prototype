@@ -14,7 +14,6 @@ export const UserLoginForm = () => (
     <ModelForm model="UserLoginFormModel">
         <ModelField name="username" />
         <ModelField name="password" />
-        <ModelAction label="Log In" method="login" args={{arg1: 'argTest', arg2: 22}} />
-        <ModelAction label="Log Out" method="logout" />
+        <ModelAction type="post" url="/login" label="Log In" onSuccess={() => alert('yay!')} />
     </ModelForm>
 );

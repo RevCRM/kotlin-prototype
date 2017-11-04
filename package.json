@@ -16,7 +16,7 @@
     "watch-client": "cross-env NODE_ENV=development webpack --config ./conf/webpack.client.config.js --watch",
     "watch-server": "cross-env NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' src/server/server.ts",
     "client-webpack-stats": "webpack --config ./conf/webpack.client.config.js --profile --json > client-webpack-stats.json",
-    "sync-deps": "node ./scripts/sync-deps.js"
+    "sync-deps": "rm -r ./node_modules/rev-* && npm i"
   },
   "dependencies": {
     "bcrypt": "1.0.3",
