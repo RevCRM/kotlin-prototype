@@ -12,7 +12,7 @@ export async function populateTestData(models: ModelManager) {
         models.create(Object.assign(new UserAuthData(), {
             userId: 1,
             username: 'admin',
-            password: 'admin'
+            password: '$2a$10$.IJ0VzFPe.Ryi4gSrvhDWeH/9.VZ2sazAcgrtYjrMhVQ6001ItllW'
         }))
     ]);
 

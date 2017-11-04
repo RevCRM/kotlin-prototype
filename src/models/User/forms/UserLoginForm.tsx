@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import * as rev from 'rev-models';
-import { ModelForm, ModelField, ModelAction } from 'rev-forms-redux-mui';
+import { ModelForm, ModelField, ModelAction } from 'rev-forms-materialui';
 
 export class UserLoginFormModel {
     @rev.TextField({ label: 'Username' })
@@ -11,7 +11,7 @@ export class UserLoginFormModel {
 }
 
 export const UserLoginForm = () => (
-    <ModelForm model="UserLoginModel" form="login_form">
+    <ModelForm model="UserLoginFormModel">
         <ModelField name="username" />
         <ModelField name="password" />
         <ModelAction label="Log In" method="login" args={{arg1: 'argTest', arg2: 22}} />

@@ -8,7 +8,7 @@ import * as body from 'koa-bodyparser';
 import * as session from 'koa-session';
 import * as passport from 'koa-passport';
 
-import './auth';
+import { requireAuth } from './auth';
 import { logger } from './logging';
 import { config } from './config';
 import { router } from './routes';
@@ -30,6 +30,10 @@ populateTestData(serverModels)
     app.use(session({ key: 'revcrm' }, app));
     app.use(passport.initialize());
     app.use(passport.session());
+    app.use(requireAuth({
+        unauthenticatedUrls: ['/login', '/static'],
+        loginUrl: '/login'
+    }));
     app.use(router.routes());
     app.use(router.allowedMethods());
 

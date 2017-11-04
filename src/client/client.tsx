@@ -7,7 +7,7 @@ import { getStore } from '../store/index';
 
 import { App } from '../components/App';
 
-import { ModelProvider } from 'rev-forms-redux-mui';
+import { ModelProvider } from 'rev-forms-materialui';
 import { clientModels } from '../models/client';
 
 // Required for onTouchTap event

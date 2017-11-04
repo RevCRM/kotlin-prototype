@@ -30,16 +30,18 @@ const clientCss = [
     '/static/style.css'
 ];
 
-router.get('/', async (ctx) => {
-    ctx.body = 'are ya logged in?... ' + (ctx.isAuthenticated() ? 'Yup!' : 'Nope!');
+router.get('/login', async (ctx) => {
+    ctx.body = renderToStaticMarkup(
+        <BasePage title="RevCRM" scripts={clientScripts} css={clientCss} />
+    );
 });
 
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/',
-    failureRedirect: '/'
+    failureRedirect: '/login'
 }));
 
-router.get('/crm/*', async (ctx) => {
+router.get('/*', async (ctx) => {
     ctx.body = renderToStaticMarkup(
         <BasePage title="RevCRM" scripts={clientScripts} css={clientCss} />
     );
