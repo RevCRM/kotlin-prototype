@@ -12,7 +12,6 @@ module.exports = {
             'react-router-dom',
             'redux',
             'react-redux',
-            'redux-form',
             'material-ui'
         ]
     },
