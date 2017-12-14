@@ -12,7 +12,7 @@ export class Perspective {
         label: string;
     @rev.TextField()
         model: string;
-    @rev.RecordListField({ model: View })
+    @rev.RecordListField({ model: 'View' })
         views: View[];
 
 }

@@ -6,7 +6,7 @@ import { Perspective } from './Perspective';
 @ApiOperations(['read'])
 export class View {
 
-    @rev.RecordField({ model: Perspective })
+    @rev.RecordField({ model: 'Perspective' })
         perspective: Perspective;
     @rev.TextField({ primaryKey: true })
         name: string;

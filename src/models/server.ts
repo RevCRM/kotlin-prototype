@@ -6,12 +6,16 @@ import { UserAuthData } from './User/backend/UserAuthData';
 import { UserLoginFormModel } from './User/backend/UserLoginFormModel';
 import { Company } from './Company/Company';
 import { SelectionList } from './SelectionList/SelectionList';
+import { Perspective } from './UI/Perspective';
+import { View } from './UI/View';
 
 export const serverModels = new ModelManager();
 serverModels.registerBackend('default', new InMemoryBackend());
 serverModels.register(User);
 serverModels.register(UserAuthData);
 serverModels.register(UserLoginFormModel);
+serverModels.register(Perspective);
+serverModels.register(View);
 serverModels.register(Company);
 serverModels.register(SelectionList);
 
