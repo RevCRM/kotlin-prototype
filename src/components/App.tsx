@@ -5,7 +5,7 @@ import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
 import { LoginPage } from './login/LoginPage';
 import { Route } from 'react-router-dom';
-import { Dashboard } from './dashboard/Dashboard';
+import { ViewManager } from './views/ViewManager';
 
 export function App(props: any) {
     return (
@@ -14,7 +14,7 @@ export function App(props: any) {
                 <LeftNav />
                 <TopNav />
                 <div className="revcrm-content">
-                    <Route exact path="/" component={Dashboard} />
+                    <Route exact path="/" component={ViewManager} />
                     <Route path="/login" component={LoginPage} />
                 </div>
             </div>
