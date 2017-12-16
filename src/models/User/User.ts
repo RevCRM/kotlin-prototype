@@ -1,7 +1,8 @@
 
 import * as rev from 'rev-models';
+import { RevCRMModel } from '../RevCRMModel';
 
-export class User {
+export class User extends RevCRMModel<User> {
 
     @rev.AutoNumberField()
         id: number;

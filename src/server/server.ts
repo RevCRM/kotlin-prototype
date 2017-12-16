@@ -14,14 +14,14 @@ import { config } from './config';
 import { router } from './routes';
 
 import { serverModels } from '../models/server';
-import { populateTestData } from '../models/test_data';
+import { populateData } from './data';
 
 const staticPath = path.join(__dirname, '..', '..', 'dist', 'static');
 
 const app = new Koa();
 app.keys = ['some_secret_here'];
 
-populateTestData(serverModels)
+populateData(serverModels)
 .then(() => {
 
     app.use(logger);
@@ -44,5 +44,4 @@ populateTestData(serverModels)
 })
 .catch((e) => {
     console.log(e);
-    console.log(e.result.validation);
 });

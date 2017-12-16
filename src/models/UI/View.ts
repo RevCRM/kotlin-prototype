@@ -1,13 +1,11 @@
 
 import * as rev from 'rev-models';
 import { ApiOperations } from 'rev-api';
-import { Perspective } from './Perspective';
+import { RevCRMModel } from '../RevCRMModel';
 
 @ApiOperations(['read'])
-export class View {
+export class View extends RevCRMModel<View> {
 
-    @rev.RecordField({ model: 'Perspective' })
-        perspective: Perspective;
     @rev.TextField({ primaryKey: true })
         name: string;
     @rev.TextField()
