@@ -1,12 +1,18 @@
 import { ModelManager } from 'rev-models';
 import { populateUsers } from './users';
 import { populateViews } from './views';
+import { Settings } from '../../models/Settings/Settings';
 
 export async function populateData(models: ModelManager) {
 
+    const settings = new Settings();
+    settings.name = 'default';
+
     try {
-        await populateUsers(models);
-        await populateViews(models);
+        await populateUsers(models, settings);
+        await populateViews(models, settings);
+
+        await models.create(settings);
     }
     catch (e) {
         console.log('Error in populateData():', e);

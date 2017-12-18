@@ -14,5 +14,7 @@ export class PerspectiveView extends RevCRMModel<PerspectiveView> {
         perspective: Perspective;
     @rev.RecordField({ model: 'View' })
         view: View;
+    @rev.BooleanField({ required: false })
+        isDefault: boolean;
 
 }

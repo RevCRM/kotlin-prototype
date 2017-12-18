@@ -1,7 +1,9 @@
 
 import * as rev from 'rev-models';
 import { RevCRMModel } from '../RevCRMModel';
+import { ApiOperations } from 'rev-api';
 
+@ApiOperations(['read'])
 export class User extends RevCRMModel<User> {
 
     @rev.AutoNumberField()

@@ -1,8 +1,9 @@
 import { ModelManager } from 'rev-models';
 import { User } from '../../models/User/User';
 import { UserAuthData } from '../../models/User/backend/UserAuthData';
+import { Settings } from '../../models/Settings/Settings';
 
-export async function populateUsers(models: ModelManager) {
+export async function populateUsers(models: ModelManager, settings: Settings) {
 
     await models.create(new User({
         email: 'admin@admin.com',
