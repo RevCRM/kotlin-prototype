@@ -10,9 +10,9 @@ export class PerspectiveView extends RevCRMModel<PerspectiveView> {
 
     @rev.AutoNumberField({ primaryKey: true })
         id: number;
-    @rev.RecordField({ model: 'Perspective' })
+    @rev.RelatedModel({ model: 'Perspective' })
         perspective: Perspective;
-    @rev.RecordField({ model: 'View' })
+    @rev.RelatedModel({ model: 'View' })
         view: View;
     @rev.BooleanField({ required: false })
         isDefault: boolean;

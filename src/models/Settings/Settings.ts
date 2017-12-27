@@ -9,7 +9,7 @@ export class Settings extends RevCRMModel<Settings> {
 
     @rev.TextField({ primaryKey: true })
         name: string;
-    @rev.RecordField({ model: 'Perspective' })
+    @rev.RelatedModel({ model: 'Perspective' })
         defaultPerspective: Perspective;
 
 }
