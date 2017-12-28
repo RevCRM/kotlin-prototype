@@ -2,6 +2,7 @@
 import * as rev from 'rev-models';
 import { ApiOperations } from 'rev-api';
 import { RevCRMModel } from '../RevCRMModel';
+import { PerspectiveView } from './PerspectiveView';
 
 @ApiOperations(['read'])
 export class Perspective extends RevCRMModel<Perspective> {
@@ -12,5 +13,7 @@ export class Perspective extends RevCRMModel<Perspective> {
         label: string;
     @rev.TextField()
         model: string;
+    @rev.RelatedModelList({ model: 'PerspectiveView', field: 'perspective' })
+        views: PerspectiveView;
 
 }
