@@ -1,12 +1,11 @@
 
-import { ModelManager, InMemoryBackend } from 'rev-models';
+import { ModelManager } from 'rev-models';
+import { ModelApiBackend } from 'rev-api-client';
 import { UserLoginFormModel } from './User/forms/UserLoginForm';
-import { Company } from './Company/Company';
-import { SelectionList } from './SelectionList/SelectionList';
+import { Settings } from './Settings/Settings';
 
 export const clientModels = new ModelManager();
-clientModels.registerBackend('default', new InMemoryBackend());
+clientModels.registerBackend('default', new ModelApiBackend('/api'));
 
 clientModels.register(UserLoginFormModel);
-clientModels.register(Company);
-clientModels.register(SelectionList);
+clientModels.register(Settings);

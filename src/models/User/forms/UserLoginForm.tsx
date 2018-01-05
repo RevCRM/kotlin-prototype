@@ -20,8 +20,8 @@ export interface IUserLoginFormState {
 
 export class UserLoginForm extends React.Component<null, IUserLoginFormState> {
 
-    constructor() {
-        super();
+    constructor(props: any) {
+        super(props);
         this.state = {
             dialogOpen: false,
             dialogTitle: '',
