@@ -23,14 +23,10 @@ export class App extends React.Component {
     render() {
         return (
             <MuiThemeProvider theme={theme}>
-                <div className="revcrm">
-                    <LeftNav />
-                    <TopNav />
-                    <div className="revcrm-content">
-                        <Route exact path="/" component={ViewManager} />
-                        <Route path="/login" component={LoginPage} />
-                    </div>
-                </div>
+                <LeftNav />
+                <TopNav />
+                <Route exact path="/" component={ViewManager} />
+                <Route path="/login" component={LoginPage} />
             </MuiThemeProvider>
         );
     }

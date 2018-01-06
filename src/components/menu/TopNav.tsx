@@ -8,25 +8,42 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
+import { withStyles, WithStyles } from 'material-ui/styles';
 
 export interface ITopNavDispatchProps {
     onMenuButtonClick: () => void;
 }
 
-export class TopNavC extends React.Component<ITopNavDispatchProps> {
+const styles: any = {
+    root: {
+        width: '100%',
+    },
+    flex: {
+        flex: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+    }
+};
+
+export class TopNavC extends React.Component<ITopNavDispatchProps & WithStyles> {
     render() {
         return (
-            <AppBar>
-                <Toolbar>
-                    <IconButton color="contrast" aria-label="Menu" onClick={this.props.onMenuButtonClick}>
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography type="title" color="inherit">
-                        RevCRM
-                    </Typography>
-                    <Button color="contrast">Login</Button>
-                </Toolbar>
-            </AppBar>
+            <div className={this.props.classes.root}>
+                <AppBar position="fixed">
+                    <Toolbar>
+                        <IconButton color="contrast" aria-label="Menu" className={this.props.classes.menuButton}
+                            onClick={this.props.onMenuButtonClick}>
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography type="title" color="inherit" className={this.props.classes.flex}>
+                            RevCRM
+                        </Typography>
+                        <Button color="contrast">Login</Button>
+                    </Toolbar>
+                </AppBar>
+            </div>
         );
     }
 }
@@ -39,4 +56,4 @@ function mapDispatchToProps(dispatch: any): ITopNavDispatchProps {
     };
 }
 
-export const TopNav = connect(null, mapDispatchToProps)(TopNavC) as any;
+export const TopNav = connect(null, mapDispatchToProps)(withStyles(styles)(TopNavC));
