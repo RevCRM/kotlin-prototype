@@ -4,6 +4,8 @@ import * as rev from 'rev-models';
 import { ModelForm, ModelField, FormAction } from 'rev-forms-materialui';
 import Dialog, { DialogTitle, DialogContent, DialogActions} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
+import { withStyles, WithStyles, StyleRules } from 'material-ui/styles';
+import Typography from 'material-ui/Typography';
 
 export class UserLoginFormModel {
     @rev.TextField({ label: 'Username' })
@@ -18,7 +20,13 @@ export interface IUserLoginFormState {
     dialogMessage: string;
 }
 
-export class UserLoginForm extends React.Component<null, IUserLoginFormState> {
+const styles: StyleRules = {
+    root: {
+        margin: 12
+    }
+};
+
+class UserLoginFormC extends React.Component<WithStyles, IUserLoginFormState> {
 
     constructor(props: any) {
         super(props);
@@ -43,31 +51,37 @@ export class UserLoginForm extends React.Component<null, IUserLoginFormState> {
 
     render() {
         return (
-            <ModelForm model="UserLoginFormModel">
-                <ModelField name="username" />
-                <ModelField name="password" />
+            <div className={this.props.classes.root}>
+                <ModelForm model="UserLoginFormModel">
+                    <ModelField name="username" />
+                    <ModelField name="password" />
 
-                <FormAction
-                    label="Log In"
-                    type="post"
-                    url="/login"
-                    default={true}
-                    onSuccess={() => window.location.pathname = '/'}
-                    onFailure={() => this.loginFailed()} />
+                    <FormAction
+                        label="Log In"
+                        type="post"
+                        url="/login"
+                        default={true}
+                        onSuccess={() => window.location.pathname = '/'}
+                        onFailure={() => this.loginFailed()} />
 
-                <Dialog
-                    open={this.state.dialogOpen}
-                    onClose={() => this.dialogClose()}
-                >
-                    <DialogTitle>{this.state.dialogTitle}</DialogTitle>
-                    <DialogContent>{this.state.dialogMessage}</DialogContent>
-                    <DialogActions>
-                        <Button
-                            color="primary"
-                            onClick={() => this.dialogClose()}>Close</Button>
-                    </DialogActions>
-                </Dialog>
-            </ModelForm>
+                    <Dialog
+                        open={this.state.dialogOpen}
+                        onClose={() => this.dialogClose()}
+                    >
+                        <DialogTitle>{this.state.dialogTitle}</DialogTitle>
+                        <DialogContent>
+                            <Typography>{this.state.dialogMessage}</Typography>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                color="primary"
+                                onClick={() => this.dialogClose()}>Close</Button>
+                        </DialogActions>
+                    </Dialog>
+                </ModelForm>
+            </div>
         );
     }
 }
+
+export const UserLoginForm = withStyles(styles)(UserLoginFormC);

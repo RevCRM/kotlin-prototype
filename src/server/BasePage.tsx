@@ -16,7 +16,7 @@ export function BasePage(props: IBasePageProps) {
                     <link rel="stylesheet" href={url} key={idx} />
                 ))}
             </head>
-            <body>
+            <body style={{background: '#EEEEEE'}}>
                 <div id="app">Loading...</div>
                 {props.scripts.map((url, idx) => (
                     <script src={url} key={idx} />

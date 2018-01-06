@@ -3,23 +3,37 @@ import * as React from 'react';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import { UserLoginForm } from '../../models/User/forms/UserLoginForm';
+import { StyleRules, withStyles, WithStyles } from 'material-ui/styles';
+import Typography from 'material-ui/Typography';
 
-export function LoginPage() {
+const styles: StyleRules = {
+    root: {
+        marginTop: 100,
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    loginTitle: {
+        margin: 20
+    },
+    loginBox: {
+        maxWidth: 350
+    }
+};
+
+function LoginPageC(props: WithStyles) {
     return (
-        <div className="revcrm-login row nomargin center-xs" style={{paddingTop: 50}}>
-            <div className="col-xs-11 col-md-5">
-                <Paper elevation={2} className="box">
+        <div className={props.classes.root}>
+            <Paper elevation={4} className={props.classes.loginBox}>
 
-                    <div style={{background: '#00F'}}>
-                        <h1 style={{background: 'rgb(0, 188, 212)', color: '#FFF'}}>Welcome!</h1>
-                    </div>
+                <Typography align="center" type="display2" className={props.classes.loginTitle}>Login</Typography>
 
-                    <Divider />
+                <Divider />
 
-                    <UserLoginForm />
+                <UserLoginForm />
 
-                </Paper>
-            </div>
+            </Paper>
         </div>
     );
 }
+
+export const LoginPage = withStyles(styles)(LoginPageC);
