@@ -8,7 +8,7 @@ export function LoginPage() {
     return (
         <div className="revcrm-login row nomargin center-xs" style={{paddingTop: 50}}>
             <div className="col-xs-11 col-md-5">
-                <Paper zDepth={2} className="box">
+                <Paper elevation={2} className="box">
 
                     <div style={{background: '#00F'}}>
                         <h1 style={{background: 'rgb(0, 188, 212)', color: '#FFF'}}>Welcome!</h1>

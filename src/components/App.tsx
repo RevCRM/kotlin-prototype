@@ -1,12 +1,14 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
 import { LoginPage } from './login/LoginPage';
 import { Route } from 'react-router-dom';
 import { ViewManager } from './views/ViewManager';
+
+const theme = createMuiTheme();
 
 export class App extends React.Component {
 
@@ -20,7 +22,7 @@ export class App extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider theme={theme}>
                 <div className="revcrm">
                     <LeftNav />
                     <TopNav />

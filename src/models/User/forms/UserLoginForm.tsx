@@ -2,8 +2,8 @@
 import * as React from 'react';
 import * as rev from 'rev-models';
 import { ModelForm, ModelField, FormAction } from 'rev-forms-materialui';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import Dialog, { DialogTitle, DialogContent, DialogActions} from 'material-ui/Dialog';
+import Button from 'material-ui/Button';
 
 export class UserLoginFormModel {
     @rev.TextField({ label: 'Username' })
@@ -56,18 +56,16 @@ export class UserLoginForm extends React.Component<null, IUserLoginFormState> {
                     onFailure={() => this.loginFailed()} />
 
                 <Dialog
-                    title={this.state.dialogTitle}
-                    actions={[
-                        <FlatButton
-                            label="Close"
-                            primary={true}
-                            onClick={() => this.dialogClose()}
-                        />
-                    ]}
-                    modal={false}
                     open={this.state.dialogOpen}
-                    onRequestClose={() => this.dialogClose()}>
-                    {this.state.dialogMessage}
+                    onClose={() => this.dialogClose()}
+                >
+                    <DialogTitle>{this.state.dialogTitle}</DialogTitle>
+                    <DialogContent>{this.state.dialogMessage}</DialogContent>
+                    <DialogActions>
+                        <Button
+                            color="primary"
+                            onClick={() => this.dialogClose()}>Close</Button>
+                    </DialogActions>
                 </Dialog>
             </ModelForm>
         );

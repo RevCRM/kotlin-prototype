@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
+import { MenuItem } from 'material-ui/Menu';
 import { connect } from 'react-redux';
 import { IState } from '../../store/index';
 import { setLeftNavOpen } from './store/index';
@@ -12,20 +12,18 @@ export interface ILeftNavStateProps {
 }
 
 export interface ILeftNavDispatchProps {
-    onRequestChange: (open: boolean, reason: string) => void;
+    onClose: (event: any) => void;
 }
 
 export class LeftNavC extends React.Component<ILeftNavStateProps & ILeftNavDispatchProps> {
     render() {
         return (
             <Drawer
-                docked={false}
-                width={200}
                 open={this.props.isOpen}
-                onRequestChange={this.props.onRequestChange}
+                onClose={this.props.onClose}
             >
-                <MenuItem onTouchTap={null}>Menu Item</MenuItem>
-                <MenuItem onTouchTap={null}>Menu Item 2</MenuItem>
+                <MenuItem>Menu Item</MenuItem>
+                <MenuItem>Menu Item 2</MenuItem>
             </Drawer>
         );
     }
@@ -39,8 +37,8 @@ function mapStateToProps(state: IState): ILeftNavStateProps {
 
 function mapDispatchToProps(dispatch: Dispatch<IState>): ILeftNavDispatchProps {
     return {
-        onRequestChange: (open: boolean, reason: string) => {
-            dispatch(setLeftNavOpen(open));
+        onClose: (event: any) => {
+            dispatch(setLeftNavOpen(false));
         }
     };
 }

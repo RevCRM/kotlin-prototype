@@ -3,22 +3,37 @@ import { connect } from 'react-redux';
 
 import AppBar from 'material-ui/AppBar';
 import { setLeftNavOpen } from './store/index';
+import Toolbar from 'material-ui/Toolbar';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
 
 export interface ITopNavDispatchProps {
-    onMenuButtonTouchTap: () => void;
+    onMenuButtonClick: () => void;
 }
 
 export class TopNavC extends React.Component<ITopNavDispatchProps> {
     render() {
         return (
-            <AppBar title="RevCRM" onLeftIconButtonTouchTap={this.props.onMenuButtonTouchTap} />
+            <AppBar>
+                <Toolbar>
+                    <IconButton color="contrast" aria-label="Menu" onClick={this.props.onMenuButtonClick}>
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography type="title" color="inherit">
+                        RevCRM
+                    </Typography>
+                    <Button color="contrast">Login</Button>
+                </Toolbar>
+            </AppBar>
         );
     }
 }
 
 function mapDispatchToProps(dispatch: any): ITopNavDispatchProps {
     return {
-        onMenuButtonTouchTap: () => {
+        onMenuButtonClick: () => {
             dispatch(setLeftNavOpen(true));
         }
     };
