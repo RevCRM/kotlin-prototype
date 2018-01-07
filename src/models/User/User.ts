@@ -1,7 +1,7 @@
 
 import * as rev from 'rev-models';
 import { RevCRMModel } from '../RevCRMModel';
-import { ApiOperations } from 'rev-api';
+import { ApiOperations } from 'rev-api/lib/decorators';
 
 @ApiOperations(['read'])
 export class User extends RevCRMModel<User> {

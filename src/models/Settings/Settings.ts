@@ -1,6 +1,6 @@
 
 import * as rev from 'rev-models';
-import { ApiOperations } from 'rev-api';
+import { ApiOperations } from 'rev-api/lib/decorators';
 import { Perspective } from '../UI/Perspective';
 import { RevCRMModel } from '../RevCRMModel';
 

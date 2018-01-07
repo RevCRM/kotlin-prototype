@@ -1,5 +1,5 @@
 import { ModelManager } from 'rev-models';
-import { Account } from '../../models/Accounts/Account';
+import { Account } from '../../models/Accounts/AccountBackend';
 
 export async function populateAccounts(models: ModelManager) {
 

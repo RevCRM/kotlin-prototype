@@ -3,7 +3,7 @@ import { ModelManager, InMemoryBackend } from 'rev-models';
 import { ModelApiManager } from 'rev-api';
 import { User } from './User/User';
 import { UserAuthData } from './User/backend/UserAuthData';
-import { Account } from './Accounts/Account';
+import { Account } from './Accounts/AccountBackend';
 import { SelectionList } from './SelectionList/SelectionList';
 import { Perspective } from './UI/Perspective';
 import { View } from './UI/View';

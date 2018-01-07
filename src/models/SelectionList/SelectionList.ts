@@ -1,6 +1,6 @@
 
 import * as rev from 'rev-models';
-import { ApiOperations } from 'rev-api';
+import { ApiOperations } from 'rev-api/lib/decorators';
 
 @ApiOperations(['create', 'read', 'update', 'remove'])
 export class SelectionList {
