@@ -1,6 +1,7 @@
 import { ModelManager } from 'rev-models';
 import { populateUsers } from './users';
 import { populateViews } from './views';
+import { populateAccounts } from './accounts';
 import { Settings } from '../../models/Settings/Settings';
 
 export async function populateData(models: ModelManager) {
@@ -11,6 +12,7 @@ export async function populateData(models: ModelManager) {
     try {
         await populateUsers(models, settings);
         await populateViews(models, settings);
+        await populateAccounts(models);
 
         await models.create(settings);
     }

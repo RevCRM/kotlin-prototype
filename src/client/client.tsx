@@ -10,6 +10,8 @@ import { App } from '../components/App';
 import { ModelProvider } from 'rev-forms-materialui';
 import { clientModels } from '../models/client';
 
+console.log(clientModels);
+
 // Required for onTouchTap event
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();

@@ -6,7 +6,7 @@ import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
-import { ListView } from './ListView';
+import { ModelList } from 'rev-forms-materialui/lib/lists/ModelList';
 
 const styles = {
     root: {
@@ -33,7 +33,12 @@ function ViewManagerC(props: WithStyles<any>) {
                 </Select>
             </Toolbar>
             <div className={props.classes.viewWrapper}>
-                <ListView />
+                <ModelList model="Account" fields={[
+                    'id',
+                    'name',
+                    'code',
+                    'url'
+                ]} />
             </div>
         </div>
     );

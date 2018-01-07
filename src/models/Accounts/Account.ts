@@ -1,15 +1,18 @@
 
 import * as rev from 'rev-models';
 import { ApiOperations, ApiMethod } from 'rev-api';
+import { RevCRMModel } from '../RevCRMModel';
 
 @ApiOperations(['create', 'read', 'update', 'remove'])
-export class Company {
+export class Account extends RevCRMModel<Account> {
 
     @rev.AutoNumberField({ primaryKey: true })
         id: number;
-    @rev.TextField()
+    @rev.TextField({ label: 'Account Name' })
         name: string;
-    @rev.URLField()
+    @rev.TextField({ label: 'Account Code' })
+        code: string;
+    @rev.URLField({ label: 'Website' })
         url: string;
 
     @ApiMethod({
