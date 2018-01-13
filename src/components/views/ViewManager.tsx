@@ -2,11 +2,10 @@ import * as React from 'react';
 
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import Select from 'material-ui/Select';
-import { MenuItem } from 'material-ui/Menu';
 import { withStyles } from 'material-ui/styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
-import { ModelList } from 'rev-forms-materialui/lib/lists/ModelList';
+import { RouteComponentProps } from 'react-router-dom';
+import { ListView } from './ListView';
 
 const styles = {
     root: {
@@ -20,28 +19,69 @@ const styles = {
     }
 };
 
-function ViewManagerC(props: WithStyles<any>) {
-    return (
-        <div className={props.classes.root}>
-            <Toolbar>
-                <Typography type="title" color="inherit">
-                    All Companies
-                </Typography>
-                <Select value={1} className={props.classes.viewSelector}>
-                    <MenuItem value={1}>List View</MenuItem>
-                    <MenuItem value={2}>Map View</MenuItem>
-                </Select>
-            </Toolbar>
-            <div className={props.classes.viewWrapper}>
-                <ModelList model="Account" fields={[
+export interface IViewsDefinition {
+    [perspective: string]: {
+        [viewName: string]: {
+            title: string,
+            component: any
+        }
+    };
+}
+
+const views: IViewsDefinition = {
+    accounts: {
+        list: {
+            title: 'All Accounts',
+            component: (contextProps: any) => (
+                <ListView model="Account" fields={[
                     'id',
                     'name',
                     'code',
-                    'url'
-                ]} />
+                    'url']} {...contextProps} />
+            ),
+        },
+        form: {
+            title: 'Edit Account',
+            component: (contextProps: any) => (
+                <p>Form view...</p>
+            )
+        }
+    }
+};
+
+export interface IViewManagerProps extends WithStyles<any>, RouteComponentProps<any> {}
+
+function ViewManagerC(props: IViewManagerProps) {
+    const { perspective, view } = props.match.params;
+    const search = new URLSearchParams(props.location.search);
+    const contextProps = {
+        viewContext: {
+            id: search.get('id')
+        }
+    };
+
+    if (!views[perspective] || !views[perspective][view]) {
+        return (
+            <div className={props.classes.root}>
+                <Typography type="title" color="inherit">
+                    View not found
+                </Typography>
             </div>
-        </div>
-    );
+        );
+    }
+    else {
+        const viewComponent = views[perspective][view].component;
+        return (
+            <div className={props.classes.root}>
+                <Toolbar>
+                    <Typography type="title" color="inherit">
+                        {views[perspective][view].title}
+                    </Typography>
+                </Toolbar>
+                {viewComponent(contextProps)}
+            </div>
+        );
+    }
 }
 
 export const ViewManager = withStyles(styles)(ViewManagerC);

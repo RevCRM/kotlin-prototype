@@ -5,7 +5,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
 import { LoginPage } from './login/LoginPage';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { ViewManager } from './views/ViewManager';
 
 const theme = createMuiTheme();
@@ -25,8 +25,9 @@ export class App extends React.Component {
             <MuiThemeProvider theme={theme}>
                 <LeftNav />
                 <TopNav />
-                <Route exact path="/" component={ViewManager} />
                 <Route path="/login" component={LoginPage} />
+                <Route path="/:perspective/:view" component={ViewManager} />
+                <Route exact path="/" render={() => <Redirect to="/accounts/list" />} />
             </MuiThemeProvider>
         );
     }
