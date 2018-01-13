@@ -4,7 +4,7 @@ import * as rev from 'rev-models';
 import { ModelForm, ModelField, FormAction } from 'rev-forms-materialui';
 import Dialog, { DialogTitle, DialogContent, DialogActions} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
-import { withStyles, WithStyles, StyleRules } from 'material-ui/styles';
+import { withStyles, WithStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
 export class UserLoginFormModel {
@@ -20,13 +20,13 @@ export interface IUserLoginFormState {
     dialogMessage: string;
 }
 
-const styles: StyleRules = {
+const styles = {
     root: {
         margin: 12
     }
 };
 
-class UserLoginFormC extends React.Component<WithStyles, IUserLoginFormState> {
+class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IUserLoginFormState> {
 
     constructor(props: any) {
         super(props);

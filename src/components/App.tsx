@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import { TopNav } from './menu/TopNav';
@@ -11,10 +10,6 @@ import { ViewManager } from './views/ViewManager';
 const theme = createMuiTheme();
 
 export class App extends React.Component {
-
-    static contextTypes = {
-        modelManager: PropTypes.object
-    };
 
     componentDidMount() {
         console.log('mounted context', this.context);

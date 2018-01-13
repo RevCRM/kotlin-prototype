@@ -3,10 +3,10 @@ import * as React from 'react';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import { UserLoginForm } from '../../models/User/forms/UserLoginForm';
-import { StyleRules, withStyles, WithStyles } from 'material-ui/styles';
+import { withStyles, WithStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 
-const styles: StyleRules = {
+const styles = {
     root: {
         marginTop: 100,
         display: 'flex',
@@ -20,20 +20,22 @@ const styles: StyleRules = {
     }
 };
 
-function LoginPageC(props: WithStyles) {
-    return (
-        <div className={props.classes.root}>
-            <Paper elevation={4} className={props.classes.loginBox}>
+class LoginPageC extends React.Component<WithStyles<keyof typeof styles>> {
+    render() {
+        return (
+            <div className={this.props.classes.root}>
+                <Paper elevation={4} className={this.props.classes.loginBox}>
 
-                <Typography align="center" type="display2" className={props.classes.loginTitle}>Login</Typography>
+                    <Typography align="center" type="display2" className={this.props.classes.loginTitle}>Login</Typography>
 
-                <Divider />
+                    <Divider />
 
-                <UserLoginForm />
+                    <UserLoginForm />
 
-            </Paper>
-        </div>
-    );
+                </Paper>
+            </div>
+        );
+    }
 }
 
-export const LoginPage = withStyles(styles)(LoginPageC);
+export const LoginPage = withStyles(styles as any)(LoginPageC);

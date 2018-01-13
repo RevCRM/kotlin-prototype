@@ -14,7 +14,7 @@ export interface ITopNavDispatchProps {
     onMenuButtonClick: () => void;
 }
 
-const styles: any = {
+const styles = {
     root: {
         width: '100%',
     },
@@ -27,7 +27,7 @@ const styles: any = {
     }
 };
 
-export class TopNavC extends React.Component<ITopNavDispatchProps & WithStyles> {
+export class TopNavC extends React.Component<ITopNavDispatchProps & WithStyles<keyof typeof styles>> {
     render() {
         return (
             <div className={this.props.classes.root}>
