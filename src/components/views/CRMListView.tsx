@@ -4,17 +4,16 @@ import * as PropTypes from 'prop-types';
 
 import Button from 'material-ui/Button';
 import Add from 'material-ui-icons/Add';
-import { ModelList } from 'rev-forms-materialui/lib/lists/ModelList';
-import { IViewContext } from './ViewManager';
+import { IViewManagerContext, ListView } from 'rev-forms-materialui';
 
-export interface IListViewProps {
+export interface ICRMListViewProps {
     model: string;
     fields: string[];
 }
 
-export class ListView extends React.Component<IListViewProps> {
+export class CRMListView extends React.Component<ICRMListViewProps> {
 
-    context: { viewContext: IViewContext };
+    context: IViewManagerContext;
     static contextTypes = {
         viewContext: PropTypes.object
     };
@@ -28,7 +27,7 @@ export class ListView extends React.Component<IListViewProps> {
                     <Add style={{ marginRight: 10 }} />
                     New
                 </Button>
-                <ModelList model={this.props.model} fields={this.props.fields} />
+                <ListView model={this.props.model} fields={this.props.fields} />
             </div>
         );
     }

@@ -7,10 +7,10 @@ import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 import Done from 'material-ui-icons/Done';
 import Typography from 'material-ui/Typography';
-import { IViewContext } from './ViewManager';
+import { IViewManagerContext } from 'rev-forms-materialui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 
-export interface IFormViewProps {
+export interface ICRMFormViewProps {
     model: string;
 }
 
@@ -27,9 +27,9 @@ const styles = {
     }
 };
 
-class FormViewC extends React.Component<IFormViewProps & WithStyles<keyof typeof styles>> {
+class CRMFormViewC extends React.Component<ICRMFormViewProps & WithStyles<keyof typeof styles>> {
 
-    context: { viewContext: IViewContext };
+    context: IViewManagerContext;
     static contextTypes = {
         viewContext: PropTypes.object
     };
@@ -43,7 +43,7 @@ class FormViewC extends React.Component<IFormViewProps & WithStyles<keyof typeof
 
         return (
             <div>
-                <Button raised color="primary" style={{ marginBottom: 20 }} disabled>
+                <Button raised color="primary" style={{ marginBottom: 20 }} disabled={!this.context.viewContext.dirty}>
                     <Done style={{ marginRight: 10 }} />
                     Save
                 </Button>
@@ -62,4 +62,4 @@ class FormViewC extends React.Component<IFormViewProps & WithStyles<keyof typeof
     }
 }
 
-export const FormView: React.ComponentType<IFormViewProps> = withStyles(styles)(FormViewC);
+export const CRMFormView: React.ComponentType<ICRMFormViewProps> = withStyles(styles)(CRMFormViewC);

@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import * as rev from 'rev-models';
-import { ModelForm, ModelField, FormAction } from 'rev-forms-materialui';
+import { ViewManager, FormView, Field, ViewAction } from 'rev-forms-materialui';
 import Dialog, { DialogTitle, DialogContent, DialogActions} from 'material-ui/Dialog';
 import Button from 'material-ui/Button';
 import { withStyles, WithStyles } from 'material-ui/styles';
@@ -52,33 +52,35 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
     render() {
         return (
             <div className={this.props.classes.root}>
-                <ModelForm model="UserLoginFormModel">
-                    <ModelField name="username" />
-                    <ModelField name="password" />
+                <ViewManager model="UserLoginFormModel">
+                    <FormView model="UserLoginFormModel">
+                        <Field name="username" />
+                        <Field name="password" />
 
-                    <FormAction
-                        label="Log In"
-                        type="post"
-                        url="/login"
-                        default={true}
-                        onSuccess={() => window.location.pathname = '/'}
-                        onFailure={() => this.loginFailed()} />
+                        <ViewAction
+                            label="Log In"
+                            type="post"
+                            url="/login"
+                            default={true}
+                            onSuccess={() => window.location.pathname = '/'}
+                            onFailure={() => this.loginFailed()} />
 
-                    <Dialog
-                        open={this.state.dialogOpen}
-                        onClose={() => this.dialogClose()}
-                    >
-                        <DialogTitle>{this.state.dialogTitle}</DialogTitle>
-                        <DialogContent>
-                            <Typography>{this.state.dialogMessage}</Typography>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button
-                                color="primary"
-                                onClick={() => this.dialogClose()}>Close</Button>
-                        </DialogActions>
-                    </Dialog>
-                </ModelForm>
+                        <Dialog
+                            open={this.state.dialogOpen}
+                            onClose={() => this.dialogClose()}
+                        >
+                            <DialogTitle>{this.state.dialogTitle}</DialogTitle>
+                            <DialogContent>
+                                <Typography>{this.state.dialogMessage}</Typography>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button
+                                    color="primary"
+                                    onClick={() => this.dialogClose()}>Close</Button>
+                            </DialogActions>
+                        </Dialog>
+                    </FormView>
+                </ViewManager>
             </div>
         );
     }

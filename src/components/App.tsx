@@ -5,7 +5,7 @@ import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
 import { LoginPage } from './login/LoginPage';
 import { Route, Redirect } from 'react-router-dom';
-import { ViewManager } from './views/ViewManager';
+import { CRMViewManager } from './views/CRMViewManager';
 
 const theme = createMuiTheme();
 
@@ -21,7 +21,7 @@ export class App extends React.Component {
                 <LeftNav />
                 <TopNav />
                 <Route path="/login" component={LoginPage} />
-                <Route path="/:perspective/:view" component={ViewManager} />
+                <Route path="/:perspective/:view" component={CRMViewManager} />
                 <Route exact path="/" render={() => <Redirect to="/accounts/list" />} />
             </MuiThemeProvider>
         );

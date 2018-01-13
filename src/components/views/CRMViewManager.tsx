@@ -6,11 +6,10 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
 import { RouteComponentProps } from 'react-router-dom';
-import { ListView } from './ListView';
-import { FormView } from './FormView';
+import { CRMListView } from './CRMListView';
+import { CRMFormView } from './CRMFormView';
 import { IModelProviderContext } from 'rev-forms-materialui/lib/provider/ModelProvider';
-import { IModelMeta } from 'rev-models';
-import { ModelForm, ModelField } from 'rev-forms-materialui';
+import { ViewManager, FormView, Field } from 'rev-forms-materialui';
 
 export interface IView {
     name: string;
@@ -35,11 +34,6 @@ export interface IViewsDefinition {
     };
 }
 
-export interface IViewContext {
-    modelMeta: IModelMeta<any>;
-    primaryKeyValue: string;
-}
-
 const viewDef: IViewsDefinition = {
     perspectives: {
         accounts: {
@@ -56,7 +50,7 @@ const viewDef: IViewsDefinition = {
         account_list: {
             name: 'account_list',
             component: (
-                <ListView model="Account" fields={[
+                <CRMListView model="Account" fields={[
                     'id',
                     'name',
                     'code',
@@ -66,13 +60,13 @@ const viewDef: IViewsDefinition = {
         account_form: {
             name: 'account_form',
             component: (
-                <FormView model="Account">
-                    <ModelForm model="Account">
-                        <ModelField name="name" />
-                        <ModelField name="code" colspan={3} />
-                        <ModelField name="url" colspan={3} />
-                    </ModelForm>
-                </FormView>
+                <CRMFormView model="Account">
+                    <FormView model="Account">
+                        <Field name="name" />
+                        <Field name="code" colspan={3} />
+                        <Field name="url" colspan={3} />
+                    </FormView>
+                </CRMFormView>
             )
         }
     }
@@ -90,14 +84,12 @@ const styles = {
     }
 };
 
-export interface IViewManagerProps extends RouteComponentProps<any>, WithStyles<keyof typeof styles> {}
+export interface ICRMViewManagerProps extends RouteComponentProps<any>, WithStyles<keyof typeof styles> {}
 
-class ViewManagerC extends React.Component<IViewManagerProps> {
+class CRMViewManagerC extends React.Component<ICRMViewManagerProps> {
 
     perspective: IPerspective;
     view: IView;
-
-    modelMeta: IModelMeta<any>;
     primaryKeyValue: string;
 
     context: IModelProviderContext;
@@ -105,8 +97,9 @@ class ViewManagerC extends React.Component<IViewManagerProps> {
         modelManager: PropTypes.object
     };
 
-    constructor(props: IViewManagerProps, context: IModelProviderContext) {
+    constructor(props: ICRMViewManagerProps, context: IModelProviderContext) {
         super(props, context);
+
         const { perspective, view } = this.getViewDefinition();
         this.perspective = perspective;
         this.view = view;
@@ -114,9 +107,9 @@ class ViewManagerC extends React.Component<IViewManagerProps> {
         const search = new URLSearchParams(this.props.location.search);
         const manager = this.context.modelManager;
 
-        this.modelMeta = manager.getModelMeta(this.perspective.model);
-        if (this.modelMeta.primaryKey) {
-            this.primaryKeyValue = search.get(this.modelMeta.primaryKey);
+        const modelMeta = manager.getModelMeta(this.perspective.model);
+        if (modelMeta.primaryKey) {
+            this.primaryKeyValue = search.get(modelMeta.primaryKey);
         }
     }
 
@@ -139,19 +132,6 @@ class ViewManagerC extends React.Component<IViewManagerProps> {
         }
     }
 
-    static childContextTypes = {
-        viewContext: PropTypes.object
-    };
-
-    getChildContext(): { viewContext: IViewContext } {
-        return {
-            viewContext: {
-                modelMeta: this.modelMeta,
-                primaryKeyValue: this.primaryKeyValue
-            }
-        };
-    }
-
     render() {
         if (!this.view.component) {
             return (
@@ -165,18 +145,20 @@ class ViewManagerC extends React.Component<IViewManagerProps> {
         else {
             return (
                 <div className={this.props.classes.root}>
-                    <Toolbar>
-                        <Typography type="title" color="inherit">
-                            {this.perspective.title}
-                        </Typography>
-                    </Toolbar>
-                    <div className={this.props.classes.viewWrapper}>
-                        {this.view.component}
-                    </div>
+                    <ViewManager model={this.perspective.model} primaryKeyValue={this.primaryKeyValue}>
+                        <Toolbar>
+                            <Typography type="title" color="inherit">
+                                {this.perspective.title}
+                            </Typography>
+                        </Toolbar>
+                        <div className={this.props.classes.viewWrapper}>
+                            {this.view.component}
+                        </div>
+                    </ViewManager>
                 </div>
             );
         }
     }
 }
 
-export const ViewManager = withStyles(styles)(ViewManagerC);
+export const CRMViewManager = withStyles(styles)(CRMViewManagerC);
