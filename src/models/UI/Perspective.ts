@@ -10,7 +10,7 @@ export class Perspective extends RevCRMModel<Perspective> {
     @rev.TextField({ primaryKey: true })
         name: string;
     @rev.TextField()
-        label: string;
+        title: string;
     @rev.TextField()
         model: string;
     @rev.RelatedModelList({ model: 'PerspectiveView', field: 'perspective' })

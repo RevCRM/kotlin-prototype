@@ -8,7 +8,7 @@ export async function populateViews(models: ModelManager, settings: Settings) {
 
     const perspective = (await models.create(new Perspective({
         name: 'accounts',
-        label: 'All Accounts',
+        title: 'All Accounts',
         model: 'Account'
     }))).result;
 
