@@ -9,6 +9,7 @@
         "ordered-imports": [false],
         "no-console": [false],
         "no-unused-new": false,
+        "member-ordering": false,
         "triple-equals": false,
         "one-line": [false, "check-catch", "check-finally", "check-else"],
         "only-arrow-functions": [false],
