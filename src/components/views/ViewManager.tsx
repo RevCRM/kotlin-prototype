@@ -10,6 +10,7 @@ import { ListView } from './ListView';
 import { FormView } from './FormView';
 import { IModelProviderContext } from 'rev-forms-materialui/lib/provider/ModelProvider';
 import { IModelMeta } from 'rev-models';
+import { ModelForm, ModelField } from 'rev-forms-materialui';
 
 export interface IView {
     name: string;
@@ -65,7 +66,13 @@ const viewDef: IViewsDefinition = {
         account_form: {
             name: 'account_form',
             component: (
-                <FormView model="Account" />
+                <FormView model="Account">
+                    <ModelForm model="Account">
+                        <ModelField name="name" />
+                        <ModelField name="code" colspan={3} />
+                        <ModelField name="url" colspan={3} />
+                    </ModelForm>
+                </FormView>
             )
         }
     }

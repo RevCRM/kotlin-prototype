@@ -16,12 +16,14 @@ export interface IFormViewProps {
 
 const styles = {
     root: {
-        width: '100%',
-        overflowX: 'auto',
+        width: '100%'
     },
     toolbar: {
         display: 'flex',
-        marginBottom: 20
+        borderBottom: '1px solid #EBEBEB'
+    },
+    formWrapper: {
+        padding: '10 20'
     }
 };
 
@@ -51,11 +53,13 @@ class FormViewC extends React.Component<IFormViewProps & WithStyles<keyof typeof
                             {title}
                         </Typography>
                     </Toolbar>
-                    <div>Form</div>
+                    <div className={this.props.classes.formWrapper}>
+                        {this.props.children}
+                    </div>
                 </Paper>
             </div>
         );
     }
 }
 
-export const FormView: React.ComponentType<IFormViewProps> = withStyles(styles as any)(FormViewC);
+export const FormView: React.ComponentType<IFormViewProps> = withStyles(styles)(FormViewC);
