@@ -38,7 +38,7 @@ class CRMFormViewC extends React.Component<ICRMFormViewProps & WithStyles<keyof 
         console.log('FormView props', this.props);
         console.log('FormView context', this.context);
 
-        const title = (this.context.viewContext.primaryKeyValue ? 'Edit ' : 'New ')
+        const title = (this.context.viewContext.isNew() ? 'New ' : 'Edit ')
             + this.context.viewContext.modelMeta.name;
 
         return (
