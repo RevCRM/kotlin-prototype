@@ -14,7 +14,7 @@ export class Account extends RevCRMModel<Account> {
         url: string;
 
     validate(vc: rev.IValidationContext) {
-        if (this.name.toLowerCase().includes('test')) {
+        if (this.name && this.name.toLowerCase().includes('test')) {
             vc.result.addFieldError('name', 'Name cannot include the word "test"');
         }
     }

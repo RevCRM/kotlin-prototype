@@ -4,10 +4,8 @@ import * as PropTypes from 'prop-types';
 
 import Paper from 'material-ui/Paper';
 import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
-import Done from 'material-ui-icons/Done';
 import Typography from 'material-ui/Typography';
-import { IViewManagerContext } from 'rev-forms-materialui';
+import { IViewManagerContext, ViewAction } from 'rev-forms-materialui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 
 export interface ICRMFormViewProps {
@@ -43,10 +41,11 @@ class CRMFormViewC extends React.Component<ICRMFormViewProps & WithStyles<keyof 
 
         return (
             <div>
-                <Button raised color="primary" style={{ marginBottom: 20 }} disabled={!this.context.viewContext.dirty}>
+                {/* <Button raised color="primary" style={{ marginBottom: 20 }} disabled={!this.context.viewContext.dirty}>
                     <Done style={{ marginRight: 10 }} />
                     Save
-                </Button>
+                </Button> */}
+                <ViewAction label="Save" type="post" url="/todo" />
                 <Paper className={this.props.classes.root}>
                     <Toolbar className={this.props.classes.toolbar}>
                         <Typography type="title" color="inherit">
