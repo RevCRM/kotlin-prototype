@@ -21,7 +21,7 @@ export class App extends React.Component {
                 <LeftNav />
                 <TopNav />
                 <Route path="/login" component={LoginPage} />
-                <Route path="/:perspective/:view" component={CRMViewManager} />
+                <Route path="/:perspectiveName/:viewName" component={CRMViewManager} />
                 <Route exact path="/" render={() => <Redirect to="/accounts/list" />} />
             </MuiThemeProvider>
         );

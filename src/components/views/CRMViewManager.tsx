@@ -54,7 +54,7 @@ const viewDef: IViewsDefinition = {
                     'id',
                     'name',
                     'code',
-                    'url']} />
+                    'url']} detailView="accounts/form" />
             ),
         },
         account_form: {
@@ -85,9 +85,16 @@ const styles = {
 
 export interface ICRMViewManagerProps extends RouteComponentProps<any>, WithStyles<keyof typeof styles> {}
 
+export interface ICRMViewContextArgs {
+    [key: string]: string;
+}
+
 export interface ICRMViewContext {
-    model: string;
+    perspective: IPerspective;
+    view: IView;
     primaryKeyValue?: string;
+
+    changePerspective(perspectiveName: string, viewName: string, args?: ICRMViewContextArgs): void;
 }
 
 export interface ICRMViewManagerContext {
@@ -96,46 +103,58 @@ export interface ICRMViewManagerContext {
 
 class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManagerProp> {
 
-    perspective: IPerspective;
-    view: IView;
-
     viewContext: ICRMViewContext;
 
     constructor(props: ICRMViewManagerProps & IModelManagerProp, context: IModelProviderContext) {
         super(props, context);
 
-        const { perspective, view } = this.getViewDefinition();
-
-        this.perspective = perspective;
-        this.view = view;
         this.viewContext = {
-            model: view.model
+            perspective: null,
+            view: null,
+            primaryKeyValue: null,
+            changePerspective: (p, v, k) => this.changePerspective(p, v, k)
         };
 
-        const search = new URLSearchParams(this.props.location.search);
-        const meta = this.props.modelManager.getModelMeta(this.view.model);
-        if (meta.primaryKey) {
-            this.viewContext.primaryKeyValue = search.get(meta.primaryKey);
+        this.updateViewContextFromProps(props);
+    }
+
+    componentWillReceiveProps(newProps: ICRMViewManagerProps & IModelManagerProp) {
+        this.updateViewContextFromProps(newProps);
+    }
+
+    updateViewContextFromProps(newProps: ICRMViewManagerProps & IModelManagerProp) {
+
+        const { perspectiveName, viewName } = newProps.match.params;
+        const ctx = this.viewContext;
+
+        console.log('new route', perspectiveName, viewName);
+        if (viewDef.perspectives[perspectiveName]
+            && viewDef.perspectives[perspectiveName].views[viewName]
+            && viewDef.views[viewDef.perspectives[perspectiveName].views[viewName]]) {
+
+            ctx.perspective = viewDef.perspectives[perspectiveName];
+            ctx.view = viewDef.views[viewDef.perspectives[perspectiveName].views[viewName]];
+        }
+
+        if (ctx.perspective && ctx.view) {
+            console.log('found new view');
+            const search = new URLSearchParams(newProps.location.search);
+            const meta = newProps.modelManager.getModelMeta(ctx.view.model);
+
+            if (meta.primaryKey) {
+                ctx.primaryKeyValue = search.get(meta.primaryKey);
+            }
         }
     }
 
-    getViewDefinition(): { perspective: IPerspective, view: IView } {
-        const { perspective, view } = this.props.match.params;
-
-        if (!viewDef.perspectives[perspective]
-            || !viewDef.perspectives[perspective].views[view]
-            || !viewDef.views[viewDef.perspectives[perspective].views[view]]) {
-            return {
-                perspective: null,
-                view: null,
-            };
-        }
-        else {
-            return {
-                perspective: viewDef.perspectives[perspective],
-                view: viewDef.views[viewDef.perspectives[perspective].views[view]]
-            };
-        }
+    changePerspective(perspectiveName: string, viewName: string, args?: ICRMViewContextArgs) {
+        const baseUrl = `/${perspectiveName}/${viewName}`;
+        const params = new URLSearchParams();
+        Object.keys(args).forEach((key) => {
+            params.append(key, args[key]);
+        });
+        console.log('going to', `${baseUrl}?${params.toString()}`);
+        this.props.history.push(`${baseUrl}?${params}`);
     }
 
     static childContextTypes = {
@@ -149,7 +168,11 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
     }
 
     render() {
-        if (!this.view.component) {
+        console.log('NEW CONTEXT!', this.viewContext);
+
+        const { perspective, view } = this.viewContext;
+
+        if (!perspective || !view) {
             return (
                 <div className={this.props.classes.root}>
                     <Typography type="title" color="inherit">
@@ -163,11 +186,11 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
                 <div className={this.props.classes.root}>
                     <Toolbar>
                         <Typography type="title" color="inherit">
-                            {this.perspective.title}
+                            {perspective.title}
                         </Typography>
                     </Toolbar>
                     <div className={this.props.classes.viewWrapper}>
-                        {this.view.component}
+                        {view.component}
                     </div>
                 </div>
             );

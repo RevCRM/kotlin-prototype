@@ -30,8 +30,8 @@ class CRMFormToolbarC extends React.Component<IModelContextProp & WithStyles<key
     render() {
         const { manager, model, modelMeta } = this.props.modelContext;
 
-        const title = (manager.isNew(model) ? 'New ' : 'Edit ')
-            + modelMeta.name;
+        const title = !model ? 'Loading...'
+            : (manager.isNew(model) ? 'New ' : 'Edit ') + modelMeta.name;
 
         return (
             <Toolbar className={this.props.classes.toolbar}>
@@ -60,7 +60,7 @@ class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
         const ctx = this.context.viewContext;
 
         return (
-            <FormView model={ctx.model} primaryKeyValue={ctx.primaryKeyValue}>
+            <FormView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue}>
                 {/* <Button raised color="primary" style={{ marginBottom: 20 }} disabled={!this.context.viewContext.dirty}>
                     <Done style={{ marginRight: 10 }} />
                     Save
