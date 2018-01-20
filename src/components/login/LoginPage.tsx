@@ -16,6 +16,7 @@ const styles = {
         margin: 20
     },
     loginBox: {
+        width: '100%',
         maxWidth: 350
     }
 };

@@ -4,16 +4,16 @@ import * as PropTypes from 'prop-types';
 
 import Button from 'material-ui/Button';
 import Add from 'material-ui-icons/Add';
-import { IViewManagerContext, ListView } from 'rev-forms-materialui';
+import { ListView } from 'rev-forms-materialui';
+import { ICRMViewManagerContext } from './CRMViewManager';
 
 export interface ICRMListViewProps {
-    model: string;
     fields: string[];
 }
 
 export class CRMListView extends React.Component<ICRMListViewProps> {
 
-    context: IViewManagerContext;
+    context: ICRMViewManagerContext;
     static contextTypes = {
         viewContext: PropTypes.object
     };
@@ -27,7 +27,7 @@ export class CRMListView extends React.Component<ICRMListViewProps> {
                     <Add style={{ marginRight: 10 }} />
                     New
                 </Button>
-                <ListView model={this.props.model} fields={this.props.fields} />
+                <ListView model={this.context.viewContext.model} fields={this.props.fields} />
             </div>
         );
     }

@@ -3,14 +3,14 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
 import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import { IViewManagerContext, ViewAction } from 'rev-forms-materialui';
+import { IModelContextProp, ViewAction } from 'rev-forms-materialui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
-
-export interface ICRMFormViewProps {
-    model: string;
-}
+import { ICRMViewManagerContext } from './CRMViewManager';
+import { withModelContext } from 'rev-forms-materialui/lib/views/withModelContext';
+import { FormView } from 'rev-forms-materialui/lib/views/FormView';
 
 const styles = {
     root: {
@@ -25,9 +25,30 @@ const styles = {
     }
 };
 
-class CRMFormViewC extends React.Component<ICRMFormViewProps & WithStyles<keyof typeof styles>> {
+class CRMFormToolbarC extends React.Component<IModelContextProp & WithStyles<keyof typeof styles>> {
 
-    context: IViewManagerContext;
+    render() {
+        const { manager, model, modelMeta } = this.props.modelContext;
+
+        const title = (manager.isNew(model) ? 'New ' : 'Edit ')
+            + modelMeta.name;
+
+        return (
+            <Toolbar className={this.props.classes.toolbar}>
+                <Typography type="title" color="inherit">
+                    {title}
+                </Typography>
+            </Toolbar>
+        );
+    }
+
+}
+
+const CRMFormToolbar = withModelContext(withStyles(styles)(CRMFormToolbarC));
+
+class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
+
+    context: ICRMViewManagerContext;
     static contextTypes = {
         viewContext: PropTypes.object
     };
@@ -36,29 +57,24 @@ class CRMFormViewC extends React.Component<ICRMFormViewProps & WithStyles<keyof 
         console.log('FormView props', this.props);
         console.log('FormView context', this.context);
 
-        const title = (this.context.viewContext.isNew() ? 'New ' : 'Edit ')
-            + this.context.viewContext.modelMeta.name;
+        const ctx = this.context.viewContext;
 
         return (
-            <div>
+            <FormView model={ctx.model} primaryKeyValue={ctx.primaryKeyValue}>
                 {/* <Button raised color="primary" style={{ marginBottom: 20 }} disabled={!this.context.viewContext.dirty}>
                     <Done style={{ marginRight: 10 }} />
                     Save
                 </Button> */}
                 <ViewAction label="Save" type="post" url="/todo" />
                 <Paper className={this.props.classes.root}>
-                    <Toolbar className={this.props.classes.toolbar}>
-                        <Typography type="title" color="inherit">
-                            {title}
-                        </Typography>
-                    </Toolbar>
-                    <div className={this.props.classes.formWrapper}>
+                    <CRMFormToolbar />
+                    <Grid container spacing={8} className={this.props.classes.formWrapper}>
                         {this.props.children}
-                    </div>
+                    </Grid>
                 </Paper>
-            </div>
+            </FormView>
         );
     }
 }
 
-export const CRMFormView: React.ComponentType<ICRMFormViewProps> = withStyles(styles)(CRMFormViewC);
+export const CRMFormView: React.ComponentType = withStyles(styles)(CRMFormViewC);
