@@ -6,6 +6,7 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import Done from 'material-ui-icons/Done';
 import { IModelContextProp, DetailView, PostAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { ICRMViewManagerContext } from './CRMViewManager';
@@ -60,7 +61,11 @@ class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
 
         return (
             <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue}>
-                <PostAction url="/todo" />
+                <PostAction url="/todo">
+                    <Done style={{ marginRight: 10 }} />
+                    Save
+                </PostAction>
+
                 <Paper className={this.props.classes.root}>
                     <CRMFormToolbar />
                     <Grid container spacing={8} className={this.props.classes.formWrapper}>
