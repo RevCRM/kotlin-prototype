@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import * as rev from 'rev-models';
-import { FormView, Field, ViewAction } from 'rev-forms-materialui';
+import { DetailView, Field, ViewAction } from 'rev-ui';
 import Dialog, { DialogTitle, DialogContent, DialogActions} from 'material-ui/Dialog';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
@@ -53,7 +53,7 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
     render() {
         return (
             <div className={this.props.classes.root}>
-                <FormView model="UserLoginFormModel">
+                <DetailView model="UserLoginFormModel">
                     <Grid container spacing={8}>
                         <Field name="username" colspan={12} />
                         <Field name="password" colspan={12} />
@@ -81,7 +81,7 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
                                 onClick={() => this.dialogClose()}>Close</Button>
                         </DialogActions>
                     </Dialog>
-                </FormView>
+                </DetailView>
             </div>
         );
     }

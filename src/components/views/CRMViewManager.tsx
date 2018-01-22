@@ -8,8 +8,8 @@ import { WithStyles } from 'material-ui/styles/withStyles';
 import { RouteComponentProps } from 'react-router-dom';
 import { CRMListView } from './CRMListView';
 import { CRMFormView } from './CRMFormView';
-import { IModelProviderContext } from 'rev-forms-materialui/lib/provider/ModelProvider';
-import { Field, IModelManagerProp, withModelManager } from 'rev-forms-materialui';
+import { IModelProviderContext } from 'rev-ui/lib/provider/ModelProvider';
+import { Field, IModelManagerProp, withModelManager } from 'rev-ui';
 
 export interface IView {
     name: string;

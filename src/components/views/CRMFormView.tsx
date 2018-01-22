@@ -6,11 +6,11 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import { IModelContextProp, ViewAction } from 'rev-forms-materialui';
+import { IModelContextProp, ViewAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { ICRMViewManagerContext } from './CRMViewManager';
-import { withModelContext } from 'rev-forms-materialui/lib/views/withModelContext';
-import { FormView } from 'rev-forms-materialui/lib/views/FormView';
+import { withModelContext } from 'rev-ui/lib/views/withModelContext';
+import { DetailView } from 'rev-ui/lib/views/DetailView';
 
 const styles = {
     root: {
@@ -60,7 +60,7 @@ class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
         const ctx = this.context.viewContext;
 
         return (
-            <FormView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue}>
+            <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue}>
                 {/* <Button raised color="primary" style={{ marginBottom: 20 }} disabled={!this.context.viewContext.dirty}>
                     <Done style={{ marginRight: 10 }} />
                     Save
@@ -72,7 +72,7 @@ class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
                         {this.props.children}
                     </Grid>
                 </Paper>
-            </FormView>
+            </DetailView>
         );
     }
 }

@@ -4,10 +4,11 @@ import * as PropTypes from 'prop-types';
 
 import Button from 'material-ui/Button';
 import Add from 'material-ui-icons/Add';
-import { ListView, IModelManagerProp } from 'rev-forms-materialui';
+import { ListView, IModelManagerProp } from 'rev-ui';
 import { ICRMViewManagerContext } from './CRMViewManager';
 import { IModel } from 'rev-models';
-import { withModelManager } from 'rev-forms-materialui/lib/provider/withModelManager';
+import { withModelManager } from 'rev-ui/lib/provider/withModelManager';
+import Paper from 'material-ui/Paper';
 
 export interface ICRMListViewProps {
     fields: string[];
@@ -21,9 +22,9 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
         viewContext: PropTypes.object
     };
 
-    onRecordClicked(model: IModel) {
+    onRecordClick(model: IModel) {
         if (!this.props.detailView) {
-            throw new Error(`CRMListView onRecordClicked() Error: no detailView set in view: ${this.context.viewContext.view.name}`);
+            throw new Error(`CRMListView onRecordClick() Error: no detailView set in view: ${this.context.viewContext.view.name}`);
         }
 
         const meta = this.props.modelManager.getModelMeta(model);
@@ -45,11 +46,13 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
                     <Add style={{ marginRight: 10 }} />
                     New
                 </Button>
-                <ListView
-                    model={ctx.view.model}
-                    fields={this.props.fields}
-                    onRecordClick={(record) => this.onRecordClicked(record)}
-                />
+                <Paper>
+                    <ListView
+                        model={ctx.view.model}
+                        fields={this.props.fields}
+                        onRecordPress={(record) => this.onRecordClick(record)}
+                    />
+                </Paper>
             </div>
         );
     }

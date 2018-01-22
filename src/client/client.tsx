@@ -7,8 +7,11 @@ import { getStore } from '../store/index';
 
 import { App } from '../components/App';
 
-import { ModelProvider } from 'rev-forms-materialui';
+import { ModelProvider } from 'rev-ui';
+import { registerComponents } from 'rev-ui-materialui';
 import { clientModels } from '../models/client';
+
+registerComponents();
 
 console.log(clientModels);
 
