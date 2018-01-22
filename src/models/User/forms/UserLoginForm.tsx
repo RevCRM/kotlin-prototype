@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import * as rev from 'rev-models';
-import { DetailView, Field, ViewAction } from 'rev-ui';
+import { DetailView, Field, PostAction } from 'rev-ui';
 import Dialog, { DialogTitle, DialogContent, DialogActions} from 'material-ui/Dialog';
 import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
@@ -42,7 +42,7 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
         this.setState({ dialogOpen: false });
     }
 
-    loginFailed() {
+    loginFailed(err: Response | Error) {
         this.setState({
             dialogOpen: true,
             dialogTitle: 'Login Failed',
@@ -59,13 +59,18 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
                         <Field name="password" colspan={12} />
                     </Grid>
 
-                    <ViewAction
+                    <PostAction
                         label="Log In"
-                        type="post"
                         url="/login"
-                        default={true}
-                        onSuccess={() => window.location.pathname = '/'}
-                        onFailure={() => this.loginFailed()} />
+                        onResponse={(res) => {
+                            if (res.status == 200) {
+                                window.location.pathname = '/';
+                            }
+                            else {
+                                this.loginFailed(res);
+                            }
+                        }}
+                        onError={(err) => this.loginFailed(err)} />
 
                     <Dialog
                         open={this.state.dialogOpen}

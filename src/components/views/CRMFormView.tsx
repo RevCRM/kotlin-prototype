@@ -6,11 +6,10 @@ import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import { IModelContextProp, ViewAction } from 'rev-ui';
+import { IModelContextProp, DetailView, PostAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { ICRMViewManagerContext } from './CRMViewManager';
 import { withModelContext } from 'rev-ui/lib/views/withModelContext';
-import { DetailView } from 'rev-ui/lib/views/DetailView';
 
 const styles = {
     root: {
@@ -61,11 +60,7 @@ class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
 
         return (
             <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue}>
-                {/* <Button raised color="primary" style={{ marginBottom: 20 }} disabled={!this.context.viewContext.dirty}>
-                    <Done style={{ marginRight: 10 }} />
-                    Save
-                </Button> */}
-                <ViewAction label="Save" type="post" url="/todo" />
+                <PostAction url="/todo" />
                 <Paper className={this.props.classes.root}>
                     <CRMFormToolbar />
                     <Grid container spacing={8} className={this.props.classes.formWrapper}>
