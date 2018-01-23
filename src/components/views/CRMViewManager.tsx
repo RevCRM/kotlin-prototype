@@ -38,7 +38,7 @@ const viewDef: IViewsDefinition = {
     perspectives: {
         accounts: {
             name: 'accounts',
-            title: 'All Accounts',
+            title: 'Accounts',
             views: {
                 list: 'account_list',
                 form: 'account_form'
@@ -79,7 +79,7 @@ const styles = {
         marginLeft: 30
     },
     viewWrapper: {
-        margin: '10 20'
+        margin: '0 20'
     }
 };
 
@@ -150,9 +150,11 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
     changePerspective(perspectiveName: string, viewName: string, args?: ICRMViewContextArgs) {
         const baseUrl = `/${perspectiveName}/${viewName}`;
         const params = new URLSearchParams();
-        Object.keys(args).forEach((key) => {
-            params.append(key, args[key]);
-        });
+        if (args) {
+            Object.keys(args).forEach((key) => {
+                params.append(key, args[key]);
+            });
+        }
         console.log('going to', `${baseUrl}?${params.toString()}`);
         this.props.history.push(`${baseUrl}?${params}`);
     }

@@ -29,18 +29,20 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
         viewContext: PropTypes.object
     };
 
-    onRecordClick(model: IModel) {
+    loadDetailView(args?: any) {
         if (!this.props.detailView) {
             throw new Error(`CRMListView onRecordClick() Error: no detailView set in view: ${this.context.viewContext.view.name}`);
         }
+        const [ perspectiveName, viewName ] = this.props.detailView.split('/');
+        this.context.viewContext.changePerspective(perspectiveName, viewName, args);
+    }
 
+    onRecordClick(model: IModel) {
         const meta = this.props.modelManager.getModelMeta(model);
         const args = {
             [meta.primaryKey]: model[meta.primaryKey]
         };
-        const [ perspectiveName, viewName ] = this.props.detailView.split('/');
-
-        this.context.viewContext.changePerspective(perspectiveName, viewName, args);
+        this.loadDetailView(args);
     }
 
     render() {
@@ -49,7 +51,9 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
         const ctx = this.context.viewContext;
         return (
             <div>
-                <Button raised color="primary">
+                <Button raised color="primary"
+                    onClick={() => this.loadDetailView()}
+                >
                     <Add style={{ marginRight: 10 }} />
                     New
                 </Button>
