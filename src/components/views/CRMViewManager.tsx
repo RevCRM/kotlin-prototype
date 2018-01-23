@@ -10,6 +10,7 @@ import { CRMListView } from './CRMListView';
 import { CRMFormView } from './CRMFormView';
 import { IModelProviderContext } from 'rev-ui/lib/provider/ModelProvider';
 import { Field, IModelManagerProp, withModelManager } from 'rev-ui';
+import ArrowBack from 'material-ui-icons/ArrowBack';
 
 export interface IView {
     name: string;
@@ -185,6 +186,7 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
             return (
                 <div className={this.props.classes.root}>
                     <Toolbar>
+                        <ArrowBack style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.props.history.goBack()} />
                         <Typography type="title" color="inherit">
                             {perspective.title}
                         </Typography>
