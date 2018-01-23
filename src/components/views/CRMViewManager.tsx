@@ -168,8 +168,6 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
     }
 
     render() {
-        console.log('NEW CONTEXT!', this.viewContext);
-
         const { perspective, view } = this.viewContext;
 
         if (!perspective || !view) {

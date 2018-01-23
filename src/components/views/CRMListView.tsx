@@ -9,13 +9,20 @@ import { ICRMViewManagerContext } from './CRMViewManager';
 import { IModel } from 'rev-models';
 import { withModelManager } from 'rev-ui/lib/provider/withModelManager';
 import Paper from 'material-ui/Paper';
+import { withStyles, WithStyles } from 'material-ui/styles';
 
 export interface ICRMListViewProps {
     fields: string[];
     detailView?: string;
 }
 
-class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp> {
+const styles = {
+    listPaper: {
+        marginTop: 20
+    }
+};
+
+class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp & WithStyles<keyof typeof styles>> {
 
     context: ICRMViewManagerContext;
     static contextTypes = {
@@ -42,11 +49,11 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
         const ctx = this.context.viewContext;
         return (
             <div>
-                <Button raised color="primary" style={{ marginBottom: 20 }}>
+                <Button raised color="primary">
                     <Add style={{ marginRight: 10 }} />
                     New
                 </Button>
-                <Paper>
+                <Paper className={this.props.classes.listPaper}>
                     <ListView
                         model={ctx.view.model}
                         fields={this.props.fields}
@@ -58,4 +65,4 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
     }
 }
 
-export const CRMListView = withModelManager(CRMListViewC);
+export const CRMListView = withStyles(styles)(withModelManager(CRMListViewC));

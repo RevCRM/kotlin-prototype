@@ -13,19 +13,19 @@ import { ICRMViewManagerContext } from './CRMViewManager';
 import { withModelContext } from 'rev-ui/lib/views/withModelContext';
 
 const styles = {
-    root: {
-        width: '100%'
-    },
     toolbar: {
         display: 'flex',
         borderBottom: '1px solid #EBEBEB'
+    },
+    formPaper: {
+        marginTop: 20
     },
     formWrapper: {
         padding: '10 20'
     }
 };
 
-class CRMFormToolbarC extends React.Component<IModelContextProp & WithStyles<keyof typeof styles>> {
+class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles<keyof typeof styles>> {
 
     render() {
         const { manager, model, modelMeta } = this.props.modelContext;
@@ -34,19 +34,29 @@ class CRMFormToolbarC extends React.Component<IModelContextProp & WithStyles<key
             : (manager.isNew(model) ? 'New ' : 'Edit ') + modelMeta.name;
 
         return (
-            <Toolbar className={this.props.classes.toolbar}>
-                <Typography type="title" color="inherit">
-                    {title}
-                </Typography>
-            </Toolbar>
+            <Grid item xs={12}>
+                <PostAction url="/todo">
+                    <Done style={{ marginRight: 10 }} />
+                    Save
+                </PostAction>
+                <Paper className={this.props.classes.formPaper}>
+                    <Toolbar className={this.props.classes.toolbar}>
+                        <Typography type="title" color="inherit">
+                            {title}
+                        </Typography>
+                    </Toolbar>
+                    <Grid container spacing={8} className={this.props.classes.formWrapper}>
+                        {this.props.children}
+                    </Grid>
+                </Paper>
+            </Grid>
         );
     }
-
 }
 
-const CRMFormToolbar = withModelContext(withStyles(styles)(CRMFormToolbarC));
+const CRMFormViewContent: React.ComponentType = withStyles(styles)(withModelContext(CRMFormViewContentC));
 
-class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
+export class CRMFormView extends React.Component {
 
     context: ICRMViewManagerContext;
     static contextTypes = {
@@ -54,27 +64,11 @@ class CRMFormViewC extends React.Component<WithStyles<keyof typeof styles>> {
     };
 
     render() {
-        console.log('FormView props', this.props);
-        console.log('FormView context', this.context);
-
         const ctx = this.context.viewContext;
-
         return (
             <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue}>
-                <PostAction url="/todo">
-                    <Done style={{ marginRight: 10 }} />
-                    Save
-                </PostAction>
-
-                <Paper className={this.props.classes.root}>
-                    <CRMFormToolbar />
-                    <Grid container spacing={8} className={this.props.classes.formWrapper}>
-                        {this.props.children}
-                    </Grid>
-                </Paper>
+                <CRMFormViewContent>{this.props.children}</CRMFormViewContent>
             </DetailView>
         );
     }
 }
-
-export const CRMFormView: React.ComponentType = withStyles(styles)(CRMFormViewC);
