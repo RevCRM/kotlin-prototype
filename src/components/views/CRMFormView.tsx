@@ -35,7 +35,7 @@ class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles
 
         return (
             <Grid item xs={12}>
-                <PostAction url="/todo">
+                <PostAction url="/todo" disabled={(ctx) => !ctx.dirty}>
                     <Done style={{ marginRight: 10 }} />
                     Save
                 </PostAction>
