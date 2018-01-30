@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 
 import Grid from 'material-ui/Grid';
 import Done from 'material-ui-icons/Done';
-import { IModelContextProp, DetailView, PostAction } from 'rev-ui';
+import { IModelContextProp, DetailView, SaveAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { ICRMViewManagerContext } from './CRMViewManager';
 import { withModelContext } from 'rev-ui/lib/views/withModelContext';
@@ -32,10 +32,14 @@ class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles
 
         return (
             <Grid item xs={12}>
-                <PostAction url="/todo">
+                <SaveAction
+                    disabled={(ctx) => !ctx.dirty}
+                    onSuccess={(res) => console.log(res)}
+                    onError={(err) => console.log(err)}
+                >
                     <Done style={{ marginRight: 10 }} />
                     Save
-                </PostAction>
+                </SaveAction>
                 <Grid container spacing={8} className={this.props.classes.formWrapper}>
                     {this.props.children}
                 </Grid>
