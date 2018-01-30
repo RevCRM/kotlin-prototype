@@ -2,10 +2,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
 import Done from 'material-ui-icons/Done';
 import { IModelContextProp, DetailView, PostAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
@@ -28,7 +25,7 @@ const styles = {
 class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles<keyof typeof styles>> {
 
     render() {
-        const { manager, model, modelMeta } = this.props.modelContext;
+        // const { manager, model, modelMeta } = this.props.modelContext;
 
         // const title = !model ? 'Loading...'
         //     : (manager.isNew(model) ? 'New ' : 'Edit ') + modelMeta.name;

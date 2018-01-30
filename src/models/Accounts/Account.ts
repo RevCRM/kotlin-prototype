@@ -22,7 +22,7 @@ export class Account extends EntityModel<Account> {
         mobile: string;
     @rev.TextField({ label: 'E-mail', required: false })
         email: string;
-    @rev.TextField({ label: 'Website', required: false })
+    @rev.URLField({ label: 'Website', required: false })
         website: string;
 
     validate(vc: rev.IValidationContext) {
