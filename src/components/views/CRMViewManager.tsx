@@ -11,6 +11,7 @@ import { CRMFormView } from './CRMFormView';
 import { IModelProviderContext } from 'rev-ui/lib/provider/ModelProvider';
 import { Field, IModelManagerProp, withModelManager } from 'rev-ui';
 import ArrowBack from 'material-ui-icons/ArrowBack';
+import { Panel } from './widgets/Panel';
 
 export interface IView {
     name: string;
@@ -63,9 +64,16 @@ const viewDef: IViewsDefinition = {
             model: 'Account',
             component: (
                 <CRMFormView>
-                    <Field name="name" />
-                    <Field name="code" colspan={3} />
-                    <Field name="url" colspan={3} />
+                    <Panel title="Account Summary" colspan={12}>
+                        <Field name="name" colspan={9} />
+                        <Field name="code" colspan={3} />
+                    </Panel>
+                    <Panel title="Contact Details">
+                        <Field name="phone" colspan={12} />
+                        <Field name="mobile" colspan={12} />
+                        <Field name="email" colspan={12} />
+                        <Field name="website" colspan={12} />
+                    </Panel>
                 </CRMFormView>
             )
         }

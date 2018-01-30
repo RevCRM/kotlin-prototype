@@ -30,25 +30,18 @@ class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles
     render() {
         const { manager, model, modelMeta } = this.props.modelContext;
 
-        const title = !model ? 'Loading...'
-            : (manager.isNew(model) ? 'New ' : 'Edit ') + modelMeta.name;
+        // const title = !model ? 'Loading...'
+        //     : (manager.isNew(model) ? 'New ' : 'Edit ') + modelMeta.name;
 
         return (
             <Grid item xs={12}>
-                <PostAction url="/todo" disabled={(ctx) => !ctx.dirty}>
+                <PostAction url="/todo">
                     <Done style={{ marginRight: 10 }} />
                     Save
                 </PostAction>
-                <Paper className={this.props.classes.formPaper}>
-                    <Toolbar className={this.props.classes.toolbar}>
-                        <Typography type="title" color="inherit">
-                            {title}
-                        </Typography>
-                    </Toolbar>
-                    <Grid container spacing={8} className={this.props.classes.formWrapper}>
-                        {this.props.children}
-                    </Grid>
-                </Paper>
+                <Grid container spacing={8} className={this.props.classes.formWrapper}>
+                    {this.props.children}
+                </Grid>
             </Grid>
         );
     }
