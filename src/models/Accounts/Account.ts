@@ -1,17 +1,29 @@
 
 import * as rev from 'rev-models';
-import { RevCRMModel } from '../RevCRMModel';
+import { EntityModel } from '../BaseModels';
 
-export class Account extends RevCRMModel<Account> {
+export const ACCOUNT_TYPES = [
+    ['organisation', 'Organisation'],
+    ['contact', 'Contact']
+];
 
-    @rev.AutoNumberField({ primaryKey: true })
-        id: number;
-    @rev.TextField({ label: 'Account Name' })
+export class Account extends EntityModel<Account> {
+
+    @rev.SelectField({ label: 'Type', selection: ACCOUNT_TYPES })
+        type: string;
+    @rev.TextField({ label: 'Name' })
         name: string;
     @rev.TextField({ label: 'Account Code' })
         code: string;
-    @rev.URLField({ label: 'Website' })
-        url: string;
+
+    @rev.TextField({ label: 'Phone', required: false })
+        phone: string;
+    @rev.TextField({ label: 'Mobile', required: false })
+        mobile: string;
+    @rev.TextField({ label: 'E-mail', required: false })
+        email: string;
+    @rev.TextField({ label: 'Website', required: false })
+        website: string;
 
     validate(vc: rev.IValidationContext) {
         if (this.name && this.name.toLowerCase().includes('test')) {

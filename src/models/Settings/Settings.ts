@@ -2,12 +2,12 @@
 import * as rev from 'rev-models';
 import { ApiOperations } from 'rev-api/lib/decorators';
 import { Perspective } from '../UI/Perspective';
-import { RevCRMModel } from '../RevCRMModel';
+import { EntityModel } from '../BaseModels';
 
 @ApiOperations(['read'])
-export class Settings extends RevCRMModel<Settings> {
+export class Settings extends EntityModel<Settings> {
 
-    @rev.TextField({ primaryKey: true })
+    @rev.TextField()
         name: string;
     @rev.RelatedModel({ model: 'Perspective' })
         defaultPerspective: Perspective;

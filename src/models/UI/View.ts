@@ -1,11 +1,11 @@
 
 import * as rev from 'rev-models';
 import { ApiOperations } from 'rev-api/lib/decorators';
-import { RevCRMModel } from '../RevCRMModel';
+import { BaseModel } from '../BaseModels';
 import { PerspectiveView } from './PerspectiveView';
 
 @ApiOperations(['read'])
-export class View extends RevCRMModel<View> {
+export class View extends BaseModel<View> {
 
     @rev.TextField({ primaryKey: true })
         name: string;

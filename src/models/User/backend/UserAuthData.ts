@@ -1,11 +1,9 @@
 
 import * as rev from 'rev-models';
-import { RevCRMModel } from '../../RevCRMModel';
+import { EntityModel } from '../../BaseModels';
 
-export class UserAuthData extends RevCRMModel<UserAuthData> {
+export class UserAuthData extends EntityModel<UserAuthData> {
 
-    @rev.AutoNumberField()
-        id: number;
     @rev.IntegerField()
         userId: number;
     @rev.TextField({ label: 'Username' })
