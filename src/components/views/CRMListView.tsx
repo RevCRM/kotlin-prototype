@@ -17,7 +17,7 @@ export interface ICRMListViewProps {
 }
 
 const styles = {
-    listPaper: {
+    listWrapper: {
         marginTop: 20
     }
 };
@@ -57,7 +57,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
                     <Add style={{ marginRight: 10 }} />
                     New
                 </Button>
-                <Paper className={this.props.classes.listPaper}>
+                <Paper className={this.props.classes.listWrapper}>
                     <ListView
                         model={ctx.view.model}
                         fields={this.props.fields}

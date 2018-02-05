@@ -56,7 +56,7 @@ const viewDef: IViewsDefinition = {
                     'id',
                     'name',
                     'code',
-                    'url']} detailView="accounts/form" />
+                    'website']} detailView="accounts/form" />
             ),
         },
         account_form: {

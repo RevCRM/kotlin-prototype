@@ -18,7 +18,7 @@ const styles = {
         marginTop: 20
     },
     formWrapper: {
-        padding: '10 20'
+        marginTop: 20
     }
 };
 
