@@ -39,11 +39,11 @@
     "react-tap-event-plugin": "3.0.2",
     "redux": "3.7.2",
     "redux-thunk": "2.2.0",
-    "rev-api": "../../revjs/packages/rev-api/rev-api-0.5.1.tgz",
-    "rev-api-client": "../../revjs/packages/rev-api-client/rev-api-client-0.5.1.tgz",
-    "rev-models": "../../revjs/packages/rev-models/rev-models-0.5.1.tgz",
-    "rev-ui": "../../revjs/packages/rev-ui/rev-ui-0.6.0.tgz",
-    "rev-ui-materialui": "../../revjs/packages/rev-ui-materialui/rev-ui-materialui-0.6.0.tgz",
+    "rev-api": "../../revjs/packages/rev-api/rev-api-0.7.1.tgz",
+    "rev-api-client": "../../revjs/packages/rev-api-client/rev-api-client-0.7.1.tgz",
+    "rev-models": "../../revjs/packages/rev-models/rev-models-0.7.1.tgz",
+    "rev-ui": "../../revjs/packages/rev-ui/rev-ui-0.7.1.tgz",
+    "rev-ui-materialui": "../../revjs/packages/rev-ui-materialui/rev-ui-materialui-0.7.1.tgz",
     "source-map-support": "0.5.0"
   },
   "devDependencies": {

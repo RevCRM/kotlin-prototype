@@ -13,7 +13,7 @@ passport.serializeUser((user: UserAuthData, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const res = await serverModels.read(UserAuthData, { id: id });
+        const res = await serverModels.read(UserAuthData, { where: { id: id } });
         done(null, res.results[0]);
     }
     catch (err) {
@@ -24,7 +24,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
         const match = await serverModels.read(UserAuthData, {
-            username: username
+            where: { username: username }
         });
         if (match.results.length == 0) {
             done(null, false);
