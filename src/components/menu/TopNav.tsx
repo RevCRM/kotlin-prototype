@@ -16,7 +16,7 @@ export interface ITopNavDispatchProps {
 
 const styles = {
     root: {
-        width: '100%',
+        width: '100%'
     },
     flex: {
         flex: 1,
@@ -33,14 +33,14 @@ export class TopNavC extends React.Component<ITopNavDispatchProps & WithStyles<k
             <div className={this.props.classes.root}>
                 <AppBar position="fixed">
                     <Toolbar>
-                        <IconButton color="contrast" aria-label="Menu" className={this.props.classes.menuButton}
+                        <IconButton color="inherit" aria-label="Menu" className={this.props.classes.menuButton}
                             onClick={this.props.onMenuButtonClick}>
                             <MenuIcon />
                         </IconButton>
-                        <Typography type="title" color="inherit" className={this.props.classes.flex}>
+                        <Typography variant="title" color="inherit" className={this.props.classes.flex}>
                             RevCRM
                         </Typography>
-                        <Button color="contrast">Login</Button>
+                        <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
             </div>

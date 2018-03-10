@@ -184,7 +184,7 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
         if (!perspective || !view) {
             return (
                 <div className={this.props.classes.root}>
-                    <Typography type="title" color="inherit">
+                    <Typography variant="title" color="inherit">
                         View not found
                     </Typography>
                 </div>
@@ -195,7 +195,7 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
                 <div className={this.props.classes.root}>
                     <Toolbar>
                         <ArrowBack style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.props.history.goBack()} />
-                        <Typography type="title" color="inherit">
+                        <Typography variant="title" color="inherit">
                             {perspective.title}
                         </Typography>
                     </Toolbar>

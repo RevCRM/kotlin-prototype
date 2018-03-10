@@ -4,7 +4,8 @@ import * as PropTypes from 'prop-types';
 
 import Grid from 'material-ui/Grid';
 import Done from 'material-ui-icons/Done';
-import { IModelContextProp, DetailView, SaveAction } from 'rev-ui';
+import Delete from 'material-ui-icons/Delete';
+import { IModelContextProp, DetailView, SaveAction, RemoveAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { ICRMViewManagerContext } from './CRMViewManager';
 import { withModelContext } from 'rev-ui/lib/views/withModelContext';
@@ -32,14 +33,23 @@ class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles
 
         return (
             <Grid item xs={12}>
-                <SaveAction
-                    disabled={(ctx) => !ctx.dirty || ctx.loadState != 'NONE'}
-                    onSuccess={(res) => console.log(res)}
-                    onError={(err) => console.log(err)}
-                >
-                    <Done style={{ marginRight: 10 }} />
-                    Save
-                </SaveAction>
+                <div style={{ display: 'flex' }}>
+                    <SaveAction
+                        disabled={(ctx) => !ctx.dirty || ctx.loadState != 'NONE'}
+                        onSuccess={(res) => console.log(res)}
+                        onError={(err) => console.log(err)}
+                    >
+                        <Done style={{ marginRight: 10 }} />
+                        Save
+                    </SaveAction>
+                    <RemoveAction
+                        onSuccess={(res) => console.log(res)}
+                        onError={(err) => console.log(err)}
+                    >
+                        <Delete style={{ marginRight: 10 }} />
+                        Delete
+                    </RemoveAction>
+                </div>
                 <Grid container spacing={8} className={this.props.classes.formWrapper}>
                     {this.props.children}
                 </Grid>

@@ -51,7 +51,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
         const ctx = this.context.viewContext;
         return (
             <div>
-                <Button raised color="primary"
+                <Button variant="raised" color="primary"
                     onClick={() => this.loadDetailView()}
                 >
                     <Add style={{ marginRight: 10 }} />

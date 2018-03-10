@@ -27,7 +27,7 @@ class LoginPageC extends React.Component<WithStyles<keyof typeof styles>> {
             <div className={this.props.classes.root}>
                 <Paper elevation={4} className={this.props.classes.loginBox}>
 
-                    <Typography align="center" type="display2" className={this.props.classes.loginTitle}>Login</Typography>
+                    <Typography align="center" variant="display2" className={this.props.classes.loginTitle}>Login</Typography>
 
                     <Divider />
 
