@@ -10,7 +10,7 @@ export const ACCOUNT_TYPES = [
 export class Account extends EntityModel<Account> {
 
     @rev.SelectField({ label: 'Type', selection: ACCOUNT_TYPES })
-        type: string;
+        type: string = 'organisation';
     @rev.TextField({ label: 'Name' })
         name: string;
     @rev.TextField({ label: 'Account Code' })

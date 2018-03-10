@@ -33,7 +33,7 @@ class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles
         return (
             <Grid item xs={12}>
                 <SaveAction
-                    disabled={(ctx) => !ctx.dirty}
+                    disabled={(ctx) => !ctx.dirty || ctx.loadState != 'NONE'}
                     onSuccess={(res) => console.log(res)}
                     onError={(err) => console.log(err)}
                 >

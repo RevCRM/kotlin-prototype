@@ -10,8 +10,10 @@ import { View } from './UI/View';
 import { PerspectiveView } from './UI/PerspectiveView';
 import { Settings } from './Settings/Settings';
 
+const backend = new InMemoryBackend();
+backend.OPERATION_DELAY = 800; // Slow stuff down so we can see the loading state!
 export const serverModels = new ModelManager();
-serverModels.registerBackend('default', new InMemoryBackend());
+serverModels.registerBackend('default', backend);
 serverModels.register(UserAuthData);
 
 export const api = new ModelApiManager(serverModels);
