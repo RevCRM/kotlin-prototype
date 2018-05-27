@@ -15,10 +15,6 @@ registerComponents();
 
 console.log(clientModels);
 
-// Required for onTouchTap event
-import * as injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 const store = getStore();
 
 ReactDOM.render((

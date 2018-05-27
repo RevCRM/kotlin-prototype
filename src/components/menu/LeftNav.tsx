@@ -35,7 +35,7 @@ function mapStateToProps(state: IState): ILeftNavStateProps {
     };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<IState>): ILeftNavDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): ILeftNavDispatchProps {
     return {
         onClose: (event: any) => {
             dispatch(setLeftNavOpen(false));
@@ -43,4 +43,4 @@ function mapDispatchToProps(dispatch: Dispatch<IState>): ILeftNavDispatchProps {
     };
 }
 
-export const LeftNav = connect(mapStateToProps, mapDispatchToProps)(LeftNavC) as any;
+export const LeftNav = connect(mapStateToProps, mapDispatchToProps as any)(LeftNavC) as any;

@@ -37,7 +37,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
         this.context.viewContext.changePerspective(perspectiveName, viewName, args);
     }
 
-    onRecordClick(model: IModel) {
+    onItemPress(model: IModel) {
         const meta = this.props.modelManager.getModelMeta(model);
         const args = {
             [meta.primaryKey]: model[meta.primaryKey]
@@ -61,7 +61,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
                     <ListView
                         model={ctx.view.model}
                         fields={this.props.fields}
-                        onRecordPress={(record) => this.onRecordClick(record)}
+                        onItemPress={(record) => this.onItemPress(record)}
                     />
                 </Paper>
             </div>

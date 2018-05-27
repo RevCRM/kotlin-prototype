@@ -5,10 +5,10 @@ import * as PropTypes from 'prop-types';
 import Grid from 'material-ui/Grid';
 import Done from 'material-ui-icons/Done';
 import Delete from 'material-ui-icons/Delete';
-import { IModelContextProp, DetailView, SaveAction, RemoveAction } from 'rev-ui';
+import { IDetailViewContextProp, DetailView, SaveAction, RemoveAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { ICRMViewManagerContext } from './CRMViewManager';
-import { withModelContext } from 'rev-ui/lib/views/withModelContext';
+import { withDetailViewContext } from 'rev-ui/lib/views/withDetailViewContext';
 
 const styles = {
     toolbar: {
@@ -23,7 +23,7 @@ const styles = {
     }
 };
 
-class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles<keyof typeof styles>> {
+class CRMFormViewContentC extends React.Component<IDetailViewContextProp & WithStyles<keyof typeof styles>> {
 
     render() {
         // const { manager, model, modelMeta } = this.props.modelContext;
@@ -58,7 +58,7 @@ class CRMFormViewContentC extends React.Component<IModelContextProp & WithStyles
     }
 }
 
-const CRMFormViewContent: React.ComponentType = withStyles(styles)(withModelContext(CRMFormViewContentC));
+const CRMFormViewContent: React.ComponentType = withStyles(styles)(withDetailViewContext(CRMFormViewContentC));
 
 export class CRMFormView extends React.Component {
 

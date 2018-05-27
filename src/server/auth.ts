@@ -21,7 +21,7 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-passport.use(new LocalStrategy(async (username, password, done) => {
+passport.use(new LocalStrategy(async (username: string, password: string, done: any) => {
     try {
         const match = await serverModels.read(UserAuthData, {
             where: { username: username }
