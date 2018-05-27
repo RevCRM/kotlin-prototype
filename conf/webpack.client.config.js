@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
 
 var outputPath = path.resolve(__dirname, '..', 'dist', 'static');
 
@@ -15,8 +14,7 @@ module.exports = function() {
         },
         module: {
             rules: [
-                { enforce: 'pre', test: /\.tsx?$/, loader: 'tslint-loader', exclude: /(node_modules)/ },
-                { test: /\.tsx?$/, loader: 'awesome-typescript-loader', exclude: /(node_modules)/ }
+                { test: /\.tsx?$/, loader: 'ts-loader', exclude: /node_modules/ }
             ]
         },
         resolve: {
@@ -25,7 +23,6 @@ module.exports = function() {
         devtool: 'source-map',
         externals: [],
         plugins: [
-            new CheckerPlugin(),
             new webpack.DllReferencePlugin({
                 manifest: require(path.join(outputPath, 'clientlibs.json'))
             }),

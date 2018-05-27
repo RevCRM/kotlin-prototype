@@ -15,13 +15,14 @@ module.exports = {
             'material-ui'
         ]
     },
-
     output: { 
         filename: '[name].js',
         path: outputPath,
         library: '[name]', 
     },
-  
+    performance: {
+        hints: false
+    },
     plugins: [ 
         new webpack.DllPlugin({ 
             name: '[name]', 
@@ -30,11 +31,6 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
             }
         })
     ]
