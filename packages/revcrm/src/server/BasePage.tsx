@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-interface IBasePageProps {
+export interface IBasePageProps {
     title: string;
     scripts: string[];
     css: string[];

@@ -1,7 +1,7 @@
 import * as Router from 'koa-router';
 import * as passport from 'koa-passport';
 
-import { graphqlKoa, graphiqlKoa } from 'graphql-server-koa';
+import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
 import { api } from '../models/server';
 
 import * as React from 'react';

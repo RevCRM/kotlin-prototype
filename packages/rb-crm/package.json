@@ -1,0 +1,35 @@
+{
+  "name": "rb-crm",
+  "private": true,
+  "version": "0.1.0",
+  "description": "RB CRM - Example RevCRM Project",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run build-server",
+    "build-TODO": "npm run build-server && npm run build-clientlibs && npm run build-client",
+    "build-client": "webpack --mode production --config ./conf/webpack.client.config.js",
+    "build-clientlibs": "webpack --mode production --config ./conf/webpack.clientlibs.config.js",
+    "build-server": "tslint -p . && rm -rf dist/ && tsc",
+    "start": "cross-env NODE_ENV=production && node ./dist/server/server.js",
+    "test": "",
+    "watch-client": "webpack --mode development --config ./conf/webpack.client.config.js --watch",
+    "watch-server": "cross-env NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' src/server/server.ts",
+    "client-webpack-stats": "webpack --mode production --config ./conf/webpack.client.config.js --profile --json > client-webpack-stats.json",
+    "sync-deps": "rm -r ./node_modules/rev-* && npm i"
+
+  },
+  "author": "Russell Briggs <russ@paraflyer.net>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RevJS/revjs.git"
+  },
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "revcrm": "0.1.0",
+    "tslib": "1.x"
+  },
+  "devDependencies": {
+    "run-bin": "^1.0.0"
+  }
+}

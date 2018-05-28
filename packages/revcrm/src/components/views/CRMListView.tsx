@@ -69,4 +69,4 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
     }
 }
 
-export const CRMListView = withStyles(styles)(withModelManager(CRMListViewC));
+export const CRMListView = withStyles(styles)(withModelManager(CRMListViewC)) as any;

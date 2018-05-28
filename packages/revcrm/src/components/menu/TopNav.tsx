@@ -14,7 +14,7 @@ export interface ITopNavDispatchProps {
     onMenuButtonClick: () => void;
 }
 
-const styles = {
+export const styles = {
     root: {
         width: '100%'
     },
@@ -56,4 +56,4 @@ function mapDispatchToProps(dispatch: any): ITopNavDispatchProps {
     };
 }
 
-export const TopNav = connect(null, mapDispatchToProps)(withStyles(styles)(TopNavC));
+export const TopNav = connect(null, mapDispatchToProps)(withStyles(styles)(TopNavC)) as any;

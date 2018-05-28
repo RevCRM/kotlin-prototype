@@ -80,7 +80,7 @@ const viewDef: IViewsDefinition = {
     }
 };
 
-const styles = {
+export const styles = {
     root: {
         marginTop: 70
     },
@@ -208,4 +208,4 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
     }
 }
 
-export const CRMViewManager = withModelManager(withStyles(styles)(CRMViewManagerC));
+export const CRMViewManager = withModelManager(withStyles(styles)(CRMViewManagerC)) as any;

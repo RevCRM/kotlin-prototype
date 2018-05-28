@@ -39,4 +39,4 @@ class LoginPageC extends React.Component<WithStyles<keyof typeof styles>> {
     }
 }
 
-export const LoginPage = withStyles(styles as any)(LoginPageC);
+export const LoginPage = withStyles(styles as any)(LoginPageC) as any;

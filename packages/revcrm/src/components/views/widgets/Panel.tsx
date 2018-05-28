@@ -3,7 +3,7 @@ import * as React from 'react';
 import Card, { CardHeader, CardContent } from 'material-ui/Card';
 import Grid from 'material-ui/Grid/Grid';
 
-type ColspanOptions = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type ColspanOptions = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export interface IPanelProps {
     colspanNarrow?: ColspanOptions;
     colspan?: ColspanOptions;

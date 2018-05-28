@@ -1,7 +1,7 @@
 # revcrm
 RevCRM - Open-source CRM solution built on RevJS
 
-This repository will hold just the RevCRM Server and base UI. For the RevCRM entities you'll need to install additional modules (such as `revcrm-opportunity`).
+This repository holds just the RevCRM Server and base UI. For the RevCRM entities you'll need to install additional modules (such as `revcrm-opportunity`).
 
 **RevCRM is still in the planning stages and this module is just a placeholder. Watch this space!!**
 
