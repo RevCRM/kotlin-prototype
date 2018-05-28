@@ -18,6 +18,8 @@ import { populateData } from './data';
 
 const staticPath = path.join(__dirname, '..', '..', 'dist', 'static');
 
+const CRM_DIR = process.cwd();
+
 export class RevCRMServer {
     _koa: Koa;
 
@@ -41,6 +43,7 @@ export class RevCRMServer {
     async start() {
         await populateData(serverModels);
         this._koa.listen(config.port);
+        console.log('RevCRM Path:', CRM_DIR);
         console.log(`Server running on port ${config.port}`);
     }
 

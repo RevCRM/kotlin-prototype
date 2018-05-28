@@ -13,7 +13,7 @@
     "start": "cross-env NODE_ENV=production && node ./dist/server/server.js",
     "test": "",
     "watch-client": "webpack --mode development --config ./conf/webpack.client.config.js --watch",
-    "watch-server": "cross-env NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' src/server/server.ts",
+    "watch-server": "run-bin NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'run-bin ts-node src/index.ts'",
     "client-webpack-stats": "webpack --mode production --config ./conf/webpack.client.config.js --profile --json > client-webpack-stats.json",
     "sync-deps": "rm -r ./node_modules/rev-* && npm i"
 
