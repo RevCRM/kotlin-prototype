@@ -10,7 +10,7 @@ import { CRMListView } from './CRMListView';
 import { CRMFormView } from './CRMFormView';
 import { IModelProviderContext } from 'rev-ui/lib/provider/ModelProvider';
 import { Field, IModelManagerProp, withModelManager } from 'rev-ui';
-import ArrowBack from 'material-ui-icons/ArrowBack';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import { Panel } from './widgets/Panel';
 
 export interface IView {

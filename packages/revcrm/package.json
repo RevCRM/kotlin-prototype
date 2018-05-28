@@ -15,7 +15,7 @@
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@material-ui/icons": "1.1.0",
+    "@material-ui/icons": "1.0.0-beta.42",
     "bcrypt": "2.0.1",
     "apollo-server-koa": "1.3.6",
     "koa": "2.5.1",
@@ -26,7 +26,7 @@
     "koa-router": "7.4.0",
     "koa-session": "5.8.1",
     "koa-static": "4.0.3",
-    "material-ui": "1.0.0-beta.36",
+    "material-ui": "1.0.0-beta.41",
     "passport-local": "1.0.0",
     "prop-types": "15.6.1",
     "react": "16.4.0",

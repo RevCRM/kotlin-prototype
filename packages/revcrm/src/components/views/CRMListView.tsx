@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
 import Button from 'material-ui/Button';
-import Add from 'material-ui-icons/Add';
+import Add from '@material-ui/icons/Add';
 import { ListView, IModelManagerProp } from 'rev-ui';
 import { ICRMViewManagerContext } from './CRMViewManager';
 import { IModel } from 'rev-models';

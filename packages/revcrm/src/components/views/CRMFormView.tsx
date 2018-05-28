@@ -3,8 +3,8 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
 import Grid from 'material-ui/Grid';
-import Done from 'material-ui-icons/Done';
-import Delete from 'material-ui-icons/Delete';
+import Done from '@material-ui/icons/Done';
+import Delete from '@material-ui/icons/Delete';
 import { IDetailViewContextProp, DetailView, SaveAction, RemoveAction } from 'rev-ui';
 import withStyles, { WithStyles } from 'material-ui/styles/withStyles';
 import { ICRMViewManagerContext } from './CRMViewManager';

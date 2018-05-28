@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import Reboot from 'material-ui/Reboot';
+import CssBaseline from 'material-ui/CssBaseline';
 import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
 import { LoginPage } from './login/LoginPage';
@@ -19,7 +19,7 @@ export class App extends React.Component {
     render() {
         return (
             <MuiThemeProvider theme={theme}>
-                <Reboot />
+                <CssBaseline />
                 <LeftNav />
                 <TopNav />
                 <Route path="/login" component={LoginPage} />
