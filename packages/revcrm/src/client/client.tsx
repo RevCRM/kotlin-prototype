@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { getStore } from '../store/index';
 
-import { App } from '../components/App';
+import { App } from './components/App';
 
 import { ModelProvider } from 'rev-ui';
 import { registerComponents } from 'rev-ui-materialui';
