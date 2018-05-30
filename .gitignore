@@ -4,3 +4,4 @@ lib
 *stats.json
 npm-debug.log
 lerna-debug.log
+.DS_Store

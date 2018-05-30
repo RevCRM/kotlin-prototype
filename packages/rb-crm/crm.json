@@ -1,0 +1,12 @@
+{
+    "backends": {
+        "default": {
+            "type": "mongodb",
+            "mongodb_url": "mongodb://localhost:27017",
+            "mongodb_database": "rb_crm"
+        }
+    },
+    "modules": [
+        "revcrm_accounts"
+    ]
+}
