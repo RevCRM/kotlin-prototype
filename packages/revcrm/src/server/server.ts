@@ -16,9 +16,8 @@ import { router } from './routes';
 import { serverModels } from '../models/server';
 import { populateData } from './data';
 
-const staticPath = path.join(__dirname, '..', '..', 'dist', 'static');
-
 const CRM_DIR = process.cwd();
+const staticPath = path.join(CRM_DIR, 'dist', 'static');
 
 export class RevCRMServer {
     _koa: Koa;

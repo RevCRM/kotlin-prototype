@@ -1,9 +1,10 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 
-var CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-var outputPath = path.resolve(__dirname, '..', 'dist', 'static');
+const outputPath = path.resolve(process.cwd(), 'dist', 'static');
+console.log('RevCRM Client Output Path:', outputPath);
 
 module.exports = function() {
     return {

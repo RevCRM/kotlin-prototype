@@ -5,18 +5,16 @@
   "description": "RB CRM - Example RevCRM Project",
   "main": "lib/index.js",
   "scripts": {
-    "build": "npm run build-server",
-    "build-TODO": "npm run build-server && npm run build-clientlibs && npm run build-client",
-    "build-client": "webpack --mode production --config ./conf/webpack.client.config.js",
-    "build-clientlibs": "webpack --mode production --config ./conf/webpack.clientlibs.config.js",
-    "build-server": "tslint -p . && rm -rf dist/ && tsc",
+    "build-test": "npm run build-server",
+    "build": "npm run build-server && npm run build-clientlibs && npm run build-client",
+    "build-client": "run-bin webpack --mode production --config ./node_modules/revcrm/conf/webpack.client.config.js",
+    "build-clientlibs": "run-bin webpack --mode production --config ./node_modules/revcrm/conf/webpack.clientlibs.config.js",
+    "build-server": "run-bin tslint -p . && rm -rf dist/ && run-bin tsc",
     "start": "cross-env NODE_ENV=production && node ./dist/server/server.js",
     "test": "",
-    "watch-client": "webpack --mode development --config ./conf/webpack.client.config.js --watch",
-    "watch-server": "run-bin NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'run-bin ts-node src/index.ts'",
-    "client-webpack-stats": "webpack --mode production --config ./conf/webpack.client.config.js --profile --json > client-webpack-stats.json",
-    "sync-deps": "rm -r ./node_modules/rev-* && npm i"
-
+    "watch-client": "run-bin webpack --mode development --config ./node_modules/revcrm/conf/webpack.client.config.js --watch",
+    "watch-server": "run-bin NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'run-bin ts-node src/server/server.ts'",
+    "client-webpack-stats": "run-bin webpack --mode production --config ./node_modules/revcrm/conf/webpack.client.config.js --profile --json > client-webpack-stats.json"
   },
   "author": "Russell Briggs <russ@paraflyer.net>",
   "license": "MIT",
@@ -26,8 +24,7 @@
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "revcrm": "0.1.0",
-    "tslib": "1.x"
+    "revcrm": "0.1.0"
   },
   "devDependencies": {
     "run-bin": "^1.0.0"

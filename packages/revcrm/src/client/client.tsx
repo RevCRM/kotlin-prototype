@@ -11,20 +11,26 @@ import { ModelProvider } from 'rev-ui';
 import { registerComponents } from 'rev-ui-materialui';
 import { clientModels } from '../models/client';
 
-registerComponents();
+export class RevCRMClient {
 
-console.log(clientModels);
+    async start() {
+        registerComponents();
 
-const store = getStore();
+        console.log(clientModels);
 
-ReactDOM.render((
-        <Provider store={store} >
-            <ModelProvider modelManager={clientModels} >
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </ModelProvider>
-        </Provider>
-    ),
-    document.getElementById('app')
-);
+        const store = getStore();
+
+        ReactDOM.render((
+                <Provider store={store} >
+                    <ModelProvider modelManager={clientModels} >
+                        <BrowserRouter>
+                            <App />
+                        </BrowserRouter>
+                    </ModelProvider>
+                </Provider>
+            ),
+            document.getElementById('app')
+        );
+    }
+
+}

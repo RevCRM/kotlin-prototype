@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "RevCRM - Open-source CRM solution built on RevJS",
   "main": "lib/index.js",
-  "bin": {
-    "revcrm": "./lib/bin/revcrm.js"
-  },
   "scripts": {
     "build": "run-bin tslint -p . && rm -rf lib/ && run-bin tsc",
     "build-watch": "run-bin tsc --watch"
