@@ -6,12 +6,9 @@ import Typography from 'material-ui/Typography';
 import { withStyles } from 'material-ui/styles';
 import { WithStyles } from 'material-ui/styles/withStyles';
 import { RouteComponentProps } from 'react-router-dom';
-import { CRMListView } from './CRMListView';
-import { CRMFormView } from './CRMFormView';
 import { IModelProviderContext } from 'rev-ui/lib/provider/ModelProvider';
-import { Field, IModelManagerProp, withModelManager } from 'rev-ui';
+import { IModelManagerProp, withModelManager } from 'rev-ui';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { Panel } from './widgets/Panel';
 import { IPerspective, IView, viewManager } from '../../ViewManager';
 
 export const styles = {

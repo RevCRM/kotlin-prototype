@@ -1,10 +1,11 @@
-import { ModelManager } from 'rev-models';
-import { populateUsers } from './users';
 
-export async function populateData(models: ModelManager) {
+import { populateUsers } from './users';
+import { RevCRMServer } from '../server';
+
+export async function populateData(server: RevCRMServer) {
 
     try {
-        await populateUsers(models);
+        await populateUsers(server.models);
     }
     catch (e) {
         console.log('Error in populateData():', e);

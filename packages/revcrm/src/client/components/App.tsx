@@ -5,7 +5,7 @@ import CssBaseline from 'material-ui/CssBaseline';
 import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
 import { LoginPage } from './login/LoginPage';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { CRMViewManager } from './views/CRMViewManager';
 
 const theme = createMuiTheme();

@@ -4,46 +4,49 @@ import * as passport from 'koa-passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import * as bcrypt from 'bcrypt';
 
-import { serverModels } from '../models/server';
 import { UserAuthData } from '../models/User/backend/UserAuthData';
+import { RevCRMServer } from '.';
 
-passport.serializeUser((user: UserAuthData, done) => {
-    done(null, user.id);
-});
+export function initialiseAuth(server: RevCRMServer) {
 
-passport.deserializeUser(async (id, done) => {
-    try {
-        const res = await serverModels.read(UserAuthData, { where: { id: id } });
-        done(null, res.results[0]);
-    }
-    catch (err) {
-        done(err, null);
-    }
-});
+    passport.serializeUser((user: UserAuthData, done) => {
+        done(null, user.id);
+    });
 
-passport.use(new LocalStrategy(async (username: string, password: string, done: any) => {
-    try {
-        const match = await serverModels.read(UserAuthData, {
-            where: { username: username }
-        });
-        if (match.results.length == 0) {
-            done(null, false);
+    passport.deserializeUser(async (id, done) => {
+        try {
+            const res = await server.models.read(UserAuthData, { where: { id: id } });
+            done(null, res.results[0]);
         }
-        else {
-            const user = match.results[0];
-            const pwMatch = await bcrypt.compare(password, user.password);
-            if (pwMatch) {
-                done(null, match.results[0]);
-            }
-            else {
+        catch (err) {
+            done(err, null);
+        }
+    });
+
+    passport.use(new LocalStrategy(async (username: string, password: string, done: any) => {
+        try {
+            const match = await server.models.read(UserAuthData, {
+                where: { username: username }
+            });
+            if (match.results.length == 0) {
                 done(null, false);
             }
+            else {
+                const user = match.results[0];
+                const pwMatch = await bcrypt.compare(password, user.password);
+                if (pwMatch) {
+                    done(null, match.results[0]);
+                }
+                else {
+                    done(null, false);
+                }
+            }
         }
-    }
-    catch (err) {
-        done(err, null);
-    }
-}));
+        catch (err) {
+            done(err, null);
+        }
+    }));
+}
 
 export interface IAuthOptions {
     unauthenticatedUrls: string [];

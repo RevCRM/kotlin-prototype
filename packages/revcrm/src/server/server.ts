@@ -8,13 +8,15 @@ import * as body from 'koa-bodyparser';
 import * as session from 'koa-session';
 import * as passport from 'koa-passport';
 
-import { requireAuth } from './auth';
+import { initialiseAuth, requireAuth } from './auth';
 import { jsonLog } from 'koa-json-log';
-import { router } from './routes';
+import { registerRoutes } from './routes';
 
-import { serverModels } from '../models/server';
+import { registerModels } from '../models/server';
 import { populateData } from './data';
-import { IModulesAndDependencies, getRevCRMModuleLoadOrder } from '../modules';
+import { getRevCRMModuleLoadOrder } from '../modules';
+import { IModelManager, ModelManager, InMemoryBackend } from 'rev-models';
+import { IModelApiManager, ModelApiManager } from 'rev-api';
 
 const CRM_DIR = process.cwd();
 const staticPath = path.join(CRM_DIR, 'dist', 'static');
@@ -24,27 +26,34 @@ export interface IRevCRMServerConfig {
 }
 
 export class RevCRMServer {
-    _koa: Koa;
+    koa: Koa;
+    models: IModelManager;
+    api: IModelApiManager;
 
     constructor(public config: IRevCRMServerConfig = {}) {
         this.config.port = this.config.port || Number(process.env.NODE_PORT) || 3000;
-        this._koa = new Koa();
-        this._koa.keys = ['some_secret_here'];
-        this._koa.use(jsonLog());
-        this._koa.use(mount('/static', serve(staticPath)));
-        this._koa.use(body()); // TODO Set options
-        this._koa.use(session({ key: 'revcrm' }, this._koa));
-        this._koa.use(passport.initialize());
-        this._koa.use(passport.session());
-        this._koa.use(requireAuth({
+        this.koa = new Koa();
+        this.koa.keys = ['some_secret_here'];
+        this.koa.use(jsonLog());
+        this.koa.use(mount('/static', serve(staticPath)));
+        this.koa.use(body()); // TODO Set options
+        this.koa.use(session({ key: 'revcrm' }, this.koa));
+        this.koa.use(passport.initialize());
+        this.koa.use(passport.session());
+        this.koa.use(requireAuth({
             unauthenticatedUrls: ['/login', '/static'],
             loginUrl: '/login'
         }));
-        this._koa.use(router.routes());
-        this._koa.use(router.allowedMethods());
+
+        const backend = new InMemoryBackend();
+        this.models = new ModelManager();
+        this.models.registerBackend('default', backend);
+        this.api = new ModelApiManager(this.models);
+
+        registerRoutes(this);
     }
 
-    loadModules() {
+    private loadModules() {
         const loadOrder = getRevCRMModuleLoadOrder(CRM_DIR);
         loadOrder.forEach((moduleName) => {
             let mod: any = null;
@@ -61,9 +70,11 @@ export class RevCRMServer {
 
     async start() {
         console.log('RevCRM Path:', CRM_DIR);
+        registerModels(this);
+        initialiseAuth(this);
         this.loadModules();
-        await populateData(serverModels);
-        this._koa.listen(this.config.port);
+        await populateData(this);
+        this.koa.listen(this.config.port);
         console.log(`Server running on port ${this.config.port}`);
     }
 
