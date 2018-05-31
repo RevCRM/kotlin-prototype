@@ -44,10 +44,24 @@ export class RevCRMServer {
         this._koa.use(router.allowedMethods());
     }
 
+    loadModules() {
+        const loadOrder = getRevCRMModuleLoadOrder(CRM_DIR);
+        loadOrder.forEach((moduleName) => {
+            let mod: any = null;
+            try {
+                mod = require(path.join(CRM_DIR, 'node_modules', moduleName, 'lib', 'server'));
+            }
+            catch (e) {}
+            if (mod) {
+                console.log(`Loading ${moduleName}/lib/server ...`);
+                mod.register(this);
+            }
+        });
+    }
+
     async start() {
         console.log('RevCRM Path:', CRM_DIR);
-        const loadOrder = getRevCRMModuleLoadOrder(CRM_DIR);
-        console.log('RevCRM Modules:', loadOrder);
+        this.loadModules();
         await populateData(serverModels);
         this._koa.listen(this.config.port);
         console.log(`Server running on port ${this.config.port}`);
