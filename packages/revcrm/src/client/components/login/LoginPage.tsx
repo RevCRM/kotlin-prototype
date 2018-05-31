@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
-import { UserLoginForm } from '../../models/User/forms/UserLoginForm';
+import { UserLoginForm } from '../../../models/User/forms/UserLoginForm';
 import { withStyles, WithStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 

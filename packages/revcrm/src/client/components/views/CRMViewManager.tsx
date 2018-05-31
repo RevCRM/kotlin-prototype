@@ -67,28 +67,23 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
 
     updateViewContextFromProps(newProps: ICRMViewManagerProps & IModelManagerProp) {
 
-        const { perspectiveName, viewName } = newProps.match.params;
+        const { perspectiveName, perspectiveViewName } = newProps.match.params;
         const ctx = this.viewContext;
 
-        console.log('new route', perspectiveName, viewName);
+        console.log('new route', perspectiveName, perspectiveViewName);
 
-        // TODO: Use viewManager
-        if (viewDef.perspectives[perspectiveName]
-            && viewDef.perspectives[perspectiveName].views[viewName]
-            && viewDef.views[viewDef.perspectives[perspectiveName].views[viewName]]) {
+        const perspective = viewManager.getPerspective(perspectiveName);
+        const viewName = viewManager.getPerspectiveViewName(perspectiveName, perspectiveViewName);
+        const view = viewManager.getView(viewName);
 
-            ctx.perspective = viewDef.perspectives[perspectiveName];
-            ctx.view = viewDef.views[viewDef.perspectives[perspectiveName].views[viewName]];
-        }
+        ctx.perspective = perspective;
+        ctx.view = view;
 
-        if (ctx.perspective && ctx.view) {
-            console.log('found new view');
-            const search = new URLSearchParams(newProps.location.search);
-            const meta = newProps.modelManager.getModelMeta(ctx.view.model);
+        const search = new URLSearchParams(newProps.location.search);
+        const meta = newProps.modelManager.getModelMeta(ctx.view.model);
 
-            if (meta.primaryKey) {
-                ctx.primaryKeyValue = search.get(meta.primaryKey);
-            }
+        if (meta.primaryKey) {
+            ctx.primaryKeyValue = search.get(meta.primaryKey);
         }
     }
 

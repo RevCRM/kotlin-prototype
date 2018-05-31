@@ -52,6 +52,30 @@ export class ViewManager {
             this._views.perspectives[name] = perspective;
         }
     }
+
+    getPerspectiveViewName(perspectiveName: string, view: string) {
+        const perspective = this._views.perspectives[perspectiveName];
+        if (perspective && perspective.views[view]) {
+            return perspective.views[view];
+        }
+        throw new Error(`Perspective view '${perspectiveName}/${view}' is not defined`);
+    }
+
+    getPerspective(perspectiveName: string) {
+        const perspective = this._views.perspectives[perspectiveName];
+        if (perspective) {
+            return perspective;
+        }
+        throw new Error(`Perspective '${perspectiveName}' is not defined`);
+    }
+
+    getView(viewName: string) {
+        const view = this._views.views[viewName];
+        if (view) {
+            return view;
+        }
+        throw new Error(`View '${view}' is not defined`);
+    }
 }
 
 // TODO: This shouldn't be static

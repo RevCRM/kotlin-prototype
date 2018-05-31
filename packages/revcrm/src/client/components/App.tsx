@@ -16,6 +16,7 @@ export class App extends React.Component {
         console.log('mounted context', this.context);
     }
 
+    // render={() => <Redirect to="/accounts/list" />}
     render() {
         return (
             <MuiThemeProvider theme={theme}>
@@ -24,7 +25,9 @@ export class App extends React.Component {
                 <TopNav />
                 <Route path="/login" component={LoginPage} />
                 <Route path="/:perspectiveName/:viewName" component={CRMViewManager} />
-                <Route exact path="/" render={() => <Redirect to="/accounts/list" />} />
+                <Route exact path="/">
+                    <h2>Logged In</h2>
+                </Route>
             </MuiThemeProvider>
         );
     }
