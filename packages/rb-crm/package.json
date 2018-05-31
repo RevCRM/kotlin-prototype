@@ -13,18 +13,21 @@
     "start": "cross-env NODE_ENV=production && node ./dist/server/server.js",
     "test": "",
     "watch-client": "run-bin webpack --mode development --config ./node_modules/revcrm/conf/webpack.client.config.js --watch",
-    "watch-server": "run-bin NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'run-bin ts-node src/server/server.ts'",
+    "watch-server": "run-bin NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'run-bin ts-node src/server.ts'",
     "client-webpack-stats": "run-bin webpack --mode production --config ./node_modules/revcrm/conf/webpack.client.config.js --profile --json > client-webpack-stats.json"
   },
   "author": "Russell Briggs <russ@paraflyer.net>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RevJS/revjs.git"
+    "url": "https://github.com/RevCRM/revcrm.git"
   },
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "revcrm": "0.1.0"
+    "revcrm": "0.1.0",
+    "revcrm_accounts": "0.1.0",
+    "revcrm_invoices": "0.1.0",
+    "revcrm_products": "0.1.0"
   },
   "devDependencies": {
     "run-bin": "^1.0.0"
