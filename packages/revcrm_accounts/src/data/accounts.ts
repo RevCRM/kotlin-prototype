@@ -1,7 +1,7 @@
-import { ModelManager } from 'rev-models';
-import { Account } from '../../models/Accounts/AccountBackend';
+import { IModelManager } from 'rev-models';
+import { Account } from '../models/AccountBackend';
 
-export async function populateAccounts(models: ModelManager) {
+export async function populateAccounts(models: IModelManager) {
 
     await models.create(new Account({
         type: 'organisation',

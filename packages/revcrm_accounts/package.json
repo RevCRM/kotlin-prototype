@@ -15,6 +15,7 @@
   "typings": "lib/index.d.ts",
   "keywords": ["revcrm_module"],
   "dependencies": {
+    "rev-api": "../revjs/packages/rev-api/rev-api-0.17.0.tgz",
     "rev-models": "../revjs/packages/rev-models/rev-models-0.17.0.tgz",
     "revcrm": "0.1.0",
     "tslib": "1.x"

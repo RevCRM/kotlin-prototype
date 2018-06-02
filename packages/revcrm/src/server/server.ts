@@ -14,11 +14,10 @@ import { registerRoutes } from './routes';
 
 import { registerModels } from '../models/server';
 import { populateData } from './data';
-import { getRevCRMModuleLoadOrder } from '../modules';
+import { CRM_DIR, getRevCRMModulesInLoadOrder } from '../modules';
 import { IModelManager, ModelManager, InMemoryBackend } from 'rev-models';
 import { IModelApiManager, ModelApiManager } from 'rev-api';
 
-const CRM_DIR = process.cwd();
 const staticPath = path.join(CRM_DIR, 'dist', 'static');
 
 export interface IRevCRMServerConfig {
@@ -53,9 +52,9 @@ export class RevCRMServer {
         registerRoutes(this);
     }
 
-    private loadModules() {
-        const loadOrder = getRevCRMModuleLoadOrder(CRM_DIR);
-        loadOrder.forEach((moduleName) => {
+    private async loadModules() {
+        const loadOrder = getRevCRMModulesInLoadOrder();
+        for (const moduleName of loadOrder) {
             let mod: any = null;
             try {
                 mod = require(path.join(CRM_DIR, 'node_modules', moduleName, 'lib', 'server'));
@@ -63,17 +62,17 @@ export class RevCRMServer {
             catch (e) {}
             if (mod) {
                 console.log(`Loading ${moduleName}/lib/server ...`);
-                mod.register(this);
+                await mod.register(this);
             }
-        });
+        }
     }
 
     async start() {
         console.log('RevCRM Path:', CRM_DIR);
         registerModels(this);
-        initialiseAuth(this);
-        this.loadModules();
         await populateData(this);
+        initialiseAuth(this);
+        await this.loadModules();
         this.koa.listen(this.config.port);
         console.log(`Server running on port ${this.config.port}`);
     }

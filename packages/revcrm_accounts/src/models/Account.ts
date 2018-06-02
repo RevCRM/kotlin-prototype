@@ -1,6 +1,6 @@
 
 import * as rev from 'rev-models';
-import { EntityModel } from '../BaseModels';
+import { EntityModel } from 'revcrm/lib/models/BaseModels';
 
 export const ACCOUNT_TYPES = [
     ['organisation', 'Organisation'],

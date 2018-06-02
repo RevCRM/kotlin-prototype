@@ -6,8 +6,10 @@ export interface IModulesAndDependencies {
     [moduleName: string]: string[];
 }
 
-export function getRevCRMModules(crmPath: string): IModulesAndDependencies {
-    const modulesFolder = path.join(crmPath, 'node_modules');
+export const CRM_DIR = process.cwd();
+
+export function getRevCRMModules(): IModulesAndDependencies {
+    const modulesFolder = path.join(CRM_DIR, 'node_modules');
 
     // Get list of node modules
     const modules = fs.readdirSync(modulesFolder)
@@ -40,8 +42,8 @@ export function getRevCRMModules(crmPath: string): IModulesAndDependencies {
     return crmModules;
 }
 
-export function getRevCRMModuleLoadOrder(crmPath: string): string[] {
-    const modules = getRevCRMModules(crmPath);
+export function getRevCRMModulesInLoadOrder(): string[] {
+    const modules = getRevCRMModules();
     const result: string[] = [];
     for (const moduleName in modules) {
         dependencyOrder(modules, result, moduleName, [moduleName]);

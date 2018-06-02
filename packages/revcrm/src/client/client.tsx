@@ -10,13 +10,17 @@ import { App } from './components/App';
 import { ModelProvider } from 'rev-ui';
 import { registerComponents } from 'rev-ui-materialui';
 import { clientModels } from '../models/client';
+import { ViewManager } from './ViewManager';
 
 export class RevCRMClient {
+    views: ViewManager;
 
     async start() {
         registerComponents();
 
         console.log(clientModels);
+
+        await this.loadModules();
 
         const store = getStore();
 
@@ -31,6 +35,13 @@ export class RevCRMClient {
             ),
             document.getElementById('app')
         );
+    }
+
+    private async loadModules() {
+        const loadOrder: string[] = CRM_MODULES;
+        for (const moduleName of loadOrder) {
+            console.log(`Loading ${moduleName} ...`);
+        }
     }
 
 }
