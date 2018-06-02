@@ -20,8 +20,6 @@ export class RevCRMClient {
 
         console.log(clientModels);
 
-        await this.loadModules();
-
         const store = getStore();
 
         ReactDOM.render((
@@ -36,12 +34,4 @@ export class RevCRMClient {
             document.getElementById('app')
         );
     }
-
-    private async loadModules() {
-        const loadOrder: string[] = CRM_MODULES;
-        for (const moduleName of loadOrder) {
-            console.log(`Loading ${moduleName} ...`);
-        }
-    }
-
 }

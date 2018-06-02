@@ -14,7 +14,7 @@ import { registerRoutes } from './routes';
 
 import { registerModels } from '../models/server';
 import { populateData } from './data';
-import { CRM_DIR, getRevCRMModulesInLoadOrder } from '../modules';
+import { CRM_DIR, getCRMModulesInLoadOrder, getCRMModuleMeta } from '../modules';
 import { IModelManager, ModelManager, InMemoryBackend } from 'rev-models';
 import { IModelApiManager, ModelApiManager } from 'rev-api';
 
@@ -48,20 +48,16 @@ export class RevCRMServer {
         this.models = new ModelManager();
         this.models.registerBackend('default', backend);
         this.api = new ModelApiManager(this.models);
-
-        registerRoutes(this);
     }
 
     private async loadModules() {
-        const loadOrder = getRevCRMModulesInLoadOrder();
+        const modules = getCRMModuleMeta();
+        const loadOrder = getCRMModulesInLoadOrder(modules);
         for (const moduleName of loadOrder) {
-            let mod: any = null;
-            try {
-                mod = require(path.join(CRM_DIR, 'node_modules', moduleName, 'lib', 'server'));
-            }
-            catch (e) {}
-            if (mod) {
+            const meta = modules[moduleName];
+            if (meta.server) {
                 console.log(`Loading ${moduleName}/lib/server ...`);
+                const mod = require(path.join(CRM_DIR, 'node_modules', moduleName, 'lib', 'server'));
                 await mod.register(this);
             }
         }
@@ -73,6 +69,8 @@ export class RevCRMServer {
         await populateData(this);
         initialiseAuth(this);
         await this.loadModules();
+        // TODO: Register main routes first, then API once modules have loaded
+        registerRoutes(this);
         this.koa.listen(this.config.port);
         console.log(`Server running on port ${this.config.port}`);
     }

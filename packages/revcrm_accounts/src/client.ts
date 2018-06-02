@@ -1,4 +1,6 @@
 
+import { RevCRMClient } from 'revcrm/lib/client';
+
 // // register client models
 // import { Account } from './Accounts/Account';
 
@@ -7,3 +9,7 @@
 
 // clientModels.register(UserLoginFormModel);
 // clientModels.register(Account);
+
+export function register(client: RevCRMClient) {
+    console.log('revcrm_accounts client register');
+}
