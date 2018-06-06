@@ -2,14 +2,14 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import Button from 'material-ui/Button';
+import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { ListView, IModelManagerProp } from 'rev-ui';
 import { ICRMViewManagerContext } from './CRMViewManager';
 import { IModel } from 'rev-models';
 import { withModelManager } from 'rev-ui/lib/provider/withModelManager';
-import Paper from 'material-ui/Paper';
-import { withStyles, WithStyles } from 'material-ui/styles';
+import Paper from '@material-ui/core/Paper';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 
 export interface ICRMListViewProps {
     fields: string[];

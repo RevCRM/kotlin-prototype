@@ -1,7 +1,7 @@
 
 import * as React from 'react';
-import Drawer from 'material-ui/Drawer';
-import { MenuItem } from 'material-ui/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
 import { IState } from '../../store/index';
 import { setLeftNavOpen } from './store/index';

@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import Paper from 'material-ui/Paper';
-import Divider from 'material-ui/Divider';
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
 import { UserLoginForm } from '../../../models/User/forms/UserLoginForm';
-import { withStyles, WithStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = {
     root: {

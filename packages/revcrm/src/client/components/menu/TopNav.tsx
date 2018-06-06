@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import AppBar from 'material-ui/AppBar';
+import AppBar from '@material-ui/core/AppBar';
 import { setLeftNavOpen } from './store/index';
-import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import { withStyles, WithStyles } from 'material-ui/styles';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 
 export interface ITopNavDispatchProps {
     onMenuButtonClick: () => void;

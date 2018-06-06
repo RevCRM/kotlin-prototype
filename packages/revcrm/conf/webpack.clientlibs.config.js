@@ -12,8 +12,7 @@ module.exports = {
             'react-dom', 
             'react-router-dom',
             'redux',
-            'react-redux',
-            'material-ui'
+            'react-redux'
         ]
     },
     output: { 

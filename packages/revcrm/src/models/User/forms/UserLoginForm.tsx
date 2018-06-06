@@ -2,11 +2,14 @@
 import * as React from 'react';
 import * as rev from 'rev-models';
 import { DetailView, Field, PostAction } from 'rev-ui';
-import Dialog, { DialogTitle, DialogContent, DialogActions} from 'material-ui/Dialog';
-import Grid from 'material-ui/Grid';
-import Button from 'material-ui/Button';
-import { withStyles, WithStyles } from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 export class UserLoginFormModel {
     @rev.TextField({ label: 'Username' })
@@ -92,4 +95,4 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
     }
 }
 
-export const UserLoginForm = withStyles(styles)(UserLoginFormC);
+export const UserLoginForm: any = withStyles(styles)(UserLoginFormC);

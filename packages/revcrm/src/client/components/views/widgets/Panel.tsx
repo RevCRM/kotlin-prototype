@@ -1,7 +1,9 @@
 
 import * as React from 'react';
-import Card, { CardHeader, CardContent } from 'material-ui/Card';
-import Grid from 'material-ui/Grid/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
 
 export type ColspanOptions = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export interface IPanelProps {

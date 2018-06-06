@@ -1,10 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import { withStyles } from 'material-ui/styles';
-import { WithStyles } from 'material-ui/styles/withStyles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { withStyles, WithStyles } from '@material-ui/core/styles';
 import { RouteComponentProps } from 'react-router-dom';
 import { IModelProviderContext } from 'rev-ui/lib/provider/ModelProvider';
 import { IModelManagerProp, withModelManager } from 'rev-ui';
