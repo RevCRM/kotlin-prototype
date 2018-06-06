@@ -50,6 +50,18 @@ export class RevCRMServer {
         this.api = new ModelApiManager(this.models);
     }
 
+    async start() {
+        console.log('RevCRM Path:', CRM_DIR);
+        registerModels(this);
+        await populateData(this);
+        initialiseAuth(this);
+        await this.loadModules();
+        // TODO: Register main routes first, then API once modules have loaded
+        registerRoutes(this);
+        this.koa.listen(this.config.port);
+        console.log(`Server running on port ${this.config.port}`);
+    }
+
     private async loadModules() {
         const modules = getCRMModuleMeta();
         const loadOrder = getCRMModulesInLoadOrder(modules);
@@ -61,18 +73,6 @@ export class RevCRMServer {
                 await mod.register(this);
             }
         }
-    }
-
-    async start() {
-        console.log('RevCRM Path:', CRM_DIR);
-        registerModels(this);
-        await populateData(this);
-        initialiseAuth(this);
-        await this.loadModules();
-        // TODO: Register main routes first, then API once modules have loaded
-        registerRoutes(this);
-        this.koa.listen(this.config.port);
-        console.log(`Server running on port ${this.config.port}`);
     }
 
 }

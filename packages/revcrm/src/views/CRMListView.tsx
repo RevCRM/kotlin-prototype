@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { ListView, IModelManagerProp } from 'rev-ui';
-import { ICRMViewManagerContext } from './CRMViewManager';
+import { ICRMViewManagerContext } from '../client/components/CRMViewManager';
 import { IModel } from 'rev-models';
 import { withModelManager } from 'rev-ui/lib/provider/withModelManager';
 import Paper from '@material-ui/core/Paper';

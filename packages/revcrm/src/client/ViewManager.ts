@@ -35,21 +35,21 @@ export class ViewManager {
         views: {}
     };
 
-    registerView(name: string, view: IView) {
-        if (this._views.views[name]) {
-            throw new Error(`View '${name}' already registered!`);
+    registerView(view: IView) {
+        if (this._views.views[view.name]) {
+            throw new Error(`View '${view.name}' already registered!`);
         }
         else {
-            this._views.views[name] = view;
+            this._views.views[view.name] = view;
         }
     }
 
-    registerPerspective(name: string, perspective: IPerspective) {
-        if (this._views.perspectives[name]) {
-            throw new Error(`View '${name}' already registered!`);
+    registerPerspective(perspective: IPerspective) {
+        if (this._views.perspectives[perspective.name]) {
+            throw new Error(`View '${perspective.name}' already registered!`);
         }
         else {
-            this._views.perspectives[name] = perspective;
+            this._views.perspectives[perspective.name] = perspective;
         }
     }
 

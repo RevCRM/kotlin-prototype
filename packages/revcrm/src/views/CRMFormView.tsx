@@ -7,7 +7,7 @@ import Done from '@material-ui/icons/Done';
 import Delete from '@material-ui/icons/Delete';
 import { IDetailViewContextProp, DetailView, SaveAction, RemoveAction } from 'rev-ui';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { ICRMViewManagerContext } from './CRMViewManager';
+import { ICRMViewManagerContext } from '../client/components/CRMViewManager';
 import { withDetailViewContext } from 'rev-ui/lib/views/withDetailViewContext';
 
 const styles = {

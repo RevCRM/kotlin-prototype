@@ -1,9 +1,7 @@
 
-import { ModelManager } from 'rev-models';
-import { ModelApiBackend } from 'rev-api-client';
-import { UserLoginFormModel } from './User/forms/UserLoginForm';
+import { UserLoginFormModel } from './User/views/UserLoginForm';
+import { RevCRMClient } from '../client';
 
-export const clientModels = new ModelManager();
-clientModels.registerBackend('default', new ModelApiBackend('/api'));
-
-clientModels.register(UserLoginFormModel);
+export function registerModels(client: RevCRMClient) {
+    client.models.register(UserLoginFormModel);
+}

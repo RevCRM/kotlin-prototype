@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { IModelProviderContext } from 'rev-ui/lib/provider/ModelProvider';
 import { IModelManagerProp, withModelManager } from 'rev-ui';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { IPerspective, IView, viewManager } from '../../ViewManager';
+import { IPerspective, IView, viewManager } from '../ViewManager';
 
 export const styles = {
     root: {
