@@ -9,6 +9,7 @@
     "build": "npm run build-server && npm run build-clientlibs && npm run build-client",
     "build-client": "run-bin webpack --mode production --config ./node_modules/revcrm/conf/webpack.client.config.js",
     "build-clientlibs": "run-bin webpack --mode production --config ./node_modules/revcrm/conf/webpack.clientlibs.config.js",
+    "build-clientlibs-dev": "run-bin webpack --mode development --config ./node_modules/revcrm/conf/webpack.clientlibs.config.js",
     "build-server": "run-bin tslint -p . && rm -rf dist/ && run-bin tsc",
     "start": "cross-env NODE_ENV=production && node ./dist/server/server.js",
     "test": "",

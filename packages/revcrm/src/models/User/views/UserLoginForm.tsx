@@ -78,7 +78,8 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
                         <PostAction
                             label="Log In"
                             url="/login"
-                            style={{ marginTop: 20 }}
+                            defaultAction={true}
+                            style={{ marginTop: 15 }}
                             onResponse={(res) => {
                                 if (res.status == 200) {
                                     window.location.pathname = '/';

@@ -40,7 +40,6 @@ export class TopNavC extends React.Component<ITopNavDispatchProps & WithStyles<k
                         <Typography variant="title" color="inherit" className={this.props.classes.flex}>
                             RevCRM
                         </Typography>
-                        <Button color="inherit">Login</Button>
                     </Toolbar>
                 </AppBar>
             </div>
