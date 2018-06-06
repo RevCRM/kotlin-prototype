@@ -25,7 +25,7 @@ export class App extends React.Component {
                 <TopNav />
                 <div style={{marginTop: 75}}>
                     <Route path="/login" component={UserLoginForm} />
-                    <Route path="/:perspectiveName/:viewName" component={CRMViewManager} />
+                    <Route path="/:perspectiveName/:perspectiveViewName" component={CRMViewManager} />
                 </div>
             </MuiThemeProvider>
         );
