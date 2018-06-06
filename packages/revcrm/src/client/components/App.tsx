@@ -4,7 +4,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
-import { LoginPage } from './login/LoginPage';
+import { UserLoginForm } from '../../models/User/views/UserLoginForm';
 import { Route } from 'react-router-dom';
 import { CRMViewManager } from './views/CRMViewManager';
 
@@ -23,8 +23,10 @@ export class App extends React.Component {
                 <CssBaseline />
                 <LeftNav />
                 <TopNav />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/:perspectiveName/:viewName" component={CRMViewManager} />
+                <div style={{marginTop: 75}}>
+                    <Route path="/login" component={UserLoginForm} />
+                    <Route path="/:perspectiveName/:viewName" component={CRMViewManager} />
+                </div>
             </MuiThemeProvider>
         );
     }
