@@ -25,7 +25,7 @@ export class Account extends EntityModel<Account> {
         code: string;
     @rev.TextField({ label: 'Organisation Name', required: false })
         org_name: string;
-    @rev.SelectField({ label: 'Title', selection: TITLES })
+    @rev.SelectField({ label: 'Title', selection: TITLES, required: false })
         title: string = 'organisation';
     @rev.TextField({ label: 'First Name', required: false })
         first_name: string;
