@@ -13,7 +13,10 @@ import { withDetailViewContext } from 'rev-ui/lib/views/withDetailViewContext';
 const styles = {
     toolbar: {
         display: 'flex',
-        borderBottom: '1px solid #EBEBEB'
+        borderBottom: '1px solid #EBEBEB',
+        '& button': {
+            marginRight: 10
+        }
     },
     formPaper: {
         marginTop: 20
@@ -26,14 +29,9 @@ const styles = {
 class CRMFormViewContentC extends React.Component<IDetailViewContextProp & WithStyles<keyof typeof styles>> {
 
     render() {
-        // const { manager, model, modelMeta } = this.props.modelContext;
-
-        // const title = !model ? 'Loading...'
-        //     : (manager.isNew(model) ? 'New ' : 'Edit ') + modelMeta.name;
-
         return (
             <Grid item xs={12}>
-                <div style={{ display: 'flex' }}>
+                <div className={this.props.classes.toolbar}>
                     <SaveAction
                         disabled={(ctx) => !ctx.dirty || ctx.loadState != 'NONE'}
                         onSuccess={(res) => console.log(res)}
