@@ -15,7 +15,7 @@ import { registerRoutes } from './routes';
 import { registerModels } from '../models/server';
 import { populateData } from './data';
 import { CRM_DIR, getCRMModulesInLoadOrder, getCRMModuleMeta } from '../modules';
-import { IModelManager, ModelManager, InMemoryBackend } from 'rev-models';
+import { IModelManager, ModelManager } from 'rev-models';
 import { IModelApiManager, ModelApiManager } from 'rev-api';
 
 const staticPath = path.join(CRM_DIR, 'dist', 'static');
@@ -44,9 +44,7 @@ export class RevCRMServer {
             loginUrl: '/login'
         }));
 
-        const backend = new InMemoryBackend();
         this.models = new ModelManager();
-        this.models.registerBackend('default', backend);
         this.api = new ModelApiManager(this.models);
     }
 
