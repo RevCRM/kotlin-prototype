@@ -26,7 +26,7 @@ export class Account extends EntityModel<Account> {
     @rev.TextField({ label: 'Organisation Name', required: false })
         org_name: string;
     @rev.SelectField({ label: 'Title', selection: TITLES, required: false })
-        title: string = 'organisation';
+        title: string;
     @rev.TextField({ label: 'First Name', required: false })
         first_name: string;
     @rev.TextField({ label: 'Last Name', required: false })
@@ -51,6 +51,15 @@ export class Account extends EntityModel<Account> {
         website: string;
     @rev.TextField({ label: 'Notes', multiLine: true, required: false })
         notes: string;
+
+    // defaults(ctx: IMethodContext) {
+    //     if ('default_type' in ctx.args) {
+    //         this.type = 'default_type';
+    //     }
+    //     else {
+    //         this.type = 'organisation';
+    //     }
+    // }
 
     validate(vc: rev.IValidationContext) {
         if (this.type == 'organiation' && !this.org_name) {
