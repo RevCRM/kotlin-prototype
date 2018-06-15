@@ -1,6 +1,7 @@
 
 import * as rev from 'rev-models';
 import { EntityModel } from 'revcrm/lib/models/BaseModels';
+import { Address } from './Address';
 
 export const ACCOUNT_TYPES = [
     ['organisation', 'Organisation'],
@@ -51,6 +52,9 @@ export class Account extends EntityModel<Account> {
         website: string;
     @rev.TextField({ label: 'Notes', multiLine: true, required: false })
         notes: string;
+
+    @rev.RelatedModel({ model: 'Address' })
+        primary_address: Address;
 
     defaults() {
         this.type = 'organisation';

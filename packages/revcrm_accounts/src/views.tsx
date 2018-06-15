@@ -4,6 +4,8 @@ import { Field } from 'rev-ui';
 import { ViewManager } from 'revcrm/lib/client';
 import { CRMListView, CRMFormView, Panel } from 'revcrm/lib/views';
 
+const CRMRelatedModelForm: any = (): any => null;
+
 export function registerViews(views: ViewManager) {
     views.registerPerspective({
         name: 'accounts',
@@ -52,7 +54,18 @@ export function registerViews(views: ViewManager) {
                     <Field name="email" colspan={12} />
                     <Field name="website" colspan={12} />
                 </Panel>
-                <Panel title="Notes">
+                <Panel title="Address">
+                    <CRMRelatedModelForm field="primary_address">
+                        <Field name="name" />
+                        <Field name="type" />
+                        <Field name="address1" colspan={12} />
+                        <Field name="address2" colspan={12} />
+                        <Field name="city" colspan={12} />
+                        <Field name="region" colspan={12} />
+                        <Field name="country" colspan={12} />
+                    </CRMRelatedModelForm>
+                </Panel>
+                <Panel title="Notes" colspan={12}>
                     <Field name="notes" colspan={12} />
                 </Panel>
             </CRMFormView>
