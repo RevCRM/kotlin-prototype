@@ -29,6 +29,7 @@ const styles = {
 class CRMFormViewContentC extends React.Component<IDetailViewContextProp & WithStyles<keyof typeof styles>> {
 
     render() {
+        console.log('detail view context', this.props.detailViewContext);
         return (
             <Grid item xs={12}>
                 <div className={this.props.classes.toolbar}>

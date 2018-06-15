@@ -20,7 +20,7 @@ export const TITLES = [
 export class Account extends EntityModel<Account> {
 
     @rev.SelectField({ label: 'Type', selection: ACCOUNT_TYPES })
-        type: string = 'organisation';
+        type: string;
     @rev.TextField({ label: 'Account Code' })
         code: string;
     @rev.TextField({ label: 'Organisation Name', required: false })
@@ -52,14 +52,9 @@ export class Account extends EntityModel<Account> {
     @rev.TextField({ label: 'Notes', multiLine: true, required: false })
         notes: string;
 
-    // defaults(ctx: IMethodContext) {
-    //     if ('default_type' in ctx.args) {
-    //         this.type = 'default_type';
-    //     }
-    //     else {
-    //         this.type = 'organisation';
-    //     }
-    // }
+    defaults() {
+        this.type = 'organisation';
+    }
 
     validate(vc: rev.IValidationContext) {
         if (this.type == 'organiation' && !this.org_name) {
