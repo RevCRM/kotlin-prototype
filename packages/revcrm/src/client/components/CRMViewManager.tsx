@@ -82,10 +82,18 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
         const meta = newProps.modelManager.getModelMeta(ctx.view.model);
 
         if (meta.primaryKey) {
-            ctx.primaryKeyValue = search.get(meta.primaryKey);
-            // TODO: We should probably use field meta for this rather than raw value
-            if (!isNaN(ctx.primaryKeyValue)) {
-                ctx.primaryKeyValue = Number.parseFloat(ctx.primaryKeyValue);
+            const pkVal: any = search.get(meta.primaryKey);
+            if (pkVal) {
+                // TODO: We should probably use field meta for this rather than raw value
+                if (!isNaN(pkVal)) {
+                    ctx.primaryKeyValue = Number.parseFloat(pkVal);
+                }
+                else {
+                    ctx.primaryKeyValue = pkVal;
+                }
+            }
+            else {
+                ctx.primaryKeyValue = null;
             }
         }
     }
