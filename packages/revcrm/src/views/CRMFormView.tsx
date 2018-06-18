@@ -18,9 +18,6 @@ const styles = {
             marginRight: 10
         }
     },
-    formPaper: {
-        marginTop: 20
-    },
     formWrapper: {
         marginTop: 20
     }
@@ -69,7 +66,7 @@ export class CRMFormView extends React.Component {
     render() {
         const ctx = this.context.viewContext;
         return (
-            <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue}>
+            <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue} related={ctx.view.related}>
                 <CRMFormViewContent>{this.props.children}</CRMFormViewContent>
             </DetailView>
         );

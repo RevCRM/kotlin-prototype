@@ -2,6 +2,7 @@
 export interface IView {
     name: string;
     model: string;
+    related?: string[];
     component: React.ReactNode;
 }
 

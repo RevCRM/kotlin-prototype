@@ -12,7 +12,10 @@ import { IPerspective, IView, viewManager } from '../ViewManager';
 
 export const styles = {
     root: {
-        marginTop: 70
+        marginTop: 70,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        maxWidth: 1000
     },
     viewSelector: {
         marginLeft: 30
