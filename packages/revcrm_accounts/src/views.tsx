@@ -57,7 +57,8 @@ export function registerViews(views: ViewManager) {
                     <Field name="primary_address.name" colspan={12} />
                     <Field name="primary_address.address1" colspan={12} />
                     <Field name="primary_address.address2" colspan={12} />
-                    <Field name="primary_address.city" colspan={12} />
+                    <Field name="primary_address.city" />
+                    <Field name="primary_address.postal_code" />
                     <Field name="primary_address.region" colspan={12} />
                     <Field name="primary_address.country" colspan={12} />
                 </Panel>
