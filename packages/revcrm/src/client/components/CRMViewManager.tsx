@@ -34,7 +34,7 @@ export interface ICRMViewContextArgs {
 export interface ICRMViewContext {
     perspective: IPerspective;
     view: IView;
-    primaryKeyValue?: string;
+    primaryKeyValue?: any;
 
     changePerspective(perspectiveName: string, viewName: string, args?: ICRMViewContextArgs): void;
 }
@@ -83,6 +83,10 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
 
         if (meta.primaryKey) {
             ctx.primaryKeyValue = search.get(meta.primaryKey);
+            // TODO: We should probably use field meta for this rather than raw value
+            if (!isNaN(ctx.primaryKeyValue)) {
+                ctx.primaryKeyValue = Number.parseFloat(ctx.primaryKeyValue);
+            }
         }
     }
 

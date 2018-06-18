@@ -61,7 +61,7 @@ export function registerViews(views: ViewManager) {
                     <Field name="primary_address.region" colspan={12} />
                     <Field name="primary_address.country" colspan={12} />
                 </Panel>
-                <Panel title="Notes" colspan={12}>
+                <Panel colspan={12}>
                     <Field name="notes" colspan={12} />
                 </Panel>
             </CRMFormView>
