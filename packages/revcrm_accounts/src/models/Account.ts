@@ -61,7 +61,7 @@ export class Account extends EntityModel<Account> {
     }
 
     validate(vc: rev.IValidationContext) {
-        if (this.type == 'organiation' && !this.org_name) {
+        if (this.type == 'organisation' && !this.org_name) {
             vc.result.addFieldError('org_name', 'Organisation Name is required');
         }
         if (this.type == 'contact' && !this.last_name) {
