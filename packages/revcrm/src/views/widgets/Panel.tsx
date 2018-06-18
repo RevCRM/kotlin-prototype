@@ -10,7 +10,7 @@ export interface IPanelProps {
     colspanNarrow?: ColspanOptions;
     colspan?: ColspanOptions;
     colspanWide?: ColspanOptions;
-    title: string;
+    title?: string;
 }
 
 export const Panel: React.SFC<IPanelProps> = (props) => {
@@ -24,7 +24,7 @@ export const Panel: React.SFC<IPanelProps> = (props) => {
     return (
         <Grid item {...gridProps}>
             <Card>
-                <CardHeader title={props.title} />
+                {props.title && <CardHeader title={props.title} />}
                 <CardContent>
                     <Grid container spacing={8}>
                         {props.children}
