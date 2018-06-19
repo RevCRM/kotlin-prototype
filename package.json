@@ -9,6 +9,7 @@
     "postinstall": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run test",
+    "test-ci": "lerna run test-ci",
     "start": "cd packages/rb-crm && npm start",
     "clean-modules": "lerna clean"
   },
