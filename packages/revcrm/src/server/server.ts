@@ -56,7 +56,7 @@ export class RevCRMServer {
         await this.loadModules();
         // TODO: Register main routes first, then API once modules have loaded
         registerRoutes(this);
-        this.koa.listen(this.config.port);
+        this.koa.listen(this.config.port, '0.0.0.0');
         console.log(`Server running on port ${this.config.port}`);
     }
 
