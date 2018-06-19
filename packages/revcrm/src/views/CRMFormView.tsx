@@ -33,7 +33,7 @@ class CRMFormViewContentC extends React.Component<IDetailViewContextProp & WithS
                     <SaveAction
                         disabled={(ctx) => !ctx.dirty || ctx.loadState != 'NONE'}
                         onSuccess={(res) => console.log('SaveAction result', res)}
-                        onError={(err) => {
+                        onError={(err: any) => {
                             console.log('SaveAction error', err);
                             console.log(err.validation);
                         }}

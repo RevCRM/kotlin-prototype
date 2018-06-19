@@ -9,6 +9,7 @@
     "postinstall": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run test",
+    "start": "cd packages/rb-crm && npm start",
     "clean-modules": "lerna clean"
   },
   "devDependencies": {
