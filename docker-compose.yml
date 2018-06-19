@@ -1,0 +1,14 @@
+version: '2'
+services:
+  web:
+    depends_on:
+     - db
+    build: .
+    ports:
+     - "3000:3000"
+    environment:
+     - MONGO_URL=mongodb://db:27017
+  db:
+    image: mongo:3.6
+    # volumes:
+    #   - $PWD/data:/data/db

@@ -1,6 +1,9 @@
 
 ### Build Image ###
-FROM node:8-slim AS build
+FROM node:8-alpine AS build
+
+# Add build tools
+RUN apk --no-cache add --virtual builds-deps build-base python
 
 # Add code
 ADD . /opt/revcrm/
@@ -18,6 +21,8 @@ RUN npm test
 ### Run Image ###
 FROM node:8-alpine
 
+ENV MONGO_URL ""
+
 COPY --from=build /opt/revcrm /opt/revcrm
 WORKDIR /opt/revcrm
 
@@ -28,7 +33,7 @@ USER nodeapp
 # Run the app.  CMD is required to run on Heroku
 # $PORT is set by Heroku			
 # CMD gunicorn --bind 0.0.0.0:$PORT wsgi
-CMD npm start
+CMD ["npm", "start"]
 
 # Expose is NOT supported by Heroku
 EXPOSE 3000 		
