@@ -4,10 +4,24 @@ jobs:
     machine: true
     steps:
      - checkout
-     - run: |
-        curl https://cli-assets.heroku.com/install.sh | sh
-        heroku container:login
-        docker build -t revcrm:latest .
-        docker tag revcrm:latest registry.heroku.com/$HEROKU_APP_NAME/web
-        docker push registry.heroku.com/$HEROKU_APP_NAME/web
-        heroku container:release web --app $HEROKU_APP_NAME
+     - run:
+        name: Configure Heroku
+        command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
+            heroku container:login
+     - run:
+        name: Build & Unit Test
+        command: |
+            docker build -t revcrm:latest .
+     - run:
+        name: Deploy to Staging environment
+        command: |
+            docker tag revcrm:latest registry.heroku.com/$HEROKU_APP_NAME_STAGING/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME_STAGING/web
+            heroku container:release web --app $HEROKU_APP_NAME_STAGING
+     - run:
+        name: Deploy to Production environment
+        command: |
+            docker tag revcrm:latest registry.heroku.com/$HEROKU_APP_NAME_PRODUCTION/web
+            docker push registry.heroku.com/$HEROKU_APP_NAME_PRODUCTION/web
+            heroku container:release web --app $HEROKU_APP_NAME_PRODUCTION
