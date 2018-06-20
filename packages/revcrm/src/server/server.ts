@@ -13,7 +13,6 @@ import { jsonLog } from 'koa-json-log';
 import { registerRoutes } from './routes';
 
 import { registerModels } from '../models/server';
-import { populateData } from './data';
 import { CRM_DIR, getCRMModulesInLoadOrder, getCRMModuleMeta } from '../modules';
 import { IModelManager, ModelManager } from 'rev-models';
 import { IModelApiManager, ModelApiManager } from 'rev-api';
@@ -51,7 +50,6 @@ export class RevCRMServer {
     async start() {
         console.log('RevCRM Path:', CRM_DIR);
         registerModels(this);
-        await populateData(this);
         initialiseAuth(this);
         await this.loadModules();
         // TODO: Register main routes first, then API once modules have loaded
