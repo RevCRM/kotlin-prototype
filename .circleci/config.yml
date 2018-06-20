@@ -5,4 +5,5 @@ jobs:
     steps:
      - checkout
      - run: |
+        heroku container:login
         heroku container:push web --app $HEROKU_APP_NAME
