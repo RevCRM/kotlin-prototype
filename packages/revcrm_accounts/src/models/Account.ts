@@ -18,11 +18,21 @@ export const TITLES = [
     ['Prof', 'Prof'],
 ];
 
+export const TAGS = [
+    ['lead', 'Lead'],
+    ['prospect', 'Prospect'],
+    ['client', 'Client'],
+    ['supplier', 'Supplier'],
+    ['recruiter', 'Recruiter'],
+];
+
 export class Account extends EntityModel<Account> {
 
     @rev.SelectField({ label: 'Type', selection: ACCOUNT_TYPES })
         type: string;
-    @rev.TextField({ label: 'Account Code' })
+    @rev.MultiSelectField({ label: 'Tags', selection: TAGS })
+        tags: string[];
+    @rev.TextField({ label: 'Account Code', required: false })
         code: string;
     @rev.TextField({ label: 'Organisation Name', required: false })
         org_name: string;

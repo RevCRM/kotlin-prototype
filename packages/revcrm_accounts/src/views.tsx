@@ -21,8 +21,8 @@ export function registerViews(views: ViewManager) {
             <CRMListView
                 fields={[
                     'type',
-                    'code',
                     'name',
+                    'tags',
                     'phone',
                     'email',
                     'website'
@@ -40,8 +40,9 @@ export function registerViews(views: ViewManager) {
             <CRMFormView>
                 <Panel title="Account Summary" colspan={12}>
                     <Field name="type" />
+                    <Field name="tags" />
+                    <Field name="org_name" />
                     <Field name="code" />
-                    <Field name="org_name" colspan={12} />
                     <Field name="title" colspan={2} />
                     <Field name="first_name" colspan={5} />
                     <Field name="last_name" colspan={5} />
