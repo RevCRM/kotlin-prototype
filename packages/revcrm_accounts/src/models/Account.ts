@@ -30,10 +30,10 @@ export class Account extends EntityModel<Account> {
 
     @rev.SelectField({ label: 'Type', selection: ACCOUNT_TYPES })
         type: string;
-    @rev.MultiSelectField({ label: 'Tags', selection: TAGS })
-        tags: string[];
+    @rev.MultiSelectField({ label: 'Tags', selection: TAGS, required: false })
+        tags?: string[];
     @rev.TextField({ label: 'Account Code', required: false })
-        code: string;
+        code?: string;
     @rev.TextField({ label: 'Organisation Name', required: false })
         org_name: string;
     @rev.SelectField({ label: 'Title', selection: TITLES, required: false })

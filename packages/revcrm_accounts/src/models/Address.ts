@@ -22,4 +22,8 @@ export class Address extends EntityModel<Address> {
     @rev.SelectField({ label: 'Country', selection: COUNTRIES })
         country: string;
 
+    toString() {
+        return `${this.address1}, ${this.city} (${this.name})`;
+    }
+
 }

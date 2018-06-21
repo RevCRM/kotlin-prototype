@@ -67,12 +67,39 @@ export function registerViews(views: ViewManager) {
             </CRMFormView>
         )
     });
+    views.registerView({
+        name: 'account_contact_form',
+        model: 'Account',
+        component: (
+            <CRMFormView>
+                <Panel title="Contact Summary" colspan={12}>
+                    <Field name="type" />
+                    <Field name="tags" />
+                    <Field name="title" colspan={2} />
+                    <Field name="first_name" colspan={5} />
+                    <Field name="last_name" colspan={5} />
+                </Panel>
+                <Panel title="Contact Details">
+                    <Field name="phone" colspan={12} />
+                    <Field name="fax" colspan={12} />
+                    <Field name="mobile" colspan={12} />
+                    <Field name="email" colspan={12} />
+                    <Field name="website" colspan={12} />
+                </Panel>
+                <Panel title="Address & Nodes">
+                    <Field name="primary_address" colspan={12} />
+                    <Field name="notes" colspan={12} />
+                </Panel>
+            </CRMFormView>
+        )
+    });
     views.registerPerspective({
         name: 'accounts',
         title: 'Accounts',
         views: {
             list: 'account_list',
-            form: 'account_form'
+            form: 'account_form',
+            contact: 'account_contact_form'
         }
     });
     views.registerMenu({
