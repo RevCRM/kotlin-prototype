@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Field } from 'rev-ui';
+import { Field, SearchField } from 'rev-ui';
 import { ViewManager } from 'revcrm/lib/client';
 import { CRMListView, CRMFormView, Panel } from 'revcrm/lib/views';
 
@@ -19,6 +19,11 @@ export function registerViews(views: ViewManager) {
         model: 'Account',
         component: (
             <CRMListView
+                searchFields={<>
+                    <SearchField name="name" colspan={4} />
+                    <SearchField name="tags" colspan={4} />
+                    <SearchField name="type" colspan={4} />
+                </>}
                 fields={[
                     'type',
                     'name',
