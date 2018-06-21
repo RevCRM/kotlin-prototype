@@ -20,7 +20,7 @@ export function registerViews(views: ViewManager) {
         component: (
             <CRMListView
                 searchFields={<>
-                    <SearchField name="name" colspan={4} />
+                    <SearchField name="org_name" colspan={4} />
                     <SearchField name="tags" colspan={4} />
                     <SearchField name="type" colspan={4} />
                 </>}
