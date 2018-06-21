@@ -6,24 +6,40 @@ import { connect } from 'react-redux';
 import { IState } from '../../store/index';
 import { setLeftNavOpen } from './store/index';
 import { Dispatch } from 'redux';
+import { viewManager, IMenuItem } from '../../ViewManager';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 export interface ILeftNavStateProps {
     isOpen: boolean;
 }
 
-export interface ILeftNavDispatchProps {
-    onClose: (event: any) => void;
+export interface ILeftNavDispatchProps extends RouteComponentProps<any> {
+    onClose: () => void;
 }
 
-export class LeftNavC extends React.Component<ILeftNavStateProps & ILeftNavDispatchProps> {
+class LeftNavC extends React.Component<ILeftNavStateProps & ILeftNavDispatchProps> {
+
+    onMenuClick(item: IMenuItem) {
+        this.props.history.push(item.url);
+        this.props.onClose();
+    }
+
     render() {
+        const menuItems = viewManager.getMenus();
         return (
             <Drawer
                 open={this.props.isOpen}
                 onClose={this.props.onClose}
             >
-                <MenuItem>Menu Item</MenuItem>
-                <MenuItem>Menu Item 2</MenuItem>
+                <div style={{ background: '#4054B2', height: 65, marginBottom: 10 }}></div>
+                {menuItems.map((item) => (
+                    <MenuItem key={item.text} onClick={() => this.onMenuClick(item)}>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText inset primary={item.text} />
+                    </MenuItem>
+                ))}
             </Drawer>
         );
     }
@@ -35,12 +51,12 @@ function mapStateToProps(state: IState): ILeftNavStateProps {
     };
 }
 
-function mapDispatchToProps(dispatch: Dispatch<any>): ILeftNavDispatchProps {
+function mapDispatchToProps(dispatch: Dispatch<any>): Partial<ILeftNavDispatchProps> {
     return {
-        onClose: (event: any) => {
+        onClose: () => {
             dispatch(setLeftNavOpen(false));
         }
     };
 }
 
-export const LeftNav = connect(mapStateToProps, mapDispatchToProps as any)(LeftNavC) as any;
+export const LeftNav = withRouter(connect(mapStateToProps, mapDispatchToProps as any)(LeftNavC));

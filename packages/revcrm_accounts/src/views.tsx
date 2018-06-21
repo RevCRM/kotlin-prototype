@@ -1,5 +1,6 @@
 
 import * as React from 'react';
+import Home from '@material-ui/icons/Home';
 import { Field, SearchField } from 'rev-ui';
 import { ViewManager } from 'revcrm/lib/client';
 import { CRMListView, CRMFormView, Panel } from 'revcrm/lib/views';
@@ -35,6 +36,12 @@ export function registerViews(views: ViewManager) {
                 detailView="accounts/form"
             />
         )
+    });
+
+    views.registerMenu({
+        text: 'Accounts',
+        url: '/accounts/list',
+        icon: <Home />
     });
 
     views.registerView({

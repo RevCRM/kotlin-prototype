@@ -30,11 +30,18 @@ export interface IViewMeta {
     };
 }
 
+export interface IMenuItem {
+    text: string;
+    url: string;
+    icon: React.ReactElement<any>;
+}
+
 export class ViewManager {
     _views: IViewsDefinition = {
         perspectives: {},
         views: {}
     };
+    _menus: IMenuItem[] = [];
 
     registerView(view: IView) {
         if (this._views.views[view.name]) {
@@ -52,6 +59,10 @@ export class ViewManager {
         else {
             this._views.perspectives[perspective.name] = perspective;
         }
+    }
+
+    registerMenu(menuItem: IMenuItem) {
+        this._menus.push(menuItem);
     }
 
     getPerspectiveViewName(perspectiveName: string, view: string) {
@@ -76,6 +87,10 @@ export class ViewManager {
             return view;
         }
         throw new Error(`View '${view}' is not defined`);
+    }
+
+    getMenus() {
+        return this._menus;
     }
 }
 
