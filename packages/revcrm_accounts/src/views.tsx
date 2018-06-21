@@ -93,20 +93,6 @@ export function registerViews(views: ViewManager) {
             </CRMFormView>
         )
     });
-    views.registerPerspective({
-        name: 'accounts',
-        title: 'Accounts',
-        views: {
-            list: 'account_list',
-            form: 'account_form',
-            contact: 'account_contact_form'
-        }
-    });
-    views.registerMenu({
-        text: 'Accounts',
-        url: '/accounts/list',
-        icon: <Home />
-    });
 
     // Account Link views
     views.registerView({
@@ -148,17 +134,27 @@ export function registerViews(views: ViewManager) {
             </CRMFormView>
         )
     });
+
     views.registerPerspective({
-        name: 'accountlinks',
-        title: 'Account Links',
+        name: 'accounts',
+        title: 'Accounts',
         views: {
-            list: 'accountlink_list',
-            form: 'accountlink_form'
+            list: 'account_list',
+            form: 'account_form',
+            contact: 'account_contact_form',
+            links: 'accountlink_list',
+            link: 'accountlink_form'
         }
+    });
+
+    views.registerMenu({
+        text: 'Accounts',
+        url: '/accounts/list',
+        icon: <Home />
     });
     views.registerMenu({
         text: 'Account Links',
-        url: '/accountlinks/list',
+        url: '/accounts/links',
         icon: <Home />
     });
 
