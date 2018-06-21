@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 export interface ICRMListViewProps {
     searchFields?: React.ReactNode[];
     fields: string[];
+    related?: string[];
     detailView?: string;
 }
 
@@ -106,6 +107,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
                     <ListView
                         model={ctx.view.model}
                         fields={this.props.fields}
+                        related={this.props.related}
                         where={this.state.where}
                         onItemPress={(record) => this.onItemPress(record)}
                     />

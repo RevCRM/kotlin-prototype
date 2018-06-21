@@ -45,9 +45,7 @@ export class Account extends EntityModel<Account> {
 
     @rev.TextField({ label: 'Name' })
         get name() {
-            return this.type == 'organisation'
-                ? this.org_name
-                : (this.first_name || '') + ' ' + this.last_name;
+            return this.toString();
         }
 
     @rev.TextField({ label: 'Phone', required: false })
@@ -77,6 +75,12 @@ export class Account extends EntityModel<Account> {
         if (this.type == 'contact' && !this.last_name) {
             vc.result.addFieldError('last_name', 'Last Name is required');
         }
+    }
+
+    toString() {
+        return this.type == 'organisation'
+                ? this.org_name
+                : (this.first_name || '') + ' ' + this.last_name;
     }
 
 }

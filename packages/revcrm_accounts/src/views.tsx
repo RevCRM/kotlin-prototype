@@ -6,15 +6,8 @@ import { ViewManager } from 'revcrm/lib/client';
 import { CRMListView, CRMFormView, Panel } from 'revcrm/lib/views';
 
 export function registerViews(views: ViewManager) {
-    views.registerPerspective({
-        name: 'accounts',
-        title: 'Accounts',
-        views: {
-            list: 'account_list',
-            form: 'account_form'
-        }
-    });
 
+    // Account views
     views.registerView({
         name: 'account_list',
         model: 'Account',
@@ -37,13 +30,6 @@ export function registerViews(views: ViewManager) {
             />
         )
     });
-
-    views.registerMenu({
-        text: 'Accounts',
-        url: '/accounts/list',
-        icon: <Home />
-    });
-
     views.registerView({
         name: 'account_form',
         model: 'Account',
@@ -81,4 +67,72 @@ export function registerViews(views: ViewManager) {
             </CRMFormView>
         )
     });
-}
+    views.registerPerspective({
+        name: 'accounts',
+        title: 'Accounts',
+        views: {
+            list: 'account_list',
+            form: 'account_form'
+        }
+    });
+    views.registerMenu({
+        text: 'Accounts',
+        url: '/accounts/list',
+        icon: <Home />
+    });
+
+    // Account Link views
+    views.registerView({
+        name: 'accountlink_list',
+        model: 'AccountLink',
+        component: (
+            <CRMListView
+                searchFields={<>
+                    <SearchField name="parent" />
+                    <SearchField name="parent_relationship" />
+                    <SearchField name="child" />
+                    <SearchField name="child_relationship" />
+                </>}
+                fields={[
+                    'parent',
+                    'parent_relationship',
+                    'child',
+                    'child_relationship',
+                ]}
+                related={[
+                    'parent',
+                    'child'
+                ]}
+                detailView="accountlinks/form"
+            />
+        )
+    });
+    views.registerView({
+        name: 'accountlink_form',
+        model: 'AccountLink',
+        component: (
+            <CRMFormView>
+                <Panel title="Account Link" colspan={12}>
+                    <Field name="parent" />
+                    <Field name="child" />
+                    <Field name="parent_relationship" />
+                    <Field name="child_relationship" />
+                </Panel>
+            </CRMFormView>
+        )
+    });
+    views.registerPerspective({
+        name: 'accountlinks',
+        title: 'Account Links',
+        views: {
+            list: 'accountlink_list',
+            form: 'accountlink_form'
+        }
+    });
+    views.registerMenu({
+        text: 'Account Links',
+        url: '/accountlinks/list',
+        icon: <Home />
+    });
+
+ }
