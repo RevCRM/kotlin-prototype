@@ -82,7 +82,7 @@ class UserLoginFormC extends React.Component<WithStyles<keyof typeof styles>, IU
                             style={{ marginTop: 15 }}
                             onResponse={(res) => {
                                 if (res.status == 200) {
-                                    window.location.pathname = '/';
+                                    window.location.pathname = '/accounts/list/';
                                 }
                                 else {
                                     this.loginFailed(res);
