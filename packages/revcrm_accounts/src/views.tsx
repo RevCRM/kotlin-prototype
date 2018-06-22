@@ -175,12 +175,13 @@ export function registerViews(views: ViewManager) {
     views.registerMenu({
         text: 'Accounts',
         url: '/accounts/list',
-        icon: <Home />
-    });
-    views.registerMenu({
-        text: 'Account Links',
-        url: '/accounts/links',
-        icon: <Home />
+        icon: <Home />,
+        subItems: [
+            { text: 'Accounts List', url: '/accounts/list' },
+            { text: 'Create Account', url: '/accounts/form' },
+            { text: 'Create Contact', url: '/accounts/contact' },
+            { text: 'Link Accounts', url: '/accounts/link' },
+        ]
     });
 
  }

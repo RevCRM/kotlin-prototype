@@ -30,10 +30,16 @@ export interface IViewMeta {
     };
 }
 
+export interface IMenuSubItem {
+    text: string;
+    url: string;
+}
+
 export interface IMenuItem {
     text: string;
     url: string;
     icon: React.ReactElement<any>;
+    subItems?: IMenuSubItem[];
 }
 
 export class ViewManager {
