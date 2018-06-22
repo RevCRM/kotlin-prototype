@@ -1,9 +1,9 @@
 
 import * as React from 'react';
 import Home from '@material-ui/icons/Home';
-import { Field, SearchField } from 'rev-ui';
+import { Field, SearchField, ListView } from 'rev-ui';
 import { ViewManager } from 'revcrm/lib/client';
-import { CRMListView, CRMFormView, Panel, CRMViewContext } from 'revcrm/lib/views';
+import { CRMListView, CRMFormView, Panel, CRMViewContext, Tabs } from 'revcrm/lib/views';
 
 export function registerViews(views: ViewManager) {
 
@@ -61,12 +61,28 @@ export function registerViews(views: ViewManager) {
                     <Field name="primary_address.region" colspan={12} />
                     <Field name="primary_address.country" colspan={12} />
                 </Panel>
-                <Panel title="Notes & Contacts" colspan={12}>
-                    <Field name="notes" colspan={12} />
-                    <CRMViewContext.Consumer>{(ctx) => (
-                        <p>{'AccountID: ' + ctx.primaryKeyValue}</p>
-                    )}</CRMViewContext.Consumer>
-                </Panel>
+                <CRMViewContext.Consumer>{(ctx) => (
+                    <Tabs colspan={12} tabs={[
+                        {
+                            label: 'Related Accounts',
+                            component: <ListView
+                                title=" "
+                                model="Account"
+                                fields={[
+                                    'type',
+                                    'name',
+                                    'tags',
+                                ]}
+                                onItemPress={(record) => this.onItemPress(record)}
+                            />
+                        },
+                        {
+                            label: 'Notes',
+                            grid: true,
+                            component: <Field name="notes" colspan={12} />
+                        },
+                    ]} />
+                )}</CRMViewContext.Consumer>
             </CRMFormView>
         )
     });
