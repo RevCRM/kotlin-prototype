@@ -4,6 +4,7 @@ import Home from '@material-ui/icons/Home';
 import { Field, SearchField, ListView } from 'rev-ui';
 import { ViewManager } from 'revcrm/lib/client';
 import { CRMListView, CRMFormView, Panel, CRMViewContext, Tabs } from 'revcrm/lib/views';
+import { AccountLink } from './models/AccountLink';
 
 export function registerViews(views: ViewManager) {
 
@@ -67,13 +68,18 @@ export function registerViews(views: ViewManager) {
                             label: 'Related Accounts',
                             component: <ListView
                                 title=" "
-                                model="Account"
+                                model="AccountLink"
+                                where={{
+                                    parent: ctx.primaryKeyValue
+                                }}
                                 fields={[
-                                    'type',
-                                    'name',
-                                    'tags',
+                                    'child',
+                                    'child_relationship',
                                 ]}
-                                onItemPress={(record) => this.onItemPress(record)}
+                                related={[
+                                    'child'
+                                ]}
+                                onItemPress={(record: AccountLink) => ctx.changePerspective('accounts', 'form', { id: record.child.id })}
                             />
                         },
                         {
@@ -135,7 +141,7 @@ export function registerViews(views: ViewManager) {
                     'parent',
                     'child'
                 ]}
-                detailView="accountlinks/form"
+                detailView="accounts/link"
             />
         )
     });
