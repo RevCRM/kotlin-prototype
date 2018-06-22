@@ -6,7 +6,7 @@ import { TopNav } from './menu/TopNav';
 import { LeftNav } from './menu/LeftNav';
 import { UserLoginForm } from '../../models/User/views/UserLoginForm';
 import { Route } from 'react-router-dom';
-import { CRMViewManager } from './CRMViewManager';
+import { CRMViewManager } from '../../views/CRMViewManager';
 
 const theme = createMuiTheme();
 

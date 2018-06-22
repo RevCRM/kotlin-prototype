@@ -1,18 +1,17 @@
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 import Add from '@material-ui/icons/Add';
 import { ListView, IModelManagerProp, SearchView, SearchAction } from 'rev-ui';
-import { ICRMViewManagerContext } from '../client/components/CRMViewManager';
 import { IModel } from 'rev-models';
 import { withModelManager } from 'rev-ui/lib/provider/withModelManager';
 import Paper from '@material-ui/core/Paper';
 import { withStyles, WithStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import { withCRMViewContext, ICRMViewContextProp } from './CRMViewManager';
 
-export interface ICRMListViewProps {
+export interface ICRMListViewProps extends IModelManagerProp, ICRMViewContextProp, WithStyles<keyof typeof styles> {
     searchFields?: React.ReactNode[];
     fields: string[];
     related?: string[];
@@ -33,15 +32,10 @@ const styles = {
     }
 };
 
-class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp & WithStyles<keyof typeof styles>, ICRMListViewState> {
+class CRMListViewC extends React.Component<ICRMListViewProps, ICRMListViewState> {
 
-    context: ICRMViewManagerContext;
-    static contextTypes = {
-        viewContext: PropTypes.object
-    };
-
-    constructor(props: any, context: any) {
-        super(props, context);
+    constructor(props: any) {
+        super(props);
         this.state = {
             where: {}
         };
@@ -52,7 +46,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
             throw new Error(`CRMListView onRecordClick() Error: no detailView set in view: ${this.context.viewContext.view.name}`);
         }
         const [ perspectiveName, viewName ] = this.props.detailView.split('/');
-        this.context.viewContext.changePerspective(perspectiveName, viewName, args);
+        this.props.viewContext.changePerspective(perspectiveName, viewName, args);
     }
 
     onSearch(newWhere: object) {
@@ -70,9 +64,6 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
     }
 
     render() {
-        console.log('ListView props', this.props);
-        console.log('ListView context', this.context);
-        const ctx = this.context.viewContext;
         return (
             <div>
                 <Button variant="raised" color="primary"
@@ -89,7 +80,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
                         </Typography>
 
                         <SearchView
-                            model={ctx.view.model}
+                            model={this.props.viewContext.view.model}
                             onSearch={(where) => this.onSearch(where)}
                         >
                             {this.props.searchFields}
@@ -105,7 +96,7 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
 
                 <Paper className={this.props.classes.listWrapper}>
                     <ListView
-                        model={ctx.view.model}
+                        model={this.props.viewContext.view.model}
                         fields={this.props.fields}
                         related={this.props.related}
                         where={this.state.where}
@@ -117,4 +108,4 @@ class CRMListViewC extends React.Component<ICRMListViewProps & IModelManagerProp
     }
 }
 
-export const CRMListView = withStyles(styles)(withModelManager(CRMListViewC)) as any;
+export const CRMListView = withStyles(styles)(withModelManager(withCRMViewContext(CRMListViewC))) as any;

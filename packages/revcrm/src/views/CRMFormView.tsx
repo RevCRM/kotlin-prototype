@@ -1,13 +1,12 @@
 
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 
 import Grid from '@material-ui/core/Grid';
 import Done from '@material-ui/icons/Done';
 import Delete from '@material-ui/icons/Delete';
 import { IDetailViewContextProp, DetailView, SaveAction, RemoveAction } from 'rev-ui';
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
-import { ICRMViewManagerContext } from '../client/components/CRMViewManager';
+import { CRMViewContext } from '../views/CRMViewManager';
 import { withDetailViewContext } from 'rev-ui/lib/views/withDetailViewContext';
 
 const styles = {
@@ -61,17 +60,13 @@ const CRMFormViewContent: React.ComponentType = withStyles(styles)(withDetailVie
 
 export class CRMFormView extends React.Component {
 
-    context: ICRMViewManagerContext;
-    static contextTypes = {
-        viewContext: PropTypes.object
-    };
-
     render() {
-        const ctx = this.context.viewContext;
         return (
-            <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue} related={ctx.view.related}>
-                <CRMFormViewContent>{this.props.children}</CRMFormViewContent>
-            </DetailView>
+            <CRMViewContext.Consumer>{(ctx) => (
+                <DetailView model={ctx.view.model} primaryKeyValue={ctx.primaryKeyValue} related={ctx.view.related}>
+                    <CRMFormViewContent>{this.props.children}</CRMFormViewContent>
+                </DetailView>
+            )}</CRMViewContext.Consumer>
         );
     }
 }

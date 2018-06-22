@@ -59,4 +59,4 @@ function mapDispatchToProps(dispatch: Dispatch<any>): Partial<ILeftNavDispatchPr
     };
 }
 
-export const LeftNav = withRouter(connect(mapStateToProps, mapDispatchToProps as any)(LeftNavC));
+export const LeftNav = withRouter(connect(mapStateToProps, mapDispatchToProps as any)(LeftNavC)) as any;
