@@ -22,7 +22,7 @@ interface ICRMListViewState {
     where: object;
 }
 
-const styles = {
+export const styles = {
     searchWrapper: {
         marginTop: 20,
         padding: 24
