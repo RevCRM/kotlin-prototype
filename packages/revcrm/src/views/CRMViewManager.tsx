@@ -13,13 +13,21 @@ export const styles = {
     root: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        maxWidth: 1000
+        maxWidth: 1000,
+        '@media print': {
+            maxWidth: 'none'
+        }
     },
-    viewSelector: {
-        marginLeft: 30
+    toolBar: {
+        '@media print': {
+            display: 'none'
+        }
     },
     viewWrapper: {
-        margin: '0 20'
+        margin: '0 20',
+        '@media print': {
+            margin: 0
+        }
     }
 };
 
@@ -133,7 +141,7 @@ class CRMViewManagerC extends React.Component<ICRMViewManagerProps & IModelManag
             return (
                 <div className={this.props.classes.root}>
                     <CRMViewContext.Provider value={this.state.viewContext}>
-                        <Toolbar>
+                        <Toolbar className={this.props.classes.toolBar}>
                             <ArrowBack style={{marginRight: 10, cursor: 'pointer'}} onClick={() => this.props.history.goBack()} />
                             <Typography variant="title" color="inherit">
                                 {ctx.perspective.title}
