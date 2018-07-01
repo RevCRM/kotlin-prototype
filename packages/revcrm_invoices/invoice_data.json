@@ -1,0 +1,45 @@
+{
+    "company_name": "RevCRM Ltd",
+    "company_tagline": "For all you're awesome CRM needs!",
+    "invoice_to": [
+        "Mr Bob Customer",
+        "123 Test Street",
+        "Auckland 1010",
+        "New Zealand"
+    ],
+    "gst_number": "123-456-789",
+    "invoice_date": "01/07/2018",
+    "invoice_number": "583",
+    "invoice_currency": "NZD",
+    "items": [
+        {
+            "name": "Widgets",
+            "quantity": "33",
+            "unit": "PCE",
+            "unit_price": "90.00",
+            "line_net_total": "2970.00",
+            "line_tax": "445.50"
+        },
+        {
+            "name": "Widget Container",
+            "quantity": "1",
+            "unit": "PCE",
+            "unit_price": "100.87",
+            "line_net_total": "100.87",
+            "line_tax": "15.13"
+        },
+        {
+            "name": "Widget Container Insurance",
+            "quantity": "1",
+            "unit": "PCE",
+            "unit_price": "27.83",
+            "line_net_total": "27.83",
+            "line_tax": "4.17"
+        }
+    ],
+    "invoice_net_total": "3098.70",
+    "invoice_tax": "464.80",
+    "invoice_total": "3563.50",
+    "payment_due_date": "30/07/2018",
+    "payment_information": "Please make your payment in via PayPal to xxxxxxxxxxx by the payment date shown. Thanks for you custom!"
+}

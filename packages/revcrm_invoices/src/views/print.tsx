@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
+import { Divider } from '@material-ui/core';
 
 interface IInvoiceLine {
     name: string;
@@ -25,10 +26,13 @@ interface IInvoice {
     gst_number: string;
     invoice_date: string;
     invoice_number: string;
+    invoice_currency: string;
     items: IInvoiceLine[];
     invoice_net_total: string;
     invoice_tax: string;
     invoice_total: string;
+    payment_due_date: string;
+    payment_information: string;
 }
 
 const inv: IInvoice = require('../../invoice_data.json');
@@ -73,7 +77,7 @@ export function registerViews(views: ViewManager) {
                                 <TableCell style={tableCellStyle}>Item</TableCell>
                                 <TableCell style={tableCellStyle} numeric>Quantity</TableCell>
                                 <TableCell style={tableCellStyle} numeric>Unit</TableCell>
-                                <TableCell style={tableCellStyle} numeric>Unit Price</TableCell>
+                                <TableCell style={tableCellStyle} numeric>Unit Price ({inv.invoice_currency})</TableCell>
                                 <TableCell style={tableCellStyle} numeric>Total (excl. GST)</TableCell>
                                 <TableCell style={tableCellStyle} numeric>GST @ 15%</TableCell>
                             </TableRow>
@@ -95,14 +99,28 @@ export function registerViews(views: ViewManager) {
                 <Grid item xs={6} />
                 <Grid item xs={6} container>
                     <Grid item xs={12} style={{height: 20}} />
-                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>Total (excl. GST):</b></Typography></Grid>
-                    <Grid item xs={6}><Typography variant="subheading" align="right">{inv.invoice_net_total}</Typography></Grid>
+                    <Grid item xs={6}><Typography variant="body1" align="right"><b>Total (excl. GST):</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="body1" align="right">{inv.invoice_net_total} {inv.invoice_currency}</Typography></Grid>
                     <Grid item xs={12} style={{height: 10}} />
-                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>GST:</b></Typography></Grid>
-                    <Grid item xs={6}><Typography variant="subheading" align="right">{inv.invoice_tax}</Typography></Grid>
+                    <Grid item xs={6}><Typography variant="body1" align="right"><b>GST:</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="body1" align="right">{inv.invoice_tax} {inv.invoice_currency}</Typography></Grid>
                     <Grid item xs={12} style={{height: 10}} />
-                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>Invoice Total:</b></Typography></Grid>
-                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>{inv.invoice_total}</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="body1" align="right"><b>Invoice Total:</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="body1" align="right"><b>{inv.invoice_total} {inv.invoice_currency}</b></Typography></Grid>
+                    <Grid item xs={12} style={{height: 10}} />
+                    <Grid item xs={6}><Typography variant="body1" align="right"><b>Payment Due:</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="body1" align="right"><b>{inv.payment_due_date}</b></Typography></Grid>
+                    <Grid item xs={12} style={{height: 20}} />
+                </Grid>
+                <Grid item xs={12}>
+                    <Divider />
+                    <Grid item xs={12} style={{height: 20}} />
+                    <Typography variant="title" style={{ marginBottom: 12 }}>
+                        Payment Information
+                    </Typography>
+                    <Typography variant="body1">
+                        {inv.payment_information}
+                    </Typography>
                 </Grid>
             </Grid>
         )
@@ -115,7 +133,5 @@ export function registerViews(views: ViewManager) {
             print: 'invoice_print'
         }
     });
-
-    console.log('registered!!');
 
  }
