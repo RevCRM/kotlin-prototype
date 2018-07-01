@@ -3,9 +3,14 @@ import * as React from 'react';
 import { ViewManager } from 'revcrm/lib/client';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import TableBody from '@material-ui/core/TableBody';
 
 interface IInvoiceLine {
-    item: string;
+    name: string;
     quantity: string;
     unit: string;
     unit_price: string;
@@ -23,9 +28,13 @@ interface IInvoice {
     items: IInvoiceLine[];
     invoice_net_total: string;
     invoice_tax: string;
+    invoice_total: string;
 }
 
 const inv: IInvoice = require('../../invoice_data.json');
+const tableCellStyle = {
+    padding: 0
+};
 
 export function registerViews(views: ViewManager) {
 
@@ -56,6 +65,44 @@ export function registerViews(views: ViewManager) {
 
                     <Grid item xs={6}><Typography variant="body1"><b>Invoice Number:</b></Typography></Grid>
                     <Grid item xs={6}><Typography variant="body1">{inv.invoice_number}</Typography></Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={tableCellStyle}>Item</TableCell>
+                                <TableCell style={tableCellStyle} numeric>Quantity</TableCell>
+                                <TableCell style={tableCellStyle} numeric>Unit</TableCell>
+                                <TableCell style={tableCellStyle} numeric>Unit Price</TableCell>
+                                <TableCell style={tableCellStyle} numeric>Total (excl. GST)</TableCell>
+                                <TableCell style={tableCellStyle} numeric>GST @ 15%</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                        {inv.items.map((item, idx) => (
+                            <TableRow key={idx}>
+                                <TableCell style={tableCellStyle}>{item.name}</TableCell>
+                                <TableCell style={tableCellStyle} numeric>{item.quantity}</TableCell>
+                                <TableCell style={tableCellStyle} numeric>{item.unit}</TableCell>
+                                <TableCell style={tableCellStyle} numeric>{item.unit_price}</TableCell>
+                                <TableCell style={tableCellStyle} numeric>{item.line_net_total}</TableCell>
+                                <TableCell style={tableCellStyle} numeric>{item.line_tax}</TableCell>
+                            </TableRow>
+                        ))}
+                        </TableBody>
+                    </Table>
+                </Grid>
+                <Grid item xs={6} />
+                <Grid item xs={6} container>
+                    <Grid item xs={12} style={{height: 20}} />
+                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>Total (excl. GST):</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="subheading" align="right">{inv.invoice_net_total}</Typography></Grid>
+                    <Grid item xs={12} style={{height: 10}} />
+                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>GST:</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="subheading" align="right">{inv.invoice_tax}</Typography></Grid>
+                    <Grid item xs={12} style={{height: 10}} />
+                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>Invoice Total:</b></Typography></Grid>
+                    <Grid item xs={6}><Typography variant="subheading" align="right"><b>{inv.invoice_total}</b></Typography></Grid>
                 </Grid>
             </Grid>
         )
