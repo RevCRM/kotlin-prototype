@@ -15,7 +15,10 @@ export interface ITopNavDispatchProps {
 
 export const styles = {
     root: {
-        width: '100%'
+        width: '100%',
+        '@media print': {
+            display: 'none'
+        }
     },
     flex: {
         flex: 1,
