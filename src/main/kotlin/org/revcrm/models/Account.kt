@@ -7,7 +7,7 @@ data class Account(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Int,
+    private val id: Int = 0,
 
     @Column(nullable = false)
     val name: String
