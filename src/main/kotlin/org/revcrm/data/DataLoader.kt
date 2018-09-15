@@ -5,11 +5,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.revcrm.models.common.SelectionList
+import org.revcrm.models.common.SelectionOption
 import javax.inject.Inject
 
 data class SelectionListImport(
-    val selection_list: Array<SelectionList>
-//    val selection_option: Array<SelectionOption>
+    val selection_list: Array<SelectionList>,
+    val selection_option: Array<SelectionOption>
 )
 
 class DataLoader @Inject constructor(_db: Database) {

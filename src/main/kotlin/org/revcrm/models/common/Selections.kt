@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne
 @Entity
 data class SelectionList(
     val model: String,
-    val code: String,
     val label: String
 ): BaseModel()
 
@@ -22,8 +21,8 @@ data class SelectionOption(
         foreignKey = ForeignKey(name = "fk_list_id")
     )
     val list: SelectionList,
-
     val code: String,
-    val label: String
+    val label: String,
+    val seq: Short
 
 ): BaseModel()
