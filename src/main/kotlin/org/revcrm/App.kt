@@ -3,7 +3,11 @@ package org.revcrm
 import org.hibernate.SessionFactory
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
-import org.revcrm.models.Account
+import org.revcrm.models.accounts.Account
+
+// To Investigate
+// DI for Database Stuff
+// http://bisaga.com/blog/programming/sakila-dagger-2-dependency-injection/
 
 fun main(args: Array<String>) {
     println("Starting RevCRM...")

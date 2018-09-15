@@ -1,4 +1,4 @@
-package org.revcrm.models
+package org.revcrm.models.accounts
 
 import javax.persistence.*
 
@@ -7,7 +7,7 @@ data class Account(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Int = 0,
+    val id: Int = 0,
 
     @Column(nullable = false)
     val name: String
