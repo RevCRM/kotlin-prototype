@@ -7,12 +7,15 @@ package org.revcrm
 fun main(args: Array<String>) {
     println("Starting RevCRM...")
 
-    val loader = DaggerRevCRMComponent
+    val revcrm = DaggerRevCRMComponent
             .builder()
             .build()
-            .getLoader()
 
+    val loader = revcrm.getLoader()
     loader.importData()
+
+    // Make sure we clean up after ourselves :)
+    revcrm.getDatabase().close()
 
 //    if ( sessionFactory != null ) {
 //        // Do Database Stuff!...

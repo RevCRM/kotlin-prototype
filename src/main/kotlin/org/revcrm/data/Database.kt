@@ -2,6 +2,7 @@ package org.revcrm.data
 
 import dagger.Module
 import dagger.Provides
+import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
@@ -24,8 +25,25 @@ class Database {
         }
     }
 
-    fun getSession() {
-        factory.openSession()
+    fun getSession(): Session {
+        return factory.openSession()
+    }
+
+    fun withTransaction(method: (Session) -> Unit) {
+        getSession().use{session ->
+            session.beginTransaction()
+            try {
+                method(session)
+                session.getTransaction().commit()
+            }
+            catch (e: Exception) {
+                session.getTransaction().rollback()
+                throw e
+            }
+            finally {
+                session.close()
+            }
+        }
     }
 
     fun close() {

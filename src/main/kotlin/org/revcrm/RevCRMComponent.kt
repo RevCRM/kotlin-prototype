@@ -2,6 +2,7 @@ package org.revcrm
 
 import dagger.Component
 import org.revcrm.data.DataLoader
+import org.revcrm.data.Database
 import org.revcrm.data.DatabaseModule
 import javax.inject.Singleton
 
@@ -9,4 +10,5 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(DatabaseModule::class))
 interface RevCRMComponent {
     fun getLoader(): DataLoader
+    fun getDatabase(): Database
 }

@@ -23,8 +23,12 @@ class DataLoader @Inject constructor(_db: Database) {
 
         val import = mapper.readValue<SelectionListImport>(res)
 
-        println("imported ${import.selection_list.size} lists")
+        db.withTransaction { session ->
+            import.selection_list.forEach { list ->
+                session.save(list)
+            }
+        }
 
-        db.close()
+        println("imported ${import.selection_list.size} lists")
     }
 }
