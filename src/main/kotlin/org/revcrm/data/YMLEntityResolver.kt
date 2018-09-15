@@ -12,16 +12,17 @@ class YMLEntityResolver @Inject constructor(_db: Database): SimpleObjectIdResolv
     val db: Database = _db
 
     override fun bindItem(id: IdKey, pojo: Any) {
+        println("binding...")
         super.bindItem(id, pojo)
     }
 
     override fun resolveId(id: IdKey): Any? {
+        println("resolving...")
         var resolved: Any? = super.resolveId(id)
         if (resolved == null) {
             resolved = _tryToLoadFromSource(id)
             bindItem(id, resolved)
         }
-
         return resolved
     }
 
@@ -35,10 +36,12 @@ class YMLEntityResolver @Inject constructor(_db: Database): SimpleObjectIdResolv
     }
 
     override fun newForDeserialization(context: Any?): ObjectIdResolver {
+        println("new thingy")
         return YMLEntityResolver(db)
     }
 
     override fun canUseFor(resolverType: ObjectIdResolver): Boolean {
+        println("can i use")
         return resolverType.javaClass == YMLEntityResolver::class.java
     }
 
