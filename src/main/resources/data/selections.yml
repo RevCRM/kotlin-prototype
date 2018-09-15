@@ -1,12 +1,17 @@
 # Titles
 ---
 selection_list:
-  - id: account.titles
-    code: account.titles
+
+  - code: account.titles
     model: account
     label: Contact Titles
 
-selection_options:
-  - { listId: account.titles, code: Mr, label: Mr, seq: 1 }
-  - { listId: account.titles, code: Mrs, label: Mrs, seq: 2 }
-  - { listId: account.titles, code: Miss, label: Miss, seq: 3 }
+  - code: account.sources
+    model: account
+    label: Account Source
+
+
+#selection_option:
+#  - { listId: account.titles, code: Mr, label: Mr, seq: 1 }
+#  - { listId: account.titles, code: Mrs, label: Mrs, seq: 2 }
+#  - { listId: account.titles, code: Miss, label: Miss, seq: 3 }

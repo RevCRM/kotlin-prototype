@@ -3,6 +3,7 @@ package org.revcrm
 import org.hibernate.SessionFactory
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
+import org.revcrm.data.importData
 import org.revcrm.models.accounts.Account
 
 // To Investigate
@@ -40,6 +41,9 @@ fun main(args: Array<String>) {
         ))
         session.getTransaction().commit()
         session.close()
+
+        println("importing data...")
+        importData()
 
         sessionFactory.close()
 

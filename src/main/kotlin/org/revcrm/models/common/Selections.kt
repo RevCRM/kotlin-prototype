@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne
 @Entity
 data class SelectionList(
     val model: String,
+    val code: String,
     val label: String
 ): BaseModel()
 
