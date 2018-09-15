@@ -29,12 +29,13 @@ class Database {
         return factory.openSession()
     }
 
-    fun withTransaction(method: (Session) -> Unit) {
-        getSession().use{session ->
+    fun <T>withTransaction(method: (Session) -> T): T
+        = getSession().use { session ->
             session.beginTransaction()
             try {
-                method(session)
+                val result = method(session)
                 session.getTransaction().commit()
+                return result
             }
             catch (e: Exception) {
                 session.getTransaction().rollback()
@@ -44,7 +45,6 @@ class Database {
                 session.close()
             }
         }
-    }
 
     fun close() {
         factory.close()
