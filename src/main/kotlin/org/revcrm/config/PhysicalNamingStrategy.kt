@@ -1,4 +1,4 @@
-package org.revcrm.utils
+package org.revcrm.config
 
 import org.apache.commons.lang3.StringUtils
 import org.hibernate.boot.model.naming.Identifier

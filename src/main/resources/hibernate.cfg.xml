@@ -35,7 +35,7 @@
         <property name="hbm2ddl.auto">create</property>
 
         <!-- Configure naming strategy -->
-        <property name="physical_naming_strategy">org.revcrm.utils.PhysicalNamingStrategy</property>
+        <property name="physical_naming_strategy">org.revcrm.config.PhysicalNamingStrategy</property>
 
         <!-- Names the annotated entity class -->
         <mapping class="org.revcrm.models.accounts.Account"/>
