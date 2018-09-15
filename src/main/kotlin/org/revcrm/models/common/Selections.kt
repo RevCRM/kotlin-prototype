@@ -1,21 +1,19 @@
 package org.revcrm.models.common
 
-import javax.persistence.*
+import org.revcrm.models.BaseModel
+import javax.persistence.Entity
+import javax.persistence.ForeignKey
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 
 @Entity
 data class SelectionList(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
-    val code: String,
+    val model: String,
     val label: String
-)
+): BaseModel()
 
 @Entity
 data class SelectionOption(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
 
     @ManyToOne
     @JoinColumn(
@@ -26,4 +24,5 @@ data class SelectionOption(
 
     val code: String,
     val label: String
-)
+
+): BaseModel()

@@ -1,14 +1,13 @@
 package org.revcrm.models.accounts
 
-import javax.persistence.*
+import org.revcrm.models.BaseModel
+import javax.persistence.Column
+import javax.persistence.Entity
 
 @Entity
 data class Account(
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
-
     @Column(nullable = false)
     val name: String
-)
+
+): BaseModel()
