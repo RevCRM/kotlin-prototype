@@ -12,10 +12,13 @@ fun main(args: Array<String>) {
             .build()
 
     val loader = revcrm.getLoader()
-    loader.importData()
 
-    // Make sure we clean up after ourselves :)
-    revcrm.getDatabase().close()
+    try {
+        loader.importData()
+    }
+    finally {
+        revcrm.getDatabase().close()
+    }
 
 //    if ( sessionFactory != null ) {
 //        // Do Database Stuff!...
