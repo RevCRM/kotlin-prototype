@@ -6,7 +6,7 @@ import org.hibernate.boot.model.naming.PhysicalNamingStrategy
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment
 import java.util.*
 
-class PhysicalNamingStrategy : PhysicalNamingStrategy {
+class RevPhysicalNamingStrategy : PhysicalNamingStrategy {
 
     override fun toPhysicalCatalogName(name: Identifier?, jdbcEnvironment: JdbcEnvironment): Identifier? {
         return name
