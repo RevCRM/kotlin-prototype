@@ -1,10 +1,10 @@
 package org.revcrm.models
 
-import org.hibernate.annotations.NaturalId
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.MappedSuperclass
+import java.sql.Timestamp
+import java.time.Instant
+import javax.persistence.*
+
+
 
 @MappedSuperclass
 abstract class BaseModel {
@@ -12,6 +12,18 @@ abstract class BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0
 
-    @NaturalId
-    var dataId: String? = null
+    lateinit var createdDate: Timestamp
+    lateinit var updatedDate: Timestamp
+
+    @PrePersist
+    fun prePersist() {
+        createdDate = Timestamp.from(Instant.now())
+        updatedDate = createdDate
+    }
+
+    @PreUpdate
+    fun preUpdate() {
+        updatedDate = Timestamp.from(Instant.now())
+    }
+
 }
