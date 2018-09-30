@@ -22,7 +22,7 @@ data class Account(
         var notes: String,
 
         @ManyToOne
-        @JoinColumn(name = "primary_addressId")
+        @JoinColumn(name = "primary_address_id")
         var primary_address: Address
 
 ): BaseModel()
