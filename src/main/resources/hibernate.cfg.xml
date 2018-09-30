@@ -37,6 +37,9 @@
         <!-- Configure naming strategies -->
         <property name="physical_naming_strategy">org.revcrm.config.RevPhysicalNamingStrategy</property>
 
+        <!-- Force timezone to UTC -->
+        <property name="jdbc.time_zone">UTC</property>
+
         <!-- Names the annotated entity class -->
         <mapping class="org.revcrm.models.accounts.Account"/>
         <mapping class="org.revcrm.models.common.SelectionList"/>
