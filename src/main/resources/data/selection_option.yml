@@ -1,9 +1,18 @@
 # Selection Options
 ---
+- { list: account.types, code: organisation, label: Organisation, seq: 1 }
+- { list: account.types, code: contact, label: Contact, seq: 1 }
+
 - { list: account.titles, code: Mr, label: Mr, seq: 1 }
 - { list: account.titles, code: Mrs, label: Mrs, seq: 2 }
 - { list: account.titles, code: Miss, label: Miss, seq: 3 }
+- { list: account.titles, code: Ms, label: Ms, seq: 4 }
+- { list: account.titles, code: Dr, label: Dr, seq: 5 }
+- { list: account.titles, code: Sir, label: Sir, seq: 6 }
+- { list: account.titles, code: Prof, label: Prof, seq: 7 }
 
-- { list: account.sources, code: google, label: Google, seq: 1 }
-- { list: account.sources, code: email, label: Direct Email, seq: 2 }
-- { list: account.sources, code: marketing_email, label: Marketing Email, seq: 3 }
+- { list: account.tags, code: lead, label: Lead, seq: 1 }
+- { list: account.tags, code: prospect, label: Prospect, seq: 2 }
+- { list: account.tags, code: client, label: Client, seq: 3 }
+- { list: account.tags, code: supplier, label: Supplier, seq: 4 }
+- { list: account.tags, code: recruiter, label: Recruiter, seq: 5 }
