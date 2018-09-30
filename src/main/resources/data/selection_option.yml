@@ -1,0 +1,8 @@
+# Selection Options
+---
+- { list: account.titles, code: Mr, label: Mr, seq: 1 }
+- { list: account.titles, code: Mrs, label: Mrs, seq: 2 }
+- { list: account.titles, code: Miss, label: Miss, seq: 3 }
+
+- { list: account.sources, code: google, label: Google, seq: 1 }
+- { list: account.sources, code: email, label: Email, seq: 2 }

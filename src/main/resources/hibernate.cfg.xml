@@ -32,11 +32,10 @@
         <property name="show_sql">true</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hbm2ddl.auto">create</property>
+        <property name="hbm2ddl.auto">validate</property>
 
         <!-- Configure naming strategies -->
         <property name="physical_naming_strategy">org.revcrm.config.RevPhysicalNamingStrategy</property>
-        <property name="implicit_naming_strategy">org.revcrm.config.RevImplicitNamingStrategy</property>
 
         <!-- Names the annotated entity class -->
         <mapping class="org.revcrm.models.accounts.Account"/>

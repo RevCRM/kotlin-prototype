@@ -1,5 +1,6 @@
 package org.revcrm.models
 
+import org.hibernate.annotations.NaturalId
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -10,5 +11,7 @@ abstract class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0
-    val dataId: String? = null
+
+    @NaturalId
+    var dataId: String? = null
 }

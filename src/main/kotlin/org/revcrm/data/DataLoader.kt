@@ -2,39 +2,48 @@ package org.revcrm.data
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.revcrm.models.common.SelectionList
-import org.revcrm.models.common.SelectionOption
 import javax.inject.Inject
 
-data class SelectionListImport(
-    val selection_list: Array<SelectionList>,
-    val selection_option: Array<SelectionOption>
-)
-
-class DataLoader @Inject constructor(_db: Database, _inst: YMLHandlerInstantiator) {
+class DataLoader @Inject constructor(_db: Database) {
     private var db = _db
-    private var inst = _inst
 
     fun importData() {
         val mapper = ObjectMapper(YAMLFactory())
-        // https://stackoverflow.com/questions/28393599/autowiring-in-jsondeserializer-springbeanautowiringsupport-vs-handlerinstantiat
-//        mapper.setHandlerInstantiator(inst)
-        mapper.registerModule(KotlinModule())
+//        mapper.registerModule(KotlinModule())
 
-        val res = object {}.javaClass.getResource("/data/selections.yml")
+        val res = object {}.javaClass.getResource("/data/selection_list.yml")
 
-        val reader = mapper.reader()
-                .forType(SelectionListImport::class.java)
-                .withAttribute("db", db)
-        val import = reader.readValue<SelectionListImport>(res)
-
-        db.withTransaction { session ->
-            import.selection_list.forEach { list ->
-                session.save(list)
-            }
+        val nodes = mapper.readTree(res)
+        if (!nodes.isArray()) {
+            throw Exception("YAML Root Element must be an array")
         }
 
-        println("imported ${import.selection_list.size} lists")
+        db.withTransaction { session ->
+            for (node in nodes) {
+                val dataId = node.get("dataId").asText()
+                val model = node.get("model").asText()
+                val label = node.get("label").asText()
+
+                val existingRecord = session
+                    .bySimpleNaturalId(SelectionList::class.java)
+                    .load(dataId)
+
+                if (existingRecord != null) {
+                    println("Updating Existing Record")
+                    existingRecord.model = model
+                    existingRecord.label = label
+                }
+                else {
+                    println("Creating New Record")
+                    val newRecord = SelectionList(
+                            model = model,
+                            label = label
+                    )
+                    newRecord.dataId = dataId
+                    session.persist(newRecord)
+                }
+            }
+        }
     }
 }
