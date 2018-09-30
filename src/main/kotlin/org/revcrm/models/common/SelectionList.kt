@@ -2,12 +2,15 @@ package org.revcrm.models.common
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import org.hibernate.annotations.NaturalId
 import org.revcrm.data.Database
 import org.revcrm.models.BaseModel
 import javax.persistence.Entity
 
 @Entity
 data class SelectionList (
+        @NaturalId
+        var code: String,
         var model: String,
         var label: String
 ): BaseModel()
@@ -21,13 +24,13 @@ fun importSelectionLists(fileName: String, db: Database) {
     }
     db.withTransaction { session ->
         for (node in nodes) {
-            val dataId = node.get("dataId").asText()
+            val code = node.get("code").asText()
             val model = node.get("model").asText()
             val label = node.get("label").asText()
 
             val existingRecord = session
-                .bySimpleNaturalId(SelectionList::class.java)
-                .load(dataId)
+                    .bySimpleNaturalId(SelectionList::class.java)
+                    .load(code)
 
             if (existingRecord != null) {
                 existingRecord.model = model
@@ -35,10 +38,10 @@ fun importSelectionLists(fileName: String, db: Database) {
             }
             else {
                 val newRecord = SelectionList(
-                    model = model,
-                    label = label
+                        code = code,
+                        model = model,
+                        label = label
                 )
-                newRecord.dataId = dataId
                 session.persist(newRecord)
             }
         }

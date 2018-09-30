@@ -5,4 +5,5 @@
 - { list: account.titles, code: Miss, label: Miss, seq: 3 }
 
 - { list: account.sources, code: google, label: Google, seq: 1 }
-- { list: account.sources, code: email, label: Email, seq: 2 }
+- { list: account.sources, code: email, label: Direct Email, seq: 2 }
+- { list: account.sources, code: marketing_email, label: Marketing Email, seq: 3 }

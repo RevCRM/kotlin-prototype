@@ -1,9 +1,9 @@
 # Selection Lists
 ---
-- dataId: account.titles
-  model: account
+- code: account.titles
   label: Contact Titles
-
-- dataId: account.sources
   model: account
+
+- code: account.sources
   label: Account Source
+  model: account
