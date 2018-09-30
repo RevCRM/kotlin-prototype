@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne
 @Entity
 data class SelectionOption(
         @ManyToOne
-        @JoinColumn(name = "listId")
+        @JoinColumn(name = "list_id")
         var list: SelectionList,
         @NaturalId
         var code: String,
@@ -32,7 +32,7 @@ fun importSelectionOptions(fileName: String, db: Database) {
             val list = node.get("list").asText()
             val code = node.get("code").asText()
             val label = node.get("label").asText()
-            val seq = node.get("seq").asInt().toShort()
+            val seq = node.get("seq")?.asInt()?.toShort() ?: 1
 
             val listRecord = session
                     .bySimpleNaturalId(SelectionList::class.java)

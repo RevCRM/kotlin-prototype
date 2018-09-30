@@ -11,3 +11,7 @@
 - code: account.tags
   label: Account Tags
   model: account
+
+- code: account.countries
+  label: Countries
+  model: account
