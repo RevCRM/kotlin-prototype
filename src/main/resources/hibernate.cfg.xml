@@ -34,14 +34,12 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">validate</property>
 
-        <!-- Configure naming strategies -->
-        <property name="physical_naming_strategy">org.revcrm.config.RevPhysicalNamingStrategy</property>
-
         <!-- Force timezone to UTC -->
         <property name="jdbc.time_zone">UTC</property>
 
         <!-- Names the annotated entity class -->
         <mapping class="org.revcrm.models.accounts.Account"/>
+        <mapping class="org.revcrm.models.accounts.Address"/>
         <mapping class="org.revcrm.models.common.SelectionList"/>
         <mapping class="org.revcrm.models.common.SelectionOption"/>
 
