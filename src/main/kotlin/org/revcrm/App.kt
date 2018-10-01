@@ -1,46 +1,34 @@
 package org.revcrm
 
-// To Investigate
-// DI for Database Stuff
-// http://bisaga.com/blog/programming/sakila-dagger-2-dependency-injection/
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.StandAloneContext.startKoin
+import org.koin.standalone.inject
+import org.revcrm.data.IDataLoader
+import org.revcrm.data.IRevCRMDB
+
+
+class RevCRM : KoinComponent {
+
+    private val dataLoader: IDataLoader by inject()
+    private val db: IRevCRMDB by inject()
+
+    fun start() = dataLoader.importData()
+    fun cleanup() = db.close()
+}
+
 
 fun main(args: Array<String>) {
     println("Starting RevCRM...")
 
-    val revcrm = DaggerRevCRMComponent
-            .builder()
-            .build()
+    startKoin(listOf(revCRMModule))
 
-    val loader = revcrm.getLoader()
+    val revcrm = RevCRM()
 
     try {
-        loader.importData()
+        revcrm.start()
     }
     finally {
-        revcrm.getDatabase().close()
+        revcrm.cleanup()
     }
 
-//    if ( sessionFactory != null ) {
-//        // Do Database Stuff!...
-//
-//        val session = sessionFactory.openSession()
-//        session.beginTransaction()
-//        session.save(Account(
-//                name = "Briggs Bikes Ltd"
-//        ))
-//        session.save(Account(
-//                name = "Owen Mowers Ltd"
-//        ))
-//        session.getTransaction().commit()
-//        session.close()
-//
-//        println("importing data...")
-//        importData()
-//
-//        sessionFactory.close()
-//
-//        println("Done!")
-//
-//    }
 }
-

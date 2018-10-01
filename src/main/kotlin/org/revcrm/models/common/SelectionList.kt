@@ -3,7 +3,7 @@ package org.revcrm.models.common
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import org.hibernate.annotations.NaturalId
-import org.revcrm.data.Database
+import org.revcrm.data.IRevCRMDB
 import org.revcrm.models.BaseModel
 import javax.persistence.Entity
 
@@ -15,7 +15,7 @@ data class SelectionList (
         var label: String
 ): BaseModel()
 
-fun importSelectionLists(fileName: String, db: Database) {
+fun importSelectionLists(fileName: String, db: IRevCRMDB) {
     val mapper = ObjectMapper(YAMLFactory())
     val res = object {}.javaClass.getResource(fileName)
     val nodes = mapper.readTree(res)

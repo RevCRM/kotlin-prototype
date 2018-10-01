@@ -1,7 +1,6 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.71'
     id "org.jetbrains.kotlin.plugin.jpa" version "1.2.71"
-    id 'org.jetbrains.kotlin.kapt' version '1.2.71'
 }
 
 group 'org.revcrm'
@@ -9,21 +8,21 @@ version '1.0.0'
 
 repositories {
     mavenCentral()
+    jcenter()
     maven { url 'https://dl.bintray.com/spekframework/spek-dev' }
 }
 
 dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.koin:koin-core:1.0.1'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.0.1'
     implementation 'org.postgresql:postgresql:42.2.5'
     implementation 'org.hibernate:hibernate-core:5.3.6.Final'
-    implementation 'org.apache.commons:commons-lang3:3.8'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.6'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6'
-    implementation 'com.google.dagger:dagger:2.17'
-    kapt 'com.google.dagger:dagger-compiler:2.17'
 
+    testImplementation 'org.koin:koin-test:1.0.1'
     testImplementation 'org.assertj:assertj-core:3.11.1'
     testImplementation ('org.spekframework.spek2:spek-dsl-jvm:2.0.0-alpha.2')  {
         exclude group: 'org.jetbrains.kotlin'

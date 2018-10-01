@@ -1,14 +1,16 @@
 package org.revcrm.data
 
-import dagger.Module
-import dagger.Provides
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
-import javax.inject.Singleton
 
-class Database {
+interface IRevCRMDB {
+    fun <T>withTransaction(method: (Session) -> T): T
+    fun close()
+}
+
+class RevCRMDB : IRevCRMDB {
     private var factory: SessionFactory
 
     init {
@@ -29,7 +31,7 @@ class Database {
         return factory.openSession()
     }
 
-    fun <T>withTransaction(method: (Session) -> T): T
+    override fun <T>withTransaction(method: (Session) -> T): T
         = getSession().use { session ->
             session.beginTransaction()
             try {
@@ -46,16 +48,7 @@ class Database {
             }
         }
 
-    fun close() {
+    override fun close() {
         factory.close()
-    }
-}
-
-@Module
-class DatabaseModule {
-    @Provides
-    @Singleton
-    fun provideDatabase(): Database {
-        return Database()
     }
 }
