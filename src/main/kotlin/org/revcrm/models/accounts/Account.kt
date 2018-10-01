@@ -6,7 +6,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
-data class Account(
+class Account(
         var type: String,
         var tags: Array<String>,
         var code: String,

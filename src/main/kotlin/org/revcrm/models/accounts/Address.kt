@@ -4,7 +4,7 @@ import org.revcrm.models.BaseModel
 import javax.persistence.Entity
 
 @Entity
-data class Address (
+class Address (
         var name: String,
         var address1: String,
         var address2: String,

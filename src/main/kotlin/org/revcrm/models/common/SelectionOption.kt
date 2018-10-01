@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
-data class SelectionOption(
+class SelectionOption(
         @ManyToOne
         @JoinColumn(name = "list_id")
         var list: SelectionList,

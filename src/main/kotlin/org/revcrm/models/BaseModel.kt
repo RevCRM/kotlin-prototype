@@ -12,8 +12,8 @@ abstract class BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0
 
-    lateinit var created_date: Timestamp
-    lateinit var updated_date: Timestamp
+    var created_date: Timestamp? = null
+    var updated_date: Timestamp? = null
 
     @PrePersist
     fun prePersist() {

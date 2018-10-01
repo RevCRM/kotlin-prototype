@@ -8,7 +8,7 @@ import org.revcrm.models.BaseModel
 import javax.persistence.Entity
 
 @Entity
-data class SelectionList (
+class SelectionList (
         @NaturalId
         var code: String,
         var model: String,
