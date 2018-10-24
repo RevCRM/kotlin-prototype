@@ -5,5 +5,5 @@ import org.revcrm.data.*
 
 val revCRMModule = module {
     single<IRevCRMDB> { RevCRMDB() }
-    single<IDataLoader> { DataLoader(get()) }
+//    single<IDataLoader> { DataLoader(get()) }
 }

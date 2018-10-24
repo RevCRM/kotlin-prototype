@@ -4,8 +4,6 @@ import java.sql.Timestamp
 import java.time.Instant
 import javax.persistence.*
 
-
-
 @MappedSuperclass
 abstract class BaseModel {
     @Id

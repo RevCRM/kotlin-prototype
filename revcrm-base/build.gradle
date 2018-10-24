@@ -1,2 +1,6 @@
 
 description = 'RevCRM Base Models'
+
+dependencies {
+    implementation(project(':revcrm-server'))
+}
