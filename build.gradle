@@ -1,3 +1,10 @@
+
+buildscript {
+    dependencies {
+        classpath 'org.jmailen.gradle:kotlinter-gradle:1.20.1'
+    }
+}
+
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.71'
     id "org.jetbrains.kotlin.plugin.noarg" version "1.2.71"
@@ -16,6 +23,7 @@ allprojects {
     apply plugin: 'org.jetbrains.kotlin.plugin.noarg'
     apply plugin: 'org.jetbrains.kotlin.plugin.jpa'
     apply plugin: 'org.jetbrains.kotlin.plugin.allopen'
+    apply plugin: 'org.jmailen.kotlinter'
 
     repositories {
         mavenCentral()

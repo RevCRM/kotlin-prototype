@@ -8,12 +8,12 @@ import org.revcrm.models.BaseModel
 import javax.persistence.Entity
 
 @Entity
-class SelectionList (
-        @NaturalId
-        var code: String,
-        var model: String,
-        var label: String
-): BaseModel()
+class SelectionList(
+    @NaturalId
+    var code: String,
+    var model: String,
+    var label: String
+) : BaseModel()
 
 fun importSelectionLists(fileName: String, db: IRevCRMDB) {
     val mapper = ObjectMapper(YAMLFactory())
@@ -29,18 +29,17 @@ fun importSelectionLists(fileName: String, db: IRevCRMDB) {
             val label = node.get("label").asText()
 
             val existingRecord = session
-                    .bySimpleNaturalId(SelectionList::class.java)
-                    .load(code)
+                .bySimpleNaturalId(SelectionList::class.java)
+                .load(code)
 
             if (existingRecord != null) {
                 existingRecord.model = model
                 existingRecord.label = label
-            }
-            else {
+            } else {
                 val newRecord = SelectionList(
-                        code = code,
-                        model = model,
-                        label = label
+                    code = code,
+                    model = model,
+                    label = label
                 )
                 session.persist(newRecord)
             }

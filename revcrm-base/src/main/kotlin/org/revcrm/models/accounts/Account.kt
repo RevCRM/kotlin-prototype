@@ -7,22 +7,22 @@ import javax.persistence.ManyToOne
 
 @Entity
 class Account(
-        var type: String,
-        var tags: Array<String>,
-        var code: String,
-        var org_name: String,
-        var title: String,
-        var first_name: String,
-        var last_name: String,
-        var phone: String,
-        var mobile: String,
-        var fax: String,
-        var email: String,
-        var website: String,
-        var notes: String,
+    var type: String,
+    var tags: Array<String>,
+    var code: String,
+    var org_name: String,
+    var title: String,
+    var first_name: String,
+    var last_name: String,
+    var phone: String,
+    var mobile: String,
+    var fax: String,
+    var email: String,
+    var website: String,
+    var notes: String,
 
-        @ManyToOne
-        @JoinColumn(name = "primary_address_id")
-        var primary_address: Address
+    @ManyToOne
+    @JoinColumn(name = "primary_address_id")
+    var primary_address: Address
 
-): BaseModel()
+) : BaseModel()

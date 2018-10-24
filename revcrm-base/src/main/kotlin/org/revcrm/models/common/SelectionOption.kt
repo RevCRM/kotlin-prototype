@@ -11,14 +11,14 @@ import javax.persistence.ManyToOne
 
 @Entity
 class SelectionOption(
-        @ManyToOne
-        @JoinColumn(name = "list_id")
-        var list: SelectionList,
-        @NaturalId
-        var code: String,
-        var label: String,
-        var seq: Short
-): BaseModel()
+    @ManyToOne
+    @JoinColumn(name = "list_id")
+    var list: SelectionList,
+    @NaturalId
+    var code: String,
+    var label: String,
+    var seq: Short
+) : BaseModel()
 
 fun importSelectionOptions(fileName: String, db: IRevCRMDB) {
     val mapper = ObjectMapper(YAMLFactory())
@@ -35,15 +35,15 @@ fun importSelectionOptions(fileName: String, db: IRevCRMDB) {
             val seq = node.get("seq")?.asInt()?.toShort() ?: 1
 
             val listRecord = session
-                    .bySimpleNaturalId(SelectionList::class.java)
-                    .load(list)
+                .bySimpleNaturalId(SelectionList::class.java)
+                .load(list)
             if (listRecord == null) {
-                throw Exception("List '${list}' not found.")
+                throw Exception("List '$list' not found.")
             }
 
             val existingRecord = session
-                    .bySimpleNaturalId(SelectionOption::class.java)
-                    .load(code)
+                .bySimpleNaturalId(SelectionOption::class.java)
+                .load(code)
 
             if (existingRecord != null) {
                 existingRecord.list = listRecord
@@ -51,10 +51,10 @@ fun importSelectionOptions(fileName: String, db: IRevCRMDB) {
                 existingRecord.seq = seq
             } else {
                 val newRecord = SelectionOption(
-                        list = listRecord,
-                        code = code,
-                        label = label,
-                        seq = seq
+                    list = listRecord,
+                    code = code,
+                    label = label,
+                    seq = seq
                 )
                 session.persist(newRecord)
             }
