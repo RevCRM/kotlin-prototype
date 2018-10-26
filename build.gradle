@@ -10,6 +10,7 @@ plugins {
     id "org.jetbrains.kotlin.plugin.noarg" version "1.2.71"
     id "org.jetbrains.kotlin.plugin.jpa" version "1.2.71"
     id "org.jetbrains.kotlin.plugin.allopen" version "1.2.71"
+    id "name.remal.check-updates" version "1.0.94"
 }
 
 allOpen {
@@ -18,12 +19,16 @@ allOpen {
     annotation("javax.persistence.Embeddable")
 }
 
-allprojects {
+subprojects {
+    group = 'org.revcrm'
+    version = '1.0'
+    
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.plugin.noarg'
     apply plugin: 'org.jetbrains.kotlin.plugin.jpa'
     apply plugin: 'org.jetbrains.kotlin.plugin.allopen'
     apply plugin: 'org.jmailen.kotlinter'
+    apply plugin: 'name.remal.check-updates'
 
     repositories {
         mavenCentral()
@@ -67,9 +72,4 @@ allprojects {
             includeEngines 'spek2'
         }
     }
-}
-
-subprojects {
-    group = 'org.revcrm'
-    version = '1.0'
 }
