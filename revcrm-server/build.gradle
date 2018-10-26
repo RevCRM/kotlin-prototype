@@ -1,2 +1,14 @@
 
 description = 'RevCRM Server'
+
+repositories {
+    maven { url "https://dl.bintray.com/kotlin/ktor" }
+}
+
+dependencies {
+    implementation "io.ktor:ktor-server-netty:1.0.0-beta-2"
+}
+
+apply plugin: 'application'
+
+mainClassName = 'MainKt'
