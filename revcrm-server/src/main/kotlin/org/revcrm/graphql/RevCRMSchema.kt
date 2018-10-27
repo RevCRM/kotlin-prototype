@@ -8,8 +8,9 @@ import graphql.schema.StaticDataFetcher
 import graphql.schema.idl.RuntimeWiring.newRuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
+import org.revcrm.data.IRevCRMData
 
-class RevCRMSchema {
+class RevCRMSchema (private val data: IRevCRMData) {
     private val graphQLSchema: GraphQLSchema
     private val graphQLExecutor: GraphQL
 

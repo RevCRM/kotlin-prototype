@@ -28,6 +28,7 @@
         <!--</triggeringPolicy>-->
     <!--</appender>-->
 
+    <logger name="org.hibernate" level="INFO" />
     <logger name="org.hibernate.type.descriptor.sql" level="ALL" />
     <logger name="org.hibernate.SQL" level="DEBUG" />
     <logger name="io.netty" level="INFO" />
