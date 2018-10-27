@@ -30,10 +30,12 @@
 
     <logger name="org.hibernate.type.descriptor.sql" level="ALL" />
     <logger name="org.hibernate.SQL" level="DEBUG" />
+    <logger name="io.netty" level="INFO"/>
 
-    <root level="INFO">
+    <root level="TRACE">
         <!--<appender-ref ref="FILE" />-->
         <appender-ref ref="STDOUT" />
     </root>
+
 
 </configuration>

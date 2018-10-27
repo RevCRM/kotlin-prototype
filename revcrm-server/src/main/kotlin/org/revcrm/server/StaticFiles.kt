@@ -5,12 +5,17 @@ import io.ktor.http.ContentType
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import io.ktor.routing.get
+import org.revcrm.util.getResourceAsText
 
 fun Routing.staticFiles() {
+
     get("/") {
-        call.respondText("Hello World!", ContentType.Text.Plain)
+        val html = getResourceAsText("/www/index.html")
+        call.respondText(html, ContentType.Text.Html)
     }
+
     get("/static") {
         call.respondText("Static assets will go here...", ContentType.Text.Plain)
     }
+
 }

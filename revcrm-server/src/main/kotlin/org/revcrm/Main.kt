@@ -3,12 +3,10 @@ package org.revcrm
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.content.TextContent
+import io.ktor.features.CallLogging
 import io.ktor.features.StatusPages
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
-import io.ktor.response.respondText
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -21,9 +19,11 @@ fun main(args: Array<String>) {
 
 fun Application.main() {
 
+    install(CallLogging)
     install(StatusPages) {
         exception<Throwable> { cause ->
             call.respond(HttpStatusCode.InternalServerError, "Internal Server Error")
+            throw cause
         }
         status(HttpStatusCode.NotFound) {
             call.respond(HttpStatusCode.NotFound, "Not Found")
