@@ -7,6 +7,7 @@ repositories {
 
 dependencies {
     implementation "io.ktor:ktor-server-netty:1.0.0-beta-2"
+    implementation "com.graphql-java:graphql-java:11.0"
 }
 
 apply plugin: 'application'
