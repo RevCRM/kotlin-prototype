@@ -49,15 +49,15 @@ subprojects {
         implementation "ch.qos.logback:logback-core:1.2.3"
         implementation "ch.qos.logback:logback-classic:1.2.3"
 
-//        testImplementation 'org.koin:koin-test:1.0.1'
-//        testImplementation 'org.assertj:assertj-core:3.11.1'
-//        testImplementation ('org.spekframework.spek2:spek-dsl-jvm:2.0.0-rc.1')  {
-//            exclude group: 'org.jetbrains.kotlin'
-//        }
-//        testRuntimeOnly ('org.spekframework.spek2:spek-runner-junit5:2.0.0-rc.1') {
-//            exclude group: 'org.junit.platform'
-//            exclude group: 'org.jetbrains.kotlin'
-//        }
+        testImplementation 'org.koin:koin-test:1.0.1'
+        testImplementation 'org.assertj:assertj-core:3.11.1'
+        testImplementation ('org.spekframework.spek2:spek-dsl-jvm:2.0.0-rc.1')  {
+            exclude group: 'org.jetbrains.kotlin'
+        }
+        testRuntimeOnly ('org.spekframework.spek2:spek-runner-junit5:2.0.0-rc.1') {
+            exclude group: 'org.junit.platform'
+            exclude group: 'org.jetbrains.kotlin'
+        }
     }
 
     compileKotlin {
@@ -68,9 +68,9 @@ subprojects {
         kotlinOptions.jvmTarget = '1.8'
     }
 
-//    test {
-//        useJUnitPlatform {
-//            includeEngines 'spek2'
-//        }
-//    }
+    test {
+        useJUnitPlatform {
+            includeEngines 'spek2'
+        }
+    }
 }
