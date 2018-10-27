@@ -135,7 +135,7 @@
       ReactDOM.render(
         React.createElement(GraphiQL, {
           fetcher: graphQLFetcher,
-          query: parameters.query,
+          query: parameters.query || '',
           variables: parameters.variables,
           operationName: parameters.operationName,
           onEditQuery: onEditQuery,

@@ -1,5 +1,6 @@
 package org.revcrm.graphql
 
+import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
@@ -24,8 +25,12 @@ class RevCRMData {
         graphQLExecutor = GraphQL.newGraphQL(graphQLSchema).build()
     }
 
-    fun query(query: String): ExecutionResult {
-        return graphQLExecutor.execute(query)
+    fun query(query: String, variables: Map<String, Any>?): ExecutionResult {
+        val execInput = ExecutionInput.newExecutionInput()
+            .query(query)
+            .variables(variables)
+            .build()
+        return graphQLExecutor.execute(execInput)
     }
 
 }
