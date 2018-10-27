@@ -13,26 +13,23 @@ import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Locations
 import io.ktor.response.respond
 import io.ktor.routing.routing
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
-import org.koin.standalone.StandAloneContext.startKoin
 import org.revcrm.server.graphQL
 import org.revcrm.server.graphiQL
 import org.revcrm.server.healthCheck
 import org.revcrm.server.staticFiles
 import java.text.DateFormat
 
-@KtorExperimentalLocationsAPI
-fun main(args: Array<String>) {
-    // Init Dependency Injection
-    startKoin(listOf(revCRMModule), logger = SLF4JLogger())
-    // Start Server
-    embeddedServer(Netty, port = 8800, module = Application::main).start(wait = true)
-}
+/**
+ * To run in intellij, create a new "Application" configuration and
+ * set the "Main class" to "io.ktor.server.netty.EngineMain"
+ */
 
 @KtorExperimentalLocationsAPI
 fun Application.main() {
+
+    installKoin(listOf(revCRMModule), logger = SLF4JLogger())
 
     install(DefaultHeaders) {
         header("Server", "RevCRM")

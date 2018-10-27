@@ -16,4 +16,4 @@ dependencies {
 
 apply plugin: 'application'
 
-mainClassName = 'MainKt'
+mainClassName = 'io.ktor.server.netty.EngineMain'
