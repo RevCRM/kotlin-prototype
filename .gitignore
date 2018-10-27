@@ -6,3 +6,5 @@
 *.iml
 *.ipr
 *.iws
+revcrm.env
+.DS_Store
