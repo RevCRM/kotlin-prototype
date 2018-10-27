@@ -9,7 +9,7 @@ import graphql.schema.idl.RuntimeWiring.newRuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
 
-class RevCRMData {
+class RevCRMSchema {
     private val graphQLSchema: GraphQLSchema
     private val graphQLExecutor: GraphQL
 

@@ -1,10 +1,10 @@
 package org.revcrm
 
 import org.koin.dsl.module.module
-import org.revcrm.graphql.RevCRMData
+import org.revcrm.graphql.RevCRMSchema
 
 val revCRMModule = module {
-//    single<IRevCRMDB> { RevCRMDB() }
+//    single<IRevCRMData> { RevCRMData() }
 //    single<IDataLoader> { DataLoader(get()) }
-    single { RevCRMData() }
+    single { RevCRMSchema() }
 }

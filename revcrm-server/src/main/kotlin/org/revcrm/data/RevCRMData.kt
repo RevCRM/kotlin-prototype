@@ -5,12 +5,7 @@ import org.hibernate.SessionFactory
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 
-interface IRevCRMDB {
-    fun <T>withTransaction(method: (Session) -> T): T
-    fun close()
-}
-
-class RevCRMDB : IRevCRMDB {
+class RevCRMData : IRevCRMData {
     private var factory: SessionFactory
 
     init {

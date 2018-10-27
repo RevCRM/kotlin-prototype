@@ -3,7 +3,7 @@ package org.revcrm.models.common
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import org.hibernate.annotations.NaturalId
-import org.revcrm.data.IRevCRMDB
+import org.revcrm.data.IRevCRMData
 import org.revcrm.models.BaseModel
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
@@ -20,7 +20,7 @@ class SelectionOption(
     var seq: Short
 ) : BaseModel()
 
-fun importSelectionOptions(fileName: String, db: IRevCRMDB) {
+fun importSelectionOptions(fileName: String, db: IRevCRMData) {
     val mapper = ObjectMapper(YAMLFactory())
     val res = object {}.javaClass.getResource(fileName)
     val nodes = mapper.readTree(res)
