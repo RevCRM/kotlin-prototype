@@ -11,6 +11,7 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import org.revcrm.graphql.RevCRMData
+import org.revcrm.server.graphiQL
 import org.revcrm.server.healthCheck
 import org.revcrm.server.staticFiles
 
@@ -37,6 +38,7 @@ fun Application.main() {
 
     routing {
         staticFiles()
+        graphiQL()
         healthCheck()
     }
 }
