@@ -30,6 +30,7 @@ import org.revcrm.auth.googleLogin
 import org.revcrm.auth.googleOauthProvider
 import org.revcrm.auth.redirectUrl
 import org.revcrm.data.IRevCRMData
+import org.revcrm.graphql.IRevCRMSchema
 import org.revcrm.server.graphQL
 import org.revcrm.server.graphiQL
 import org.revcrm.server.healthCheck
@@ -94,9 +95,14 @@ fun Application.main() {
         healthCheck()
     }
 
-    log.info("Initialising Schema...")
+    log.info("Initialising Database Connection...")
 
     val data: IRevCRMData by inject()
     data.initialise()
+
+    log.info("Initialising GraphQL Schema...")
+
+    val schema: IRevCRMSchema by inject()
+    schema.initialise()
 
 }
