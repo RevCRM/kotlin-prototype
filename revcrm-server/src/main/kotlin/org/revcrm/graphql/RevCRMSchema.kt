@@ -10,11 +10,18 @@ import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
 import org.revcrm.data.IRevCRMData
 
+interface IRevCRMSchema {
+    fun initialise()
+    fun query(query: String, variables: Map<String, Any>?): ExecutionResult
+}
+
 class RevCRMSchema (private val data: IRevCRMData) : IRevCRMSchema {
     private lateinit var graphQLSchema: GraphQLSchema
     private lateinit var graphQLExecutor: GraphQL
 
     override fun initialise() {
+        val entities = data.getEntityMetadata()
+        println("found ${entities.size} entities!")
         val schema = "type Query{hello: String}"
         val schemaParser = SchemaParser()
         val typeDefinitionRegistry = schemaParser.parse(schema)

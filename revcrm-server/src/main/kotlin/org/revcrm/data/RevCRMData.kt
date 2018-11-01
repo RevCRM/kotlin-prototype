@@ -7,8 +7,18 @@ import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 import org.hibernate.cfg.Environment
+import org.hibernate.mapping.Column
+import org.hibernate.mapping.Property
+import org.hibernate.mapping.SimpleValue
 import org.revcrm.models.RevUser
 import org.revcrm.models.RevUserAuth
+
+interface IRevCRMData {
+    fun initialise()
+    fun <T>withTransaction(method: (Session) -> T): T
+
+    fun getEntityMetadata(): Array<EntityMetadata>
+}
 
 class RevCRMData : IRevCRMData {
     private lateinit var metadata: Metadata
@@ -69,5 +79,47 @@ class RevCRMData : IRevCRMData {
                 session.close()
             }
         }
+
+    private fun getFieldMetadata(col: Column): FieldMetadata {
+        val value = col.value as SimpleValue
+        return FieldMetadata(
+            name = col.canonicalName,
+            type = value.typeName
+        )
+    }
+
+    override fun getEntityMetadata(): Array<EntityMetadata> {
+        val entities = mutableListOf<EntityMetadata>()
+        metadata.entityBindings.forEach { binding ->
+            val fields = mutableListOf<FieldMetadata>()
+
+            // Get ID Column(s)
+            val idColIterator = binding.identifierProperty.columnIterator
+            while (idColIterator.hasNext()) {
+                val column = idColIterator.next() as Column
+                fields.add(getFieldMetadata((column)))
+            }
+
+            // Get Other Columns
+            val propertyIterator = binding.propertyIterator
+            while (propertyIterator.hasNext()) {
+                val property = propertyIterator.next() as Property
+                val columnIterator = property.getColumnIterator()
+                while (columnIterator.hasNext()) {
+                    val column = columnIterator.next() as Column
+                    fields.add(getFieldMetadata((column)))
+                }
+            }
+
+            entities.add(
+                EntityMetadata(
+                    className = binding.className,
+                    tableName = binding.table.name,
+                    fields = fields.toTypedArray()
+                )
+            )
+        }
+        return entities.toTypedArray()
+    }
 
 }
