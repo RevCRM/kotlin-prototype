@@ -11,10 +11,10 @@ import org.revcrm.models.RevUser
 import org.revcrm.models.RevUserAuth
 
 class RevCRMData : IRevCRMData {
-    private var metadata: Metadata
-    private var factory: SessionFactory
+    private lateinit var metadata: Metadata
+    private lateinit var factory: SessionFactory
 
-    init {
+    override fun initialise() {
         val registry = StandardServiceRegistryBuilder()
             // immutable settings
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
@@ -70,7 +70,4 @@ class RevCRMData : IRevCRMData {
             }
         }
 
-    override fun close() {
-        factory.close()
-    }
 }

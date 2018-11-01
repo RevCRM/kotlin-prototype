@@ -22,16 +22,19 @@ import io.ktor.sessions.Sessions
 import io.ktor.sessions.cookie
 import io.ktor.util.KtorExperimentalAPI
 import io.ktor.util.hex
+import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
 import org.revcrm.auth.RevCRMSession
 import org.revcrm.auth.googleLogin
 import org.revcrm.auth.googleOauthProvider
 import org.revcrm.auth.redirectUrl
+import org.revcrm.data.IRevCRMData
 import org.revcrm.server.graphQL
 import org.revcrm.server.graphiQL
 import org.revcrm.server.healthCheck
 import org.revcrm.server.staticFiles
+import org.slf4j.LoggerFactory
 import java.text.DateFormat
 
 /**
@@ -39,9 +42,13 @@ import java.text.DateFormat
  * set the "Main class" to "io.ktor.server.netty.EngineMain"
  */
 
+val log = LoggerFactory.getLogger("org.revcrm.main")
+
 @KtorExperimentalAPI
 @KtorExperimentalLocationsAPI
 fun Application.main() {
+
+    log.info("Starting RevCRM...")
 
     installKoin(listOf(revCRMModule), logger = SLF4JLogger())
 
@@ -86,4 +93,10 @@ fun Application.main() {
         graphiQL()
         healthCheck()
     }
+
+    log.info("Initialising Schema...")
+
+    val data: IRevCRMData by inject()
+    data.initialise()
+
 }
