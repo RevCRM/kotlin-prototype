@@ -10,11 +10,13 @@ import org.hibernate.cfg.Environment
 import org.hibernate.mapping.Column
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
-import org.revcrm.models.RevUser
-import org.revcrm.models.RevUserAuth
 
 interface IRevCRMData {
-    fun initialise(dbConfig: MutableMap<String, String>)
+    fun initialise(
+        dbConfig: MutableMap<String, String>,
+        entityList: List<String>
+    )
+
     fun <T>withTransaction(method: (Session) -> T): T
 
     fun getEntityMetadata(): Array<EntityMetadata>
@@ -24,7 +26,10 @@ class RevCRMData : IRevCRMData {
     private lateinit var metadata: Metadata
     private lateinit var factory: SessionFactory
 
-    override fun initialise(dbConfig: MutableMap<String, String>) {
+    override fun initialise(
+        dbConfig: MutableMap<String, String>,
+        entityList: List<String>
+    ) {
         val registry = StandardServiceRegistryBuilder()
             .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
             .applySettings(dbConfig)
@@ -34,14 +39,12 @@ class RevCRMData : IRevCRMData {
             .applySetting(Environment.HBM2DDL_AUTO, "update")
             .build()
 
-        metadata = MetadataSources(registry)
+        val sources = MetadataSources(registry)
+        entityList.forEach {
+            sources.addAnnotatedClassName(it)
+        }
 
-            // Classes
-            .addAnnotatedClass(RevUser::class.java)
-            .addAnnotatedClass(RevUserAuth::class.java)
-
-//            .addAnnotatedClassName("org.hibernate.example.Customer")
-            .getMetadataBuilder()
+        metadata = sources.getMetadataBuilder()
             .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
             .build()
 

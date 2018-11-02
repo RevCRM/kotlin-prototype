@@ -104,10 +104,11 @@ fun Application.main() {
         Environment.USER to c.property("revcrm.db.username").getString(),
         Environment.PASS to c.property("revcrm.db.password").getString()
     )
+    val entityList = c.property("revcrm.entityList").getList()
 
     log.info("Initialising Database Connection...")
     val data: IRevCRMData by inject()
-    data.initialise(dbConfig)
+    data.initialise(dbConfig, entityList)
 
     log.info("Initialising GraphQL Schema...")
 
