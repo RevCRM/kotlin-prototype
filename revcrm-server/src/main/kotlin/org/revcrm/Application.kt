@@ -22,6 +22,7 @@ import io.ktor.sessions.Sessions
 import io.ktor.sessions.cookie
 import io.ktor.util.KtorExperimentalAPI
 import io.ktor.util.hex
+import org.hibernate.cfg.Environment
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
@@ -95,10 +96,18 @@ fun Application.main() {
         healthCheck()
     }
 
-    log.info("Initialising Database Connection...")
+    log.info("Loading Configuration...")
+    val c = environment.config
+    val dbConfig = mutableMapOf(
+        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
+        Environment.URL to c.property("revcrm.db.url").getString(),
+        Environment.USER to c.property("revcrm.db.username").getString(),
+        Environment.PASS to c.property("revcrm.db.password").getString()
+    )
 
+    log.info("Initialising Database Connection...")
     val data: IRevCRMData by inject()
-    data.initialise()
+    data.initialise(dbConfig)
 
     log.info("Initialising GraphQL Schema...")
 

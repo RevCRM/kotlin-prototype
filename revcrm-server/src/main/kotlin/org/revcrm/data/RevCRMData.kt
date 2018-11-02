@@ -14,7 +14,7 @@ import org.revcrm.models.RevUser
 import org.revcrm.models.RevUserAuth
 
 interface IRevCRMData {
-    fun initialise()
+    fun initialise(dbConfig: MutableMap<String, String>)
     fun <T>withTransaction(method: (Session) -> T): T
 
     fun getEntityMetadata(): Array<EntityMetadata>
@@ -24,17 +24,12 @@ class RevCRMData : IRevCRMData {
     private lateinit var metadata: Metadata
     private lateinit var factory: SessionFactory
 
-    override fun initialise() {
+    override fun initialise(dbConfig: MutableMap<String, String>) {
         val registry = StandardServiceRegistryBuilder()
+            .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
+            .applySettings(dbConfig)
             // immutable settings
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
-            // obviously these will be moved somewhere else soon!...
-            .applySetting(Environment.CONNECTION_PROVIDER, "com.zaxxer.hikari.hibernate.HikariConnectionProvider")
-            .applySetting(Environment.DRIVER, "org.postgresql.Driver")
-            .applySetting(Environment.URL, "jdbc:postgresql://localhost:5432/revcrm")
-            .applySetting(Environment.USER, "revcrm")
-            .applySetting(Environment.PASS, "revcrm")
-            .applySetting(Environment.POOL_SIZE, "1")
             // this will be used programmatically to create/update the DB
             .applySetting(Environment.HBM2DDL_AUTO, "update")
             .build()
