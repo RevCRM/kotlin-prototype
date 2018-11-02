@@ -28,9 +28,11 @@
         <!--</triggeringPolicy>-->
     <!--</appender>-->
 
+    <logger name="Koin" level="INFO" />
     <logger name="org.hibernate" level="INFO" />
     <logger name="org.hibernate.type.descriptor.sql" level="ALL" />
     <logger name="org.hibernate.SQL" level="DEBUG" />
+    <logger name="com.zaxxer.hikari" level="INFO" />
     <logger name="io.netty" level="INFO" />
     <logger name="graphql" level="INFO" />
 

@@ -29,6 +29,7 @@ class RevCRMData : IRevCRMData {
             // immutable settings
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
             // obviously these will be moved somewhere else soon!...
+            .applySetting(Environment.CONNECTION_PROVIDER, "com.zaxxer.hikari.hibernate.HikariConnectionProvider")
             .applySetting(Environment.DRIVER, "org.postgresql.Driver")
             .applySetting(Environment.URL, "jdbc:postgresql://localhost:5432/revcrm")
             .applySetting(Environment.USER, "revcrm")
