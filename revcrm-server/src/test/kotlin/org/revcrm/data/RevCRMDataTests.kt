@@ -3,17 +3,12 @@ package org.revcrm.data
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.revcrm.data.testmodels.TestDB
 
 class RevCRMDataTests {
 
-    val data = getDataForEntities(listOf(
-        "org.revcrm.data.testmodels.TestModel",
-        "org.revcrm.data.testmodels.TestModel2"
-    )).apply {
-        recreateSchema(this)
-    }
-
-    val metadata = data.getEntityMetadata()
+    val testDB = TestDB.instance
+    val metadata = testDB.getEntityMetadata()
 
     @Nested
     inner class GetEntityMetadata {
