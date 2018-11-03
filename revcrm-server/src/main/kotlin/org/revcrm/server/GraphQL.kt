@@ -10,7 +10,7 @@ import io.ktor.request.receive
 import io.ktor.response.respondText
 import io.ktor.routing.Routing
 import org.koin.ktor.ext.inject
-import org.revcrm.graphql.IRevCRMSchema
+import org.revcrm.graphql.RevCRMSchema
 
 @KtorExperimentalLocationsAPI
 @Location("/graphql")
@@ -22,7 +22,7 @@ data class GraphQLRequest(
 @KtorExperimentalLocationsAPI
 fun Routing.graphQL() {
 
-    val crmSchema: IRevCRMSchema by inject()
+    val crmSchema: RevCRMSchema by inject()
     val gson = Gson()
 
     post<GraphQLRequest> {

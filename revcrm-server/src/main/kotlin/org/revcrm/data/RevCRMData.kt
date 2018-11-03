@@ -11,22 +11,11 @@ import org.hibernate.mapping.Column
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
 
-interface IRevCRMData {
-    fun initialise(
-        dbConfig: Map<String, String>,
-        entityList: List<String>
-    )
-
-    fun <T>withTransaction(method: (Session) -> T): T
-
-    fun getEntityMetadata(): CRMMetadata
-}
-
-class RevCRMData : IRevCRMData {
+class RevCRMData {
     lateinit var metadata: Metadata
     private lateinit var factory: SessionFactory
 
-    override fun initialise(
+    fun initialise(
         dbConfig: Map<String, String>,
         entityList: List<String>
     ) {
@@ -62,7 +51,7 @@ class RevCRMData : IRevCRMData {
         return factory.openSession()
     }
 
-    override fun <T>withTransaction(method: (Session) -> T): T
+    fun <T>withTransaction(method: (Session) -> T): T
         = getSession().use { session ->
             session.beginTransaction()
             try {
@@ -87,7 +76,7 @@ class RevCRMData : IRevCRMData {
         )
     }
 
-    override fun getEntityMetadata(): CRMMetadata {
+    fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
         metadata.entityBindings.forEach { binding ->
             val fields = mutableMapOf<String, FieldMetadata>()

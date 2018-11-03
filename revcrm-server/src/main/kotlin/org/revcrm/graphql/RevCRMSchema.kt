@@ -8,18 +8,13 @@ import graphql.schema.StaticDataFetcher
 import graphql.schema.idl.RuntimeWiring.newRuntimeWiring
 import graphql.schema.idl.SchemaGenerator
 import graphql.schema.idl.SchemaParser
-import org.revcrm.data.IRevCRMData
+import org.revcrm.data.RevCRMData
 
-interface IRevCRMSchema {
-    fun initialise()
-    fun query(query: String, variables: Map<String, Any>?): ExecutionResult
-}
-
-class RevCRMSchema (private val data: IRevCRMData) : IRevCRMSchema {
+class RevCRMSchema (private val data: RevCRMData) {
     private lateinit var graphQLSchema: GraphQLSchema
     private lateinit var graphQLExecutor: GraphQL
 
-    override fun initialise() {
+    fun initialise() {
         val meta = data.getEntityMetadata()
         println("found ${meta.entities.size} entities!")
         val schema = "type Query{hello: String}"
@@ -33,7 +28,7 @@ class RevCRMSchema (private val data: IRevCRMData) : IRevCRMSchema {
         graphQLExecutor = GraphQL.newGraphQL(graphQLSchema).build()
     }
 
-    override fun query(query: String, variables: Map<String, Any>?): ExecutionResult {
+    fun query(query: String, variables: Map<String, Any>?): ExecutionResult {
         val execInput = ExecutionInput.newExecutionInput()
             .query(query)
             .variables(variables)

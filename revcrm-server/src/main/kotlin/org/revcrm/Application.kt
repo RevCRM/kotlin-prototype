@@ -30,8 +30,8 @@ import org.revcrm.auth.RevCRMSession
 import org.revcrm.auth.googleLogin
 import org.revcrm.auth.googleOauthProvider
 import org.revcrm.auth.redirectUrl
-import org.revcrm.data.IRevCRMData
-import org.revcrm.graphql.IRevCRMSchema
+import org.revcrm.data.RevCRMData
+import org.revcrm.graphql.RevCRMSchema
 import org.revcrm.server.graphQL
 import org.revcrm.server.graphiQL
 import org.revcrm.server.healthCheck
@@ -107,12 +107,12 @@ fun Application.main() {
     val entityList = c.property("revcrm.entityList").getList()
 
     log.info("Initialising Database Connection...")
-    val data: IRevCRMData by inject()
+    val data: RevCRMData by inject()
     data.initialise(dbConfig, entityList)
 
     log.info("Initialising GraphQL Schema...")
 
-    val schema: IRevCRMSchema by inject()
+    val schema: RevCRMSchema by inject()
     schema.initialise()
 
 }
