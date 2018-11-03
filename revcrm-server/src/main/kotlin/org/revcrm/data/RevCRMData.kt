@@ -23,7 +23,7 @@ interface IRevCRMData {
 }
 
 class RevCRMData : IRevCRMData {
-    private lateinit var metadata: Metadata
+    lateinit var metadata: Metadata
     private lateinit var factory: SessionFactory
 
     override fun initialise(
@@ -34,7 +34,7 @@ class RevCRMData : IRevCRMData {
             .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
             // this will be used programmatically to create/update the DB
-            .applySetting(Environment.HBM2DDL_AUTO, "update")
+//            .applySetting(Environment.HBM2DDL_AUTO, "update")
             // apply supplied settings
             .applySettings(dbConfig)
             .build()

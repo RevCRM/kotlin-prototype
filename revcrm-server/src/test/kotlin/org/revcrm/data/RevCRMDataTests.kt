@@ -9,7 +9,10 @@ class RevCRMDataTests {
     val data = getDataForEntities(listOf(
         "org.revcrm.data.testmodels.TestModel",
         "org.revcrm.data.testmodels.TestModel2"
-    ))
+    )).apply {
+        recreateSchema(this)
+    }
+
     val metadata = data.getEntityMetadata()
 
     @Nested
