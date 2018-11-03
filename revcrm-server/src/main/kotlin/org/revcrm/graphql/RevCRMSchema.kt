@@ -20,8 +20,8 @@ class RevCRMSchema (private val data: IRevCRMData) : IRevCRMSchema {
     private lateinit var graphQLExecutor: GraphQL
 
     override fun initialise() {
-        val entities = data.getEntityMetadata()
-        println("found ${entities.size} entities!")
+        val meta = data.getEntityMetadata()
+        println("found ${meta.entities.size} entities!")
         val schema = "type Query{hello: String}"
         val schemaParser = SchemaParser()
         val typeDefinitionRegistry = schemaParser.parse(schema)

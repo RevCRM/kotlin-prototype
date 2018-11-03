@@ -19,7 +19,7 @@ interface IRevCRMData {
 
     fun <T>withTransaction(method: (Session) -> T): T
 
-    fun getEntityMetadata(): Map<String, EntityMetadata>
+    fun getEntityMetadata(): CRMMetadata
 }
 
 class RevCRMData : IRevCRMData {
@@ -87,7 +87,7 @@ class RevCRMData : IRevCRMData {
         )
     }
 
-    override fun getEntityMetadata(): Map<String, EntityMetadata> {
+    override fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
         metadata.entityBindings.forEach { binding ->
             val fields = mutableMapOf<String, FieldMetadata>()
@@ -121,7 +121,9 @@ class RevCRMData : IRevCRMData {
                 )
             )
         }
-        return entities.toMap()
+        return CRMMetadata(
+            entities = entities.toMap()
+        )
     }
 
 }

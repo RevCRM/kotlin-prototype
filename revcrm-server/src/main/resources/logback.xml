@@ -35,6 +35,7 @@
     <logger name="com.zaxxer.hikari" level="INFO" />
     <logger name="io.netty" level="INFO" />
     <logger name="graphql" level="INFO" />
+    <logger name="io.mockk" level="INFO" />
 
     <root level="TRACE">
         <!--<appender-ref ref="FILE" />-->
