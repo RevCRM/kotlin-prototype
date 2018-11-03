@@ -2,7 +2,12 @@ package org.revcrm.models
 
 import java.sql.Timestamp
 import java.time.Instant
-import javax.persistence.*
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.MappedSuperclass
+import javax.persistence.PrePersist
+import javax.persistence.PreUpdate
 
 @MappedSuperclass
 abstract class BaseModel {

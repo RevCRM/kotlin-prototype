@@ -6,7 +6,9 @@ import javax.persistence.Entity
 @Entity
 class TestModel(
     var name: String,
-    var age: Int
+    var age: Int,
+    var length: Float,
+    var is_awesome: Boolean
 ): BaseModel()
 
 @Entity

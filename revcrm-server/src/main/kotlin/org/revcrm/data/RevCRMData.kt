@@ -90,13 +90,14 @@ class RevCRMData : IRevCRMData {
     override fun getEntityMetadata(): Map<String, EntityMetadata> {
         val entities = mutableMapOf<String, EntityMetadata>()
         metadata.entityBindings.forEach { binding ->
-            val fields = mutableListOf<FieldMetadata>()
+            val fields = mutableMapOf<String, FieldMetadata>()
 
             // Get ID Column(s)
             val idColIterator = binding.identifierProperty.columnIterator
             while (idColIterator.hasNext()) {
                 val column = idColIterator.next() as Column
-                fields.add(getFieldMetadata((column)))
+                val meta = getFieldMetadata(column)
+                fields.put(meta.name, meta)
             }
 
             // Get Other Columns
@@ -106,7 +107,8 @@ class RevCRMData : IRevCRMData {
                 val columnIterator = property.getColumnIterator()
                 while (columnIterator.hasNext()) {
                     val column = columnIterator.next() as Column
-                    fields.add(getFieldMetadata((column)))
+                    val meta = getFieldMetadata(column)
+                    fields.put(meta.name, meta)
                 }
             }
 
@@ -115,7 +117,7 @@ class RevCRMData : IRevCRMData {
                 EntityMetadata(
                     name = binding.table.name,
                     className = binding.className,
-                    fields = fields.toTypedArray()
+                    fields = fields.toMap()
                 )
             )
         }
