@@ -6,7 +6,11 @@ data class FieldMetadata (
 )
 
 data class EntityMetadata (
+    val name: String,
     val className: String,
-    val tableName: String,
     val fields: Array<FieldMetadata>
+)
+
+data class CRMMetadata (
+    val entities: Map<String, EntityMetadata>
 )

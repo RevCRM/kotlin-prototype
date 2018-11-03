@@ -98,7 +98,7 @@ fun Application.main() {
 
     log.info("Loading Configuration...")
     val c = environment.config
-    val dbConfig = mutableMapOf(
+    val dbConfig = mapOf(
         Environment.DRIVER to c.property("revcrm.db.driver").getString(),
         Environment.URL to c.property("revcrm.db.url").getString(),
         Environment.USER to c.property("revcrm.db.username").getString(),

@@ -13,13 +13,13 @@ import org.hibernate.mapping.SimpleValue
 
 interface IRevCRMData {
     fun initialise(
-        dbConfig: MutableMap<String, String>,
+        dbConfig: Map<String, String>,
         entityList: List<String>
     )
 
     fun <T>withTransaction(method: (Session) -> T): T
 
-    fun getEntityMetadata(): Array<EntityMetadata>
+    fun getEntityMetadata(): Map<String, EntityMetadata>
 }
 
 class RevCRMData : IRevCRMData {
@@ -27,16 +27,16 @@ class RevCRMData : IRevCRMData {
     private lateinit var factory: SessionFactory
 
     override fun initialise(
-        dbConfig: MutableMap<String, String>,
+        dbConfig: Map<String, String>,
         entityList: List<String>
     ) {
         val registry = StandardServiceRegistryBuilder()
             .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
-            .applySettings(dbConfig)
-            // immutable settings
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
             // this will be used programmatically to create/update the DB
             .applySetting(Environment.HBM2DDL_AUTO, "update")
+            // apply supplied settings
+            .applySettings(dbConfig)
             .build()
 
         val sources = MetadataSources(registry)
@@ -87,8 +87,8 @@ class RevCRMData : IRevCRMData {
         )
     }
 
-    override fun getEntityMetadata(): Array<EntityMetadata> {
-        val entities = mutableListOf<EntityMetadata>()
+    override fun getEntityMetadata(): Map<String, EntityMetadata> {
+        val entities = mutableMapOf<String, EntityMetadata>()
         metadata.entityBindings.forEach { binding ->
             val fields = mutableListOf<FieldMetadata>()
 
@@ -110,15 +110,16 @@ class RevCRMData : IRevCRMData {
                 }
             }
 
-            entities.add(
+            entities.put(
+                binding.table.name,
                 EntityMetadata(
+                    name = binding.table.name,
                     className = binding.className,
-                    tableName = binding.table.name,
                     fields = fields.toTypedArray()
                 )
             )
         }
-        return entities.toTypedArray()
+        return entities.toMap()
     }
 
 }
