@@ -3,28 +3,46 @@ package org.revcrm.graphql
 import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.GraphQL
+import graphql.Scalars
+import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLObjectType.newObject
 import graphql.schema.GraphQLSchema
 import graphql.schema.StaticDataFetcher
-import graphql.schema.idl.RuntimeWiring.newRuntimeWiring
-import graphql.schema.idl.SchemaGenerator
-import graphql.schema.idl.SchemaParser
 import org.revcrm.data.RevCRMData
 
 class RevCRMSchema (private val data: RevCRMData) {
-    private lateinit var graphQLSchema: GraphQLSchema
+    lateinit var graphQLSchema: GraphQLSchema
     private lateinit var graphQLExecutor: GraphQL
 
     fun initialise() {
         val meta = data.getEntityMetadata()
-        println("found ${meta.entities.size} entities!")
-        val schema = "type Query{hello: String}"
-        val schemaParser = SchemaParser()
-        val typeDefinitionRegistry = schemaParser.parse(schema)
-        val runtimeWiring = newRuntimeWiring()
-            .type("Query") { builder -> builder.dataFetcher("hello", StaticDataFetcher("world")) }
-            .build()
-        val schemaGenerator = SchemaGenerator()
-        graphQLSchema = schemaGenerator.makeExecutableSchema(typeDefinitionRegistry, runtimeWiring)
+
+        val queryType = newObject()
+            .name("Query")
+
+        meta.entities.forEach { entity ->
+
+            val entityType = newObject()
+                .name(entity.value.name)
+
+            entity.value.fields.forEach { field ->
+                entityType.field(
+                    GraphQLFieldDefinition.newFieldDefinition()
+                        .name(field.value.name)
+                        .type(Scalars.GraphQLString)
+                        .dataFetcher(StaticDataFetcher("hello world!"))
+                )
+            }
+
+            queryType.field(
+                GraphQLFieldDefinition.newFieldDefinition()
+                    .name(entity.value.name)
+                    .type(entityType)
+                    .dataFetcher(StaticDataFetcher("hello world!"))
+            )
+        }
+
+        graphQLSchema = GraphQLSchema(queryType.build())
         graphQLExecutor = GraphQL.newGraphQL(graphQLSchema).build()
     }
 

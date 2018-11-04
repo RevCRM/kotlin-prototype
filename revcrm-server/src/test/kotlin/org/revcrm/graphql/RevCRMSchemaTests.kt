@@ -49,8 +49,9 @@ class RevCRMSchemaTests {
     inner class TopLevelSchema {
 
         @Test
-        fun `it doesnt die horibly`() {
-            assertThat(1).isEqualTo(1)
+        fun `registers a query object per entity`() {
+            val queryTypeDef = schema.graphQLSchema.queryType
+            assertThat(queryTypeDef.fieldDefinitions).hasSize(meta.entities.size)
         }
 
     }
