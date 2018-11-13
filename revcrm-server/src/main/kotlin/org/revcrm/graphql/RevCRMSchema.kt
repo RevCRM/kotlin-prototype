@@ -8,9 +8,13 @@ import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType.newObject
 import graphql.schema.GraphQLSchema
 import graphql.schema.StaticDataFetcher
+import org.revcrm.data.FieldService
 import org.revcrm.data.RevCRMData
 
-class RevCRMSchema (private val data: RevCRMData) {
+class RevCRMSchema (
+    private val data: RevCRMData,
+    private val fieldService: FieldService
+) {
     lateinit var graphQLSchema: GraphQLSchema
     private lateinit var graphQLExecutor: GraphQL
 
@@ -26,10 +30,23 @@ class RevCRMSchema (private val data: RevCRMData) {
                 .name(entity.value.name)
 
             entity.value.fields.forEach { field ->
+
+                var scalarType = fieldService.getGraphQLScalarTypeForField(field.value)
+                if (scalarType == null) {
+                    val relatedEntity = meta.getEntityByClassName(field.value.jvmType)
+                    if (relatedEntity != null) {
+                        // TODO: Return ObjectType of related entity
+                        scalarType = Scalars.GraphQLString
+                    }
+                    else {
+                        throw Error("Field type '${field.value.jvmType}' for field '${entity.value.name}.${field.value.name}' has no registered GraphQL Mapping.")
+                    }
+                }
+
                 entityType.field(
                     GraphQLFieldDefinition.newFieldDefinition()
                         .name(field.value.name)
-                        .type(Scalars.GraphQLString)
+                        .type(scalarType)
                         .dataFetcher(StaticDataFetcher("hello world!"))
                 )
             }

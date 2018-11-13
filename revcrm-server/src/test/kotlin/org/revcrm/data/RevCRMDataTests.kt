@@ -54,32 +54,38 @@ class RevCRMDataTests {
 
         @Test
         fun `Int field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["id"]!!.type).isEqualTo("int")
+            assertThat(entities["TestModel"]!!.fields["id"]!!.jvmType).isEqualTo("int")
         }
 
         @Test
         fun `Float field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["length"]!!.type).isEqualTo("float")
+            assertThat(entities["TestModel"]!!.fields["length"]!!.jvmType).isEqualTo("float")
         }
 
         @Test
         fun `Double field returns expected metadata`() {
-            assertThat(entities["TestModel2"]!!.fields["size"]!!.type).isEqualTo("double")
+            assertThat(entities["TestModel2"]!!.fields["size"]!!.jvmType).isEqualTo("double")
         }
 
         @Test
         fun `Boolean field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["is_awesome"]!!.type).isEqualTo("boolean")
+            assertThat(entities["TestModel"]!!.fields["is_awesome"]!!.jvmType).isEqualTo("boolean")
         }
 
         @Test
         fun `String field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["name"]!!.type).isEqualTo("java.lang.String")
+            assertThat(entities["TestModel"]!!.fields["name"]!!.jvmType).isEqualTo("java.lang.String")
         }
 
         @Test
         fun `Timestamp field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["created_date"]!!.type).isEqualTo("java.sql.Timestamp")
+            assertThat(entities["TestModel"]!!.fields["created_date"]!!.jvmType).isEqualTo("java.sql.Timestamp")
+        }
+
+        @Test
+        fun `Enum field returns expected metadata`() {
+            assertThat(entities["TestModel"]!!.fields["enum_field"]!!.jvmType).isEqualTo("org.hibernate.type.EnumType")
+            assertThat(entities["TestModel"]!!.fields["enum_field"]!!.jvmSubtype).isEqualTo("org.revcrm.data.testmodels.EnumFieldOptions")
         }
 
     }

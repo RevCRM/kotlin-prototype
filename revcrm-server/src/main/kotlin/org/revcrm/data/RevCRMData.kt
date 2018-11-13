@@ -70,10 +70,16 @@ class RevCRMData {
 
     private fun getFieldMetadata(col: Column): FieldMetadata {
         val value = col.value as SimpleValue
-        return FieldMetadata(
+        var subType: String? = null
+        if (value.typeName == "org.hibernate.type.EnumType") {
+            subType = value.typeParameters.getProperty("org.hibernate.type.ParameterType.returnedClass")
+        }
+        val fieldMeta = FieldMetadata(
             name = col.canonicalName,
-            type = value.typeName
+            jvmType = value.typeName,
+            jvmSubtype = subType
         )
+        return fieldMeta
     }
 
     fun getEntityMetadata(): CRMMetadata {
