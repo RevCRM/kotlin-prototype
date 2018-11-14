@@ -43,8 +43,8 @@ class DBServiceTests {
         @Test
         fun `returns own fields`() {
             assertThat(entities["TestModel"]!!.fields)
-                .containsKey("name")
-                .containsKey("age")
+                .containsKey("string_field")
+                .containsKey("int_field")
         }
 
     }
@@ -59,27 +59,37 @@ class DBServiceTests {
 
         @Test
         fun `Float field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["length"]!!.jvmType).isEqualTo("float")
+            assertThat(entities["TestModel"]!!.fields["float_field"]!!.jvmType).isEqualTo("float")
         }
 
         @Test
         fun `Double field returns expected metadata`() {
-            assertThat(entities["TestModel2"]!!.fields["size"]!!.jvmType).isEqualTo("double")
+            assertThat(entities["TestModel"]!!.fields["double_field"]!!.jvmType).isEqualTo("double")
         }
 
         @Test
         fun `Boolean field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["is_awesome"]!!.jvmType).isEqualTo("boolean")
+            assertThat(entities["TestModel"]!!.fields["boolean_field"]!!.jvmType).isEqualTo("boolean")
         }
 
         @Test
         fun `String field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["name"]!!.jvmType).isEqualTo("java.lang.String")
+            assertThat(entities["TestModel"]!!.fields["string_field"]!!.jvmType).isEqualTo("java.lang.String")
         }
 
         @Test
-        fun `Timestamp field returns expected metadata`() {
-            assertThat(entities["TestModel"]!!.fields["created_date"]!!.jvmType).isEqualTo("java.sql.Timestamp")
+        fun `LocalDate field returns expected metadata`() {
+            assertThat(entities["TestModel"]!!.fields["date_field"]!!.jvmType).isEqualTo("java.time.LocalDate")
+        }
+
+        @Test
+        fun `LocalTime field returns expected metadata`() {
+            assertThat(entities["TestModel"]!!.fields["time_field"]!!.jvmType).isEqualTo("java.time.LocalTime")
+        }
+
+        @Test
+        fun `LocalDateTime field returns expected metadata`() {
+            assertThat(entities["TestModel"]!!.fields["datetime_field"]!!.jvmType).isEqualTo("java.time.LocalDateTime")
         }
 
         @Test

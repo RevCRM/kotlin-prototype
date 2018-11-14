@@ -1,13 +1,12 @@
 package org.revcrm.models
 
-import java.sql.Timestamp
-import java.time.Instant
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.MappedSuperclass
-import javax.persistence.PrePersist
-import javax.persistence.PreUpdate
 
 @MappedSuperclass
 abstract class BaseModel {
@@ -15,18 +14,10 @@ abstract class BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0
 
-    var created_date: Timestamp? = null
-    var updated_date: Timestamp? = null
+    @CreationTimestamp
+    var created_date: LocalDateTime? = null
 
-    @PrePersist
-    fun prePersist() {
-        created_date = Timestamp.from(Instant.now())
-        updated_date = created_date
-    }
-
-    @PreUpdate
-    fun preUpdate() {
-        updated_date = Timestamp.from(Instant.now())
-    }
+    @UpdateTimestamp
+    var updated_date: LocalDateTime? = null
 
 }

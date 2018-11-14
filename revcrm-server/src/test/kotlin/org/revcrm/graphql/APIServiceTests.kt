@@ -24,7 +24,7 @@ class APIServiceTests {
                 "length" to FieldMetadata(name = "length", jvmType = "float"),
                 "size" to FieldMetadata(name = "size", jvmType = "double"),
                 "is_awesome" to FieldMetadata(name = "is_awesome", jvmType = "boolean"),
-                "created_date" to FieldMetadata(name = "created_date", jvmType = "java.sql.Timestamp")
+                "created_date" to FieldMetadata(name = "created_date", jvmType = "java.time.LocalDateTime")
             )
         ),
         "Address" to EntityMetadata(

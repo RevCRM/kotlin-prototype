@@ -15,7 +15,9 @@ class FieldService {
         "double" to Scalars.GraphQLFloat,
         "boolean" to Scalars.GraphQLBoolean,
         "java.lang.String" to Scalars.GraphQLString,
-        "java.sql.Timestamp" to Scalars.GraphQLString
+        "java.time.LocalDate" to Scalars.GraphQLString,
+        "java.time.LocalTime" to Scalars.GraphQLInt,
+        "java.time.LocalDateTime" to Scalars.GraphQLString
     )
 
     fun getGraphQLScalarTypeForField(field: FieldMetadata): GraphQLOutputType? {
