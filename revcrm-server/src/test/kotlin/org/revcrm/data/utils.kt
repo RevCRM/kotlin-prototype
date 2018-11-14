@@ -6,17 +6,17 @@ import org.hibernate.tool.hbm2ddl.SchemaExport
 import org.hibernate.tool.schema.TargetType
 import java.util.EnumSet
 
-fun getDataForEntities(entityList: List<String>): RevCRMData {
-    val data = RevCRMData()
+fun getDataForEntities(entityList: List<String>): DBService {
+    val dbService = DBService()
     val dbConfig = mapOf(
         Environment.DRIVER to "org.h2.Driver",
         Environment.URL to "jdbc:h2:mem:revcrmtest;DB_CLOSE_DELAY=-1"
     )
-    data.initialise(dbConfig, entityList)
-    return data
+    dbService.initialise(dbConfig, entityList)
+    return dbService
 }
 
-fun recreateSchema(data: RevCRMData) {
+fun recreateSchema(data: DBService) {
     val schemaExport = SchemaExport()
     schemaExport.create(EnumSet.of(TargetType.DATABASE), data.metadata)
 }

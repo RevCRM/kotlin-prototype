@@ -1,12 +1,12 @@
 package org.revcrm
 
 import org.koin.dsl.module.module
+import org.revcrm.data.DBService
 import org.revcrm.data.FieldService
-import org.revcrm.data.RevCRMData
-import org.revcrm.graphql.RevCRMSchema
+import org.revcrm.graphql.APIService
 
 val revCRMModule = module {
-    single { RevCRMData() }
+    single { DBService() }
     single { FieldService() }
-    single { RevCRMSchema(get(), get()) }
+    single { APIService(get(), get()) }
 }

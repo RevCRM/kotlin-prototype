@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.data.testmodels.TestDB
 
-class RevCRMDataTests {
+class DBServiceTests {
 
     val testDB = TestDB.instance
     val entities = testDB.getEntityMetadata().entities

@@ -8,18 +8,18 @@ import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType.newObject
 import graphql.schema.GraphQLSchema
 import graphql.schema.StaticDataFetcher
+import org.revcrm.data.DBService
 import org.revcrm.data.FieldService
-import org.revcrm.data.RevCRMData
 
-class RevCRMSchema (
-    private val data: RevCRMData,
+class APIService (
+    private val dbService: DBService,
     private val fieldService: FieldService
 ) {
     lateinit var graphQLSchema: GraphQLSchema
     private lateinit var graphQLExecutor: GraphQL
 
     fun initialise() {
-        val meta = data.getEntityMetadata()
+        val meta = dbService.getEntityMetadata()
 
         val queryType = newObject()
             .name("Query")

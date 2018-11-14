@@ -11,7 +11,7 @@ import org.hibernate.mapping.Column
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
 
-class RevCRMData {
+class DBService {
     lateinit var metadata: Metadata
     private lateinit var factory: SessionFactory
 

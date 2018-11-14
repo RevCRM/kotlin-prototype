@@ -7,12 +7,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.data.CRMMetadata
+import org.revcrm.data.DBService
 import org.revcrm.data.EntityMetadata
 import org.revcrm.data.FieldMetadata
 import org.revcrm.data.FieldService
-import org.revcrm.data.RevCRMData
 
-class RevCRMSchemaTests {
+class APIServiceTests {
 
     val meta = CRMMetadata(mapOf(
         "TestModel" to EntityMetadata(
@@ -38,14 +38,14 @@ class RevCRMSchemaTests {
         )
     ))
 
-    val data = RevCRMData().apply {
+    val data = DBService().apply {
         mockkObject(this)
     }
     init {
         every { data.getEntityMetadata() } returns meta
     }
 
-    val schema = RevCRMSchema(data, FieldService()).apply {
+    val schema = APIService(data, FieldService()).apply {
         initialise()
     }
 
