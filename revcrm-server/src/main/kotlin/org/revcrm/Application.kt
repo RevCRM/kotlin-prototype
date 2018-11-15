@@ -102,7 +102,8 @@ fun Application.main() {
         Environment.DRIVER to c.property("revcrm.db.driver").getString(),
         Environment.URL to c.property("revcrm.db.url").getString(),
         Environment.USER to c.property("revcrm.db.username").getString(),
-        Environment.PASS to c.property("revcrm.db.password").getString()
+        Environment.PASS to c.property("revcrm.db.password").getString(),
+        Environment.HBM2DDL_AUTO to "update"
     )
     val entityList = c.property("revcrm.entityList").getList()
 
