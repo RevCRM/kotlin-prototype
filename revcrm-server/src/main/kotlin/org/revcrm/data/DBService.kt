@@ -7,9 +7,14 @@ import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 import org.hibernate.cfg.Environment
-import org.hibernate.mapping.Column
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
+import org.revcrm.util.getProperty
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
+import kotlin.reflect.jvm.javaField
 
 class DBService {
     lateinit var metadata: Metadata
@@ -68,16 +73,43 @@ class DBService {
             }
         }
 
-    private fun getFieldMetadata(col: Column): FieldMetadata {
-        val value = col.value as SimpleValue
+    private fun getFieldMetadata(prop: Property): FieldMetadata {
+        val value = prop.value as SimpleValue
         var subType: String? = null
         if (value.typeName == "org.hibernate.type.EnumType") {
             subType = value.typeParameters.getProperty("org.hibernate.type.ParameterType.returnedClass")
         }
+
+        // TODO: Property processing should be extensible
+        val klass = prop.persistentClass.mappedClass.kotlin
+        val property = getProperty(klass, prop.name)
+        if (property == null) {
+            throw Error("Could not locate property '${klass.simpleName}.${prop.name}'.")
+        }
+        val nullable = property.returnType.isMarkedNullable
+        val constraints = mutableMapOf<String, String>()
+        val field = property.javaField!!
+        if (field.isAnnotationPresent(NotEmpty::class.java)) {
+            constraints.set("NotEmpty", "true")
+        }
+        if (field.isAnnotationPresent(NotBlank::class.java)) {
+            constraints.set("NotBlank", "true")
+        }
+        if (field.isAnnotationPresent(Min::class.java)) {
+            val min = field.getAnnotation(Min::class.java)
+            constraints.set("Min", min.value.toString())
+        }
+        if (field.isAnnotationPresent(Max::class.java)) {
+            val max = field.getAnnotation(Max::class.java)
+            constraints.set("Max", max.value.toString())
+        }
+
         val fieldMeta = FieldMetadata(
-            name = col.canonicalName,
+            name = prop.name,
             jvmType = value.typeName,
-            jvmSubtype = subType
+            jvmSubtype = subType,
+            nullable = nullable,
+            constraints = constraints.toMap()
         )
         return fieldMeta
     }
@@ -87,24 +119,17 @@ class DBService {
         metadata.entityBindings.forEach { binding ->
             val fields = mutableMapOf<String, FieldMetadata>()
 
-            // Get ID Column(s)
-            val idColIterator = binding.identifierProperty.columnIterator
-            while (idColIterator.hasNext()) {
-                val column = idColIterator.next() as Column
-                val meta = getFieldMetadata(column)
-                fields.put(meta.name, meta)
-            }
+            // Get ID Property
+            val idProperty = binding.identifierProperty
+            val idMeta = getFieldMetadata(idProperty)
+            fields.put(idMeta.name, idMeta)
 
             // Get Other Columns
             val propertyIterator = binding.propertyIterator
             while (propertyIterator.hasNext()) {
                 val property = propertyIterator.next() as Property
-                val columnIterator = property.getColumnIterator()
-                while (columnIterator.hasNext()) {
-                    val column = columnIterator.next() as Column
-                    val meta = getFieldMetadata(column)
-                    fields.put(meta.name, meta)
-                }
+                val meta = getFieldMetadata(property)
+                fields.put(meta.name, meta)
             }
 
             entities.put(
