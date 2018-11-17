@@ -1,18 +1,20 @@
 package org.revcrm.data
 
-data class FieldMetadata (
+class FieldMetadata (
     val name: String,
     val jvmType: String,
-    val jvmSubtype: String? = null
+    val jvmSubtype: String? = null,
+    val nullable: Boolean = false,
+    val constraints: Map<String, String> = mutableMapOf()
 )
 
-data class EntityMetadata (
+class EntityMetadata (
     val name: String,
     val className: String,
     val fields: Map<String, FieldMetadata>
 )
 
-data class CRMMetadata (
+class CRMMetadata (
     val entities: Map<String, EntityMetadata>
 ) {
     fun getEntityByClassName(className: String): EntityMetadata? {

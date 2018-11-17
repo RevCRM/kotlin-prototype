@@ -6,7 +6,9 @@ import javax.persistence.Enumerated
 import javax.persistence.Index
 import javax.persistence.ManyToOne
 import javax.persistence.Table
-import javax.validation.constraints.NotNull
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotEmpty
 
 enum class AuthType {
     GOOGLE
@@ -22,13 +24,15 @@ enum class AuthType {
 )
 class RevUserAuth(
 
-    @ManyToOne @NotNull
+    @ManyToOne
     var user: RevUser,
 
-    @Enumerated(EnumType.STRING) @NotNull
+    @Enumerated(EnumType.STRING)
     var auth_type: AuthType,
 
-    @NotNull
+    @field:NotEmpty
+    @field:Min(10)
+    @field:Max(100)
     var auth_id: String
 
 ) : BaseModel()
