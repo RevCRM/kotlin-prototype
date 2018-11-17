@@ -28,9 +28,18 @@ class APIService (
         val queryType = newObject()
             .name("Query")
 
+        val metaType = newObject()
+            .name("ResultsMeta")
+            .field(GraphQLFieldDefinition.newFieldDefinition()
+                .name("totalCount")
+                .type(Scalars.GraphQLInt)
+                .dataFetcher(PropertyDataFetcher.fetching<Any>("totalCount"))
+            )
+            .build()
+
         meta.entities.forEach { entity ->
 
-            val entityType = newObject()
+            val entityTypeBuilder = newObject()
                 .name(entity.value.name)
 
             entity.value.fields.forEach { field ->
@@ -58,26 +67,46 @@ class APIService (
                     fieldDef.type(GraphQLNonNull(scalarType))
                 }
 
-                entityType.field(fieldDef)
+                entityTypeBuilder.field(fieldDef)
             }
+            val entityType = entityTypeBuilder.build()
 
-            val entityDataFetcher = DataFetcher<List<Map<String, Any>>> { environment ->
+            val entityDataFetcher = DataFetcher<Map<String, Any>> { environment ->
                 val ctx = environment.getContext<Any>()
 
-                val records: List<Map<String, Any>> = listOf(
+//                val where = environment.getArgument<String>("where")
+                val results: List<Map<String, Any>> = listOf(
                     mapOf(
                         "id" to 1,
                         "name" to "The Thing"
                     )
                 )
-                val where = environment.getArgument<String>("where")
-                records
+                mapOf(
+                    "results" to results,
+                    "meta" to mapOf(
+                        "totalCount" to 42
+                    )
+                )
             }
+
+            val entityResultsType = newObject()
+                .name(entity.value.name + "Results")
+                .field(GraphQLFieldDefinition.newFieldDefinition()
+                    .name("results")
+                    .type(GraphQLList.list(entityType))
+                    .dataFetcher(PropertyDataFetcher.fetching<Any>("results"))
+                )
+                .field(GraphQLFieldDefinition.newFieldDefinition()
+                    .name("meta")
+                    .type(metaType)
+                    .dataFetcher(PropertyDataFetcher.fetching<Any>("meta"))
+                )
+                .build()
 
             queryType.field(
                 GraphQLFieldDefinition.newFieldDefinition()
                     .name(entity.value.name)
-                    .type(GraphQLList.list(entityType.build()))
+                    .type(entityResultsType)
                     .argument(GraphQLArgument.newArgument()
                         .name("where")
                         .type(Scalars.GraphQLString)
