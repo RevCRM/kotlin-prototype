@@ -32,12 +32,17 @@ import org.revcrm.auth.googleOauthProvider
 import org.revcrm.auth.redirectUrl
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
+import org.revcrm.models.AuthType
+import org.revcrm.models.RevUser
+import org.revcrm.models.RevUserAuth
 import org.revcrm.server.graphQL
 import org.revcrm.server.graphiQL
 import org.revcrm.server.healthCheck
 import org.revcrm.server.staticFiles
+import org.revcrm.util.session
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
+import java.time.LocalDateTime
 
 /**
  * To run in intellij, create a new "Application" configuration and
@@ -108,12 +113,41 @@ fun Application.main() {
     val entityList = c.property("revcrm.entityList").getList()
 
     log.info("Initialising Database Connection...")
-    val data: DBService by inject()
-    data.initialise(dbConfig, entityList)
+    val db: DBService by inject()
+    db.initialise(dbConfig, entityList)
 
     log.info("Initialising GraphQL Schema...")
 
     val schema: APIService by inject()
     schema.initialise()
+
+    log.info("TEMP: Ensuring test user...")
+    val adminUser = db.withTransaction { em ->
+
+        var adminUser = em.session.bySimpleNaturalId(RevUser::class.java)
+            .load("admin@revcrm.com")
+
+        if (adminUser == null) {
+            println("Creating new admin user...")
+            adminUser = RevUser(
+                first_name = "System",
+                last_name = "Administrator",
+                email = "admin@revcrm.com",
+                last_login = LocalDateTime.now()
+            )
+            val auth = RevUserAuth(
+                user = adminUser,
+                auth_type = AuthType.GOOGLE,
+                auth_id = "123456"
+            )
+            em.persist(adminUser)
+            em.persist(auth)
+        }
+        else {
+            adminUser.last_login = LocalDateTime.now()
+        }
+        adminUser
+    }
+    println("Admin user: " + adminUser.email)
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.MappedSuperclass
 @MappedSuperclass
 abstract class BaseModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0
 
     @CreationTimestamp

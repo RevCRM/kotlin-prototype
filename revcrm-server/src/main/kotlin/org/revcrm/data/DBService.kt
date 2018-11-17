@@ -10,6 +10,7 @@ import org.hibernate.cfg.Environment
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
 import org.revcrm.util.getProperty
+import javax.persistence.EntityManager
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
@@ -56,22 +57,29 @@ class DBService {
         return factory.openSession()
     }
 
-    fun <T>withTransaction(method: (Session) -> T): T
-        = getSession().use { session ->
-            session.beginTransaction()
-            try {
-                val result = method(session)
-                session.getTransaction().commit()
-                return result
-            }
-            catch (e: Exception) {
-                session.getTransaction().rollback()
-                throw e
-            }
-            finally {
-                session.close()
-            }
+    fun getEntityManager(session: Session): EntityManager {
+        return session.entityManagerFactory.createEntityManager()
+    }
+
+    fun <T>withTransaction(method: (EntityManager) -> T): T {
+        val session = getSession()
+        val entityManager = getEntityManager(session)
+
+        entityManager.transaction.begin()
+        val result: T
+        try {
+            result = method(entityManager)
+            entityManager.transaction.commit()
+            return result
         }
+        catch (e: Exception) {
+            entityManager.transaction.rollback()
+            throw e
+        }
+        finally {
+            entityManager.close()
+        }
+    }
 
     private fun getFieldMetadata(prop: Property): FieldMetadata {
         val value = prop.value as SimpleValue
