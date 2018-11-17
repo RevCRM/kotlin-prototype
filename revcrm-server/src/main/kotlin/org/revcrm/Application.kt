@@ -45,8 +45,11 @@ import java.text.DateFormat
 import java.time.LocalDateTime
 
 /**
- * To run in intellij, create a new "Application" configuration and
- * set the "Main class" to "io.ktor.server.netty.EngineMain"
+ * To run in intellij, create a new "Application" configuration:
+ * - Set the "Main class" to "io.ktor.server.netty.EngineMain"
+ * - Set "Use classpath of module" to "revcrm-server_main"
+ * - Create a new .env file (see revcrm.env-example)
+ * - Select your .env file on the EnvFile tab
  */
 
 val log = LoggerFactory.getLogger("org.revcrm.main")
