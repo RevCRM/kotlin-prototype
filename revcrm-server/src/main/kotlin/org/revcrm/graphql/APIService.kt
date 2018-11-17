@@ -4,7 +4,6 @@ import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.GraphQL
 import graphql.Scalars
-import graphql.schema.DataFetcher
 import graphql.schema.GraphQLArgument
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLList
@@ -37,30 +36,30 @@ class APIService (
             )
             .build()
 
-        meta.entities.forEach { entity ->
+        meta.entities.forEach { _, entity ->
 
             val entityTypeBuilder = newObject()
-                .name(entity.value.name)
+                .name(entity.name)
 
-            entity.value.fields.forEach { field ->
+            entity.fields.forEach { _, field ->
 
-                var scalarType = fieldService.getGraphQLScalarTypeForField(field.value)
+                var scalarType = fieldService.getGraphQLScalarTypeForField(field)
                 if (scalarType == null) {
-                    val relatedEntity = meta.getEntityByClassName(field.value.jvmType)
+                    val relatedEntity = meta.getEntityByClassName(field.jvmType)
                     if (relatedEntity != null) {
                         // TODO: Return ObjectType of related entity
                         scalarType = Scalars.GraphQLInt
                     }
                     else {
-                        throw Error("Field type '${field.value.jvmType}' for field '${entity.value.name}.${field.value.name}' has no registered GraphQL Mapping.")
+                        throw Error("Field type '${field.jvmType}' for field '${entity.name}.${field.name}' has no registered GraphQL Mapping.")
                     }
                 }
 
                 val fieldDef = GraphQLFieldDefinition.newFieldDefinition()
-                    .name(field.value.name)
-                    .dataFetcher(PropertyDataFetcher.fetching<Any>(field.value.name))
+                    .name(field.name)
+                    .dataFetcher(PropertyDataFetcher.fetching<Any>(field.name))
 
-                if (field.value.nullable) {
+                if (field.nullable) {
                     fieldDef.type(scalarType)
                 }
                 else {
@@ -71,26 +70,8 @@ class APIService (
             }
             val entityType = entityTypeBuilder.build()
 
-            val entityDataFetcher = DataFetcher<Map<String, Any>> { environment ->
-                val ctx = environment.getContext<Any>()
-
-//                val where = environment.getArgument<String>("where")
-                val results: List<Map<String, Any>> = listOf(
-                    mapOf(
-                        "id" to 1,
-                        "name" to "The Thing"
-                    )
-                )
-                mapOf(
-                    "results" to results,
-                    "meta" to mapOf(
-                        "totalCount" to 42
-                    )
-                )
-            }
-
             val entityResultsType = newObject()
-                .name(entity.value.name + "Results")
+                .name(entity.name + "Results")
                 .field(GraphQLFieldDefinition.newFieldDefinition()
                     .name("results")
                     .type(GraphQLList.list(entityType))
@@ -105,13 +86,13 @@ class APIService (
 
             queryType.field(
                 GraphQLFieldDefinition.newFieldDefinition()
-                    .name(entity.value.name)
+                    .name(entity.name)
                     .type(entityResultsType)
                     .argument(GraphQLArgument.newArgument()
                         .name("where")
                         .type(Scalars.GraphQLString)
                         .build())
-                    .dataFetcher(entityDataFetcher)
+                    .dataFetcher(EntityDataFetcher(entity))
             )
         }
 
@@ -120,9 +101,13 @@ class APIService (
     }
 
     fun query(query: String, variables: Map<String, Any>?): ExecutionResult {
+        val context = APIContext(
+            db = dbService
+        )
         val execInput = ExecutionInput.newExecutionInput()
             .query(query)
             .variables(variables)
+            .context(context)
             .build()
         return graphQLExecutor.execute(execInput)
     }
