@@ -1,0 +1,266 @@
+# Selection Options
+---
+- { list: account.types, code: organisation, label: Organisation, seq: 1 }
+- { list: account.types, code: contact, label: Contact, seq: 1 }
+
+- { list: account.titles, code: Mr, label: Mr, seq: 1 }
+- { list: account.titles, code: Mrs, label: Mrs, seq: 2 }
+- { list: account.titles, code: Miss, label: Miss, seq: 3 }
+- { list: account.titles, code: Ms, label: Ms, seq: 4 }
+- { list: account.titles, code: Dr, label: Dr, seq: 5 }
+- { list: account.titles, code: Sir, label: Sir, seq: 6 }
+- { list: account.titles, code: Prof, label: Prof, seq: 7 }
+
+- { list: account.tags, code: lead, label: Lead, seq: 1 }
+- { list: account.tags, code: prospect, label: Prospect, seq: 2 }
+- { list: account.tags, code: client, label: Client, seq: 3 }
+- { list: account.tags, code: supplier, label: Supplier, seq: 4 }
+- { list: account.tags, code: recruiter, label: Recruiter, seq: 5 }
+
+- { list: account.countries, code: AFG, label: Afghanistan }
+- { list: account.countries, code: ALA, label: Aland Islands }
+- { list: account.countries, code: ALB, label: Albania }
+- { list: account.countries, code: DZA, label: Algeria }
+- { list: account.countries, code: ASM, label: American Samoa }
+- { list: account.countries, code: AND, label: Andorra }
+- { list: account.countries, code: AGO, label: Angola }
+- { list: account.countries, code: AIA, label: Anguilla }
+- { list: account.countries, code: ATA, label: Antarctica }
+- { list: account.countries, code: ATG, label: Antigua and Barbuda }
+- { list: account.countries, code: ARG, label: Argentina }
+- { list: account.countries, code: ARM, label: Armenia }
+- { list: account.countries, code: ABW, label: Aruba }
+- { list: account.countries, code: AUS, label: Australia }
+- { list: account.countries, code: AUT, label: Austria }
+- { list: account.countries, code: AZE, label: Azerbaijan }
+- { list: account.countries, code: BHS, label: Bahamas }
+- { list: account.countries, code: BHR, label: Bahrain }
+- { list: account.countries, code: BGD, label: Bangladesh }
+- { list: account.countries, code: BRB, label: Barbados }
+- { list: account.countries, code: BLR, label: Belarus }
+- { list: account.countries, code: BEL, label: Belgium }
+- { list: account.countries, code: BLZ, label: Belize }
+- { list: account.countries, code: BEN, label: Benin }
+- { list: account.countries, code: BMU, label: Bermuda }
+- { list: account.countries, code: BTN, label: Bhutan }
+- { list: account.countries, code: BOL, label: Bolivia }
+- { list: account.countries, code: BIH, label: Bosnia and Herzegovina }
+- { list: account.countries, code: BWA, label: Botswana }
+- { list: account.countries, code: BVT, label: Bouvet Island }
+- { list: account.countries, code: BRA, label: Brazil }
+- { list: account.countries, code: VGB, label: British Virgin Islands }
+- { list: account.countries, code: IOT, label: British Indian Ocean Territory }
+- { list: account.countries, code: BRN, label: Brunei Darussalam }
+- { list: account.countries, code: BGR, label: Bulgaria }
+- { list: account.countries, code: BFA, label: Burkina Faso }
+- { list: account.countries, code: BDI, label: Burundi }
+- { list: account.countries, code: KHM, label: Cambodia }
+- { list: account.countries, code: CMR, label: Cameroon }
+- { list: account.countries, code: CAN, label: Canada }
+- { list: account.countries, code: CPV, label: Cape Verde }
+- { list: account.countries, code: CYM, label: Cayman Islands }
+- { list: account.countries, code: CAF, label: Central African Republic }
+- { list: account.countries, code: TCD, label: Chad }
+- { list: account.countries, code: CHL, label: Chile }
+- { list: account.countries, code: CHN, label: China }
+- { list: account.countries, code: HKG, label: Hong Kong, SAR China }
+- { list: account.countries, code: MAC, label: Macao, SAR China }
+- { list: account.countries, code: CXR, label: Christmas Island }
+- { list: account.countries, code: CCK, label: Cocos (Keeling) Islands }
+- { list: account.countries, code: COL, label: Colombia }
+- { list: account.countries, code: COM, label: Comoros }
+- { list: account.countries, code: COG, label: Congo (Brazzaville) }
+- { list: account.countries, code: COD, label: Congo, (Kinshasa) }
+- { list: account.countries, code: COK, label: Cook Islands }
+- { list: account.countries, code: CRI, label: Costa Rica }
+- { list: account.countries, code: CIV, label: Côte d\'Ivoire }
+- { list: account.countries, code: HRV, label: Croatia }
+- { list: account.countries, code: CUB, label: Cuba }
+- { list: account.countries, code: CYP, label: Cyprus }
+- { list: account.countries, code: CZE, label: Czech Republic }
+- { list: account.countries, code: DNK, label: Denmark }
+- { list: account.countries, code: DJI, label: Djibouti }
+- { list: account.countries, code: DMA, label: Dominica }
+- { list: account.countries, code: DOM, label: Dominican Republic }
+- { list: account.countries, code: ECU, label: Ecuador }
+- { list: account.countries, code: EGY, label: Egypt }
+- { list: account.countries, code: SLV, label: El Salvador }
+- { list: account.countries, code: GNQ, label: Equatorial Guinea }
+- { list: account.countries, code: ERI, label: Eritrea }
+- { list: account.countries, code: EST, label: Estonia }
+- { list: account.countries, code: ETH, label: Ethiopia }
+- { list: account.countries, code: FLK, label: Falkland Islands (Malvinas) }
+- { list: account.countries, code: FRO, label: Faroe Islands }
+- { list: account.countries, code: FJI, label: Fiji }
+- { list: account.countries, code: FIN, label: Finland }
+- { list: account.countries, code: FRA, label: France }
+- { list: account.countries, code: GUF, label: French Guiana }
+- { list: account.countries, code: PYF, label: French Polynesia }
+- { list: account.countries, code: ATF, label: French Southern Territories }
+- { list: account.countries, code: GAB, label: Gabon }
+- { list: account.countries, code: GMB, label: Gambia }
+- { list: account.countries, code: GEO, label: Georgia }
+- { list: account.countries, code: DEU, label: Germany }
+- { list: account.countries, code: GHA, label: Ghana }
+- { list: account.countries, code: GIB, label: Gibraltar }
+- { list: account.countries, code: GRC, label: Greece }
+- { list: account.countries, code: GRL, label: Greenland }
+- { list: account.countries, code: GRD, label: Grenada }
+- { list: account.countries, code: GLP, label: Guadeloupe }
+- { list: account.countries, code: GUM, label: Guam }
+- { list: account.countries, code: GTM, label: Guatemala }
+- { list: account.countries, code: GGY, label: Guernsey }
+- { list: account.countries, code: GIN, label: Guinea }
+- { list: account.countries, code: GNB, label: Guinea-Bissau }
+- { list: account.countries, code: GUY, label: Guyana }
+- { list: account.countries, code: HTI, label: Haiti }
+- { list: account.countries, code: HMD, label: Heard and Mcdonald Islands }
+- { list: account.countries, code: VAT, label: Holy See (Vatican City State) }
+- { list: account.countries, code: HND, label: Honduras }
+- { list: account.countries, code: HUN, label: Hungary }
+- { list: account.countries, code: ISL, label: Iceland }
+- { list: account.countries, code: IND, label: India }
+- { list: account.countries, code: IDN, label: Indonesia }
+- { list: account.countries, code: IRN, label: Iran, Islamic Republic of }
+- { list: account.countries, code: IRQ, label: Iraq }
+- { list: account.countries, code: IRL, label: Ireland }
+- { list: account.countries, code: IMN, label: Isle of Man }
+- { list: account.countries, code: ISR, label: Israel }
+- { list: account.countries, code: ITA, label: Italy }
+- { list: account.countries, code: JAM, label: Jamaica }
+- { list: account.countries, code: JPN, label: Japan }
+- { list: account.countries, code: JEY, label: Jersey }
+- { list: account.countries, code: JOR, label: Jordan }
+- { list: account.countries, code: KAZ, label: Kazakhstan }
+- { list: account.countries, code: KEN, label: Kenya }
+- { list: account.countries, code: KIR, label: Kiribati }
+- { list: account.countries, code: PRK, label: Korea (North) }
+- { list: account.countries, code: KOR, label: Korea (South) }
+- { list: account.countries, code: KWT, label: Kuwait }
+- { list: account.countries, code: KGZ, label: Kyrgyzstan }
+- { list: account.countries, code: LAO, label: Lao PDR }
+- { list: account.countries, code: LVA, label: Latvia }
+- { list: account.countries, code: LBN, label: Lebanon }
+- { list: account.countries, code: LSO, label: Lesotho }
+- { list: account.countries, code: LBR, label: Liberia }
+- { list: account.countries, code: LBY, label: Libya }
+- { list: account.countries, code: LIE, label: Liechtenstein }
+- { list: account.countries, code: LTU, label: Lithuania }
+- { list: account.countries, code: LUX, label: Luxembourg }
+- { list: account.countries, code: MKD, label: Macedonia, Republic of }
+- { list: account.countries, code: MDG, label: Madagascar }
+- { list: account.countries, code: MWI, label: Malawi }
+- { list: account.countries, code: MYS, label: Malaysia }
+- { list: account.countries, code: MDV, label: Maldives }
+- { list: account.countries, code: MLI, label: Mali }
+- { list: account.countries, code: MLT, label: Malta }
+- { list: account.countries, code: MHL, label: Marshall Islands }
+- { list: account.countries, code: MTQ, label: Martinique }
+- { list: account.countries, code: MRT, label: Mauritania }
+- { list: account.countries, code: MUS, label: Mauritius }
+- { list: account.countries, code: MYT, label: Mayotte }
+- { list: account.countries, code: MEX, label: Mexico }
+- { list: account.countries, code: FSM, label: Micronesia, Federated States of }
+- { list: account.countries, code: MDA, label: Moldova }
+- { list: account.countries, code: MCO, label: Monaco }
+- { list: account.countries, code: MNG, label: Mongolia }
+- { list: account.countries, code: MNE, label: Montenegro }
+- { list: account.countries, code: MSR, label: Montserrat }
+- { list: account.countries, code: MAR, label: Morocco }
+- { list: account.countries, code: MOZ, label: Mozambique }
+- { list: account.countries, code: MMR, label: Myanmar }
+- { list: account.countries, code: NAM, label: Namibia }
+- { list: account.countries, code: NRU, label: Nauru }
+- { list: account.countries, code: NPL, label: Nepal }
+- { list: account.countries, code: NLD, label: Netherlands }
+- { list: account.countries, code: ANT, label: Netherlands Antilles }
+- { list: account.countries, code: NCL, label: New Caledonia }
+- { list: account.countries, code: NZL, label: New Zealand }
+- { list: account.countries, code: NIC, label: Nicaragua }
+- { list: account.countries, code: NER, label: Niger }
+- { list: account.countries, code: NGA, label: Nigeria }
+- { list: account.countries, code: NIU, label: Niue }
+- { list: account.countries, code: NFK, label: Norfolk Island }
+- { list: account.countries, code: MNP, label: Northern Mariana Islands }
+- { list: account.countries, code: NOR, label: Norway }
+- { list: account.countries, code: OMN, label: Oman }
+- { list: account.countries, code: PAK, label: Pakistan }
+- { list: account.countries, code: PLW, label: Palau }
+- { list: account.countries, code: PSE, label: Palestinian Territory }
+- { list: account.countries, code: PAN, label: Panama }
+- { list: account.countries, code: PNG, label: Papua New Guinea }
+- { list: account.countries, code: PRY, label: Paraguay }
+- { list: account.countries, code: PER, label: Peru }
+- { list: account.countries, code: PHL, label: Philippines }
+- { list: account.countries, code: PCN, label: Pitcairn }
+- { list: account.countries, code: POL, label: Poland }
+- { list: account.countries, code: PRT, label: Portugal }
+- { list: account.countries, code: PRI, label: Puerto Rico }
+- { list: account.countries, code: QAT, label: Qatar }
+- { list: account.countries, code: REU, label: Réunion }
+- { list: account.countries, code: ROU, label: Romania }
+- { list: account.countries, code: RUS, label: Russian Federation }
+- { list: account.countries, code: RWA, label: Rwanda }
+- { list: account.countries, code: BLM, label: Saint-Barthélemy }
+- { list: account.countries, code: SHN, label: Saint Helena }
+- { list: account.countries, code: KNA, label: Saint Kitts and Nevis }
+- { list: account.countries, code: LCA, label: Saint Lucia }
+- { list: account.countries, code: MAF, label: Saint-Martin (French part) }
+- { list: account.countries, code: SPM, label: Saint Pierre and Miquelon }
+- { list: account.countries, code: VCT, label: Saint Vincent and Grenadines }
+- { list: account.countries, code: WSM, label: Samoa }
+- { list: account.countries, code: SMR, label: San Marino }
+- { list: account.countries, code: STP, label: Sao Tome and Principe }
+- { list: account.countries, code: SAU, label: Saudi Arabia }
+- { list: account.countries, code: SEN, label: Senegal }
+- { list: account.countries, code: SRB, label: Serbia }
+- { list: account.countries, code: SYC, label: Seychelles }
+- { list: account.countries, code: SLE, label: Sierra Leone }
+- { list: account.countries, code: SGP, label: Singapore }
+- { list: account.countries, code: SVK, label: Slovakia }
+- { list: account.countries, code: SVN, label: Slovenia }
+- { list: account.countries, code: SLB, label: Solomon Islands }
+- { list: account.countries, code: SOM, label: Somalia }
+- { list: account.countries, code: ZAF, label: South Africa }
+- { list: account.countries, code: SGS, label: South Georgia and the South Sandwich Islands }
+- { list: account.countries, code: SSD, label: South Sudan }
+- { list: account.countries, code: ESP, label: Spain }
+- { list: account.countries, code: LKA, label: Sri Lanka }
+- { list: account.countries, code: SDN, label: Sudan }
+- { list: account.countries, code: SUR, label: Suriname }
+- { list: account.countries, code: SJM, label: Svalbard and Jan Mayen Islands }
+- { list: account.countries, code: SWZ, label: Swaziland }
+- { list: account.countries, code: SWE, label: Sweden }
+- { list: account.countries, code: CHE, label: Switzerland }
+- { list: account.countries, code: SYR, label: Syrian Arab Republic (Syria) }
+- { list: account.countries, code: TWN, label: Taiwan, Republic of China }
+- { list: account.countries, code: TJK, label: Tajikistan }
+- { list: account.countries, code: TZA, label: Tanzania, United Republic of }
+- { list: account.countries, code: THA, label: Thailand }
+- { list: account.countries, code: TLS, label: Timor-Leste }
+- { list: account.countries, code: TGO, label: Togo }
+- { list: account.countries, code: TKL, label: Tokelau }
+- { list: account.countries, code: TON, label: Tonga }
+- { list: account.countries, code: TTO, label: Trinidad and Tobago }
+- { list: account.countries, code: TUN, label: Tunisia }
+- { list: account.countries, code: TUR, label: Turkey }
+- { list: account.countries, code: TKM, label: Turkmenistan }
+- { list: account.countries, code: TCA, label: Turks and Caicos Islands }
+- { list: account.countries, code: TUV, label: Tuvalu }
+- { list: account.countries, code: UGA, label: Uganda }
+- { list: account.countries, code: UKR, label: Ukraine }
+- { list: account.countries, code: ARE, label: United Arab Emirates }
+- { list: account.countries, code: GBR, label: United Kingdom }
+- { list: account.countries, code: USA, label: United States of America }
+- { list: account.countries, code: UMI, label: US Minor Outlying Islands }
+- { list: account.countries, code: URY, label: Uruguay }
+- { list: account.countries, code: UZB, label: Uzbekistan }
+- { list: account.countries, code: VUT, label: Vanuatu }
+- { list: account.countries, code: VEN, label: Venezuela (Bolivarian Republic) }
+- { list: account.countries, code: VNM, label: Viet Nam }
+- { list: account.countries, code: VIR, label: Virgin Islands, US }
+- { list: account.countries, code: WLF, label: Wallis and Futuna Islands }
+- { list: account.countries, code: ESH, label: Western Sahara }
+- { list: account.countries, code: YEM, label: Yemen }
+- { list: account.countries, code: ZMB, label: Zambia }
+- { list: account.countries, code: ZWE, label: Zimbabwe }
