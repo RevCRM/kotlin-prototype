@@ -15,9 +15,9 @@ import org.revcrm.data.FieldService
 class APIServiceTests {
 
     val meta = CRMMetadata(mapOf(
-        "TestModel" to EntityMetadata(
-            name = "TestModel",
-            className = "test.TestModel",
+        "TestFieldsModel" to EntityMetadata(
+            name = "TestFieldsModel",
+            className = "test.TestFieldsModel",
             fields = mapOf(
                 "id" to FieldMetadata(name = "id", jvmType = "int"),
                 "name" to FieldMetadata(name = "name", jvmType = "java.lang.String"),
@@ -50,7 +50,7 @@ class APIServiceTests {
     }
 
     val queryTypeDef = schema.graphQLSchema.queryType
-    val testModelDef = queryTypeDef.getFieldDefinition("TestModel")
+    val testModelDef = queryTypeDef.getFieldDefinition("TestFieldsModel")
     val addressModelDef = queryTypeDef.getFieldDefinition("Address")
 
     @Nested
@@ -68,6 +68,7 @@ class APIServiceTests {
         }
 
         // TODO: Tests for each field type
+        // Tests for nullability
 
     }
 
