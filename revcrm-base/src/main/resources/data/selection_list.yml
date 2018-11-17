@@ -1,0 +1,17 @@
+# Selection Lists
+---
+- code: account.types
+  label: Account Types
+  model: account
+
+- code: account.titles
+  label: Contact Titles
+  model: account
+
+- code: account.tags
+  label: Account Tags
+  model: account
+
+- code: account.countries
+  label: Countries
+  model: account

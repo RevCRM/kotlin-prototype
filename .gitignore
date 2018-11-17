@@ -1,0 +1,10 @@
+/.gradle
+/.idea
+**/out
+**/build
+**/classes
+*.iml
+*.ipr
+*.iws
+revcrm.env
+.DS_Store
