@@ -43,11 +43,15 @@ module.exports = (env, args) => {
                     NODE_ENV: JSON.stringify(mode)
                 },
             }),
-            // new CopyWebpackPlugin([
-            //     { context: 'static', from: '**/*' }
-            // ])
+            new CopyWebpackPlugin([
+                { context: 'static', from: '**/*' }
+            ])
         ]
     };
+
+    if (mode == 'development') {
+        config.devtool = "source-map"
+    }
 
     return config;
 };

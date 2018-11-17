@@ -6,9 +6,10 @@
   "author": "Russell Briggs <revcrm@russellbriggs.co>",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "webpack --mode production",
-    "build-dev": "webpack --mode development",
-    "watch": "webpack --watch --mode development",
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && webpack --mode production",
+    "build-dev": "npm run clean && webpack --mode development",
+    "watch": "npm run clean && webpack --watch --mode development",
     "test": "jest",
     "test-ci": "jest"
   },
