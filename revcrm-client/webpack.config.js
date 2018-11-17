@@ -16,8 +16,8 @@ module.exports = (env, args) => {
         },
         output: {
             path: outputPath,
-            filename: "[name].js",
-            chunkFilename: '[name].js'
+            filename: "js/[name].js",
+            chunkFilename: 'js/[name].js'
         },
         resolve: {
             // Add `.ts` and `.tsx` as a resolvable extension.
