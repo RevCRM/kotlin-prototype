@@ -8,6 +8,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "build-dev": "webpack --mode development",
+    "watch": "webpack --watch --mode development",
     "test": "jest",
     "test-ci": "jest"
   },
