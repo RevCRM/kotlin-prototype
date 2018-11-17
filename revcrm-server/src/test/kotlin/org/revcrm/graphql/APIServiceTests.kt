@@ -2,6 +2,7 @@ package org.revcrm.graphql
 
 import graphql.Scalars
 import graphql.schema.GraphQLEnumType
+import graphql.schema.GraphQLList
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import io.mockk.every
@@ -84,12 +85,26 @@ class APIServiceTests {
             assertThat(testFieldsModel.type is GraphQLObjectType)
             assertThat(testConstraintsModel.type is GraphQLObjectType)
         }
+
+        @Test
+        fun `Entity root type contains "results" and "meta" keys`() {
+            val resultsType = testFieldsModel.type as GraphQLObjectType
+            assertThat(resultsType.name).isEqualTo(testFieldsModel.name + "Results")
+
+            val resultsListType = resultsType.getFieldDefinition("results").type as GraphQLList
+            assertThat(resultsListType.wrappedType.name).isEqualTo(testFieldsModel.name)
+
+            val metaNode = resultsType.getFieldDefinition("meta")
+            assertThat(metaNode.type is GraphQLObjectType)
+        }
     }
 
     @Nested
     inner class FieldTypes {
 
-        val testFieldsModelType = testFieldsModel.type as GraphQLObjectType
+        val resultsType = testFieldsModel.type as GraphQLObjectType
+        val resultsListType = resultsType.getFieldDefinition("results").type as GraphQLList
+        val testFieldsModelType = resultsListType.wrappedType as GraphQLObjectType
 
         @Test
         fun `Int fields are exposed as expected`() {
@@ -151,7 +166,9 @@ class APIServiceTests {
     @Nested
     inner class FieldConstraints {
 
-        val testConstraintsModelType = testConstraintsModel.type as GraphQLObjectType
+        val resultsType = testConstraintsModel.type as GraphQLObjectType
+        val resultsListType = resultsType.getFieldDefinition("results").type as GraphQLList
+        val testConstraintsModelType = resultsListType.wrappedType as GraphQLObjectType
 
         @Test
         fun `Nullable fields are exposed as expected`() {
