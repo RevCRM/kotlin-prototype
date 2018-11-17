@@ -5,6 +5,7 @@ import graphql.ExecutionResult
 import graphql.GraphQL
 import graphql.Scalars
 import graphql.schema.GraphQLFieldDefinition
+import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType.newObject
 import graphql.schema.GraphQLSchema
 import graphql.schema.StaticDataFetcher
@@ -43,12 +44,18 @@ class APIService (
                     }
                 }
 
-                entityType.field(
-                    GraphQLFieldDefinition.newFieldDefinition()
-                        .name(field.value.name)
-                        .type(scalarType)
-                        .dataFetcher(StaticDataFetcher("hello world!"))
-                )
+                val fieldDef = GraphQLFieldDefinition.newFieldDefinition()
+                    .name(field.value.name)
+                    .dataFetcher(StaticDataFetcher("hello world!"))
+
+                if (field.value.nullable) {
+                    fieldDef.type(scalarType)
+                }
+                else {
+                    fieldDef.type(GraphQLNonNull(scalarType))
+                }
+
+                entityType.field(fieldDef)
             }
 
             queryType.field(

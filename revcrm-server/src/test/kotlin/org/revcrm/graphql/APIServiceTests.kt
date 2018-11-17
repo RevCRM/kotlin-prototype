@@ -1,5 +1,8 @@
 package org.revcrm.graphql
 
+import graphql.Scalars
+import graphql.schema.GraphQLEnumType
+import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import io.mockk.every
 import io.mockk.mockkObject
@@ -14,33 +17,48 @@ import org.revcrm.data.FieldService
 
 class APIServiceTests {
 
-    val meta = CRMMetadata(mapOf(
-        "TestFieldsModel" to EntityMetadata(
-            name = "TestFieldsModel",
-            className = "test.TestFieldsModel",
-            fields = mapOf(
-                "id" to FieldMetadata(name = "id", jvmType = "int"),
-                "name" to FieldMetadata(name = "name", jvmType = "java.lang.String"),
-                "length" to FieldMetadata(name = "length", jvmType = "float"),
-                "size" to FieldMetadata(name = "size", jvmType = "double"),
-                "is_awesome" to FieldMetadata(name = "is_awesome", jvmType = "boolean"),
-                "created_date" to FieldMetadata(name = "created_date", jvmType = "java.time.LocalDateTime")
-            )
-        ),
-        "Address" to EntityMetadata(
-            name = "Address",
-            className = "test.Address",
-            fields = mapOf(
-                "id" to FieldMetadata(name = "id", jvmType = "int"),
-                "address_1" to FieldMetadata(name = "address_1", jvmType = "java.lang.String"),
-                "address_2" to FieldMetadata(name = "address_2", jvmType = "java.lang.String")
+    val meta = CRMMetadata(
+        mapOf(
+            "TestFieldsModel" to EntityMetadata(
+                name = "TestFieldsModel",
+                className = "test.TestFieldsModel",
+                fields = mapOf(
+                    "int_field" to FieldMetadata(name = "int_field", jvmType = "int"),
+                    "float_field" to FieldMetadata(name = "float_field", jvmType = "float"),
+                    "double_field" to FieldMetadata(name = "double_field", jvmType = "double"),
+                    "boolean_field" to FieldMetadata(name = "boolean_field", jvmType = "boolean"),
+                    "string_field" to FieldMetadata(name = "string_field", jvmType = "java.lang.String"),
+                    "date_field" to FieldMetadata(name = "date_field", jvmType = "java.time.LocalDate"),
+                    "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
+                    "datetime_field" to FieldMetadata(name = "datetime_field", jvmType = "java.time.LocalDateTime"),
+                    "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
+                    "enum_field" to FieldMetadata(
+                        name = "enum_field", jvmType = "org.hibernate.type.EnumType",
+                        jvmSubtype = "org.revcrm.data.testmodels.EnumFieldOptions"
+                    )
+                )
+            ),
+            "TestConstraintsModel" to EntityMetadata(
+                name = "TestConstraintsModel",
+                className = "test.TestConstraintsModel",
+                fields = mapOf(
+                    "nullable_field" to FieldMetadata(
+                        name = "nullable_field", jvmType = "java.lang.String",
+                        nullable = true
+                    ),
+                    "non_nullable_field" to FieldMetadata(
+                        name = "non_nullable_field", jvmType = "java.lang.String",
+                        nullable = false
+                    )
+                )
             )
         )
-    ))
+    )
 
     val data = DBService().apply {
         mockkObject(this)
     }
+
     init {
         every { data.getEntityMetadata() } returns meta
     }
@@ -49,27 +67,102 @@ class APIServiceTests {
         initialise()
     }
 
-    val queryTypeDef = schema.graphQLSchema.queryType
-    val testModelDef = queryTypeDef.getFieldDefinition("TestFieldsModel")
-    val addressModelDef = queryTypeDef.getFieldDefinition("Address")
+    val queryType = schema.graphQLSchema.queryType
+    val testFieldsModel = queryType.getFieldDefinition("TestFieldsModel")
+    val testConstraintsModel = queryType.getFieldDefinition("TestConstraintsModel")
 
     @Nested
     inner class TopLevelSchema {
 
         @Test
         fun `registers a query object per entity`() {
-            assertThat(queryTypeDef.fieldDefinitions).hasSize(meta.entities.size)
+            assertThat(queryType.fieldDefinitions).hasSize(meta.entities.size)
         }
 
         @Test
         fun `registers a GraphQLObjectType for each entity`() {
-            assertThat(testModelDef.type is GraphQLObjectType)
-            assertThat(addressModelDef.type is GraphQLObjectType)
+            assertThat(testFieldsModel.type is GraphQLObjectType)
+            assertThat(testConstraintsModel.type is GraphQLObjectType)
         }
-
-        // TODO: Tests for each field type
-        // Tests for nullability
-
     }
 
+    @Nested
+    inner class FieldTypes {
+
+        val testFieldsModelType = testFieldsModel.type as GraphQLObjectType
+
+        @Test
+        fun `Int fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("int_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
+        }
+
+        @Test
+        fun `Float fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("float_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLFloat)
+        }
+
+        @Test
+        fun `Double fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("double_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLFloat)
+        }
+
+        @Test
+        fun `Boolean fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("boolean_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLBoolean)
+        }
+
+        @Test
+        fun `String fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("string_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
+        }
+
+        @Test
+        fun `Date fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("date_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
+        }
+
+        @Test
+        fun `Time fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("time_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
+        }
+
+        @Test
+        fun `DateTime fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("datetime_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
+        }
+
+        @Test
+        fun `Enum fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("enum_field").type as GraphQLNonNull
+            val enum = type.wrappedType as GraphQLEnumType
+            assertThat(enum.values[0].name).isEqualTo("OPTION1")
+            assertThat(enum.values[1].name).isEqualTo("OPTION2")
+        }
+    }
+
+    @Nested
+    inner class FieldConstraints {
+
+        val testConstraintsModelType = testConstraintsModel.type as GraphQLObjectType
+
+        @Test
+        fun `Nullable fields are exposed as expected`() {
+            val type = testConstraintsModelType.getFieldDefinition("nullable_field").type
+            assertThat(type).isEqualTo(Scalars.GraphQLString)
+        }
+
+        @Test
+        fun `Non-nullable fields are exposed as expected`() {
+            val type = testConstraintsModelType.getFieldDefinition("non_nullable_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
+        }
+    }
 }
