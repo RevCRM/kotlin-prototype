@@ -65,6 +65,18 @@ export class GoogleAuth extends React.Component<{}, IGoogleAuthState> {
         }
     }
 
+    testAPI = async () => {
+        console.log('Sending test request...');
+        const tokens = this._googleAuth.currentUser!.getAuthResponse();
+        const idToken = tokens.id_token;
+        console.log('TOKEN', idToken);
+        const res = fetch('/ping', {
+            headers: {
+                Authorization: 'Bearer ' + idToken
+            }
+        });
+    }
+
     render() {
         if (this.state.loadState == 'loading') {
             return 'Initialising Google Auth...';
@@ -78,6 +90,7 @@ export class GoogleAuth extends React.Component<{}, IGoogleAuthState> {
                 return (<>
                     <p>Logged In as {this.state.currentUser}</p>
                     <button onClick={this.logout}>Log Out</button>
+                    <button onClick={this.testAPI}>Test API</button>
                 </>);
             }
             else if (this.state.authState == 'logging_in') {
