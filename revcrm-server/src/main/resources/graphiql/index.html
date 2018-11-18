@@ -21,6 +21,12 @@
     </style>
 
     <!--
+      Google Sign-in Integration
+    -->
+    <script src="https://apis.google.com/js/platform.js"></script>
+    <meta name="google-signin-client_id" content="252486211013-8m24n1m58ugjjcn2qhm6mdgq1q4sganu.apps.googleusercontent.com">
+
+    <!--
       This GraphiQL example depends on Promise and fetch, which are available in
       modern browsers, but can be "polyfilled" for older browsers.
       GraphiQL itself depends on React DOM.
@@ -42,8 +48,16 @@
 
 </head>
 <body>
-<div id="graphiql">Loading...</div>
-<script>
+
+    <div style="position:absolute;top:0px;left:40%;">
+      <div style="display:flex;padding:5px;align-items:center;">
+        <div class="g-signin2" data-onsuccess="start"></div>
+        <div style="margin-left:30px;" id="userDisplay"></div>
+      </div>
+    </div>
+    <div id="graphiql"></div>
+
+    <script>
 
       /**
        * This GraphiQL example illustrates how to use some of GraphiQL's props
@@ -106,6 +120,7 @@
       // Defines a GraphQL fetcher using the fetch API. You're not required to
       // use fetch, and could instead implement graphQLFetcher however you like,
       // as long as it returns a Promise or Observable.
+      let authHeaders = {};
       function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
@@ -114,6 +129,7 @@
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            ...authHeaders
           },
           body: JSON.stringify(graphQLParams),
           credentials: 'include',
@@ -131,19 +147,31 @@
       // Render <GraphiQL /> into the body.
       // See the README in the top level of this module to learn more about
       // how you can customize GraphiQL by providing different values or
-      // additional child elements.
-      ReactDOM.render(
-        React.createElement(GraphiQL, {
-          fetcher: graphQLFetcher,
-          query: parameters.query || '',
-          variables: parameters.variables,
-          operationName: parameters.operationName,
-          onEditQuery: onEditQuery,
-          onEditVariables: onEditVariables,
-          onEditOperationName: onEditOperationName
-        }),
-        document.getElementById('graphiql')
-      );
+      // additional child elements.      
+      function start(googleUser) {
+
+        const userDisplay = document.getElementById('userDisplay');
+        const tokens = googleUser.getAuthResponse()
+        authHeaders = {
+          Authorization: 'Bearer ' + tokens.id_token
+        };
+
+        const profile = googleUser.getBasicProfile();
+        userDisplay.innerText = profile.getEmail();
+
+        ReactDOM.render(
+          React.createElement(GraphiQL, {
+            fetcher: graphQLFetcher,
+            query: parameters.query || '',
+            variables: parameters.variables,
+            operationName: parameters.operationName,
+            onEditQuery: onEditQuery,
+            onEditVariables: onEditVariables,
+            onEditOperationName: onEditOperationName
+          }),
+          document.getElementById('graphiql')
+        );
+      }
     </script>
 </body>
 </html>
