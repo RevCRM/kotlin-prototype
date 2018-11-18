@@ -26,10 +26,10 @@ import org.revcrm.graphql.APIService
 import org.revcrm.models.AuthType
 import org.revcrm.models.RevUser
 import org.revcrm.models.RevUserAuth
-import org.revcrm.server.graphQL
-import org.revcrm.server.graphiQL
-import org.revcrm.server.healthCheck
-import org.revcrm.server.staticFiles
+import org.revcrm.routes.graphQL
+import org.revcrm.routes.graphiQL
+import org.revcrm.routes.healthCheck
+import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
 import org.revcrm.util.session
 import org.slf4j.LoggerFactory

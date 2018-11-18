@@ -1,4 +1,4 @@
-package org.revcrm.server
+package org.revcrm.routes
 
 import io.ktor.application.call
 import io.ktor.http.ContentType
