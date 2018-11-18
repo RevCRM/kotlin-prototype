@@ -21,6 +21,7 @@
         "object-literal-shorthand": false,
         "member-access": false,
         "no-submodule-imports": false,
-        "prefer-conditional-expression": false
+        "prefer-conditional-expression": false,
+        "trailing-comma": false
     }
 }
