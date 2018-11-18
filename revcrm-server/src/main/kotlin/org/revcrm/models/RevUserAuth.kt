@@ -30,9 +30,6 @@ class RevUserAuth(
     @Enumerated(EnumType.STRING)
     var auth_type: AuthType,
 
-    @field:NotEmpty
-    @field:Min(10)
-    @field:Max(100)
     var auth_id: String
 
 ) : BaseModel()

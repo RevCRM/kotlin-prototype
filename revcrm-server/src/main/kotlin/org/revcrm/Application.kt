@@ -30,10 +30,7 @@ import org.hibernate.cfg.Environment
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
-import org.revcrm.auth.RevCRMSession
-import org.revcrm.auth.googleLogin
-import org.revcrm.auth.googleOauthProvider
-import org.revcrm.auth.redirectUrl
+import org.revcrm.auth.*
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
 import org.revcrm.models.AuthType
@@ -64,8 +61,22 @@ val log = LoggerFactory.getLogger("org.revcrm.main")
 fun Application.main() {
 
     log.info("Starting RevCRM...")
-
     installKoin(listOf(revCRMModule), logger = SLF4JLogger())
+
+    log.info("Loading Configuration...")
+    val c = environment.config
+    val dbConfig = mapOf(
+            Environment.DRIVER to c.property("revcrm.db.driver").getString(),
+            Environment.URL to c.property("revcrm.db.url").getString(),
+            Environment.USER to c.property("revcrm.db.username").getString(),
+            Environment.PASS to c.property("revcrm.db.password").getString(),
+            Environment.HBM2DDL_AUTO to "update"
+    )
+    val entityList = c.property("revcrm.entityList").getList()
+
+    log.info("Initialising Database Connection...")
+    val db: DBService by inject()
+    db.initialise(dbConfig, entityList)
 
     install(DefaultHeaders) {
         header("Server", "RevCRM")
@@ -77,19 +88,32 @@ fun Application.main() {
         }
     }
 
-    val jwtIssuer = environment.config.property("jwt.issuer").getString()
-    val jwtAudience = environment.config.property("jwt.audience").getString()
-    val jwksUrl = environment.config.property("jwt.jwksUrl").getString()
+    val jwtIssuer = c.property("jwt.issuer").getString()
+    val jwtAudience = c.property("jwt.audience").getString()
+    val jwksUrl = c.property("jwt.jwksUrl").getString()
 
     install(Authentication) {
         jwt("jwt") {
             verifier(makeJwtVerifier(jwksUrl), jwtIssuer)
             validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) {
-                    JWTPrincipal(credential.payload)
+                if (!credential.payload.audience.contains(jwtAudience)) {
+                    null
                 }
                 else {
-                    null
+                    val auth = db.withTransaction { em ->
+                        em.createQuery(
+                "from RevUserAuth where auth_type = :type and auth_id = :id")
+                            .setParameter("type", AuthType.GOOGLE)
+                            .setParameter("id", credential.payload.subject)
+                            .setMaxResults(1)
+                            .resultList
+                    }
+                    if (auth.size > 0) {
+                        RevPrincipal(credential.payload, auth[0] as RevUserAuth)
+                    }
+                    else {
+                        null
+                    }
                 }
             }
         }
@@ -125,21 +149,6 @@ fun Application.main() {
         graphiQL()
         healthCheck()
     }
-
-    log.info("Loading Configuration...")
-    val c = environment.config
-    val dbConfig = mapOf(
-        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
-        Environment.URL to c.property("revcrm.db.url").getString(),
-        Environment.USER to c.property("revcrm.db.username").getString(),
-        Environment.PASS to c.property("revcrm.db.password").getString(),
-        Environment.HBM2DDL_AUTO to "update"
-    )
-    val entityList = c.property("revcrm.entityList").getList()
-
-    log.info("Initialising Database Connection...")
-    val db: DBService by inject()
-    db.initialise(dbConfig, entityList)
 
     log.info("Initialising GraphQL Schema...")
 
