@@ -1,9 +1,13 @@
 package org.revcrm
 
+import com.auth0.jwt.JWT
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
+import io.ktor.auth.authenticate
+import io.ktor.auth.jwt.JWTPrincipal
+import io.ktor.auth.jwt.jwt
 import io.ktor.auth.oauth
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
@@ -39,6 +43,7 @@ import org.revcrm.server.graphQL
 import org.revcrm.server.graphiQL
 import org.revcrm.server.healthCheck
 import org.revcrm.server.staticFiles
+import org.revcrm.util.makeJwtVerifier
 import org.revcrm.util.session
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
@@ -71,13 +76,31 @@ fun Application.main() {
             transform(SessionTransportTransformerMessageAuthentication(secretSignKey))
         }
     }
+
+    val jwtIssuer = environment.config.property("jwt.issuer").getString()
+    val jwtAudience = environment.config.property("jwt.audience").getString()
+    val jwksUrl = environment.config.property("jwt.jwksUrl").getString()
+
     install(Authentication) {
-        oauth("google-oauth") {
-            client = HttpClient(Apache)
-            providerLookup = { googleOauthProvider }
-            urlProvider = { redirectUrl("/login-google") }
+        jwt("jwt") {
+            verifier(makeJwtVerifier(jwksUrl), jwtIssuer)
+            validate { credential ->
+                if (credential.payload.audience.contains(jwtAudience)) {
+                    JWTPrincipal(credential.payload)
+                }
+                else {
+                    null
+                }
+            }
         }
     }
+//    install(Authentication) {
+//        oauth("google-oauth") {
+//            client = HttpClient(Apache)
+//            providerLookup = { googleOauthProvider }
+//            urlProvider = { redirectUrl("/login-google") }
+//        }
+//    }
     install(CallLogging)
     install(ContentNegotiation) {
         gson {
@@ -97,7 +120,6 @@ fun Application.main() {
     }
 
     routing {
-        googleLogin()
         staticFiles()
         graphQL()
         graphiQL()
