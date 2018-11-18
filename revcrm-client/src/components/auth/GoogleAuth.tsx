@@ -5,6 +5,7 @@ import { GoogleSignIn } from '../../auth/GoogleSignIn';
 export interface IGoogleAuthState {
     loadState: 'loading' | 'loaded' | 'load_error';
     authState: 'logged_in' | 'logged_out' | 'logging_in';
+    currentUser: string;
 }
 
 export class GoogleAuth extends React.Component<{}, IGoogleAuthState> {
@@ -15,29 +16,52 @@ export class GoogleAuth extends React.Component<{}, IGoogleAuthState> {
         this.state = {
             loadState: 'loading',
             authState: 'logged_out',
+            currentUser: ''
         };
         this.loadData();
     }
 
     async loadData() {
         try {
+
             await this._googleAuth.initialise();
-            if (this._googleAuth.auth.isSignedIn.get()) {
+            this.setState({ loadState: 'loaded' });
+
+            if (this._googleAuth.currentUser) {
+                const profile = this._googleAuth.currentUser.getBasicProfile();
                 this.setState({
-                    loadState: 'loaded',
-                    authState: 'logged_in'
+                    authState: 'logged_in',
+                    currentUser: profile.getEmail()
                 });
             }
             else {
                 this.setState({
-                    loadState: 'loaded',
-                    authState: 'logged_out'
+                    authState: 'logged_out',
+                    currentUser: ''
                 });
             }
         }
         catch (e) {
             console.error(e);
             this.setState({ loadState: 'load_error' });
+        }
+    }
+
+    logout = async () => {
+        await this._googleAuth.logout();
+        this.setState({
+            authState: 'logged_out'
+        });
+    }
+
+    login = async () => {
+        await this._googleAuth.login();
+        if (this._googleAuth.currentUser) {
+            const profile = this._googleAuth.currentUser.getBasicProfile();
+            this.setState({
+                authState: 'logged_in',
+                currentUser: profile.getEmail()
+            });
         }
     }
 
@@ -52,8 +76,8 @@ export class GoogleAuth extends React.Component<{}, IGoogleAuthState> {
 
             if (this.state.authState == 'logged_in') {
                 return (<>
-                    <p>Logged In</p>
-                    <button>Log Out</button>
+                    <p>Logged In as {this.state.currentUser}</p>
+                    <button onClick={this.logout}>Log Out</button>
                 </>);
             }
             else if (this.state.authState == 'logging_in') {
@@ -64,7 +88,7 @@ export class GoogleAuth extends React.Component<{}, IGoogleAuthState> {
             else {
                 return (<>
                     <p>Logged Out</p>
-                    <button>Log In</button>
+                    <button onClick={this.login}>Log In</button>
                 </>);
             }
 
