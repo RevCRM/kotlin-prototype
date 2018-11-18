@@ -1,16 +1,10 @@
 package org.revcrm
 
-import com.auth0.jwt.JWT
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
-import io.ktor.auth.authenticate
-import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.jwt.jwt
-import io.ktor.auth.oauth
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.apache.Apache
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
@@ -21,16 +15,12 @@ import io.ktor.locations.KtorExperimentalLocationsAPI
 import io.ktor.locations.Locations
 import io.ktor.response.respond
 import io.ktor.routing.routing
-import io.ktor.sessions.SessionTransportTransformerMessageAuthentication
-import io.ktor.sessions.Sessions
-import io.ktor.sessions.cookie
 import io.ktor.util.KtorExperimentalAPI
-import io.ktor.util.hex
 import org.hibernate.cfg.Environment
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
-import org.revcrm.auth.*
+import org.revcrm.auth.RevPrincipal
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
 import org.revcrm.models.AuthType
@@ -81,12 +71,6 @@ fun Application.main() {
     install(DefaultHeaders) {
         header("Server", "RevCRM")
     }
-    install(Sessions) {
-        cookie<RevCRMSession>("revCRMSessionId") {
-            val secretSignKey = hex(System.getenv("REVCRM_COOKIE_SIGN_KEY"))
-            transform(SessionTransportTransformerMessageAuthentication(secretSignKey))
-        }
-    }
 
     val jwtIssuer = c.property("jwt.issuer").getString()
     val jwtAudience = c.property("jwt.audience").getString()
@@ -118,13 +102,6 @@ fun Application.main() {
             }
         }
     }
-//    install(Authentication) {
-//        oauth("google-oauth") {
-//            client = HttpClient(Apache)
-//            providerLookup = { googleOauthProvider }
-//            urlProvider = { redirectUrl("/login-google") }
-//        }
-//    }
     install(CallLogging)
     install(ContentNegotiation) {
         gson {
