@@ -37,6 +37,8 @@ class APIServiceTests {
                 className = "test.TestFieldsModel",
                 fields = mapOf(
                     "int_field" to FieldMetadata(name = "int_field", jvmType = "int"),
+                    "short_field" to FieldMetadata(name = "short_field", jvmType = "short"),
+                    "long_field" to FieldMetadata(name = "long_field", jvmType = "long"),
                     "float_field" to FieldMetadata(name = "float_field", jvmType = "float"),
                     "double_field" to FieldMetadata(name = "double_field", jvmType = "double"),
                     "boolean_field" to FieldMetadata(name = "boolean_field", jvmType = "boolean"),
@@ -128,6 +130,18 @@ class APIServiceTests {
         fun `Int fields are exposed as expected`() {
             val type = testFieldsModelType.getFieldDefinition("int_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
+        }
+
+        @Test
+        fun `Short fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("short_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLShort)
+        }
+
+        @Test
+        fun `Long fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("long_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLLong)
         }
 
         @Test

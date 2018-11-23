@@ -22,7 +22,9 @@ enum class EnumFieldOptions {
 @Entity
 class TestFieldsModel(
     var string_field: String,
+    var short_field: Short,
     var int_field: Int,
+    var long_field: Long,
     var double_field: Double,
     var float_field: Float,
     var boolean_field: Boolean,

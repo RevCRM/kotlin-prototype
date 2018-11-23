@@ -65,6 +65,16 @@ class DBServiceTests {
         }
 
         @Test
+        fun `Short field returns expected metadata`() {
+            assertThat(fieldsModel.fields["short_field"]!!.jvmType).isEqualTo("short")
+        }
+
+        @Test
+        fun `Long field returns expected metadata`() {
+            assertThat(fieldsModel.fields["long_field"]!!.jvmType).isEqualTo("long")
+        }
+
+        @Test
         fun `Float field returns expected metadata`() {
             assertThat(fieldsModel.fields["float_field"]!!.jvmType).isEqualTo("float")
         }

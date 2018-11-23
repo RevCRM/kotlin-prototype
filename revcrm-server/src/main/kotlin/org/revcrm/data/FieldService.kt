@@ -11,6 +11,8 @@ class FieldService {
 
     private val jvmGraphQLScalarTypeMappings = mutableMapOf<String, GraphQLScalarType>(
         "int" to Scalars.GraphQLInt,
+        "short" to Scalars.GraphQLShort,
+        "long" to Scalars.GraphQLLong,
         "float" to Scalars.GraphQLFloat,
         "double" to Scalars.GraphQLFloat,
         "boolean" to Scalars.GraphQLBoolean,
