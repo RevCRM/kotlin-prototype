@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne
 @Entity
 class Account(
     var type: String,
-    var tags: Array<String>,
+//    var tags: Array<String>,  // TODO: Should be a FK
     var code: String,
     var org_name: String,
     var title: String,

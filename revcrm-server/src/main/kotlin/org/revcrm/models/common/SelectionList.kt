@@ -3,8 +3,9 @@ package org.revcrm.models.common
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import org.hibernate.annotations.NaturalId
-import org.revcrm.data.IRevCRMData
+import org.revcrm.data.DBService
 import org.revcrm.models.BaseModel
+import org.revcrm.util.session
 import javax.persistence.Entity
 
 @Entity
@@ -15,20 +16,20 @@ class SelectionList(
     var label: String
 ) : BaseModel()
 
-fun importSelectionLists(fileName: String, db: IRevCRMData) {
+fun importSelectionLists(fileName: String, db: DBService) {
     val mapper = ObjectMapper(YAMLFactory())
     val res = object {}.javaClass.getResource(fileName)
     val nodes = mapper.readTree(res)
     if (!nodes.isArray()) {
         throw Exception("YAML Root Element must be an array")
     }
-    db.withTransaction { session ->
+    db.withTransaction { em ->
         for (node in nodes) {
             val code = node.get("code").asText()
             val model = node.get("model").asText()
             val label = node.get("label").asText()
 
-            val existingRecord = session
+            val existingRecord = em.session
                 .bySimpleNaturalId(SelectionList::class.java)
                 .load(code)
 
@@ -41,7 +42,7 @@ fun importSelectionLists(fileName: String, db: IRevCRMData) {
                     model = model,
                     label = label
                 )
-                session.persist(newRecord)
+                em.persist(newRecord)
             }
         }
     }
