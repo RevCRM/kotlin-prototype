@@ -1,5 +1,6 @@
 package org.revcrm.data.testmodels
 
+import org.revcrm.annotations.APIDisabled
 import org.revcrm.models.BaseModel
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -57,4 +58,10 @@ class TestConstraintsModel(
     @field:Max(100)
     var max_field: Int
 
+): BaseModel()
+
+@Entity
+@APIDisabled
+class SensitiveModel(
+        var name: String
 ): BaseModel()

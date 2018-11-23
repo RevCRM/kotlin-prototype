@@ -20,8 +20,20 @@ class APIServiceTests {
 
     val meta = CRMMetadata(
         mapOf(
+            "SensitiveModel" to EntityMetadata(
+                name = "SensitiveModel",
+                apiEnabled = false,
+                className = "test.SensitiveModel",
+                fields = mapOf(
+                    "name" to FieldMetadata(
+                            name = "name", jvmType = "java.lang.String",
+                            nullable = false
+                    )
+                )
+            ),
             "TestFieldsModel" to EntityMetadata(
                 name = "TestFieldsModel",
+                apiEnabled = true,
                 className = "test.TestFieldsModel",
                 fields = mapOf(
                     "int_field" to FieldMetadata(name = "int_field", jvmType = "int"),
@@ -41,6 +53,7 @@ class APIServiceTests {
             ),
             "TestConstraintsModel" to EntityMetadata(
                 name = "TestConstraintsModel",
+                apiEnabled = true,
                 className = "test.TestConstraintsModel",
                 fields = mapOf(
                     "nullable_field" to FieldMetadata(
@@ -77,7 +90,12 @@ class APIServiceTests {
 
         @Test
         fun `registers a query object per entity`() {
-            assertThat(queryType.fieldDefinitions).hasSize(meta.entities.size)
+            assertThat(queryType.fieldDefinitions).hasSize(meta.entities.size - 1)
+        }
+
+        @Test
+        fun `does not register entities with apiEnabled = false`() {
+            assertThat(queryType.getFieldDefinition("SensitiveModel")).isNull()
         }
 
         @Test

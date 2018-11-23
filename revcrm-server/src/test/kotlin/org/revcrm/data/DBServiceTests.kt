@@ -20,6 +20,12 @@ class DBServiceTests {
         }
 
         @Test
+        fun `apiEnabled defaults to true`() {
+            assertThat(entities.get("TestFieldsModel")!!.apiEnabled).isTrue()
+            assertThat(entities.get("TestModel2")!!.apiEnabled).isTrue()
+        }
+
+        @Test
         fun `entity name matches name`() {
             assertThat(entities["TestFieldsModel"]!!.name).isEqualTo("TestFieldsModel")
             assertThat(entities["TestModel2"]!!.name).isEqualTo("TestModel2")
@@ -134,5 +140,15 @@ class DBServiceTests {
         fun `Max field returns expected metadata`() {
             assertThat(constraintsModel.fields["max_field"]!!.constraints).containsEntry("Max", "100")
         }
+    }
+
+    @Nested
+    inner class SensitiveModels {
+
+        @Test
+        fun `models annotated with @APIDisabled have apiEnabled = false`() {
+            assertThat(entities.get("SensitiveModel")!!.apiEnabled).isFalse()
+        }
+
     }
 }

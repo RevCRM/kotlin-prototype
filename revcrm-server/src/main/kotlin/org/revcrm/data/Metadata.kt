@@ -10,6 +10,7 @@ class FieldMetadata (
 
 class EntityMetadata (
     val name: String,
+    val apiEnabled: Boolean,
     val className: String,
     val fields: Map<String, FieldMetadata>
 )

@@ -1,5 +1,6 @@
 package org.revcrm.models
 
+import org.revcrm.annotations.APIDisabled
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -22,6 +23,7 @@ enum class AuthType {
         )
     ]
 )
+@APIDisabled
 class RevUserAuth(
 
     @ManyToOne

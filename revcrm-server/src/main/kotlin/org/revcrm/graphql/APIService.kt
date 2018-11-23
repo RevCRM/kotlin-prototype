@@ -38,6 +38,8 @@ class APIService (
 
         meta.entities.forEach { _, entity ->
 
+            if (!entity.apiEnabled) return@forEach
+
             val entityTypeBuilder = newObject()
                 .name(entity.name)
 

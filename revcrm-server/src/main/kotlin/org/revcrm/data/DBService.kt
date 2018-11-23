@@ -9,12 +9,14 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 import org.hibernate.cfg.Environment
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
+import org.revcrm.annotations.APIDisabled
 import org.revcrm.util.getProperty
 import javax.persistence.EntityManager
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
+import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
 
 class DBService {
@@ -125,6 +127,9 @@ class DBService {
     fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
         metadata.entityBindings.forEach { binding ->
+            val klass = binding.mappedClass.kotlin
+            val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
+
             val fields = mutableMapOf<String, FieldMetadata>()
 
             // Get ID Property
@@ -144,6 +149,7 @@ class DBService {
                 binding.table.name,
                 EntityMetadata(
                     name = binding.table.name,
+                    apiEnabled = apiEnabled,
                     className = binding.className,
                     fields = fields.toMap()
                 )
