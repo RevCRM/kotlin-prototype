@@ -27,7 +27,7 @@ export class GoogleAuth extends React.Component<{}, IGoogleAuthState> {
             await this._googleAuth.initialise();
             this.setState({ loadState: 'loaded' });
 
-            if (this._googleAuth.currentUser) {
+            if (this._googleAuth.currentUser && this._googleAuth.currentUser.isSignedIn()) {
                 const profile = this._googleAuth.currentUser.getBasicProfile();
                 this.setState({
                     authState: 'logged_in',

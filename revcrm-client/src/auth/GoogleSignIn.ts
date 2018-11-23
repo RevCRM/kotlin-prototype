@@ -12,6 +12,7 @@ export class GoogleSignIn {
         this._auth = await new Promise((resolve, reject) => {
             gapi.auth2.init({
                 client_id: '252486211013-8m24n1m58ugjjcn2qhm6mdgq1q4sganu.apps.googleusercontent.com',
+                ux_mode: 'redirect'
             })
             .then(resolve, reject);
         }) as any;
