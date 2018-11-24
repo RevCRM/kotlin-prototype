@@ -12,7 +12,6 @@ import org.hibernate.cfg.Environment
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
 import org.revcrm.annotations.APIDisabled
-import org.revcrm.data.custom.registerAccountC
 import org.revcrm.util.getProperty
 import javax.persistence.EntityManager
 import javax.validation.constraints.Max
@@ -35,8 +34,6 @@ class DBService {
             .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
             .applySetting(Environment.DEFAULT_ENTITY_MODE, EntityMode.MAP.toString())
-            // this will be used programmatically to create/update the DB
-//            .applySetting(Environment.HBM2DDL_AUTO, "update")
             // apply supplied settings
             .applySettings(dbConfig)
             .build()
@@ -46,13 +43,9 @@ class DBService {
             sources.addAnnotatedClassName(it)
         }
 
-        registerAccountC(sources)
-
         metadata = sources.getMetadataBuilder()
             .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
             .build()
-
-        // Lets try a dynamic entity
 
         try {
             sessionFactory = metadata!!.buildSessionFactory()
@@ -137,12 +130,9 @@ class DBService {
             constraints.set("Max", max.value.toString())
         }
 
-        // FIXME
-        val typeName = if (value.typeName == null) "java.lang.String" else value.typeName
-
         val fieldMeta = FieldMetadata(
             name = prop.name,
-            jvmType = typeName,
+            jvmType = value.typeName,
             jvmSubtype = subType,
             nullable = nullable,
             constraints = constraints.toMap()
@@ -153,9 +143,6 @@ class DBService {
     fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
         metadata!!.entityBindings.forEach { binding ->
-
-            // FIXME
-            if (binding.mappedClass == null) return@forEach
 
             val klass = binding.mappedClass.kotlin
             val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)

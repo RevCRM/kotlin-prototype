@@ -58,11 +58,12 @@ fun Application.main() {
     log.info("Loading Configuration...")
     val c = environment.config
     val dbConfig = mapOf(
-            Environment.DRIVER to c.property("revcrm.db.driver").getString(),
-            Environment.URL to c.property("revcrm.db.url").getString(),
-            Environment.USER to c.property("revcrm.db.username").getString(),
-            Environment.PASS to c.property("revcrm.db.password").getString(),
-            Environment.HBM2DDL_AUTO to "update"
+        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
+        Environment.URL to c.property("revcrm.db.url").getString(),
+        Environment.USER to c.property("revcrm.db.username").getString(),
+        Environment.PASS to c.property("revcrm.db.password").getString(),
+        Environment.HBM2DDL_AUTO to "update",
+        Environment.FORMAT_SQL to "true"
     )
     val entityList = c.property("revcrm.entityList").getList()
 
@@ -163,33 +164,4 @@ fun Application.main() {
     }
     println("Admin user: " + adminUser.email)
 
-    log.info("Creating an account...")
-    val name = "Test Account ${randomString(5)}"
-
-    db.withTransaction { em ->
-        val account = Account(
-            is_org = true,
-            org_name = name
-        )
-        val account_c = mapOf(
-            "account" to account,
-            "custom_name" to name
-        )
-        em.persist(account)
-        em.session.persist("account_c", account_c)
-    }
-
-    log.info("Restarting hibernate...")
-    db.reinitialise(dbConfig, entityList)
-
-    db.withTransaction { em ->
-        val account = em.find(Account::class.java, 1)
-        val account_c = em.session.get("account_c", 1)
-        if (account != null && account_c != null && account_c is Map<*,*>) {
-            println("**************************")
-            println("Got account: ${account.org_name}")
-            println("Got account_c: ${account_c.get("custom_name")}")
-            println("**************************")
-        }
-    }
 }
