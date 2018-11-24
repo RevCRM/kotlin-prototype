@@ -23,6 +23,8 @@ class Account(
 
     @ManyToOne
     @JoinColumn(name = "primary_address_id")
-    var primary_address: Address
+    var primary_address: Address,
+
+    var custom: Map<String, Any>
 
 ) : BaseModel()

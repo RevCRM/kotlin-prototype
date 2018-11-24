@@ -1,5 +1,6 @@
 package org.revcrm.data
 
+import org.hibernate.EntityMode
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.hibernate.boot.Metadata
@@ -10,12 +11,21 @@ import org.hibernate.cfg.Environment
 import org.hibernate.mapping.Property
 import org.hibernate.mapping.SimpleValue
 import org.revcrm.annotations.APIDisabled
+import org.revcrm.data.custom.registerAccountC
 import org.revcrm.util.getProperty
+import org.w3c.dom.Document
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import javax.persistence.EntityManager
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
+import javax.xml.parsers.DocumentBuilder
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
 
@@ -30,6 +40,7 @@ class DBService {
         val registry = StandardServiceRegistryBuilder()
             .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
+            .applySetting(Environment.DEFAULT_ENTITY_MODE, EntityMode.MAP.toString())
             // this will be used programmatically to create/update the DB
 //            .applySetting(Environment.HBM2DDL_AUTO, "update")
             // apply supplied settings
@@ -41,9 +52,14 @@ class DBService {
             sources.addAnnotatedClassName(it)
         }
 
+        registerAccountC(sources)
+
         metadata = sources.getMetadataBuilder()
             .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
             .build()
+
+        // Lets try a dynamic entity
+
 
         try {
             factory = metadata.buildSessionFactory()
@@ -114,9 +130,12 @@ class DBService {
             constraints.set("Max", max.value.toString())
         }
 
+        // FIXME
+        val typeName = if (value.typeName == null) "java.lang.String" else value.typeName
+
         val fieldMeta = FieldMetadata(
             name = prop.name,
-            jvmType = value.typeName,
+            jvmType = typeName,
             jvmSubtype = subType,
             nullable = nullable,
             constraints = constraints.toMap()
@@ -127,6 +146,10 @@ class DBService {
     fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
         metadata.entityBindings.forEach { binding ->
+
+            // FIXME
+            if (binding.mappedClass == null) return@forEach
+
             val klass = binding.mappedClass.kotlin
             val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 
