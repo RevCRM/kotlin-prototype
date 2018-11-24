@@ -12,7 +12,7 @@ import javax.persistence.MappedSuperclass
 abstract class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0
+    var id: Int = 0
 
     @CreationTimestamp
     var created_date: LocalDateTime? = null

@@ -1,10 +1,12 @@
 package org.revcrm.data
 
+import org.hibernate.EntityMode
 import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.hibernate.boot.Metadata
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+import org.hibernate.boot.registry.StandardServiceRegistry
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 import org.hibernate.cfg.Environment
 import org.hibernate.mapping.Property
@@ -20,18 +22,18 @@ import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
 
 class DBService {
-    lateinit var metadata: Metadata
-    private lateinit var factory: SessionFactory
+    private var registry: StandardServiceRegistry? = null
+    private var metadata: Metadata? = null
+    private var sessionFactory: SessionFactory? = null
 
     fun initialise(
         dbConfig: Map<String, String>,
         entityList: List<String>
     ) {
-        val registry = StandardServiceRegistryBuilder()
+        registry = StandardServiceRegistryBuilder()
             .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
-            // this will be used programmatically to create/update the DB
-//            .applySetting(Environment.HBM2DDL_AUTO, "update")
+            .applySetting(Environment.DEFAULT_ENTITY_MODE, EntityMode.MAP.toString())
             // apply supplied settings
             .applySettings(dbConfig)
             .build()
@@ -46,17 +48,31 @@ class DBService {
             .build()
 
         try {
-            factory = metadata.buildSessionFactory()
+            sessionFactory = metadata!!.buildSessionFactory()
         } catch (e: Exception) {
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
             StandardServiceRegistryBuilder.destroy(registry)
             throw e
         }
     }
 
+    fun reinitialise(
+        dbConfig: Map<String, String>,
+        entityList: List<String>
+    ) {
+        if (sessionFactory != null) {
+            // TODO: Make sure no consumers have active sessions
+            sessionFactory!!.close()
+            StandardServiceRegistryBuilder.destroy(registry)
+        }
+        initialise(dbConfig, entityList)
+    }
+
     fun getSession(): Session {
-        return factory.openSession()
+        return sessionFactory!!.openSession()
+    }
+
+    fun getMetadata(): Metadata? {
+        return metadata
     }
 
     fun getEntityManager(session: Session): EntityManager {
@@ -126,7 +142,8 @@ class DBService {
 
     fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
-        metadata.entityBindings.forEach { binding ->
+        metadata!!.entityBindings.forEach { binding ->
+
             val klass = binding.mappedClass.kotlin
             val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 

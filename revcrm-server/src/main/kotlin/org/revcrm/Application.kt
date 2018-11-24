@@ -26,11 +26,13 @@ import org.revcrm.graphql.APIService
 import org.revcrm.models.AuthType
 import org.revcrm.models.RevUser
 import org.revcrm.models.RevUserAuth
+import org.revcrm.models.accounts.Account
 import org.revcrm.routes.graphQL
 import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
 import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
+import org.revcrm.util.randomString
 import org.revcrm.util.session
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
@@ -56,11 +58,12 @@ fun Application.main() {
     log.info("Loading Configuration...")
     val c = environment.config
     val dbConfig = mapOf(
-            Environment.DRIVER to c.property("revcrm.db.driver").getString(),
-            Environment.URL to c.property("revcrm.db.url").getString(),
-            Environment.USER to c.property("revcrm.db.username").getString(),
-            Environment.PASS to c.property("revcrm.db.password").getString(),
-            Environment.HBM2DDL_AUTO to "update"
+        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
+        Environment.URL to c.property("revcrm.db.url").getString(),
+        Environment.USER to c.property("revcrm.db.username").getString(),
+        Environment.PASS to c.property("revcrm.db.password").getString(),
+        Environment.HBM2DDL_AUTO to "update",
+        Environment.FORMAT_SQL to "true"
     )
     val entityList = c.property("revcrm.entityList").getList()
 
