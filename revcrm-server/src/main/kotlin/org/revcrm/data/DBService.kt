@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory
 import org.hibernate.boot.Metadata
 import org.hibernate.boot.MetadataSources
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+import org.hibernate.boot.registry.StandardServiceRegistry
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder
 import org.hibernate.cfg.Environment
 import org.hibernate.mapping.Property
@@ -13,31 +14,24 @@ import org.hibernate.mapping.SimpleValue
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.data.custom.registerAccountC
 import org.revcrm.util.getProperty
-import org.w3c.dom.Document
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
 import javax.persistence.EntityManager
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
-import javax.xml.parsers.DocumentBuilder
-import javax.xml.parsers.DocumentBuilderFactory
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.dom.DOMSource
-import javax.xml.transform.stream.StreamResult
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
 
 class DBService {
-    lateinit var metadata: Metadata
-    private lateinit var factory: SessionFactory
+    private var registry: StandardServiceRegistry? = null
+    private var metadata: Metadata? = null
+    private var sessionFactory: SessionFactory? = null
 
     fun initialise(
         dbConfig: Map<String, String>,
         entityList: List<String>
     ) {
-        val registry = StandardServiceRegistryBuilder()
+        registry = StandardServiceRegistryBuilder()
             .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
             .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
             .applySetting(Environment.DEFAULT_ENTITY_MODE, EntityMode.MAP.toString())
@@ -60,19 +54,32 @@ class DBService {
 
         // Lets try a dynamic entity
 
-
         try {
-            factory = metadata.buildSessionFactory()
+            sessionFactory = metadata!!.buildSessionFactory()
         } catch (e: Exception) {
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
             StandardServiceRegistryBuilder.destroy(registry)
             throw e
         }
     }
 
+    fun reinitialise(
+        dbConfig: Map<String, String>,
+        entityList: List<String>
+    ) {
+        if (sessionFactory != null) {
+            // TODO: Make sure no consumers have active sessions
+            sessionFactory!!.close()
+            StandardServiceRegistryBuilder.destroy(registry)
+        }
+        initialise(dbConfig, entityList)
+    }
+
     fun getSession(): Session {
-        return factory.openSession()
+        return sessionFactory!!.openSession()
+    }
+
+    fun getMetadata(): Metadata? {
+        return metadata
     }
 
     fun getEntityManager(session: Session): EntityManager {
@@ -145,7 +152,7 @@ class DBService {
 
     fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
-        metadata.entityBindings.forEach { binding ->
+        metadata!!.entityBindings.forEach { binding ->
 
             // FIXME
             if (binding.mappedClass == null) return@forEach

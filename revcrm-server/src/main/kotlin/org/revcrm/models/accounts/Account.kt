@@ -1,30 +1,52 @@
 package org.revcrm.models.accounts
 
+import org.revcrm.annotations.Field
 import org.revcrm.models.BaseModel
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity
-class Account(
-    var type: String,
-//    var tags: Array<String>,  // TODO: Should be a FK
-    var code: String,
-    var org_name: String,
-    var title: String,
-    var first_name: String,
-    var last_name: String,
-    var phone: String,
-    var mobile: String,
-    var fax: String,
-    var email: String,
-    var website: String,
-    var notes: String,
+class Account (
+    @Field("Is Organisation?")
+    var is_org: Boolean,
 
-    @ManyToOne
-    @JoinColumn(name = "primary_address_id")
-    var primary_address: Address,
+    @Field("Organisation Name")
+    var org_name: String = "",
 
-    var custom: Map<String, Any>
+    @Field("Title")
+    var title: String = "",
+
+    @Field("First Name")
+    var first_name: String = "",
+
+    @Field("Last Name")
+    var last_name: String = "",
+
+    @Field("Account Code")
+    var code: String = "",
+
+    @Field("Phone")
+    var phone: String = "",
+
+    @Field("Mobile")
+    var mobile: String = "",
+
+    @Field("Fax")
+    var fax: String = "",
+
+    @Field("Email")
+    var email: String = "",
+
+    @Field("Website")
+    var website: String = "",
+
+    @Field("Notes")
+    var notes: String = ""
+
+//    @ManyToOne
+//    @JoinColumn(name = "primary_address_id")
+//    @Field("Address")
+//    var primary_address: Address
 
 ) : BaseModel()

@@ -26,11 +26,13 @@ import org.revcrm.graphql.APIService
 import org.revcrm.models.AuthType
 import org.revcrm.models.RevUser
 import org.revcrm.models.RevUserAuth
+import org.revcrm.models.accounts.Account
 import org.revcrm.routes.graphQL
 import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
 import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
+import org.revcrm.util.randomString
 import org.revcrm.util.session
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
@@ -161,4 +163,33 @@ fun Application.main() {
     }
     println("Admin user: " + adminUser.email)
 
+    log.info("Creating an account...")
+    val name = "Test Account ${randomString(5)}"
+
+    db.withTransaction { em ->
+        val account = Account(
+            is_org = true,
+            org_name = name
+        )
+        val account_c = mapOf(
+            "account" to account,
+            "custom_name" to name
+        )
+        em.persist(account)
+        em.session.persist("account_c", account_c)
+    }
+
+    log.info("Restarting hibernate...")
+    db.reinitialise(dbConfig, entityList)
+
+    db.withTransaction { em ->
+        val account = em.find(Account::class.java, 1)
+        val account_c = em.session.get("account_c", 1)
+        if (account != null && account_c != null && account_c is Map<*,*>) {
+            println("**************************")
+            println("Got account: ${account.org_name}")
+            println("Got account_c: ${account_c.get("custom_name")}")
+            println("**************************")
+        }
+    }
 }

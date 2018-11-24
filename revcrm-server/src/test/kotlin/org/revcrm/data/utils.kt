@@ -18,5 +18,5 @@ fun getDataForEntities(entityList: List<String>): DBService {
 
 fun recreateSchema(data: DBService) {
     val schemaExport = SchemaExport()
-    schemaExport.create(EnumSet.of(TargetType.DATABASE), data.metadata)
+    schemaExport.create(EnumSet.of(TargetType.DATABASE), data.getMetadata())
 }
