@@ -1,6 +1,6 @@
 # RevCRM
 
-RevCRM is an enterprise-grade open source (Apache 2.0 Licensed) CRM platform.
+RevCRM is an open source (Apache 2.0 Licensed) CRM platform.
 
 * Enterprise-grade Hibernate ORM
 * Rock-solid JVM-based backend written in Kotlin
