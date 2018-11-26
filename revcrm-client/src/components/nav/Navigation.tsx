@@ -5,32 +5,43 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
+import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/Inbox';
+import { Hidden } from '@material-ui/core';
+import { LeftNav } from './LeftNav';
 
-export const styles = createStyles({
+const leftNavWidth = 240;
+
+export const styles = (theme: Theme) => createStyles({
     root: {
-        width: '100%',
+        display: 'flex'
     },
     appBar: {
+        zIndex: theme.zIndex.drawer + 1,
         '@media print': {
             display: 'none'
         }
     },
+    leftNav: {
+        [theme.breakpoints.up('sm')]: {
+            width: leftNavWidth,
+            flexShrink: 0,
+        },
+    },
+    leftNavPaper: {
+        width: leftNavWidth
+    },
+    toolbar: theme.mixins.toolbar,
     flex: {
         flex: 1,
     },
     menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
+        marginRight: 16,
+        [theme.breakpoints.up('sm')]: {
+            display: 'none',
+        },
     },
     mainBody: {
-        marginTop: 70
     }
 });
 
@@ -39,7 +50,7 @@ export interface INavigationState {
 }
 
 export const Navigation = withStyles(styles)(
-    class extends React.Component<WithStyles<keyof typeof styles>, INavigationState> {
+    class extends React.Component<WithStyles<typeof styles>, INavigationState> {
 
     constructor(props: any) {
         super(props);
@@ -70,22 +81,40 @@ export const Navigation = withStyles(styles)(
                     </Toolbar>
                 </AppBar>
 
-                <Drawer open={this.state.leftNavOpen} onClose={this.onClickMenuButton}>
-                    <List>
-                        <ListItem button>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
-                            <ListItemText primary="Menu Item 1" />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon><InboxIcon /></ListItemIcon>
-                            <ListItemText primary="Menu Item 2" />
-                        </ListItem>
-                    </List>
-                </Drawer>
+                <nav className={this.props.classes.leftNav}>
+                    {/* The implementation can be swap with js to avoid SEO duplication of links. */}
+                    <Hidden smUp implementation="css">
+                        <Drawer
+                            variant="temporary"
+                            anchor="left"
+                            open={this.state.leftNavOpen}
+                            onClose={this.onClickMenuButton}
+                            classes={{
+                                paper: this.props.classes.leftNavPaper,
+                            }}
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile.
+                            }} >
+                            <LeftNav />
+                        </Drawer>
+                    </Hidden>
+                    <Hidden xsDown implementation="css">
+                        <Drawer
+                            classes={{
+                                paper: this.props.classes.leftNavPaper,
+                            }}
+                            variant="permanent"
+                            open >
+                            <div className={this.props.classes.toolbar} />
+                            <LeftNav />
+                        </Drawer>
+                    </Hidden>
+                </nav>
 
-                <div className={this.props.classes.mainBody}>
+                <main className={this.props.classes.mainBody}>
+                    <div className={this.props.classes.toolbar} />
                     {this.props.children}
-                </div>
+                </main>
 
             </div>
         );
