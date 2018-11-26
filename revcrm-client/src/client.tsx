@@ -1,12 +1,6 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { GoogleAuth } from './components/auth/GoogleAuth';
+import { App } from './components/App';
 
-ReactDOM.render(
-    (<>
-        <h2>RevCRM</h2>
-        <GoogleAuth />
-    </>),
-    document.getElementById('app')
-);
+ReactDOM.render(<App />, document.getElementById('app'));
