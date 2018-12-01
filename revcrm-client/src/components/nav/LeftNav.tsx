@@ -3,14 +3,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/InsertChart';
-import CalendarIcon from '@material-ui/icons/InsertInvitation';
-import ContactsIcon from '@material-ui/icons/SupervisedUserCircle';
-import SalesIcon from '@material-ui/icons/MonetizationOnSharp';
-import ServiceIcon from '@material-ui/icons/Assignment';
-import SettingsIcon from '@material-ui/icons/Settings';
-import LogOutIcon from '@material-ui/icons/PowerSettingsNew';
-import { Divider, createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { Divider, createStyles, withStyles, WithStyles, Icon } from '@material-ui/core';
 
 const styles = createStyles({
     listItemText: {
@@ -19,53 +12,70 @@ const styles = createStyles({
     }
 });
 
+export interface IMenuItem {
+    label: string;
+    perspective?: string;
+    view?: string;
+    icon: string;
+    subItems?: IMenuSubItem[];
+}
+
+export interface IMenuSubItem {
+    label: string;
+    perspective: string;
+    view?: string;
+}
+
+// TODO: drive this from metadata
+export const MENU: IMenuItem[] = [
+    {
+        label: 'Dashboard',
+        perspective: 'dashboard',
+        icon: 'insert_chart'
+    },
+    {
+        label: 'Calendar',
+        perspective: 'calendar',
+        icon: 'insert_invitation'
+    },
+    {
+        label: 'Companies & Contacts',
+        perspective: 'accounts',
+        icon: 'supervised_user_circle'
+    },
+    {
+        label: 'Sales & Marketing',
+        perspective: 'opportunities',
+        icon: 'monetization_on_sharp'
+    },
+    {
+        label: 'Customer Service',
+        perspective: 'opportunities',
+        icon: 'assignment'
+    }
+];
+
 export const LeftNav = withStyles(styles)((props: WithStyles<typeof styles>) => (
     <List>
-        <ListItem button>
-            <ListItemIcon><DashboardIcon /></ListItemIcon>
-            <ListItemText
-                primary="Dashboard"
-                classes={{ root: props.classes.listItemText }}
-            />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon><CalendarIcon /></ListItemIcon>
-            <ListItemText
-                primary="Calendar &amp; Tasks"
-                classes={{ root: props.classes.listItemText }}
-            />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon><ContactsIcon /></ListItemIcon>
-            <ListItemText
-                primary="Companies &amp; Contacts"
-                classes={{ root: props.classes.listItemText }}
-            />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon><SalesIcon /></ListItemIcon>
-            <ListItemText
-                primary="Sales &amp; Marketing"
-                classes={{ root: props.classes.listItemText }}
-            />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon><ServiceIcon /></ListItemIcon>
-            <ListItemText
-                primary="Customer Service"
-                classes={{ root: props.classes.listItemText }}
-            />
-        </ListItem>
+        {MENU.map((menuItem) => (
+            <ListItem button>
+                <ListItemIcon><Icon>{menuItem.icon}</Icon></ListItemIcon>
+                <ListItemText
+                    primary={menuItem.label}
+                    classes={{ root: props.classes.listItemText }}
+                />
+            </ListItem>
+        ))}
         <Divider />
         <ListItem button>
-            <ListItemIcon><SettingsIcon /></ListItemIcon>
+            <ListItemIcon><Icon>settings</Icon></ListItemIcon>
             <ListItemText
                 primary="Settings"
                 classes={{ root: props.classes.listItemText }}
             />
         </ListItem>
         <ListItem button>
-            <ListItemIcon><LogOutIcon /></ListItemIcon>
+            <ListItemIcon><Icon>power_settings_new</Icon></ListItemIcon>
             <ListItemText
                 primary="Log Out"
                 classes={{ root: props.classes.listItemText }}

@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@material-ui/core": "3.5.1",
-    "@material-ui/icons": "3.0.1",
     "@types/gapi.auth2": "0.0.48",
     "@types/react": "16.7.6",
     "@types/react-dom": "16.0.9",

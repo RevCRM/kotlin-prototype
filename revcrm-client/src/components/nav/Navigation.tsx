@@ -3,14 +3,13 @@ import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import { Hidden } from '@material-ui/core';
+import { Hidden, Icon } from '@material-ui/core';
 import { LeftNav } from './LeftNav';
 
-const leftNavWidth = 240;
+const leftNavWidth = 250;
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -73,7 +72,7 @@ export const Navigation = withStyles(styles)(
                     <Toolbar>
                         <IconButton color="inherit" aria-label="Menu" className={this.props.classes.menuButton}
                             onClick={this.onClickMenuButton}>
-                            <MenuIcon />
+                            <Icon>menu</Icon>
                         </IconButton>
                         <Typography variant="h6" color="inherit" className={this.props.classes.flex}>
                             RevCRM
