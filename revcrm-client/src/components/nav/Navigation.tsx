@@ -9,7 +9,7 @@ import Drawer from '@material-ui/core/Drawer';
 import { Hidden, Icon } from '@material-ui/core';
 import { LeftNav } from './LeftNav';
 
-const leftNavWidth = 250;
+const leftNavWidth = 300;
 
 export const styles = (theme: Theme) => createStyles({
     root: {
