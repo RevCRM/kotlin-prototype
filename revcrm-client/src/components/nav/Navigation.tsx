@@ -8,6 +8,7 @@ import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/s
 import Drawer from '@material-ui/core/Drawer';
 import { Hidden, Icon } from '@material-ui/core';
 import { LeftNav } from './LeftNav';
+import { CONFIG } from '../../config';
 
 const leftNavWidth = 300;
 
@@ -75,8 +76,14 @@ export const Navigation = withStyles(styles)(
                             <Icon>menu</Icon>
                         </IconButton>
                         <Typography variant="h6" color="inherit" className={this.props.classes.flex}>
-                            RevCRM
+                            {CONFIG.appTitle}
                         </Typography>
+                        <IconButton
+                            onClick={() => alert('test')}
+                            color="inherit"
+                        >
+                            <Icon>account_circle</Icon>
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
 

@@ -8,6 +8,9 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { ApolloProvider } from 'react-apollo';
+import { Dashboard } from './dashboard/Dashboard';
+import { AppLoader } from './AppLoader';
+import { AuthContextProvider } from './auth/AuthContext';
 
 const theme = createMuiTheme();
 
@@ -23,10 +26,15 @@ export const App = () => (
     <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <ApolloProvider client={client}>
-            <Navigation>
-                <GoogleAuth />
-                {/* <Routes /> */}
-            </Navigation>
+            <AuthContextProvider>
+                <AppLoader>
+                    <Navigation>
+                        <Dashboard />
+                        {/* <GoogleAuth /> */}
+                        {/* <Routes /> */}
+                    </Navigation>
+                </AppLoader>
+            </AuthContextProvider>
         </ApolloProvider>
     </MuiThemeProvider>
 );

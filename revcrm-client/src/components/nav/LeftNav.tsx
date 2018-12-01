@@ -109,8 +109,9 @@ export const LeftNav = withStyles(styles)(
                         {item.subItems &&
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
                                 <List component="div" disablePadding style={{ background: '#F2F2F2' }}>
-                                    {item.subItems.map((subItem) => (
-                                        <ListItem button style={{ padding: 8, paddingLeft: 64 }}
+                                    {item.subItems.map((subItem, subItemIdx) => (
+                                        <ListItem button key={subItemIdx}
+                                            style={{ padding: 8, paddingLeft: 64 }}
                                             onClick={() => alert(subItem.label)}>
                                             <Typography variant="body2">{subItem.label}</Typography>
                                         </ListItem>
@@ -124,7 +125,7 @@ export const LeftNav = withStyles(styles)(
                 <ListItem button>
                     <ListItemIcon><Icon>settings</Icon></ListItemIcon>
                     <ListItemText
-                        primary="Settings"
+                        primary="System Administration"
                         classes={{ root: this.props.classes.listItemText }}
                     />
                 </ListItem>
