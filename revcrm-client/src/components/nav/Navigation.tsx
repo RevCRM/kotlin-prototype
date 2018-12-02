@@ -43,6 +43,7 @@ export const styles = (theme: Theme) => createStyles({
         },
     },
     mainBody: {
+        width: '100%'
     }
 });
 
