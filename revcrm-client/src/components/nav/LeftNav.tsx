@@ -129,13 +129,6 @@ export const LeftNav = withStyles(styles)(
                         classes={{ root: this.props.classes.listItemText }}
                     />
                 </ListItem>
-                <ListItem button>
-                    <ListItemIcon><Icon>power_settings_new</Icon></ListItemIcon>
-                    <ListItemText
-                        primary="Log Out"
-                        classes={{ root: this.props.classes.listItemText }}
-                    />
-                </ListItem>
             </List>
         );
 
