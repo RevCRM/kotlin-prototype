@@ -13,6 +13,7 @@ export interface IAuthProviderState {
 export interface IAuthContext {
     authState: AuthState;
     currentUser: User;
+    login(): void;
     logout(): void;
 }
 
@@ -82,10 +83,25 @@ export class AuthContextProvider extends React.Component<{}, IAuthProviderState>
         this._setLoggedInUser(user);
     }
 
+    // TODO: Remove me
+    testAPI = async () => {
+        const user = this._googleAuth.currentUser.get();
+        const tokens = user.getAuthResponse();
+        const idToken = tokens.id_token;
+        console.log('Sending test request...');
+        console.log('TOKEN', idToken);
+        const res = fetch('/ping', {
+            headers: {
+                Authorization: 'Bearer ' + idToken
+            }
+        });
+    }
+
     render() {
         const authContext: IAuthContext = {
             authState: this.state.authState,
             currentUser: this.state.currentUser,
+            login: this.login,
             logout: this.logout
         };
         return (

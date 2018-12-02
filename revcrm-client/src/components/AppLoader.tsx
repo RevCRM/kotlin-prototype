@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Theme, createStyles, CircularProgress, withStyles, WithStyles, Typography } from '@material-ui/core';
+import { Theme, createStyles, CircularProgress, withStyles, WithStyles, Typography, Button } from '@material-ui/core';
 import { withAuthContext, IAuthContextProp } from './auth/AuthContext';
 import { CONFIG } from '../config';
 
@@ -29,10 +29,17 @@ export const AppLoader = withAuthContext(withStyles(styles)((props: IAppLoaderPr
     if (props.auth.authState == 'not_logged_in') {
         return (
             <div className={props.classes.root}>
-                <Typography variant="h3" color="inherit">
-                    {CONFIG.appTitle}
-                    <br />Ya need to log in bru
-                </Typography>
+                <div style={{ textAlign: 'center' }}>
+                    <Typography variant="h5" color="inherit">
+                        Welcome to {CONFIG.appTitle}
+                    </Typography>
+                    <Button variant="contained" size="large"
+                        style={{ marginTop: 32, background: '#FFF' }}
+                        onClick={props.auth.login}
+                    >
+                        Log in with Google
+                    </Button>
+                </div>
             </div>
         );
     }
