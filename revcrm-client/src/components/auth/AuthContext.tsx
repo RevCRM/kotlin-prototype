@@ -5,14 +5,20 @@ import { Omit } from '../../types';
 
 export type AuthState = 'initialising' | 'logged_in' | 'not_logged_in';
 
+export interface IAuthProviderState {
+    authState: AuthState;
+    currentUser: User;
+}
+
 export interface IAuthContext {
     authState: AuthState;
-    currentUser: User | null;
+    currentUser: User;
+    logout(): void;
 }
 
 export const AuthContext = React.createContext<IAuthContext>(null as any);
 
-export class AuthContextProvider extends React.Component<{}, IAuthContext> {
+export class AuthContextProvider extends React.Component<{}, IAuthProviderState> {
     // TODO: Abstract auth provider
     _googleAuth!: gapi.auth2.GoogleAuth;
 
@@ -20,7 +26,7 @@ export class AuthContextProvider extends React.Component<{}, IAuthContext> {
         super(props);
         this.state = {
             authState: 'initialising',
-            currentUser: null
+            currentUser: null as any
         };
         this.initialise();
     }
@@ -58,27 +64,32 @@ export class AuthContextProvider extends React.Component<{}, IAuthContext> {
         else {
             this.setState({
                 authState: 'not_logged_in',
-                currentUser: null
+                currentUser: null as any
             });
         }
     }
 
-    async logout() {
+    logout = async () => {
         await this._googleAuth.signOut();
         this.setState({
             authState: 'not_logged_in',
-            currentUser: null
+            currentUser: null as any
         });
     }
 
-    async login() {
+    login = async () => {
         const user = await this._googleAuth.signIn();
         this._setLoggedInUser(user);
     }
 
     render() {
+        const authContext: IAuthContext = {
+            authState: this.state.authState,
+            currentUser: this.state.currentUser,
+            logout: this.logout
+        };
         return (
-            <AuthContext.Provider value={this.state}>
+            <AuthContext.Provider value={authContext}>
                 {this.props.children}
             </AuthContext.Provider>
         );
