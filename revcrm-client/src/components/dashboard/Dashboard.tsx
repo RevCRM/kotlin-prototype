@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Typography, Grid, Card, CardHeader, CardContent } from '@material-ui/core';
 import { Bar } from 'britecharts-react';
+import withResponsiveness from 'britecharts-react/lib/esm/helpers/withResponsiveness';
+
+const ResponsiveBarChart = withResponsiveness(Bar);
 
 const oppoData = [
     {
@@ -27,14 +30,11 @@ export const Dashboard = () => (
                 <Card>
                     <CardHeader title="Opportunities by Stage" />
                     <CardContent>
-                        <Typography color="textSecondary" gutterBottom>
-                        <Bar
+                        <ResponsiveBarChart
                             data={oppoData}
-                            height={400}
-                            width={400}
-                            isHorizontal={true}
+                            height={300}
+                            isHorizontal={false}
                         />
-                        </Typography>
                     </CardContent>
                 </Card>
             </Grid>

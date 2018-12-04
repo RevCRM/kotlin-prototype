@@ -24,7 +24,7 @@ export const styles = (theme: Theme) => createStyles({
         }
     },
     leftNav: {
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             width: leftNavWidth,
             flexShrink: 0,
         },
@@ -38,7 +38,7 @@ export const styles = (theme: Theme) => createStyles({
     },
     menuButton: {
         marginRight: 16,
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('md')]: {
             display: 'none',
         },
     },
@@ -86,7 +86,7 @@ export const Navigation = withStyles(styles)(
 
                 <nav className={this.props.classes.leftNav}>
                     {/* The implementation can be swap with js to avoid SEO duplication of links. */}
-                    <Hidden smUp implementation="css">
+                    <Hidden mdUp implementation="css">
                         <Drawer
                             variant="temporary"
                             anchor="left"
@@ -101,7 +101,7 @@ export const Navigation = withStyles(styles)(
                             <LeftNav />
                         </Drawer>
                     </Hidden>
-                    <Hidden xsDown implementation="css">
+                    <Hidden smDown implementation="css">
                         <Drawer
                             classes={{
                                 paper: this.props.classes.leftNavPaper,
