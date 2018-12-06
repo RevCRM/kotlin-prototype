@@ -16,8 +16,8 @@ module.exports = (env, args) => {
         },
         output: {
             path: outputPath,
-            filename: "js/[name].js",
-            chunkFilename: 'js/[name].js'
+            filename: "static/js/[name].js",
+            chunkFilename: 'static/js/[name].js'
         },
         resolve: {
             // Add `.ts` and `.tsx` as a resolvable extension.
@@ -44,7 +44,9 @@ module.exports = (env, args) => {
                 },
             }),
             new CopyWebpackPlugin([
-                { context: 'static', from: '**/*' }
+                { from: 'index.html' },
+                { from: 'static/**/*' },
+                { from: 'node_modules/britecharts-react/dist/britecharts-react.min.css', to: 'static/css/britecharts-react.min.css'}
             ])
         ]
     };

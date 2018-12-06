@@ -17,9 +17,9 @@ fun Routing.staticFiles() {
         call.respondText(html, ContentType.Text.Html)
     }
 
-    static("js") {
+    static("static") {
         staticRootFolder = File("../revcrm-client/dist")
-        files("js")
+        files("static")
     }
 
 }
