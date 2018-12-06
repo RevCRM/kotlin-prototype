@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, Grid, Card, CardHeader, CardContent, TableHead, Table, TableCell, Checkbox, TableBody, TableRow, IconButton, Icon } from '@material-ui/core';
+import { Typography, Grid, Card, CardHeader, TableHead, Table, TableCell, Checkbox, TableBody, TableRow, IconButton, Icon } from '@material-ui/core';
 import { Bar } from 'britecharts-react';
 import withResponsiveness from 'britecharts-react/lib/esm/helpers/withResponsiveness';
 import { colors } from 'britecharts';
@@ -58,56 +58,54 @@ export const Dashboard = () => (
                             </IconButton>
                         }
                     />
-                    <CardContent>
-                        <Table padding="none">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell />
-                                    <TableCell>
-                                        Task
-                                    </TableCell>
-                                    <TableCell>
-                                        Related To
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell padding="checkbox">
-                                        <Checkbox />
-                                    </TableCell>
-                                    <TableCell>
-                                        Prepare Proposal
-                                    </TableCell>
-                                    <TableCell>
-                                        Opportunity 105: New Build
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell padding="checkbox">
-                                        <Checkbox />
-                                    </TableCell>
-                                    <TableCell>
-                                        Prepare Proposal
-                                    </TableCell>
-                                    <TableCell>
-                                        Opportunity 107: Cable Street Works
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell padding="checkbox">
-                                        <Checkbox />
-                                    </TableCell>
-                                    <TableCell>
-                                        Buy Milk
-                                    </TableCell>
-                                    <TableCell>
-                                        Personal
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </CardContent>
+                    <Table padding="none">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell />
+                                <TableCell>
+                                    Task
+                                </TableCell>
+                                <TableCell>
+                                    Related To
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell padding="checkbox">
+                                    <Checkbox />
+                                </TableCell>
+                                <TableCell>
+                                    Prepare Proposal
+                                </TableCell>
+                                <TableCell>
+                                    Opportunity 105: New Build
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell padding="checkbox">
+                                    <Checkbox />
+                                </TableCell>
+                                <TableCell>
+                                    Prepare Proposal
+                                </TableCell>
+                                <TableCell>
+                                    Opportunity 107: Cable Street Works
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell padding="checkbox">
+                                    <Checkbox />
+                                </TableCell>
+                                <TableCell>
+                                    Buy Milk
+                                </TableCell>
+                                <TableCell>
+                                    Personal
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
                 </Card>
             </Grid>
         </Grid>
