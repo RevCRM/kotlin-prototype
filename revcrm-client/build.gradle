@@ -1,0 +1,6 @@
+
+description = 'RevCRM Client'
+
+task buildClient(type: NpmTask, dependsOn: npmInstall) {
+    args = ['run', 'build']
+}
