@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    docker:
+      - image: circleci/openjdk:11-jdk-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: revcrm-deps-v1-{{ checksum "build.gradle" }}
+      
+      - run: gradle build
+
+    #   - store_test_results:
+    #       path: target/test-reports
+
+      - save_cache: # saves the project dependencies
+          paths:
+            - ~/.gradle
+          key: revcrm-deps-v1-{{ checksum "build.gradle" }}
+      
+      - store_artifacts: # store the uberjar as an artifact
+          path: revcrm-server/build/distributions/revcrm-server-1.0.tar

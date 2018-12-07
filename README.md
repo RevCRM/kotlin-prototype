@@ -8,3 +8,11 @@ RevCRM is an open source (Apache 2.0 Licensed) CRM platform.
 * Modular architecture. Only install the features you need
 
 This project is still very much a work-in-progress but watch this space :)
+
+## Developer Notes
+
+### Building and Running Locally
+
+```
+./gradlew run
+```
