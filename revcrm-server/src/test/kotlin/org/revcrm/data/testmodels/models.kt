@@ -34,13 +34,13 @@ class TestFieldsModel(
 
     @Enumerated(EnumType.STRING)
     var enum_field: EnumFieldOptions
-): BaseModel()
+) : BaseModel()
 
 @Entity
 class TestModel2(
     var name: String,
     var size: Double
-): BaseModel()
+) : BaseModel()
 
 @Entity
 class TestConstraintsModel(
@@ -60,10 +60,10 @@ class TestConstraintsModel(
     @field:Max(100)
     var max_field: Int
 
-): BaseModel()
+) : BaseModel()
 
 @Entity
 @APIDisabled
 class SensitiveModel(
-        var name: String
-): BaseModel()
+    var name: String
+) : BaseModel()

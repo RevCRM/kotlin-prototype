@@ -3,11 +3,9 @@ package org.revcrm.models.accounts
 import org.revcrm.annotations.Field
 import org.revcrm.models.BaseModel
 import javax.persistence.Entity
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
 
 @Entity
-class Account (
+class Account(
     @Field("Is Organisation?")
     var is_org: Boolean,
 

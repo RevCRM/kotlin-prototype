@@ -79,7 +79,7 @@ class DBService {
         return session.entityManagerFactory.createEntityManager()
     }
 
-    fun <T>withTransaction(method: (EntityManager) -> T): T {
+    fun <T> withTransaction(method: (EntityManager) -> T): T {
         val session = getSession()
         val entityManager = getEntityManager(session)
 
@@ -89,12 +89,10 @@ class DBService {
             result = method(entityManager)
             entityManager.transaction.commit()
             return result
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             entityManager.transaction.rollback()
             throw e
-        }
-        finally {
+        } finally {
             entityManager.close()
         }
     }
@@ -176,5 +174,4 @@ class DBService {
             entities = entities.toMap()
         )
     }
-
 }

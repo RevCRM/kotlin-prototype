@@ -4,10 +4,9 @@ import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import org.revcrm.data.EntityMetadata
 
-class EntityDataFetcher (
+class EntityDataFetcher(
     private val entity: EntityMetadata
-): DataFetcher<Any>
-{
+) : DataFetcher<Any> {
 
     override fun get(environment: DataFetchingEnvironment): Any {
         val ctx = environment.getContext<APIContext>()
@@ -29,5 +28,4 @@ class EntityDataFetcher (
             )
         )
     }
-
 }

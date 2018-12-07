@@ -33,5 +33,4 @@ class FieldService {
         }
         return jvmGraphQLScalarTypeMappings.get(field.jvmType)
     }
-
 }

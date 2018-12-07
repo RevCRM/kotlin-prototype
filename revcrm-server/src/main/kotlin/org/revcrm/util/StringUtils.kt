@@ -1,6 +1,6 @@
 package org.revcrm.util
 
-import java.util.*
+import java.util.Random
 
 fun randomString(length: Int): String {
     val leftLimit = 33

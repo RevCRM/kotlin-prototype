@@ -21,5 +21,4 @@ fun Routing.staticFiles() {
         staticRootFolder = File("../revcrm-client/dist")
         files("static")
     }
-
 }

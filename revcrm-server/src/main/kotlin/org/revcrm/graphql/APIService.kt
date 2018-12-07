@@ -14,7 +14,7 @@ import graphql.schema.PropertyDataFetcher
 import org.revcrm.data.DBService
 import org.revcrm.data.FieldService
 
-class APIService (
+class APIService(
     private val dbService: DBService,
     private val fieldService: FieldService
 ) {
@@ -51,8 +51,7 @@ class APIService (
                     if (relatedEntity != null) {
                         // TODO: Return ObjectType of related entity
                         scalarType = Scalars.GraphQLInt
-                    }
-                    else {
+                    } else {
                         throw Error("Field type '${field.jvmType}' for field '${entity.name}.${field.name}' has no registered GraphQL Mapping.")
                     }
                 }
@@ -63,8 +62,7 @@ class APIService (
 
                 if (field.nullable) {
                     fieldDef.type(scalarType)
-                }
-                else {
+                } else {
                     fieldDef.type(GraphQLNonNull(scalarType))
                 }
 
@@ -113,5 +111,4 @@ class APIService (
             .build()
         return graphQLExecutor.execute(execInput)
     }
-
 }

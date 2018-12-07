@@ -2,6 +2,6 @@ package org.revcrm.graphql
 
 import org.revcrm.data.DBService
 
-class APIContext (
+class APIContext(
     val db: DBService
 )

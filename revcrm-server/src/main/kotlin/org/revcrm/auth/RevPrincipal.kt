@@ -6,7 +6,7 @@ import org.revcrm.models.RevUserAuth
 
 class JWTPrincipal(val payload: Payload) : Principal
 
-class RevPrincipal (
+class RevPrincipal(
     val payload: Payload,
     val auth: RevUserAuth
 ) : Principal

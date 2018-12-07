@@ -7,7 +7,6 @@ import org.revcrm.data.DBService
 import org.revcrm.models.BaseModel
 import org.revcrm.util.session
 import javax.persistence.Entity
-import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity

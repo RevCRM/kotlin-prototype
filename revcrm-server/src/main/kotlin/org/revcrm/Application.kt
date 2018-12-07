@@ -26,13 +26,11 @@ import org.revcrm.graphql.APIService
 import org.revcrm.models.AuthType
 import org.revcrm.models.RevUser
 import org.revcrm.models.RevUserAuth
-import org.revcrm.models.accounts.Account
 import org.revcrm.routes.graphQL
 import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
 import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
-import org.revcrm.util.randomString
 import org.revcrm.util.session
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
@@ -85,8 +83,7 @@ fun Application.main() {
             validate { credential ->
                 if (!credential.payload.audience.contains(jwtAudience)) {
                     null
-                }
-                else {
+                } else {
                     val auth = db.withTransaction { em ->
                         em.createQuery(
                 "from RevUserAuth where auth_type = :type and auth_id = :id")
@@ -97,8 +94,7 @@ fun Application.main() {
                     }
                     if (auth.size > 0) {
                         RevPrincipal(credential.payload, auth[0] as RevUserAuth)
-                    }
-                    else {
+                    } else {
                         null
                     }
                 }
@@ -156,12 +152,10 @@ fun Application.main() {
             )
             em.persist(adminUser)
             em.persist(auth)
-        }
-        else {
+        } else {
             adminUser.last_login = LocalDateTime.now()
         }
         adminUser
     }
     println("Admin user: " + adminUser.email)
-
 }

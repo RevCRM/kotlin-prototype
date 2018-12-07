@@ -7,9 +7,6 @@ import javax.persistence.Enumerated
 import javax.persistence.Index
 import javax.persistence.ManyToOne
 import javax.persistence.Table
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotEmpty
 
 enum class AuthType {
     GOOGLE

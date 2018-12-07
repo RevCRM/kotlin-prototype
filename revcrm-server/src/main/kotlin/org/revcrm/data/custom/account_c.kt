@@ -2,7 +2,7 @@ package org.revcrm.data.custom
 
 // Create custom entity fields container
 
-//fun registerAccountC(metadata: MetadataSources) {
+// fun registerAccountC(metadata: MetadataSources) {
 //
 //    // Lets try adding a custom entity
 //    // http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd
@@ -22,7 +22,7 @@ package org.revcrm.data.custom
 //    val idField = doc.createElement("id")
 //    idField.setAttribute("name", "accountId")
 //    idField.setAttribute("type", "int")
-////    idField.setAttribute("lazy", "true")
+// //    idField.setAttribute("lazy", "true")
 //    accountCustom.appendChild(idField)
 //        val idGenerator = doc.createElement("generator")
 //        idGenerator.setAttribute("class", "foreign")
@@ -47,13 +47,13 @@ package org.revcrm.data.custom
 //    xmlTransformer.transform(DOMSource(doc), StreamResult(outputStream))
 //
 //    metadata.addInputStream(ByteArrayInputStream(outputStream.toByteArray()))
-//}
+// }
 
 // Test code for custom entity
-//log.info("Creating an account...")
-//val name = "Test Account ${randomString(5)}"
+// log.info("Creating an account...")
+// val name = "Test Account ${randomString(5)}"
 //
-//db.withTransaction { em ->
+// db.withTransaction { em ->
 //    val account = Account(
 //        is_org = true,
 //        org_name = name
@@ -64,12 +64,12 @@ package org.revcrm.data.custom
 //    )
 //    em.persist(account)
 //    em.session.persist("account_c", account_c)
-//}
+// }
 //
-//log.info("Restarting hibernate...")
-//db.reinitialise(dbConfig, entityList)
+// log.info("Restarting hibernate...")
+// db.reinitialise(dbConfig, entityList)
 //
-//db.withTransaction { em ->
+// db.withTransaction { em ->
 //    val account = em.find(Account::class.java, 1)
 //    val account_c = em.session.get("account_c", 1)
 //    if (account != null && account_c != null && account_c is Map<*,*>) {
@@ -78,4 +78,4 @@ package org.revcrm.data.custom
 //        println("Got account_c: ${account_c.get("custom_name")}")
 //        println("**************************")
 //    }
-//}
+// }

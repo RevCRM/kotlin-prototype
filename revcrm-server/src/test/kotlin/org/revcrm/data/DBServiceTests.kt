@@ -51,7 +51,6 @@ class DBServiceTests {
                 .containsKey("string_field")
                 .containsKey("int_field")
         }
-
     }
 
     @Nested
@@ -159,6 +158,5 @@ class DBServiceTests {
         fun `models annotated with @APIDisabled have apiEnabled = false`() {
             assertThat(entities.get("SensitiveModel")!!.apiEnabled).isFalse()
         }
-
     }
 }

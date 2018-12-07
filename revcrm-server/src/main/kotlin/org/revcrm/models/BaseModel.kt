@@ -19,5 +19,4 @@ abstract class BaseModel {
 
     @UpdateTimestamp
     var updated_date: LocalDateTime? = null
-
 }
