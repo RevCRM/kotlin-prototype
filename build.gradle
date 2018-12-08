@@ -85,5 +85,6 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        reports.html.enabled = false
     }
 }
