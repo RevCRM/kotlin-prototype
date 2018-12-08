@@ -27,5 +27,5 @@ docker build -t revcrm:latest .
 #### Test-running the docker image
 
 ```
-docker run --rm revcrm:latest
+docker run --rm -it --env-file=revcrm.env -p 8800:8800 revcrm:latest
 ```
