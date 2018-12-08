@@ -21,12 +21,6 @@ repositories {
     mavenCentral()
 }
 
-node {
-  version = '10.14.1'
-  npmVersion = '6.4.1'
-  download = true
-}
-
 allOpen {
     annotation("javax.persistence.Entity")
     annotation("javax.persistence.MappedSuperclass")
@@ -86,5 +80,11 @@ subprojects {
     test {
         useJUnitPlatform()
         reports.html.enabled = false
+    }
+
+    node {
+        version = '10.14.1'
+        npmVersion = '6.4.1'
+        download = true
     }
 }
