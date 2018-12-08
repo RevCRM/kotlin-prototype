@@ -11,7 +11,7 @@ jobs:
       
       - run:
           name: Build & Test
-          command: gradle build
+          command: gradle build --stacktrace
 
       - run:
           name: Collect test results
