@@ -16,3 +16,16 @@ This project is still very much a work-in-progress but watch this space :)
 ```
 ./gradlew run
 ```
+
+### Build docker image
+
+```
+./gradlew build
+docker build -t revcrm:latest .
+```
+
+#### Test-running the docker image
+
+```
+docker run --rm revcrm:latest
+```
