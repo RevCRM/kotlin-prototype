@@ -7,11 +7,14 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloLink } from 'apollo-link';
 import { ApolloProvider } from 'react-apollo';
-import { Dashboard } from './dashboard/Dashboard';
 import { AppLoader } from './AppLoader';
 import { AuthContextProvider } from './auth/AuthContext';
+import { createHashHistory } from 'history';
+import { ViewManager } from './views/ViewManager';
+import { View } from './views/View';
 
 const theme = createMuiTheme();
+const history = createHashHistory();
 
 const cache = new InMemoryCache();
 const client = new ApolloClient({
@@ -27,11 +30,11 @@ export const App = () => (
         <ApolloProvider client={client}>
             <AuthContextProvider>
                 <AppLoader>
-                    <Navigation>
-                        <Dashboard />
-                        {/* <GoogleAuth /> */}
-                        {/* <Routes /> */}
-                    </Navigation>
+                    <ViewManager history={history}>
+                        <Navigation>
+                            <View />
+                        </Navigation>
+                    </ViewManager>
                 </AppLoader>
             </AuthContextProvider>
         </ApolloProvider>
