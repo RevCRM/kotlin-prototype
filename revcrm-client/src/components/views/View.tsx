@@ -1,6 +1,8 @@
 
 import * as React from 'react';
+import { withViewManagerContext, IViewManagerContextProp } from './ViewManager';
 
-export const View = () => (
-    <h2>Current View Goes Here...</h2>
-);
+export const View = withViewManagerContext((props: IViewManagerContextProp) => {
+    const Component = props.viewManagerCtx.view.component;
+    return <Component />;
+});

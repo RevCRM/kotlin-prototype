@@ -17,7 +17,7 @@ export interface IPerspectiveView {
 export interface IView {
     id: string;
     model: string | null;
-    component: React.ReactNode;
+    component: React.ComponentType;
 }
 
 export class UIManager {

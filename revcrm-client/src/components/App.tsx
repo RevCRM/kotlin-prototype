@@ -12,6 +12,8 @@ import { AuthContextProvider } from './auth/AuthContext';
 import { createHashHistory } from 'history';
 import { ViewManager } from './views/ViewManager';
 import { View } from './views/View';
+import { register as registerDashboard } from '../modules/revcrm-dashboard';
+import { UI } from '../UIManager';
 
 const theme = createMuiTheme();
 const history = createHashHistory();
@@ -23,6 +25,9 @@ const client = new ApolloClient({
     ]),
     cache
 });
+
+// register modules
+registerDashboard(UI);
 
 export const App = () => (
     <MuiThemeProvider theme={theme}>

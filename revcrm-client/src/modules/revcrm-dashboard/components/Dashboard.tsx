@@ -21,7 +21,7 @@ const oppoData = [
     },
 ];
 
-export const Dashboard = () => (
+export const Dashboard: React.SFC = () => (
     <div style={{ margin: 16 }}>
         <Grid container spacing={16}>
             <Grid item xs={12}>

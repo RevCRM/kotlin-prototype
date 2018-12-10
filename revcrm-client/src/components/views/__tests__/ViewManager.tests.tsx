@@ -35,14 +35,14 @@ describe('<ViewManager />', () => {
     const mockMyView: IView = {
         id: 'dashboard',
         model: null,
-        component: <div id="mockMyDashboard" />
+        component: () => <div id="mockMyDashboard" />
     };
     UI.registerView(mockMyView);
 
     const mockTeamView: IView = {
         id: 'dashboard_team',
         model: null,
-        component: <div id="mockTeamDashboard" />
+        component: () => <div id="mockTeamDashboard" />
     };
     UI.registerView(mockTeamView);
 
