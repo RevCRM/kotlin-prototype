@@ -5,8 +5,13 @@ export interface IPerspective {
     id: string;
     title: string;
     views: {
-        [viewId: string]: string;
+        [perspectiveViewId: string]: IPerspectiveView;
     };
+}
+
+export interface IPerspectiveView {
+    title: string;
+    viewId: string;
 }
 
 export interface IView {
@@ -23,6 +28,10 @@ export class UIManager {
         [viewId: string]: IView;
     } = {};
     _menus: IMenuItem[] = [];
+
+    constructor(
+        public homeUrl: string
+    ) {}
 
     registerView(view: IView) {
         if (this._views[view.id]) {
@@ -46,20 +55,20 @@ export class UIManager {
         this._menus.push(menuItem);
     }
 
-    getPerspectiveViewName(perspectiveId: string, viewId: string) {
-        const perspective = this._perspectives[perspectiveId];
-        if (perspective && perspective.views[viewId]) {
-            return perspective.views[viewId];
-        }
-        throw new Error(`Perspective view '${perspectiveId}/${viewId}' is not defined`);
-    }
-
     getPerspective(perspectiveId: string) {
         const perspective = this._perspectives[perspectiveId];
         if (perspective) {
             return perspective;
         }
         throw new Error(`Perspective '${perspectiveId}' is not defined`);
+    }
+
+    getPerspectiveView(perspectiveId: string, perspectiveViewId: string) {
+        const perspective = this._perspectives[perspectiveId];
+        if (perspective && perspective.views[perspectiveViewId]) {
+            return perspective.views[perspectiveViewId];
+        }
+        throw new Error(`Perspective view '${perspectiveId}/${perspectiveViewId}' is not defined`);
     }
 
     getView(viewId: string) {
@@ -75,4 +84,5 @@ export class UIManager {
     }
 }
 
-export const UI = new UIManager();
+// TODO: Home URL should come from settings
+export const UI = new UIManager('/dashboard/my');

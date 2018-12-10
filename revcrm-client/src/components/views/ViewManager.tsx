@@ -1,15 +1,19 @@
 
 import * as React from 'react';
 import { IViewContext } from './types';
-import { IPerspective, IView } from '../../UIManager';
-import { History } from 'history';
+import { IPerspective, IView, UI, IPerspectiveView } from '../../UIManager';
+import { History, Location, Action, UnregisterCallback } from 'history';
+import { Omit } from '../../types';
+
+export interface IViewManagerLocation {
+    pathname: string;
+    search: string;
+}
 
 export interface IViewManagerContext {
-    location: {
-        pathname: string;
-        search: string;
-    };
+    history: History<any>;
     perspective: IPerspective;
+    perspectiveView: IPerspectiveView;
     view: IView;
     viewContext: IViewContext;
 
@@ -21,11 +25,8 @@ export interface IViewManagerProps {
 }
 
 export interface IViewManagerState {
-    location: {
-        pathname: string;
-        search: string;
-    };
     perspective: IPerspective;
+    perspectiveView: IPerspectiveView;
     view: IView;
     viewContext: IViewContext;
 }
@@ -33,17 +34,36 @@ export interface IViewManagerState {
 export const ViewManagerContext = React.createContext<IViewManagerContext>(null as any);
 
 export class ViewManager extends React.Component<IViewManagerProps, IViewManagerState> {
+    _locationUnlisten: any;
 
     constructor(props: any) {
         super(props);
-        const { pathname, search } = this.props.history.location;
+
+        if (this.props.history.location.pathname == '/') {
+            this.props.history.replace(UI.homeUrl);
+        }
+
         this.state = {
-            location: {
-                pathname,
-                search
-            },
-            perspective: null as any,
-            view: null as any,
+            ...this.getViewManagerStateFromLocation(this.props.history.location)
+        };
+
+    }
+
+    getViewManagerStateFromLocation(location: IViewManagerLocation): IViewManagerState {
+        const { pathname } = location;
+        const [ perspectiveId, perspectiveViewId ] = pathname.split('/').slice(1);
+        return this.getViewManagerState(perspectiveId, perspectiveViewId);
+    }
+
+    getViewManagerState(perspectiveId: string, perspectiveViewId: string): IViewManagerState {
+        const perspective = UI.getPerspective(perspectiveId);
+        const perspectiveView = UI.getPerspectiveView(perspectiveId, perspectiveViewId);
+        const view = UI.getView(perspectiveView.viewId);
+
+        return {
+            perspective,
+            perspectiveView,
+            view,
             viewContext: {
                 model: '',
                 modelId: null
@@ -51,16 +71,52 @@ export class ViewManager extends React.Component<IViewManagerProps, IViewManager
         };
     }
 
-    changePerspective = (perspectiveId: string, viewId: string, context?: IViewContext) => {
-        console.log('changing perspective...');
+    onLocationChanged = (location: Location, action: Action) => {
+        this.setState({
+            ...this.getViewManagerStateFromLocation(location)
+        });
+    }
+
+    componentWillMount() {
+        this._locationUnlisten = this.props.history.listen(this.onLocationChanged);
+    }
+
+    componentWillUnmount() {
+        this._locationUnlisten();
+    }
+
+    changePerspective = (perspectiveId: string, perspectiveViewId: string, context?: IViewContext) => {
+        this.props.history.push(`/${perspectiveId}/${perspectiveViewId}`);
     }
 
     render() {
         const ctx: IViewManagerContext = {
+            history: this.props.history,
             ...this.state,
             changePerspective: this.changePerspective
         };
-        return this.props.children;
+        return (
+            <ViewManagerContext.Provider value={ctx}>
+                {this.props.children}
+            </ViewManagerContext.Provider>
+        );
     }
 
+}
+
+export interface IViewManagerContextProp {
+    viewManagerCtx: IViewManagerContext;
+}
+
+export function withViewManagerContext<
+    TComponentProps extends IViewManagerContextProp,
+    TWrapperProps = Omit<TComponentProps, keyof IViewManagerContextProp>
+>(
+    Component: React.ComponentType<TComponentProps>
+): React.ComponentType<TWrapperProps> {
+    return (props: TWrapperProps): React.ReactElement<TComponentProps> => (
+        <ViewManagerContext.Consumer>{(ctx) => (
+            <Component viewManagerCtx={ctx} {...props} />
+        )}</ViewManagerContext.Consumer>
+    );
 }
