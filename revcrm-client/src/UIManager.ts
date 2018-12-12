@@ -60,7 +60,7 @@ export class UIManager {
         if (perspective) {
             return perspective;
         }
-        throw new Error(`Perspective '${perspectiveId}' is not defined`);
+        return null;
     }
 
     getPerspectiveView(perspectiveId: string, perspectiveViewId: string) {
@@ -68,7 +68,7 @@ export class UIManager {
         if (perspective && perspective.views[perspectiveViewId]) {
             return perspective.views[perspectiveViewId];
         }
-        throw new Error(`Perspective view '${perspectiveId}/${perspectiveViewId}' is not defined`);
+        return null;
     }
 
     getView(viewId: string) {
@@ -76,7 +76,7 @@ export class UIManager {
         if (view) {
             return view;
         }
-        throw new Error(`View '${viewId}' is not defined`);
+        return null;
     }
 
     getMenus() {
