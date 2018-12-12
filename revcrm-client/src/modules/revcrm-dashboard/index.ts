@@ -20,4 +20,15 @@ export function register(ui: UIManager) {
         model: null,
         component: Dashboard
     });
+
+    ui.registerMenu({
+        id: 'menu_dashboard',
+        icon: 'insert_chart',
+        label: 'Dashboard',
+        subItems: [
+            { label: 'My Dashboard', perspective: 'dashboard', view: 'my' },
+            { label: 'Team Dashboard', perspective: 'dashboard', view: 'team' },
+        ]
+    });
+
 }

@@ -13,6 +13,8 @@ import { createHashHistory } from 'history';
 import { ViewManager } from './views/ViewManager';
 import { View } from './views/View';
 import { register as registerDashboard } from '../modules/revcrm-dashboard';
+import { register as registerAccounts } from '../modules/revcrm-accounts';
+import { register as registerEtc } from '../modules/revcrm-etc';
 import { UI } from '../UIManager';
 
 const theme = createMuiTheme();
@@ -28,6 +30,8 @@ const client = new ApolloClient({
 
 // register modules
 registerDashboard(UI);
+registerAccounts(UI);
+registerEtc(UI);
 
 export const App = () => (
     <MuiThemeProvider theme={theme}>

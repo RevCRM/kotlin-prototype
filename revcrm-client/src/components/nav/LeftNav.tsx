@@ -5,6 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Divider, createStyles, withStyles, WithStyles, Icon, Collapse, Typography } from '@material-ui/core';
 import { IMenuItem } from './types';
+import { UI } from '../../UIManager';
 
 const styles = createStyles({
     listItemText: {
@@ -12,61 +13,6 @@ const styles = createStyles({
         whiteSpace: 'nowrap'
     }
 });
-
-// TODO: drive this from metadata
-export const MENU: IMenuItem[] = [
-    {
-        id: 'menu_dashboard',
-        label: 'Dashboard',
-        perspective: 'dashboard',
-        icon: 'insert_chart',
-        subItems: [
-            { label: 'My Dashboard', perspective: 'dashboard', view: 'my' },
-            { label: 'Team Dashboard', perspective: 'dashboard', view: 'team' },
-        ]
-    },
-    {
-        id: 'menu_calendar',
-        label: 'Calendar',
-        perspective: 'calendar',
-        icon: 'insert_invitation',
-        subItems: [
-            { label: 'My Calendar', perspective: 'calendar', view: 'my' },
-            { label: 'Team Calendar', perspective: 'calendar', view: 'team' },
-        ]
-    },
-    {
-        id: 'menu_accounts',
-        label: 'Companies & Contacts',
-        perspective: 'accounts',
-        icon: 'supervised_user_circle',
-        subItems: [
-            { label: 'Companies', perspective: 'accounts', view: 'companies' },
-            { label: 'Contacts', perspective: 'accounts', view: 'contacts' },
-            { label: 'Leads', perspective: 'accounts', view: 'leads' },
-            { label: 'Data Import', perspective: 'accounts', view: 'import' },
-        ]
-    },
-    {
-        id: 'menu_opportunities',
-        label: 'Sales & Marketing',
-        perspective: 'opportunities',
-        icon: 'monetization_on_sharp',
-        subItems: [
-            { label: 'Sales Opportunities', perspective: 'opportunities', view: 'list' },
-        ]
-    },
-    {
-        id: 'menu_cases',
-        label: 'Customer Service',
-        perspective: 'cases',
-        icon: 'assignment',
-        subItems: [
-            { label: 'My Cases', perspective: 'cases', view: 'my' },
-            { label: 'Team Cases', perspective: 'cases', view: 'team' },
-        ]
-    }
-];
 
 export interface ILeftNavState {
     expandedMenus: {
@@ -94,6 +40,7 @@ export const LeftNav = withStyles(styles)(
     }
 
     render() {
+        const MENU = UI.getMenus();
         return (
             <List>
                 {MENU.map((item) => {
