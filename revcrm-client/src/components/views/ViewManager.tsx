@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { IViewContext } from './types';
 import { IPerspective, IView, UI, IPerspectiveView } from '../../UIManager';
-import { History, Location, Action, UnregisterCallback } from 'history';
+import { History, Location, Action } from 'history';
 import { Omit } from '../../types';
 
 export interface IViewManagerLocation {
@@ -12,9 +12,9 @@ export interface IViewManagerLocation {
 
 export interface IViewManagerContext {
     history: History<any>;
-    perspective: IPerspective;
-    perspectiveView: IPerspectiveView;
-    view: IView;
+    perspective: IPerspective | null;
+    perspectiveView: IPerspectiveView | null;
+    view: IView | null;
     viewContext: IViewContext;
 
     changePerspective(perspectiveId: string, viewId: string, context?: IViewContext): void;
@@ -25,10 +25,27 @@ export interface IViewManagerProps {
 }
 
 export interface IViewManagerState {
-    perspective: IPerspective;
-    perspectiveView: IPerspectiveView;
-    view: IView;
+    perspective: IPerspective | null;
+    perspectiveView: IPerspectiveView | null;
+    view: IView | null;
     viewContext: IViewContext;
+}
+
+// TODO: Move this somewhere better
+export function getViewStateFromUrl(pathname: string, search: string) {
+    const [ perspectiveId, perspectiveViewId ] = pathname.split('/').slice(1);
+    const perspective = UI.getPerspective(perspectiveId);
+    const perspectiveView = UI.getPerspectiveView(perspectiveId, perspectiveViewId);
+    const view = perspectiveView ? UI.getView(perspectiveView.viewId) : null;
+    return {
+        perspective,
+        perspectiveView,
+        view,
+        viewContext: {
+            model: '',
+            modelId: null
+        }
+    };
 }
 
 export const ViewManagerContext = React.createContext<IViewManagerContext>(null as any);
@@ -38,42 +55,17 @@ export class ViewManager extends React.Component<IViewManagerProps, IViewManager
 
     constructor(props: any) {
         super(props);
-
-        if (this.props.history.location.pathname == '/') {
-            this.props.history.replace(UI.homeUrl);
-        }
-
-        this.state = {
-            ...this.getViewManagerStateFromLocation(this.props.history.location)
-        };
-
-    }
-
-    getViewManagerStateFromLocation(location: IViewManagerLocation): IViewManagerState {
-        const { pathname } = location;
-        const [ perspectiveId, perspectiveViewId ] = pathname.split('/').slice(1);
-        return this.getViewManagerState(perspectiveId, perspectiveViewId);
-    }
-
-    getViewManagerState(perspectiveId: string, perspectiveViewId: string): IViewManagerState {
-        const perspective = UI.getPerspective(perspectiveId);
-        const perspectiveView = UI.getPerspectiveView(perspectiveId, perspectiveViewId);
-        const view = UI.getView(perspectiveView.viewId);
-
-        return {
-            perspective,
-            perspectiveView,
-            view,
-            viewContext: {
-                model: '',
-                modelId: null
-            }
-        };
+        const initialState = getViewStateFromUrl(
+            this.props.history.location.pathname,
+            this.props.history.location.search
+        );
+        this.state = initialState;
     }
 
     onLocationChanged = (location: Location, action: Action) => {
+        const { pathname, search } = location;
         this.setState({
-            ...this.getViewManagerStateFromLocation(location)
+            ...getViewStateFromUrl(pathname, search)
         });
     }
 

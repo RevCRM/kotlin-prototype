@@ -46,33 +46,7 @@ describe('<ViewManager />', () => {
     };
     UI.registerView(mockTeamView);
 
-    describe('initialisation - when no URL is set', () => {
-
-        beforeAll(() => {
-            receivedCtx = null as any;
-            const history = createMemoryHistory({
-                initialEntries: ['/']
-            });
-            TestRenderer.create(
-                <ViewManager history={history}>
-                    <ViewContextSpy />
-                </ViewManager>
-            );
-        });
-
-        it('redirects to homeUrl', () => {
-            expect(receivedCtx.history.location.pathname).toEqual(UI.homeUrl);
-        });
-
-        it('sets correct perspective and view in the context', () => {
-            expect(receivedCtx.perspective).toEqual(mockPerspective);
-            expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views['my']);
-            expect(receivedCtx.view).toEqual(mockMyView);
-        });
-
-    });
-
-    describe('initialisation - when url is set', () => {
+    describe('initialisation - when a matching url is set', () => {
         const expectedUrl = '/dashboard/team';
 
         beforeAll(() => {
@@ -87,10 +61,6 @@ describe('<ViewManager />', () => {
             );
         });
 
-        it('does not redirect to homeUrl', () => {
-            expect(receivedCtx.history.location.pathname).not.toEqual(UI.homeUrl);
-        });
-
         it('stays at expected url', () => {
             expect(receivedCtx.history.location.pathname).toEqual(expectedUrl);
         });
@@ -99,6 +69,33 @@ describe('<ViewManager />', () => {
             expect(receivedCtx.perspective).toEqual(mockPerspective);
             expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views['team']);
             expect(receivedCtx.view).toEqual(mockTeamView);
+        });
+
+    });
+
+    describe('initialisation - when a non-matching URL is set', () => {
+        const nonMatchingUrl = '/no_existy';
+
+        beforeAll(() => {
+            receivedCtx = null as any;
+            const history = createMemoryHistory({
+                initialEntries: [nonMatchingUrl]
+            });
+            TestRenderer.create(
+                <ViewManager history={history}>
+                    <ViewContextSpy />
+                </ViewManager>
+            );
+        });
+
+        it('stays at expected url', () => {
+            expect(receivedCtx.history.location.pathname).toEqual(nonMatchingUrl);
+        });
+
+        it('perspective and view context is null', () => {
+            expect(receivedCtx.perspective).toEqual(null);
+            expect(receivedCtx.perspectiveView).toEqual(null);
+            expect(receivedCtx.view).toEqual(null);
         });
 
     });
