@@ -5,6 +5,7 @@ import { ViewManager } from '../ViewManager';
 import { View } from '../View';
 import { createMemoryHistory } from 'history';
 import { UI, IPerspective, IView } from '../../../UIManager';
+import { Typography } from '@material-ui/core';
 
 describe('<View />', () => {
     let renderer: TestRenderer.ReactTestRenderer;
@@ -47,6 +48,26 @@ describe('<View />', () => {
             expect(instance.findAll((el) =>
                 el.type == 'div' && el.props.id == 'mockMyDashboard'
             ).length).toEqual(1);
+        });
+
+    });
+
+    describe('when a Perspective and View is not matched', () => {
+
+        beforeAll(() => {
+            const history = createMemoryHistory({
+                initialEntries: ['/no_existy']
+            });
+            renderer = TestRenderer.create(
+                <ViewManager history={history}>
+                    <View />
+                </ViewManager>
+            );
+            instance = renderer.root;
+        });
+
+        it('renders the expected component', () => {
+            expect(instance.findByType(Typography).props.children).toEqual('Not Found');
         });
 
     });
