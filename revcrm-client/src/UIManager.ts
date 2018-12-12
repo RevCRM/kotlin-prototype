@@ -32,10 +32,6 @@ export class UIManager {
     } = {};
     _menus: IMenuItem[] = [];
 
-    constructor(
-        public homeUrl: string
-    ) {}
-
     registerView(view: IView) {
         if (this._views[view.id]) {
             throw new Error(`View '${view.id}' already registered!`);
@@ -88,4 +84,4 @@ export class UIManager {
 }
 
 // TODO: Home URL should come from settings
-export const UI = new UIManager('/dashboard/my');
+export const UI = new UIManager();

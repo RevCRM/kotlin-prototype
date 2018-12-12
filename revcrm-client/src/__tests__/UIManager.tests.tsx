@@ -18,12 +18,10 @@ const mockMyView: IView = {
     component: () => <div id="mockMyDashboard" />
 };
 
-const mockHomeUrl = '/home/test';
-
 describe('UIManager', () => {
 
     it('I can register a perspective and associated view and read them back', () => {
-        const ui = new UIManager(mockHomeUrl);
+        const ui = new UIManager();
         ui.registerPerspective(mockPerspective);
         ui.registerView(mockMyView);
 
@@ -37,7 +35,7 @@ describe('UIManager', () => {
     });
 
     it('getPerspective returns null if perspective does not exist', () => {
-        const ui = new UIManager(mockHomeUrl);
+        const ui = new UIManager();
         ui.registerPerspective(mockPerspective);
         ui.registerView(mockMyView);
 
@@ -45,7 +43,7 @@ describe('UIManager', () => {
     });
 
     it('getPerspectiveView returns null if perspective view does not exist', () => {
-        const ui = new UIManager(mockHomeUrl);
+        const ui = new UIManager();
         ui.registerPerspective(mockPerspective);
         ui.registerView(mockMyView);
 
@@ -53,7 +51,7 @@ describe('UIManager', () => {
     });
 
     it('getView returns null if view does not exist', () => {
-        const ui = new UIManager(mockHomeUrl);
+        const ui = new UIManager();
         ui.registerPerspective(mockPerspective);
         ui.registerView(mockMyView);
 

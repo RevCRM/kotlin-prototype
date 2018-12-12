@@ -33,7 +33,7 @@ export const App = () => (
     <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <ApolloProvider client={client}>
-            <AuthContextProvider>
+            <AuthContextProvider history={history}>
                 <AppLoader>
                     <ViewManager history={history}>
                         <Navigation>

@@ -2,8 +2,14 @@
 import * as React from 'react';
 import { User } from './User';
 import { Omit } from '../../types';
+import { History } from 'history';
+import { getViewStateFromUrl } from '../views/ViewManager';
 
 export type AuthState = 'initialising' | 'logged_in' | 'not_logged_in';
+
+export interface IAuthProviderProps {
+    history: History<any>;
+}
 
 export interface IAuthProviderState {
     authState: AuthState;
@@ -19,7 +25,10 @@ export interface IAuthContext {
 
 export const AuthContext = React.createContext<IAuthContext>(null as any);
 
-export class AuthContextProvider extends React.Component<{}, IAuthProviderState> {
+// TODO: should be in user profile
+export const HOME_URL = '/dashboard/my';
+
+export class AuthContextProvider extends React.Component<IAuthProviderProps, IAuthProviderState> {
     // TODO: Abstract auth provider
     _googleAuth!: gapi.auth2.GoogleAuth;
 
@@ -32,7 +41,17 @@ export class AuthContextProvider extends React.Component<{}, IAuthProviderState>
         this.initialise();
     }
 
-    private _setLoggedInUser(user: gapi.auth2.GoogleUser) {
+    setInitialUrl(user: gapi.auth2.GoogleUser) {
+        const view = getViewStateFromUrl(
+            this.props.history.location.pathname,
+            this.props.history.location.search
+        );
+        if (!view.view) {
+            this.props.history.push(HOME_URL);
+        }
+    }
+
+    setLoggedInUser(user: gapi.auth2.GoogleUser) {
         const profile = user.getBasicProfile();
         this.setState({
             authState: 'logged_in',
@@ -60,7 +79,8 @@ export class AuthContextProvider extends React.Component<{}, IAuthProviderState>
         const user = this._googleAuth.currentUser.get();
 
         if (user && user.isSignedIn()) {
-            this._setLoggedInUser(user);
+            this.setInitialUrl(user);
+            this.setLoggedInUser(user);
         }
         else {
             this.setState({
@@ -79,8 +99,7 @@ export class AuthContextProvider extends React.Component<{}, IAuthProviderState>
     }
 
     login = async () => {
-        const user = await this._googleAuth.signIn();
-        this._setLoggedInUser(user);
+        this._googleAuth.signIn();
     }
 
     // TODO: Remove me
