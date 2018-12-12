@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Table, TableHead, TableRow, TableCell, TableBody, Toolbar, IconButton } from '@material-ui/core';
+import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Table, TableHead, TableRow, TableCell, TableBody, Toolbar, IconButton, Checkbox } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 export const styles = (theme: Theme) => createStyles({
@@ -89,6 +89,9 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
             <Table padding="dense">
                 <TableHead>
                     <TableRow className={props.classes.resultsHeader}>
+                        <TableCell padding="checkbox">
+                            <Checkbox />
+                        </TableCell>
                         <TableCell>
                             Task
                         </TableCell>
@@ -104,7 +107,10 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow className={props.classes.resultsRow}>
+                    <TableRow hover className={props.classes.resultsRow}>
+                        <TableCell padding="checkbox">
+                            <Checkbox />
+                        </TableCell>
                         <TableCell>
                             Prepare Proposal
                         </TableCell>
@@ -118,7 +124,10 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                             Opportunity 105: New Build
                         </TableCell>
                     </TableRow>
-                    <TableRow className={props.classes.resultsRow}>
+                    <TableRow hover className={props.classes.resultsRow}>
+                        <TableCell padding="checkbox">
+                            <Checkbox />
+                        </TableCell>
                         <TableCell>
                             Prepare Proposal
                         </TableCell>
@@ -132,7 +141,10 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                             Opportunity 107: Cable Street Works
                         </TableCell>
                     </TableRow>
-                    <TableRow className={props.classes.resultsRow}>
+                    <TableRow hover className={props.classes.resultsRow}>
+                        <TableCell padding="checkbox">
+                            <Checkbox />
+                        </TableCell>
                         <TableCell>
                             Buy Milk
                         </TableCell>
