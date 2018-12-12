@@ -8,7 +8,9 @@ export const styles = (theme: Theme) => createStyles({
     },
     filterBox: {
         padding: 12,
+        height: 60,
         display: 'flex',
+        alignItems: 'center',
         color: '#fff',
         backgroundColor: theme.palette.primary.dark,
         zIndex: theme.zIndex.appBar - 1,
