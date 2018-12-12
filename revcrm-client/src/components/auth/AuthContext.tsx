@@ -95,6 +95,7 @@ export class AuthContextProvider extends React.Component<{}, IAuthProviderState>
                 Authorization: 'Bearer ' + idToken
             }
         });
+        console.log(res);
     }
 
     render() {

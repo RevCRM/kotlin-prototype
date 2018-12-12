@@ -20,6 +20,9 @@ export interface IView {
     component: React.ComponentType;
 }
 
+/**
+ * Manages the collection of available perspectives and views
+ */
 export class UIManager {
     _perspectives: {
         [perspectiveId: string]: IPerspective;
