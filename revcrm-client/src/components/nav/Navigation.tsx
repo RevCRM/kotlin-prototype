@@ -6,12 +6,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import { Hidden, Icon } from '@material-ui/core';
+import { Hidden, Icon, Badge } from '@material-ui/core';
 import { LeftNav } from './LeftNav';
 import { CONFIG } from '../../config';
 import { UserMenu } from './UserMenu';
 
-const leftNavWidth = 300;
+const leftNavWidth = 260;
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -80,6 +80,16 @@ export const Navigation = withStyles(styles)(
                         <Typography variant="h6" color="inherit" className={this.props.classes.flex}>
                             {CONFIG.appTitle}
                         </Typography>
+                        <IconButton
+                            color="inherit">
+                            <Icon>search</Icon>
+                        </IconButton>
+                        <IconButton
+                            color="inherit">
+                            <Badge badgeContent={11} color="secondary">
+                                <Icon>notifications</Icon>
+                            </Badge>
+                        </IconButton>
                         <UserMenu />
                     </Toolbar>
                 </AppBar>
