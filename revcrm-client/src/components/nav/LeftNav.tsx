@@ -4,8 +4,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Divider, createStyles, withStyles, WithStyles, Icon, Collapse, Typography } from '@material-ui/core';
-import { IMenuItem } from './types';
+import { IMenuItem, IMenuSubItem } from './types';
 import { UI } from '../../UIManager';
+import { withViewManagerContext, IViewManagerContextProp } from '../views/ViewManager';
 
 const styles = createStyles({
     listItemText: {
@@ -14,14 +15,19 @@ const styles = createStyles({
     }
 });
 
+export interface ILeftNavProps extends
+    WithStyles<typeof styles>,
+    IViewManagerContextProp {
+}
+
 export interface ILeftNavState {
     expandedMenus: {
         [id: string]: boolean
     };
 }
 
-export const LeftNav = withStyles(styles)(
-    class extends React.Component<WithStyles<typeof styles>, ILeftNavState> {
+export const LeftNav = withStyles(styles)(withViewManagerContext(
+    class extends React.Component<ILeftNavProps, ILeftNavState> {
 
     constructor(props: any) {
         super(props);
@@ -37,6 +43,12 @@ export const LeftNav = withStyles(styles)(
                 [item.id]: !state.expandedMenus[item.id]
             }
         }));
+    }
+
+    onSubItemClick(item: IMenuSubItem) {
+        this.props.viewManagerCtx.changePerspective(
+            item.perspective, item.view
+        );
     }
 
     render() {
@@ -59,7 +71,7 @@ export const LeftNav = withStyles(styles)(
                                     {item.subItems.map((subItem, subItemIdx) => (
                                         <ListItem button key={subItemIdx}
                                             style={{ padding: 8, paddingLeft: 64 }}
-                                            onClick={() => alert(subItem.label)}>
+                                            onClick={() => this.onSubItemClick(subItem)}>
                                             <Typography variant="body2">{subItem.label}</Typography>
                                         </ListItem>
                                     ))}
@@ -80,4 +92,4 @@ export const LeftNav = withStyles(styles)(
         );
 
     }
-});
+}));

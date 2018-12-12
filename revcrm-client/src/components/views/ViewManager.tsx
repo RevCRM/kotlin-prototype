@@ -17,7 +17,7 @@ export interface IViewManagerContext {
     view: IView | null;
     viewContext: IViewContext;
 
-    changePerspective(perspectiveId: string, viewId: string, context?: IViewContext): void;
+    changePerspective(perspectiveId: string, viewId?: string, context?: IViewContext): void;
 }
 
 export interface IViewManagerProps {

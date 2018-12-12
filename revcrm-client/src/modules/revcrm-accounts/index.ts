@@ -12,6 +12,10 @@ export function register(ui: UIManager) {
                 title: 'Companies',
                 viewId: 'accounts_companies',
             },
+            contacts: {
+                title: 'Contacts',
+                viewId: 'accounts_contacts',
+            },
         }
     });
 
