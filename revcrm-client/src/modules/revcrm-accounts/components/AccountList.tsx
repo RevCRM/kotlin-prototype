@@ -1,14 +1,18 @@
 
 import * as React from 'react';
-import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Table, TableHead, TableRow, TableCell, TableBody, Toolbar, IconButton } from '@material-ui/core';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 export const styles = (theme: Theme) => createStyles({
     root: {
+    },
+    filterBox: {
         padding: 12,
         display: 'flex',
         color: '#fff',
-        backgroundColor: theme.palette.primary.dark
+        backgroundColor: theme.palette.primary.dark,
+        zIndex: theme.zIndex.appBar - 1,
+        position: 'relative'
     },
     searchBox: {
         [theme.breakpoints.up('md')]: {
@@ -22,13 +26,32 @@ export const styles = (theme: Theme) => createStyles({
     searchAdornment: {
         marginLeft: 4
     },
+    resultsBox: {
+        backgroundColor: '#fff'
+    },
+    resultsToolbar: {
+        justifyContent: 'space-between',
+        borderBottom: '1px solid #EBEBEB'
+    },
+    pagination: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    resultsHeader: {
+        fontWeight: 'bold'
+    },
+    resultsRow: {
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.background.default,
+        },
+    },
 });
 
 export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>) => (
-    <div>
-        <Paper square className={props.classes.root}>
+    <div className={props.classes.root}>
+        <Paper square className={props.classes.filterBox}>
             <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                Accounts
+                Companies &amp; Contacts
             </Typography>
             <Input
                 className={props.classes.searchBox}
@@ -44,67 +67,87 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                 }
             />
         </Paper>
-        <Table padding="none">
-            <TableHead>
-                <TableRow>
-                    <TableCell>
-                        Task
-                    </TableCell>
-                    <TableCell>
-                        Related To
-                    </TableCell>
-                    <TableCell>
-                        Related To
-                    </TableCell>
-                    <TableCell>
-                        Related To
-                    </TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                <TableRow>
-                    <TableCell>
-                        Prepare Proposal
-                    </TableCell>
-                    <TableCell>
-                        Opportunity 105: New Build
-                    </TableCell>
-                    <TableCell>
-                        Opportunity 105: New Build
-                    </TableCell>
-                    <TableCell>
-                        Opportunity 105: New Build
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>
-                        Prepare Proposal
-                    </TableCell>
-                    <TableCell>
-                        Opportunity 107: Cable Street Works
-                    </TableCell>
-                    <TableCell>
-                        Opportunity 107: Cable Street Works
-                    </TableCell>
-                    <TableCell>
-                        Opportunity 107: Cable Street Works
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>
-                        Buy Milk
-                    </TableCell>
-                    <TableCell>
-                        Personal
-                    </TableCell>
-                    <TableCell>
-                        Personal
-                    </TableCell>
-                    <TableCell>
-                        Personal
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </Table>
+        <div className={props.classes.resultsBox}>
+            <Toolbar className={props.classes.resultsToolbar}>
+                <Typography variant="title">Companies</Typography>
+                <div className={props.classes.pagination}>
+                    <Typography variant="caption">
+                        1-20 of 42
+                    </Typography>
+                    <IconButton>
+                        <Icon title="Previous Page">
+                            keyboard_arrow_left
+                        </Icon>
+                    </IconButton>
+                    <IconButton>
+                        <Icon title="Next Page">
+                            keyboard_arrow_right
+                        </Icon>
+                    </IconButton>
+                </div>
+            </Toolbar>
+            <Table padding="dense">
+                <TableHead>
+                    <TableRow className={props.classes.resultsHeader}>
+                        <TableCell>
+                            Task
+                        </TableCell>
+                        <TableCell>
+                            Related To
+                        </TableCell>
+                        <TableCell>
+                            Related To
+                        </TableCell>
+                        <TableCell>
+                            Related To
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow className={props.classes.resultsRow}>
+                        <TableCell>
+                            Prepare Proposal
+                        </TableCell>
+                        <TableCell>
+                            Opportunity 105: New Build
+                        </TableCell>
+                        <TableCell>
+                            Opportunity 105: New Build
+                        </TableCell>
+                        <TableCell>
+                            Opportunity 105: New Build
+                        </TableCell>
+                    </TableRow>
+                    <TableRow className={props.classes.resultsRow}>
+                        <TableCell>
+                            Prepare Proposal
+                        </TableCell>
+                        <TableCell>
+                            Opportunity 107: Cable Street Works
+                        </TableCell>
+                        <TableCell>
+                            Opportunity 107: Cable Street Works
+                        </TableCell>
+                        <TableCell>
+                            Opportunity 107: Cable Street Works
+                        </TableCell>
+                    </TableRow>
+                    <TableRow className={props.classes.resultsRow}>
+                        <TableCell>
+                            Buy Milk
+                        </TableCell>
+                        <TableCell>
+                            Personal
+                        </TableCell>
+                        <TableCell>
+                            Personal
+                        </TableCell>
+                        <TableCell>
+                            Personal
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
+        </div>
     </div>
 ));
