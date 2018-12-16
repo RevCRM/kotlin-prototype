@@ -1,22 +1,21 @@
 package org.revcrm.models
 
-import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.UpdateTimestamp
+import org.bson.types.ObjectId
+import xyz.morphia.annotations.Id
 import java.time.LocalDateTime
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.MappedSuperclass
+import xyz.morphia.annotations.PrePersist
 
-@MappedSuperclass
 abstract class BaseModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int = 0
+    var id: ObjectId? = null
 
-    @CreationTimestamp
-    var created_date: LocalDateTime? = null
+    var createdDate: LocalDateTime? = null
 
-    @UpdateTimestamp
-    var updated_date: LocalDateTime? = null
+    var updatedDate: LocalDateTime? = null
+
+    @PrePersist
+    fun prePersist() {
+        if (createdDate == null) createdDate = LocalDateTime.now()
+        updatedDate = LocalDateTime.now()
+    }
 }

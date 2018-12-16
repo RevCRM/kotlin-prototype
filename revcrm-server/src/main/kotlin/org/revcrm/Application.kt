@@ -16,7 +16,6 @@ import io.ktor.locations.Locations
 import io.ktor.response.respond
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
-import org.hibernate.cfg.Environment
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
@@ -31,7 +30,6 @@ import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
 import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
-import org.revcrm.util.session
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
 import java.time.LocalDateTime
@@ -55,13 +53,13 @@ fun Application.main() {
 
     log.info("Loading Configuration...")
     val c = environment.config
-    val dbConfig = mapOf(
-        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
-        Environment.URL to c.property("revcrm.db.url").getString(),
-        Environment.USER to c.property("revcrm.db.username").getString(),
-        Environment.PASS to c.property("revcrm.db.password").getString(),
-        Environment.HBM2DDL_AUTO to "update",
-        Environment.FORMAT_SQL to "true"
+    val dbConfig = mapOf("temp" to "temp"
+//        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
+//        Environment.URL to c.property("revcrm.db.url").getString(),
+//        Environment.USER to c.property("revcrm.db.username").getString(),
+//        Environment.PASS to c.property("revcrm.db.password").getString(),
+//        Environment.HBM2DDL_AUTO to "update",
+//        Environment.FORMAT_SQL to "true"
     )
     val entityList = c.property("revcrm.entityList").getList()
 
@@ -84,19 +82,19 @@ fun Application.main() {
                 if (!credential.payload.audience.contains(jwtAudience)) {
                     null
                 } else {
-                    val auth = db.withTransaction { em ->
-                        em.createQuery(
-                "from RevUserAuth where auth_type = :type and auth_id = :id")
-                            .setParameter("type", AuthType.GOOGLE)
-                            .setParameter("id", credential.payload.subject)
-                            .setMaxResults(1)
-                            .resultList
-                    }
-                    if (auth.size > 0) {
-                        RevPrincipal(credential.payload, auth[0] as RevUserAuth)
-                    } else {
+//                    val auth = db.withTransaction { em ->
+//                        em.createQuery(
+//                "from RevUserAuth where auth_type = :type and auth_id = :id")
+//                            .setParameter("type", AuthType.GOOGLE)
+//                            .setParameter("id", credential.payload.subject)
+//                            .setMaxResults(1)
+//                            .resultList
+//                    }
+//                    if (auth.size > 0) {
+//                        RevPrincipal(credential.payload, auth[0] as RevUserAuth)
+//                    } else {
                         null
-                    }
+//                    }
                 }
             }
         }
@@ -132,30 +130,30 @@ fun Application.main() {
     schema.initialise()
 
     log.info("TEMP: Ensuring test user...")
-    val adminUser = db.withTransaction { em ->
-
-        var adminUser = em.session.bySimpleNaturalId(RevUser::class.java)
-            .load("admin@revcrm.com")
-
-        if (adminUser == null) {
-            println("Creating new admin user...")
-            adminUser = RevUser(
-                first_name = "System",
-                last_name = "Administrator",
-                email = "admin@revcrm.com",
-                last_login = LocalDateTime.now()
-            )
-            val auth = RevUserAuth(
-                user = adminUser,
-                auth_type = AuthType.GOOGLE,
-                auth_id = "123456"
-            )
-            em.persist(adminUser)
-            em.persist(auth)
-        } else {
-            adminUser.last_login = LocalDateTime.now()
-        }
-        adminUser
-    }
-    println("Admin user: " + adminUser.email)
+//    val adminUser = db.withDB { em ->
+//
+//        var adminUser = em.session.bySimpleNaturalId(RevUser::class.java)
+//            .load("admin@revcrm.com")
+//
+//        if (adminUser == null) {
+//            println("Creating new admin user...")
+//            adminUser = RevUser(
+//                first_name = "System",
+//                last_name = "Administrator",
+//                email = "admin@revcrm.com",
+//                last_login = LocalDateTime.now()
+//            )
+//            val auth = RevUserAuth(
+//                user = adminUser,
+//                auth_type = AuthType.GOOGLE,
+//                auth_id = "123456"
+//            )
+//            em.persist(adminUser)
+//            em.persist(auth)
+//        } else {
+//            adminUser.last_login = LocalDateTime.now()
+//        }
+//        adminUser
+//    }
+//    println("Admin user: " + adminUser.email)
 }

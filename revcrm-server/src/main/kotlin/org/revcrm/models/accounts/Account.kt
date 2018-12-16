@@ -2,7 +2,7 @@ package org.revcrm.models.accounts
 
 import org.revcrm.annotations.Field
 import org.revcrm.models.BaseModel
-import javax.persistence.Entity
+import xyz.morphia.annotations.Entity
 
 @Entity
 class Account(
@@ -10,37 +10,37 @@ class Account(
     var is_org: Boolean,
 
     @Field("Organisation Name")
-    var org_name: String = "",
+    var org_name: String?,
 
     @Field("Title")
-    var title: String = "",
+    var title: String?,
 
     @Field("First Name")
-    var first_name: String = "",
+    var first_name: String?,
 
     @Field("Last Name")
-    var last_name: String = "",
+    var last_name: String?,
 
     @Field("Account Code")
-    var code: String = "",
+    var code: String,
 
     @Field("Phone")
-    var phone: String = "",
+    var phone: String?,
 
     @Field("Mobile")
-    var mobile: String = "",
+    var mobile: String?,
 
     @Field("Fax")
-    var fax: String = "",
+    var fax: String?,
 
     @Field("Email")
-    var email: String = "",
+    var email: String?,
 
     @Field("Website")
-    var website: String = "",
+    var website: String?,
 
     @Field("Notes")
-    var notes: String = ""
+    var notes: String?
 
 //    @ManyToOne
 //    @JoinColumn(name = "primary_address_id")

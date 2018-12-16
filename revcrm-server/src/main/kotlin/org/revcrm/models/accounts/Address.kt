@@ -1,7 +1,7 @@
 package org.revcrm.models.accounts
 
 import org.revcrm.models.BaseModel
-import javax.persistence.Entity
+import xyz.morphia.annotations.Entity
 
 @Entity
 class Address(
