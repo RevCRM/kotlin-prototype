@@ -1,114 +1,50 @@
 package org.revcrm.data
 
-import org.hibernate.EntityMode
-import org.hibernate.Session
-import org.hibernate.SessionFactory
-import org.hibernate.boot.Metadata
-import org.hibernate.boot.MetadataSources
-import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-import org.hibernate.boot.registry.StandardServiceRegistry
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder
-import org.hibernate.cfg.Environment
-import org.hibernate.mapping.Property
-import org.hibernate.mapping.SimpleValue
+import com.mongodb.MongoClient
+import com.mongodb.client.MongoClients
 import org.revcrm.annotations.APIDisabled
+import org.revcrm.config.Config
 import org.revcrm.util.getProperty
-import javax.persistence.EntityManager
+import xyz.morphia.Datastore
+import xyz.morphia.Morphia
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
+import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
 
 class DBService {
-    private var registry: StandardServiceRegistry? = null
-    private var metadata: Metadata? = null
-    private var sessionFactory: SessionFactory? = null
+    private val morphia = Morphia()
+    private lateinit var config: Config
+    private lateinit var client: MongoClient
+    private lateinit var datastore: Datastore
 
     fun initialise(
-        dbConfig: Map<String, String>,
-        entityList: List<String>
+        newConfig: Config
     ) {
-        registry = StandardServiceRegistryBuilder()
-            .applySetting(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider")
-            .applySetting(Environment.JDBC_TIME_ZONE, "UTC")
-            .applySetting(Environment.DEFAULT_ENTITY_MODE, EntityMode.MAP.toString())
-            // apply supplied settings
-            .applySettings(dbConfig)
-            .build()
-
-        val sources = MetadataSources(registry)
-        entityList.forEach {
-            sources.addAnnotatedClassName(it)
-        }
-
-        metadata = sources.getMetadataBuilder()
-            .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
-            .build()
-
-        try {
-            sessionFactory = metadata!!.buildSessionFactory()
-        } catch (e: Exception) {
-            StandardServiceRegistryBuilder.destroy(registry)
-            throw e
-        }
+        config = newConfig
+        config.entityPackages.forEach{ morphia.mapPackage(it) }
+        client = MongoClient(config.dbUrl)
+        datastore = morphia.createDatastore(client, config.dbName)
+        datastore.ensureIndexes()
     }
 
-    fun reinitialise(
-        dbConfig: Map<String, String>,
-        entityList: List<String>
-    ) {
-        if (sessionFactory != null) {
-            // TODO: Make sure no consumers have active sessions
-            sessionFactory!!.close()
-            StandardServiceRegistryBuilder.destroy(registry)
-        }
-        initialise(dbConfig, entityList)
+    fun <T> withDB(method: (Datastore) -> T): T {
+        return method(datastore)
     }
 
-    fun getSession(): Session {
-        return sessionFactory!!.openSession()
+    fun getClient(): MongoClient {
+        return client
     }
 
-    fun getMetadata(): Metadata? {
-        return metadata
-    }
-
-    fun getEntityManager(session: Session): EntityManager {
-        return session.entityManagerFactory.createEntityManager()
-    }
-
-    fun <T> withTransaction(method: (EntityManager) -> T): T {
-        val session = getSession()
-        val entityManager = getEntityManager(session)
-
-        entityManager.transaction.begin()
-        val result: T
-        try {
-            result = method(entityManager)
-            entityManager.transaction.commit()
-            return result
-        } catch (e: Exception) {
-            entityManager.transaction.rollback()
-            throw e
-        } finally {
-            entityManager.close()
-        }
-    }
-
-    private fun getFieldMetadata(prop: Property): FieldMetadata {
-        val value = prop.value as SimpleValue
-        var subType: String? = null
-        if (value.typeName == "org.hibernate.type.EnumType") {
-            subType = value.typeParameters.getProperty("org.hibernate.type.ParameterType.returnedClass")
-        }
+    private fun getFieldMetadata(klass: KClass<*>, propName: String): FieldMetadata {
 
         // TODO: Property processing should be extensible
-        val klass = prop.persistentClass.mappedClass.kotlin
-        val property = getProperty(klass, prop.name)
+        val property = getProperty(klass, propName)
         if (property == null) {
-            throw Error("Could not locate property '${klass.simpleName}.${prop.name}'.")
+            throw Error("Could not locate property '${klass.simpleName}.${propName}'.")
         }
         val nullable = property.returnType.isMarkedNullable
         val constraints = mutableMapOf<String, String>()
@@ -128,10 +64,21 @@ class DBService {
             constraints.set("Max", max.value.toString())
         }
 
+        val jvmType: String
+        val jvmSubtype: String?
+        if (field.type is Class && field.type.isEnum) {
+            jvmType = "enum"
+            jvmSubtype = field.type.name
+        }
+        else {
+            jvmType = field.type.name
+            jvmSubtype = null
+        }
+
         val fieldMeta = FieldMetadata(
-            name = prop.name,
-            jvmType = value.typeName,
-            jvmSubtype = subType,
+            name = propName,
+            jvmType = jvmType,
+            jvmSubtype = jvmSubtype,
             nullable = nullable,
             constraints = constraints.toMap()
         )
@@ -140,32 +87,35 @@ class DBService {
 
     fun getEntityMetadata(): CRMMetadata {
         val entities = mutableMapOf<String, EntityMetadata>()
-        metadata!!.entityBindings.forEach { binding ->
+        morphia.mapper.mappedClasses.forEach { mapping ->
 
-            val klass = binding.mappedClass.kotlin
+            val classMatch = config.entityPackages.find{ pkg ->
+                mapping.clazz.packageName == pkg
+            }
+            if (classMatch == null) return@forEach
+
+            val klass = mapping.clazz.kotlin
             val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 
             val fields = mutableMapOf<String, FieldMetadata>()
 
-            // Get ID Property
-            val idProperty = binding.identifierProperty
-            val idMeta = getFieldMetadata(idProperty)
+            // Get ID Field
+            val idField = mapping.idField
+            val idMeta = getFieldMetadata(klass, idField.name)
             fields.put(idMeta.name, idMeta)
 
             // Get Other Columns
-            val propertyIterator = binding.propertyIterator
-            while (propertyIterator.hasNext()) {
-                val property = propertyIterator.next() as Property
-                val meta = getFieldMetadata(property)
+            mapping.persistenceFields.forEach{ field ->
+                val meta = getFieldMetadata(klass, field.javaFieldName)
                 fields.put(meta.name, meta)
             }
 
             entities.put(
-                binding.table.name,
+                mapping.collectionName,
                 EntityMetadata(
-                    name = binding.table.name,
+                    name = mapping.collectionName,
                     apiEnabled = apiEnabled,
-                    className = binding.className,
+                    className = mapping.clazz.name,
                     fields = fields.toMap()
                 )
             )

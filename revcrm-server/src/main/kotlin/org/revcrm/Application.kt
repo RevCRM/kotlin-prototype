@@ -16,11 +16,11 @@ import io.ktor.locations.Locations
 import io.ktor.response.respond
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
-import org.hibernate.cfg.Environment
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
 import org.revcrm.auth.RevPrincipal
+import org.revcrm.config.Config
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
 import org.revcrm.models.AuthType
@@ -31,7 +31,6 @@ import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
 import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
-import org.revcrm.util.session
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
 import java.time.LocalDateTime
@@ -55,19 +54,15 @@ fun Application.main() {
 
     log.info("Loading Configuration...")
     val c = environment.config
-    val dbConfig = mapOf(
-        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
-        Environment.URL to c.property("revcrm.db.url").getString(),
-        Environment.USER to c.property("revcrm.db.username").getString(),
-        Environment.PASS to c.property("revcrm.db.password").getString(),
-        Environment.HBM2DDL_AUTO to "update",
-        Environment.FORMAT_SQL to "true"
+    val config = Config(
+        dbUrl = c.property("revcrm.db.url").getString(),
+        dbName = c.property("revcrm.db.name").getString(),
+        entityPackages = c.property("revcrm.entityPackages").getList()
     )
-    val entityList = c.property("revcrm.entityList").getList()
 
     log.info("Initialising Database Connection...")
     val db: DBService by inject()
-    db.initialise(dbConfig, entityList)
+    db.initialise(config)
 
     install(DefaultHeaders) {
         header("Server", "RevCRM")
@@ -84,16 +79,14 @@ fun Application.main() {
                 if (!credential.payload.audience.contains(jwtAudience)) {
                     null
                 } else {
-                    val auth = db.withTransaction { em ->
-                        em.createQuery(
-                "from RevUserAuth where auth_type = :type and auth_id = :id")
-                            .setParameter("type", AuthType.GOOGLE)
-                            .setParameter("id", credential.payload.subject)
-                            .setMaxResults(1)
-                            .resultList
+                    val auth = db.withDB { ds ->
+                        ds.createQuery(RevUserAuth::class.java)
+                            .field("auth_type").equal(AuthType.GOOGLE)
+                            .field("auth_id").equal(credential.payload.subject)
+                            .get()
                     }
-                    if (auth.size > 0) {
-                        RevPrincipal(credential.payload, auth[0] as RevUserAuth)
+                    if (auth != null) {
+                        RevPrincipal(credential.payload, auth)
                     } else {
                         null
                     }
@@ -132,10 +125,11 @@ fun Application.main() {
     schema.initialise()
 
     log.info("TEMP: Ensuring test user...")
-    val adminUser = db.withTransaction { em ->
+    val adminUser = db.withDB { ds ->
 
-        var adminUser = em.session.bySimpleNaturalId(RevUser::class.java)
-            .load("admin@revcrm.com")
+        var adminUser = ds.createQuery(RevUser::class.java)
+            .field("email").equalIgnoreCase("admin@revcrm.com")
+            .get()
 
         if (adminUser == null) {
             println("Creating new admin user...")
@@ -150,10 +144,11 @@ fun Application.main() {
                 auth_type = AuthType.GOOGLE,
                 auth_id = "123456"
             )
-            em.persist(adminUser)
-            em.persist(auth)
+            ds.save(adminUser)
+            ds.save(auth)
         } else {
             adminUser.last_login = LocalDateTime.now()
+            ds.save(adminUser)
         }
         adminUser
     }

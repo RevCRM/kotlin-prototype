@@ -1,34 +1,30 @@
 package org.revcrm.models
 
 import org.revcrm.annotations.APIDisabled
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.Index
-import javax.persistence.ManyToOne
-import javax.persistence.Table
+import xyz.morphia.annotations.Entity
+import xyz.morphia.annotations.Field
+import xyz.morphia.annotations.Index
+import xyz.morphia.annotations.IndexOptions
+import xyz.morphia.annotations.Indexes
+import xyz.morphia.annotations.Reference
 
 enum class AuthType {
     GOOGLE
 }
 
 @Entity
-@Table(
-    indexes = [
-        Index(
-            columnList = "auth_type, auth_id"
-        )
-    ]
+@Indexes(
+    Index(fields = [
+        Field("auth_type"),
+        Field("auth_id")
+    ], options = IndexOptions(
+        unique = true
+    ))
 )
 @APIDisabled
 class RevUserAuth(
-
-    @ManyToOne
+    @Reference
     var user: RevUser,
-
-    @Enumerated(EnumType.STRING)
     var auth_type: AuthType,
-
     var auth_id: String
-
 ) : BaseModel()
