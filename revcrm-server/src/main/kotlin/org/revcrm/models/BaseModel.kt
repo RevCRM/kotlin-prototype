@@ -9,13 +9,13 @@ abstract class BaseModel {
     @Id
     var id: ObjectId? = null
 
-    var createdDate: LocalDateTime? = null
+    var created_date: LocalDateTime? = null
 
-    var updatedDate: LocalDateTime? = null
+    var updated_date: LocalDateTime? = null
 
     @PrePersist
     fun prePersist() {
-        if (createdDate == null) createdDate = LocalDateTime.now()
-        updatedDate = LocalDateTime.now()
+        if (created_date == null) created_date = LocalDateTime.now()
+        updated_date = LocalDateTime.now()
     }
 }
