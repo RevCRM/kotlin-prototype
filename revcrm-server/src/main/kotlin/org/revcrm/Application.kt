@@ -56,6 +56,7 @@ fun Application.main() {
     val c = environment.config
     val config = Config(
         dbUrl = c.property("revcrm.db.url").getString(),
+        dbName = c.property("revcrm.db.name").getString(),
         entityPackages = c.property("revcrm.entityPackages").getList()
     )
 
