@@ -22,6 +22,9 @@ import org.koin.log.Logger.SLF4JLogger
 import org.revcrm.config.Config
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
+import org.revcrm.models.AuthType
+import org.revcrm.models.RevUser
+import org.revcrm.models.RevUserAuth
 import org.revcrm.routes.graphQL
 import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
@@ -29,6 +32,7 @@ import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
+import java.time.LocalDateTime
 
 /**
  * To run in intellij, create a new "Application" configuration:
@@ -121,30 +125,32 @@ fun Application.main() {
     schema.initialise()
 
     log.info("TEMP: Ensuring test user...")
-//    val adminUser = db.withDB { em ->
-//
-//        var adminUser = em.session.bySimpleNaturalId(RevUser::class.java)
-//            .load("admin@revcrm.com")
-//
-//        if (adminUser == null) {
-//            println("Creating new admin user...")
-//            adminUser = RevUser(
-//                first_name = "System",
-//                last_name = "Administrator",
-//                email = "admin@revcrm.com",
-//                last_login = LocalDateTime.now()
-//            )
-//            val auth = RevUserAuth(
-//                user = adminUser,
-//                auth_type = AuthType.GOOGLE,
-//                auth_id = "123456"
-//            )
-//            em.persist(adminUser)
-//            em.persist(auth)
-//        } else {
-//            adminUser.last_login = LocalDateTime.now()
-//        }
-//        adminUser
-//    }
-//    println("Admin user: " + adminUser.email)
+    val adminUser = db.withDB { ds ->
+
+        var adminUser = ds.createQuery(RevUser::class.java)
+            .field("email").equalIgnoreCase("admin@revcrm.com")
+            .get()
+
+        if (adminUser == null) {
+            println("Creating new admin user...")
+            adminUser = RevUser(
+                first_name = "System",
+                last_name = "Administrator",
+                email = "admin@revcrm.com",
+                last_login = LocalDateTime.now()
+            )
+            val auth = RevUserAuth(
+                user = adminUser,
+                auth_type = AuthType.GOOGLE,
+                auth_id = "123456"
+            )
+            ds.save(adminUser)
+            ds.save(auth)
+        } else {
+            adminUser.last_login = LocalDateTime.now()
+            ds.save(adminUser)
+        }
+        adminUser
+    }
+    println("Admin user: " + adminUser.email)
 }

@@ -22,7 +22,7 @@ repositories {
 subprojects {
     group = 'org.revcrm'
     version = '1.0'
-    
+
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.plugin.noarg'
     apply plugin: 'org.jmailen.kotlinter'
@@ -49,6 +49,10 @@ subprojects {
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
         testImplementation "io.mockk:mockk:1.8.10"
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    }
+
+    noArg {
+        annotation("xyz.morphia.annotations.Entity")
     }
 
     compileKotlin {

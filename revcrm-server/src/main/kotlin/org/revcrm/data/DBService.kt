@@ -1,6 +1,7 @@
 package org.revcrm.data
 
 import com.mongodb.MongoClient
+import com.mongodb.client.MongoClients
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.config.Config
 import org.revcrm.util.getProperty
@@ -17,6 +18,7 @@ import kotlin.reflect.jvm.javaField
 class DBService {
     private val morphia = Morphia()
     private lateinit var config: Config
+    private lateinit var client: MongoClient
     private lateinit var datastore: Datastore
 
     fun initialise(
@@ -24,7 +26,8 @@ class DBService {
     ) {
         config = newConfig
         config.entityPackages.forEach{ morphia.mapPackage(it) }
-        datastore = morphia.createDatastore(MongoClient(), "revcrm_new")
+        client = MongoClient(config.dbUrl)
+        datastore = morphia.createDatastore(client, "revcrm_new")
         datastore.ensureIndexes()
     }
 
