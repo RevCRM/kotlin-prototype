@@ -19,6 +19,7 @@ import io.ktor.util.KtorExperimentalAPI
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
+import org.revcrm.auth.RevPrincipal
 import org.revcrm.config.Config
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
@@ -77,19 +78,17 @@ fun Application.main() {
                 if (!credential.payload.audience.contains(jwtAudience)) {
                     null
                 } else {
-//                    val auth = db.withTransaction { em ->
-//                        em.createQuery(
-//                "from RevUserAuth where auth_type = :type and auth_id = :id")
-//                            .setParameter("type", AuthType.GOOGLE)
-//                            .setParameter("id", credential.payload.subject)
-//                            .setMaxResults(1)
-//                            .resultList
-//                    }
-//                    if (auth.size > 0) {
-//                        RevPrincipal(credential.payload, auth[0] as RevUserAuth)
-//                    } else {
+                    val auth = db.withDB { ds ->
+                        ds.createQuery(RevUserAuth::class.java)
+                            .field("auth_type").equal(AuthType.GOOGLE)
+                            .field("auth_id").equal(credential.payload.subject)
+                            .get()
+                    }
+                    if (auth != null) {
+                        RevPrincipal(credential.payload, auth)
+                    } else {
                         null
-//                    }
+                    }
                 }
             }
         }
