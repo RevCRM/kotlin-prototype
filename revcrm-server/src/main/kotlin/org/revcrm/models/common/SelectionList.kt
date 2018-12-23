@@ -8,9 +8,9 @@ import xyz.morphia.annotations.Entity
 class SelectionList(
     var code: String,
     var model: String,
-    var label: String,
-    @Embedded
-    var options: List<SelectionOption>
+    var label: String
+//    @Embedded
+//    var options: List<SelectionOption>
 ) : BaseModel()
 
 class SelectionOption(

@@ -19,12 +19,9 @@ import io.ktor.util.KtorExperimentalAPI
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
-import org.revcrm.auth.RevPrincipal
+import org.revcrm.config.Config
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
-import org.revcrm.models.AuthType
-import org.revcrm.models.RevUser
-import org.revcrm.models.RevUserAuth
 import org.revcrm.routes.graphQL
 import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
@@ -32,7 +29,6 @@ import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
-import java.time.LocalDateTime
 
 /**
  * To run in intellij, create a new "Application" configuration:
@@ -53,19 +49,14 @@ fun Application.main() {
 
     log.info("Loading Configuration...")
     val c = environment.config
-    val dbConfig = mapOf("temp" to "temp"
-//        Environment.DRIVER to c.property("revcrm.db.driver").getString(),
-//        Environment.URL to c.property("revcrm.db.url").getString(),
-//        Environment.USER to c.property("revcrm.db.username").getString(),
-//        Environment.PASS to c.property("revcrm.db.password").getString(),
-//        Environment.HBM2DDL_AUTO to "update",
-//        Environment.FORMAT_SQL to "true"
+    val config = Config(
+        dbUrl = c.property("revcrm.db.url").getString(),
+        entityPackages = c.property("revcrm.entityPackages").getList()
     )
-    val entityList = c.property("revcrm.entityList").getList()
 
     log.info("Initialising Database Connection...")
     val db: DBService by inject()
-    db.initialise(dbConfig, entityList)
+    db.initialise(config)
 
     install(DefaultHeaders) {
         header("Server", "RevCRM")

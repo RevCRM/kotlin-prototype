@@ -2,6 +2,7 @@ package org.revcrm.data
 
 import com.mongodb.MongoClient
 import org.revcrm.annotations.APIDisabled
+import org.revcrm.config.Config
 import org.revcrm.util.getProperty
 import xyz.morphia.Datastore
 import xyz.morphia.Morphia
@@ -15,13 +16,14 @@ import kotlin.reflect.jvm.javaField
 
 class DBService {
     private val morphia = Morphia()
+    private lateinit var config: Config
     private lateinit var datastore: Datastore
 
     fun initialise(
-        dbConfig: Map<String, String>,
-        entityList: List<String>
+        newConfig: Config
     ) {
-        entityList.forEach{ morphia.mapPackage(it) }
+        config = newConfig
+        config.entityPackages.forEach{ morphia.mapPackage(it) }
         datastore = morphia.createDatastore(MongoClient(), "revcrm_new")
         datastore.ensureIndexes()
     }
@@ -57,7 +59,7 @@ class DBService {
 
         val fieldMeta = FieldMetadata(
             name = propName,
-            jvmType = property.returnType.toString(),
+            jvmType = property.javaField!!.type.name,
             jvmSubtype = null,
             nullable = nullable,
             constraints = constraints.toMap()
@@ -69,8 +71,10 @@ class DBService {
         val entities = mutableMapOf<String, EntityMetadata>()
         morphia.mapper.mappedClasses.forEach { mapping ->
 
-            // FIXME
-            if (mapping.clazz.name.startsWith("java.")) return@forEach
+            val classMatch = config.entityPackages.find{ pkg ->
+                mapping.clazz.packageName == pkg
+            }
+            if (classMatch == null) return@forEach
 
             val klass = mapping.clazz.kotlin
             val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
