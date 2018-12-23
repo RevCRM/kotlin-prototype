@@ -27,12 +27,16 @@ class DBService {
         config = newConfig
         config.entityPackages.forEach{ morphia.mapPackage(it) }
         client = MongoClient(config.dbUrl)
-        datastore = morphia.createDatastore(client, "revcrm_new")
+        datastore = morphia.createDatastore(client, config.dbName)
         datastore.ensureIndexes()
     }
 
     fun <T> withDB(method: (Datastore) -> T): T {
         return method(datastore)
+    }
+
+    fun getClient(): MongoClient {
+        return client
     }
 
     private fun getFieldMetadata(klass: KClass<*>, propName: String): FieldMetadata {
@@ -60,10 +64,21 @@ class DBService {
             constraints.set("Max", max.value.toString())
         }
 
+        val jvmType: String
+        val jvmSubtype: String?
+        if (field.type is Class && field.type.isEnum) {
+            jvmType = "enum"
+            jvmSubtype = field.type.name
+        }
+        else {
+            jvmType = field.type.name
+            jvmSubtype = null
+        }
+
         val fieldMeta = FieldMetadata(
             name = propName,
-            jvmType = property.javaField!!.type.name,
-            jvmSubtype = null,
+            jvmType = jvmType,
+            jvmSubtype = jvmSubtype,
             nullable = nullable,
             constraints = constraints.toMap()
         )

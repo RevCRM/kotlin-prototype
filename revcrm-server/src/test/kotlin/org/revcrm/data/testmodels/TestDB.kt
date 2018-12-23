@@ -1,17 +1,11 @@
 package org.revcrm.data.testmodels
 
-import org.revcrm.data.getDataForEntities
-import org.revcrm.data.recreateSchema
+import org.revcrm.data.getDBServiceForEntities
 
 object TestDB {
     val instance by lazy { createTestDB() }
 
-    private fun createTestDB() = getDataForEntities(listOf(
-        "org.revcrm.data.testmodels.SensitiveModel",
-        "org.revcrm.data.testmodels.TestFieldsModel",
-        "org.revcrm.data.testmodels.TestConstraintsModel",
-        "org.revcrm.data.testmodels.TestModel2"
-    )).apply {
-        recreateSchema(this)
-    }
+    private fun createTestDB() = getDBServiceForEntities(listOf(
+        "org.revcrm.data.testmodels"
+    ))
 }

@@ -20,7 +20,7 @@ class FieldService {
         "java.time.LocalDate" to Scalars.GraphQLString,
         "java.time.LocalTime" to Scalars.GraphQLInt,
         "java.time.LocalDateTime" to Scalars.GraphQLString,
-        "org.bson.types.ObjectId" to Scalars.GraphQLString
+        "org.bson.types.ObjectId" to Scalars.GraphQLID
     )
 
     fun getGraphQLScalarTypeForField(field: FieldMetadata): GraphQLOutputType? {

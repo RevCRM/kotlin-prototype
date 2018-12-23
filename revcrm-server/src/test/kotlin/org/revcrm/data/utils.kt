@@ -1,23 +1,15 @@
 
 package org.revcrm.data
 
-import org.hibernate.cfg.Environment
-import org.hibernate.tool.hbm2ddl.SchemaExport
-import org.hibernate.tool.schema.TargetType
-import java.util.EnumSet
+import org.revcrm.config.Config
 
-fun getDataForEntities(entityList: List<String>): DBService {
+fun getDBServiceForEntities(entityPackages: List<String>): DBService {
     val dbService = DBService()
-    val dbConfig = mapOf(
-        Environment.DRIVER to "org.h2.Driver",
-        Environment.URL to "jdbc:h2:mem:revcrmtest;DB_CLOSE_DELAY=-1",
-        Environment.FORMAT_SQL to "true"
+    val config = Config(
+        dbUrl = "127.0.0.1:27017",
+        dbName = "revcrm_tests",
+        entityPackages = entityPackages
     )
-    dbService.initialise(dbConfig, entityList)
+    dbService.initialise(config)
     return dbService
-}
-
-fun recreateSchema(data: DBService) {
-    val schemaExport = SchemaExport()
-    schemaExport.create(EnumSet.of(TargetType.DATABASE), data.getMetadata())
 }

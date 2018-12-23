@@ -36,6 +36,7 @@ class APIServiceTests {
                 apiEnabled = true,
                 className = "test.TestFieldsModel",
                 fields = mapOf(
+                    "id_field" to FieldMetadata(name = "id_field", jvmType = "org.bson.types.ObjectId"),
                     "int_field" to FieldMetadata(name = "int_field", jvmType = "int"),
                     "short_field" to FieldMetadata(name = "short_field", jvmType = "short"),
                     "long_field" to FieldMetadata(name = "long_field", jvmType = "long"),
@@ -125,6 +126,12 @@ class APIServiceTests {
         val resultsType = testFieldsModel.type as GraphQLObjectType
         val resultsListType = resultsType.getFieldDefinition("results").type as GraphQLList
         val testFieldsModelType = resultsListType.wrappedType as GraphQLObjectType
+
+        @Test
+        fun `ObjectId fields are exposed as expected`() {
+            val type = testFieldsModelType.getFieldDefinition("id_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLID)
+        }
 
         @Test
         fun `Int fields are exposed as expected`() {

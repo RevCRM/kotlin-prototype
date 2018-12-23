@@ -59,8 +59,13 @@ class DBServiceTests {
         val fieldsModel = entities["TestFieldsModel"]!!
 
         @Test
+        fun `ObjectId field returns expected metadata`() {
+            assertThat(fieldsModel.fields["id"]!!.jvmType).isEqualTo("org.bson.types.ObjectId")
+        }
+
+        @Test
         fun `Int field returns expected metadata`() {
-            assertThat(fieldsModel.fields["id"]!!.jvmType).isEqualTo("int")
+            assertThat(fieldsModel.fields["int_field"]!!.jvmType).isEqualTo("int")
         }
 
         @Test
@@ -110,7 +115,7 @@ class DBServiceTests {
 
         @Test
         fun `Enum field returns expected metadata`() {
-            assertThat(fieldsModel.fields["enum_field"]!!.jvmType).isEqualTo("org.hibernate.type.EnumType")
+            assertThat(fieldsModel.fields["enum_field"]!!.jvmType).isEqualTo("enum")
             assertThat(fieldsModel.fields["enum_field"]!!.jvmSubtype).isEqualTo("org.revcrm.data.testmodels.EnumFieldOptions")
         }
     }

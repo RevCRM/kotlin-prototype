@@ -2,12 +2,10 @@ package org.revcrm.data.testmodels
 
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.models.BaseModel
+import xyz.morphia.annotations.Entity
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
@@ -32,7 +30,6 @@ class TestFieldsModel(
     var time_field: LocalTime,
     var datetime_field: LocalDateTime,
 
-    @Enumerated(EnumType.STRING)
     var enum_field: EnumFieldOptions
 ) : BaseModel()
 
