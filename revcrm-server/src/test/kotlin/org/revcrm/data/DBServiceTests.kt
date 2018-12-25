@@ -14,9 +14,10 @@ class DBServiceTests {
     inner class EntityMetadata {
 
         @Test
-        fun `returns the correct entities`() {
-            assertThat(entities.containsKey("TestFieldsModel"))
-            assertThat(entities.containsKey("TestModel2"))
+        fun `returns only entities with @Entity annotation`() {
+            assertThat(entities).containsKey("TestFieldsModel")
+            assertThat(entities).containsKey("TestModel2")
+            assertThat(entities).doesNotContainKey("ParentModel")
         }
 
         @Test

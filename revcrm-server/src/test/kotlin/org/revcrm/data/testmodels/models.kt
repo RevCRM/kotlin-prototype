@@ -1,8 +1,10 @@
 package org.revcrm.data.testmodels
 
+import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.models.BaseModel
 import xyz.morphia.annotations.Entity
+import xyz.morphia.annotations.Id
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -33,11 +35,17 @@ class TestFieldsModel(
     var enum_field: EnumFieldOptions
 ) : BaseModel()
 
+abstract class ParentModel {
+    @Id
+    var id: ObjectId? = null
+    var parentField: String? = null
+}
+
 @Entity
 class TestModel2(
     var name: String,
     var size: Double
-) : BaseModel()
+) : ParentModel()
 
 @Entity
 class TestConstraintsModel(

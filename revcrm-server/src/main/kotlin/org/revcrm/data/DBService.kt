@@ -6,6 +6,7 @@ import org.revcrm.config.Config
 import org.revcrm.util.getProperty
 import xyz.morphia.Datastore
 import xyz.morphia.Morphia
+import xyz.morphia.annotations.Entity
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
@@ -87,18 +88,17 @@ class DBService {
         val entities = mutableMapOf<String, EntityMetadata>()
         morphia.mapper.mappedClasses.forEach { mapping ->
 
-            val classMatch = config.entityPackages.find { pkg ->
-                mapping.clazz.packageName == pkg
-            }
-            if (classMatch == null) return@forEach
-
             val klass = mapping.clazz.kotlin
+            if (klass.findAnnotation<Entity>() == null) return@forEach
             val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 
             val fields = mutableMapOf<String, FieldMetadata>()
 
             // Get ID Field
             val idField = mapping.idField
+            if (idField == null) {
+                throw Error("Id field for entity '${klass.simpleName}' is not defined.")
+            }
             val idMeta = getFieldMetadata(klass, idField.name)
             fields.put(idMeta.name, idMeta)
 
