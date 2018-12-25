@@ -11,6 +11,14 @@ This project is still very much a work-in-progress but watch this space :)
 
 ## Developer Notes
 
+### Linting
+
+We use [ktlint](https://ktlint.github.io/) to enforce our Kotlin coding style. We recommend installing and using the
+git commit hook (see the ktlint Usage instructions) to make sure your code matches the recommended style.
+
+For the front end we use [tslint](https://palantir.github.io/tslint/), which will be installed when you do an
+`npm install` and runs as part of the build.
+
 ### Building and Running Locally
 
 ```

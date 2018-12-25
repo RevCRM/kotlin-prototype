@@ -1,12 +1,6 @@
 package org.revcrm.models.common
 
-import org.revcrm.models.BaseModel
-import xyz.morphia.annotations.Entity
-import xyz.morphia.annotations.Reference
-
-
-
-//fun importSelectionOptions(fileName: String, db: DBService) {
+// fun importSelectionOptions(fileName: String, db: DBService) {
 //    val mapper = ObjectMapper(YAMLFactory())
 //    val res = object {}.javaClass.getResource(fileName)
 //    val nodes = mapper.readTree(res)
@@ -46,4 +40,4 @@ import xyz.morphia.annotations.Reference
 //            }
 //        }
 //    }
-//}
+// }

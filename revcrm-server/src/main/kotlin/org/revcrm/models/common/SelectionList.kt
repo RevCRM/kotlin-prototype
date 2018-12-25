@@ -1,7 +1,6 @@
 package org.revcrm.models.common
 
 import org.revcrm.models.BaseModel
-import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 
 @Entity
@@ -19,7 +18,7 @@ class SelectionOption(
     var seq: Short
 ) : BaseModel()
 
-//fun importSelectionLists(fileName: String, db: DBService) {
+// fun importSelectionLists(fileName: String, db: DBService) {
 //    val mapper = ObjectMapper(YAMLFactory())
 //    val res = object {}.javaClass.getResource(fileName)
 //    val nodes = mapper.readTree(res)
@@ -49,4 +48,4 @@ class SelectionOption(
 //            }
 //        }
 //    }
-//}
+// }

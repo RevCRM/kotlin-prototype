@@ -1,7 +1,6 @@
 package org.revcrm.data
 
 import com.mongodb.MongoClient
-import com.mongodb.client.MongoClients
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.config.Config
 import org.revcrm.util.getProperty
@@ -25,7 +24,7 @@ class DBService {
         newConfig: Config
     ) {
         config = newConfig
-        config.entityPackages.forEach{ morphia.mapPackage(it) }
+        config.entityPackages.forEach { morphia.mapPackage(it) }
         client = MongoClient(config.dbUrl)
         datastore = morphia.createDatastore(client, config.dbName)
         datastore.ensureIndexes()
@@ -44,7 +43,7 @@ class DBService {
         // TODO: Property processing should be extensible
         val property = getProperty(klass, propName)
         if (property == null) {
-            throw Error("Could not locate property '${klass.simpleName}.${propName}'.")
+            throw Error("Could not locate property '${klass.simpleName}.$propName'.")
         }
         val nullable = property.returnType.isMarkedNullable
         val constraints = mutableMapOf<String, String>()
@@ -69,8 +68,7 @@ class DBService {
         if (field.type is Class && field.type.isEnum) {
             jvmType = "enum"
             jvmSubtype = field.type.name
-        }
-        else {
+        } else {
             jvmType = field.type.name
             jvmSubtype = null
         }
@@ -89,7 +87,7 @@ class DBService {
         val entities = mutableMapOf<String, EntityMetadata>()
         morphia.mapper.mappedClasses.forEach { mapping ->
 
-            val classMatch = config.entityPackages.find{ pkg ->
+            val classMatch = config.entityPackages.find { pkg ->
                 mapping.clazz.packageName == pkg
             }
             if (classMatch == null) return@forEach
@@ -105,7 +103,7 @@ class DBService {
             fields.put(idMeta.name, idMeta)
 
             // Get Other Columns
-            mapping.persistenceFields.forEach{ field ->
+            mapping.persistenceFields.forEach { field ->
                 val meta = getFieldMetadata(klass, field.javaFieldName)
                 fields.put(meta.name, meta)
             }
