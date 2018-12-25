@@ -4,6 +4,7 @@ jobs:
     working_directory: ~/app
     docker:
       - image: circleci/openjdk:11-jdk-browsers
+      - image: circleci/mongo:3.6
     steps:
       - checkout
       - restore_cache:
