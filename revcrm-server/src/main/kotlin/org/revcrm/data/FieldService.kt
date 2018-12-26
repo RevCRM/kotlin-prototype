@@ -4,6 +4,7 @@ import graphql.Scalars
 import graphql.schema.GraphQLEnumType.newEnum
 import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLScalarType
+import org.revcrm.graphql.GraphQLObjectID
 
 // TODO: Support customiseable jvmType -> graphQLType mappings
 
@@ -20,7 +21,7 @@ class FieldService {
         "java.time.LocalDate" to Scalars.GraphQLString,
         "java.time.LocalTime" to Scalars.GraphQLInt,
         "java.time.LocalDateTime" to Scalars.GraphQLString,
-        "org.bson.types.ObjectId" to Scalars.GraphQLID
+        "org.bson.types.ObjectId" to GraphQLObjectID
     )
 
     fun getGraphQLScalarTypeForField(field: FieldMetadata): GraphQLOutputType? {

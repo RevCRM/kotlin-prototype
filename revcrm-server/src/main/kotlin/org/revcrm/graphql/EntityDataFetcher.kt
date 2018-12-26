@@ -12,19 +12,16 @@ class EntityDataFetcher(
         val ctx = environment.getContext<APIContext>()
         val klass = Class.forName(entity.className)
 
-//        val where = environment.getArgument<String>("where")
-//        val results = ctx.db.withTransaction { em ->
-//            val builder = em.criteriaBuilder
-//            val query = builder.createQuery(klass)
-//            query.from(klass)
-//            query.distinct(true)
-//            em.createQuery(query).resultList
-//        }
+        val where = environment.getArgument<String>("where")
+        val results = ctx.db.withDB { ds ->
+            ds.createQuery(klass)
+                .asList()
+        }
 
-        return mapOf(
-            "results" to null,
-            "meta" to mapOf(
-                "totalCount" to 1
+        return EntitySearchResults<Any>(
+            results,
+            EntitySearchMeta(
+                totalCount = results.size
             )
         )
     }
