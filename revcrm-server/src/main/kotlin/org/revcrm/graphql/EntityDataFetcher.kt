@@ -12,10 +12,14 @@ class EntityDataFetcher(
         val ctx = environment.getContext<APIContext>()
         val klass = Class.forName(entity.className)
 
-        val where = environment.getArgument<String>("where")
+        val orderBySpec = environment.getArgument<List<String>>("orderBy")
+
         val results = ctx.db.withDB { ds ->
-            ds.createQuery(klass)
-                .asList()
+            val q = ds.createQuery(klass)
+            if (orderBySpec != null) {
+                q.order(orderBySpec.joinToString(separator = ","))
+            }
+            q.asList()
         }
 
         return EntitySearchResults<Any>(

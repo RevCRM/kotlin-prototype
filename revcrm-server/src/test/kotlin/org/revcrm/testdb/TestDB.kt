@@ -5,7 +5,7 @@ object TestDB {
 
     private fun createTestDB() = getDBServiceForEntities(
         listOf(
-            "org.revcrm.data.testmodels"
+            "org.revcrm.testdb"
         )
     )
 }
