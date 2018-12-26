@@ -1,9 +1,9 @@
 package org.revcrm.graphql.schema
 
-import graphql.Scalars
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLTypeReference
 import graphql.schema.PropertyDataFetcher
 import org.revcrm.data.EntityMetadata
 
@@ -14,12 +14,11 @@ fun buildEntityObjectType(schema: APISchema, entity: EntityMetadata): GraphQLObj
 
     entity.fields.forEach { _, field ->
 
-        var scalarType = schema.getGraphQLScalarTypeForField(field)
-        if (scalarType == null) {
+        var fieldType = schema.getGraphQLScalarTypeForField(field)
+        if (fieldType == null) {
             val relatedEntity = schema.meta.getEntityByClassName(field.jvmType)
             if (relatedEntity != null) {
-                // TODO: Return ObjectType of related entity
-                scalarType = Scalars.GraphQLInt
+                fieldType = GraphQLTypeReference(relatedEntity.name)
             } else {
                 throw Error("Field type '${field.jvmType}' for field '${entity.name}.${field.name}' has no registered GraphQL Mapping.")
             }
@@ -30,9 +29,9 @@ fun buildEntityObjectType(schema: APISchema, entity: EntityMetadata): GraphQLObj
             .dataFetcher(PropertyDataFetcher.fetching<Any>(field.name))
 
         if (field.nullable) {
-            fieldDef.type(scalarType)
+            fieldDef.type(fieldType)
         } else {
-            fieldDef.type(GraphQLNonNull(scalarType))
+            fieldDef.type(GraphQLNonNull(fieldType))
         }
 
         entityTypeBuilder.field(fieldDef)
