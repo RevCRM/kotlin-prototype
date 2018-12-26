@@ -1,4 +1,4 @@
-package org.revcrm.data.testmodels
+package org.revcrm.testdb
 
 import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
@@ -71,4 +71,12 @@ class TestConstraintsModel(
 @APIDisabled
 class SensitiveModel(
     var name: String
+) : BaseModel()
+
+@Entity
+class Account(
+    var name: String,
+    var phone: String,
+    var email: String,
+    var rating: Int
 ) : BaseModel()

@@ -16,7 +16,7 @@ import org.revcrm.data.EntityMetadata
 import org.revcrm.data.FieldMetadata
 import org.revcrm.data.FieldService
 
-class APIServiceTests {
+class EntityMetadata {
 
     val meta = CRMMetadata(
         mapOf(

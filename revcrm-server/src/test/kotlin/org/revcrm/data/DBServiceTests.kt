@@ -3,7 +3,7 @@ package org.revcrm.data
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.revcrm.data.testmodels.TestDB
+import org.revcrm.testdb.TestDB
 
 class DBServiceTests {
 
