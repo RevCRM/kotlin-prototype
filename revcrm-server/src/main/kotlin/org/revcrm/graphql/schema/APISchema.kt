@@ -32,7 +32,7 @@ class APISchema(val meta: CRMMetadata) {
     )
 
     fun getGraphQLScalarTypeForField(field: FieldMetadata): GraphQLOutputType? {
-        if (field.jvmType == "org.hibernate.type.EnumType") {
+        if (field.jvmType == "enum") {
             val enumClass = Class.forName(field.jvmSubtype)
             val enumBuilder = GraphQLEnumType.newEnum()
                 .name(enumClass.simpleName)

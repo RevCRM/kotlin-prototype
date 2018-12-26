@@ -48,7 +48,7 @@ class EntityMetadata {
                     "datetime_field" to FieldMetadata(name = "datetime_field", jvmType = "java.time.LocalDateTime"),
                     "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
                     "enum_field" to FieldMetadata(
-                        name = "enum_field", jvmType = "org.hibernate.type.EnumType",
+                        name = "enum_field", jvmType = "enum",
                         jvmSubtype = "org.revcrm.testdb.EnumFieldOptions"
                     )
                 )

@@ -34,8 +34,8 @@ class DBServiceTests {
 
         @Test
         fun `entity className matches full class name`() {
-            assertThat(entities["TestFieldsModel"]!!.className).isEqualTo("org.revcrm.data.testmodels.TestFieldsModel")
-            assertThat(entities["TestModel2"]!!.className).isEqualTo("org.revcrm.data.testmodels.TestModel2")
+            assertThat(entities["TestFieldsModel"]!!.className).isEqualTo("org.revcrm.testdb.TestFieldsModel")
+            assertThat(entities["TestModel2"]!!.className).isEqualTo("org.revcrm.testdb.TestModel2")
         }
 
         @Test
@@ -117,7 +117,7 @@ class DBServiceTests {
         @Test
         fun `Enum field returns expected metadata`() {
             assertThat(fieldsModel.fields["enum_field"]!!.jvmType).isEqualTo("enum")
-            assertThat(fieldsModel.fields["enum_field"]!!.jvmSubtype).isEqualTo("org.revcrm.data.testmodels.EnumFieldOptions")
+            assertThat(fieldsModel.fields["enum_field"]!!.jvmSubtype).isEqualTo("org.revcrm.testdb.EnumFieldOptions")
         }
     }
 
