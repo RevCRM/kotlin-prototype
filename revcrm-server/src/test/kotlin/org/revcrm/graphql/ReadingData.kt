@@ -76,4 +76,29 @@ class ReadingData {
             assertThat(result.results[0].containsKey("rating")).isFalse()
         }
     }
+
+    @Nested
+    inner class Query_Ordering {
+
+        val res = api.query("""
+                query {
+                    Account (orderBy: ["name", "contact"]) {
+                        results {
+                            id
+                            name
+                            contact
+                        }
+                    }
+                }
+            """.trimIndent(), mapOf())
+        val result = getResults(res, "Account", Map::class.java)
+
+        @Test
+        fun `returns rows sorted by name then contact`() {
+            assertThat(result.results[0].get("name")).isEqualTo(TEST_ACCOUNTS[1].name)
+            assertThat(result.results[1].get("name")).isEqualTo(TEST_ACCOUNTS[0].name)
+            assertThat(result.results[2].get("name")).isEqualTo(TEST_ACCOUNTS[3].name)
+            assertThat(result.results[3].get("name")).isEqualTo(TEST_ACCOUNTS[2].name)
+        }
+    }
 }

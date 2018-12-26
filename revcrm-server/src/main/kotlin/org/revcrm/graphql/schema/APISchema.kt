@@ -44,40 +44,31 @@ class APISchema(val meta: CRMMetadata) {
     }
 
     fun build(): GraphQLSchema {
+
+        val schema = GraphQLSchema.newSchema()
+
+        schema.additionalType(
+            GraphQLObjectType.newObject()
+                .name("ResultsMeta")
+                .field(
+                    GraphQLFieldDefinition.newFieldDefinition()
+                        .name("totalCount")
+                        .type(Scalars.GraphQLInt)
+                        .dataFetcher(PropertyDataFetcher.fetching<Any>("totalCount"))
+                )
+                .build())
+
         val queryType = GraphQLObjectType.newObject()
             .name("Query")
-
-        val metaType = GraphQLObjectType.newObject()
-            .name("ResultsMeta")
-            .field(
-                GraphQLFieldDefinition.newFieldDefinition()
-                    .name("totalCount")
-                    .type(Scalars.GraphQLInt)
-                    .dataFetcher(PropertyDataFetcher.fetching<Any>("totalCount"))
-            )
-            .build()
 
         meta.entities.forEach { _, entity ->
 
             if (!entity.apiEnabled) return@forEach
 
-            val entityType = buildEntityObjectType(this, entity)
+            schema.additionalType(
+                buildEntityObjectType(this, entity))
 
-            val entityResultsType = GraphQLObjectType.newObject()
-                .name(entity.name + "Results")
-                .field(
-                    GraphQLFieldDefinition.newFieldDefinition()
-                        .name("results")
-                        .type(GraphQLList.list(entityType))
-                        .dataFetcher(PropertyDataFetcher.fetching<Any>("results"))
-                )
-                .field(
-                    GraphQLFieldDefinition.newFieldDefinition()
-                        .name("meta")
-                        .type(metaType)
-                        .dataFetcher(PropertyDataFetcher.fetching<Any>("meta"))
-                )
-                .build()
+            val entityResultsType = buildEntityResultsType(this, entity)
 
             queryType.field(
                 GraphQLFieldDefinition.newFieldDefinition()
@@ -85,13 +76,14 @@ class APISchema(val meta: CRMMetadata) {
                     .type(entityResultsType)
                     .argument(
                         GraphQLArgument.newArgument()
-                            .name("where")
-                            .type(Scalars.GraphQLString)
+                            .name("orderBy")
+                            .type(GraphQLList(Scalars.GraphQLString))
                             .build())
                     .dataFetcher(EntityDataFetcher(entity))
             )
         }
+        schema.query(queryType.build())
 
-        return GraphQLSchema(queryType.build())
+        return schema.build()
     }
 }

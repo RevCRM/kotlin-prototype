@@ -107,6 +107,15 @@ class EntityMetadata {
         }
 
         @Test
+        fun `Entity root type has "orderBy" argument`() {
+            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "orderBy" }
+
+            val arg = testFieldsModel.arguments.find { arg -> arg.name == "orderBy" }!!
+            assertThat(arg.type).isInstanceOf(GraphQLList::class.java)
+            assertThat((arg.type as GraphQLList).wrappedType).isEqualTo(Scalars.GraphQLString)
+        }
+
+        @Test
         fun `Entity root type contains "results" and "meta" keys`() {
             val resultsType = testFieldsModel.type as GraphQLObjectType
             assertThat(resultsType.name).isEqualTo(testFieldsModel.name + "Results")
