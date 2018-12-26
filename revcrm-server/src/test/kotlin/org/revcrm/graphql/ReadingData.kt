@@ -8,7 +8,6 @@ import org.bson.types.ObjectId
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.data.FieldService
-import org.revcrm.testdb.Account
 import org.revcrm.testdb.TEST_ACCOUNTS
 import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.objectIdDeserializer
@@ -48,21 +47,34 @@ class ReadingData {
                         results {
                             id
                             name
-                            phone
                             email
-                            rating
                         }
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = getResults(res, "Account", Account::class.java)
+        val result = getResults(res, "Account", Map::class.java)
 
         @Test
         fun `returns all rows`() {
             assertThat(result.results).hasSize(TEST_ACCOUNTS.size)
-            assertThat(result.results[0].name).isEqualTo(TEST_ACCOUNTS[0].name)
-            assertThat(result.results[1].name).isEqualTo(TEST_ACCOUNTS[1].name)
-            assertThat(result.results[2].name).isEqualTo(TEST_ACCOUNTS[2].name)
+            assertThat(result.results[0].get("name")).isEqualTo(TEST_ACCOUNTS[0].name)
+            assertThat(result.results[1].get("name")).isEqualTo(TEST_ACCOUNTS[1].name)
+            assertThat(result.results[2].get("name")).isEqualTo(TEST_ACCOUNTS[2].name)
+        }
+
+        @Test
+        fun `returns all selected fields`() {
+            assertThat(result.results).hasSize(TEST_ACCOUNTS.size)
+            assertThat(result.results[0].containsKey("id")).isTrue()
+            assertThat(result.results[0].containsKey("name")).isTrue()
+            assertThat(result.results[0].containsKey("email")).isTrue()
+        }
+
+        @Test
+        fun `does not return other fields`() {
+            assertThat(result.results).hasSize(TEST_ACCOUNTS.size)
+            assertThat(result.results[0].containsKey("phone")).isFalse()
+            assertThat(result.results[0].containsKey("rating")).isFalse()
         }
     }
 }
