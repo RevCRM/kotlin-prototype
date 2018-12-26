@@ -3,6 +3,8 @@ package org.revcrm.graphql
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
 import org.revcrm.data.EntityMetadata
+import org.revcrm.graphql.schema.getOrderBy
+import org.revcrm.graphql.schema.getWhere
 
 class EntityDataFetcher(
     private val entity: EntityMetadata
@@ -12,12 +14,13 @@ class EntityDataFetcher(
         val ctx = environment.getContext<APIContext>()
         val klass = Class.forName(entity.className)
 
-        val orderBySpec = environment.getArgument<List<String>>("orderBy")
+        val where = getWhere(environment)
+        val orderBy = getOrderBy(environment)
 
         val results = ctx.db.withDB { ds ->
-            val q = ds.createQuery(klass)
-            if (orderBySpec != null) {
-                q.order(orderBySpec.joinToString(separator = ","))
+            val q = if (where != null) ds.createQuery(klass, where) else ds.createQuery(klass)
+            if (orderBy != null) {
+                q.order(orderBy)
             }
             q.asList()
         }

@@ -4,7 +4,7 @@ import com.mongodb.MongoClient
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.config.Config
 import org.revcrm.util.getProperty
-import xyz.morphia.Datastore
+import xyz.morphia.AdvancedDatastore
 import xyz.morphia.Morphia
 import xyz.morphia.annotations.Entity
 import javax.validation.constraints.Max
@@ -19,7 +19,7 @@ class DBService {
     private val morphia = Morphia()
     private lateinit var config: Config
     private lateinit var client: MongoClient
-    private lateinit var datastore: Datastore
+    private lateinit var datastore: AdvancedDatastore
 
     fun initialise(
         newConfig: Config
@@ -27,11 +27,11 @@ class DBService {
         config = newConfig
         config.entityPackages.forEach { morphia.mapPackage(it) }
         client = MongoClient(config.dbUrl)
-        datastore = morphia.createDatastore(client, config.dbName)
+        datastore = morphia.createDatastore(client, config.dbName) as AdvancedDatastore
         datastore.ensureIndexes()
     }
 
-    fun <T> withDB(method: (Datastore) -> T): T {
+    fun <T> withDB(method: (AdvancedDatastore) -> T): T {
         return method(datastore)
     }
 

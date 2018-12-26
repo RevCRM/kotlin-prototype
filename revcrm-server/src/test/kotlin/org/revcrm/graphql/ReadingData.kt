@@ -101,4 +101,36 @@ class ReadingData {
             assertThat(result.results[3].get("name")).isEqualTo(TEST_ACCOUNTS[1].name)
         }
     }
+
+    @Nested
+    inner class Query_Filtering {
+
+        val res = api.query("""
+                query {
+                    Account (
+                        where: {
+                            _or: [
+                                {contact: { _eq: "Joan"}},
+                                {contact: { _eq: "Derek"}}
+                            ]
+                        }
+                        orderBy: ["contact"]
+                    ) {
+                        results {
+                            id
+                            name
+                            contact
+                        }
+                    }
+                }
+            """.trimIndent(), mapOf())
+        val result = getResults(res, "Account", Map::class.java)
+
+        @Test
+        fun `returns rows that match the specified "where" clause`() {
+            assertThat(result.results.size).isEqualTo(2)
+            assertThat(result.results[0].get("contact")).isEqualTo(TEST_ACCOUNTS[3].contact)
+            assertThat(result.results[1].get("contact")).isEqualTo(TEST_ACCOUNTS[2].contact)
+        }
+    }
 }

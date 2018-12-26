@@ -1,6 +1,7 @@
 package org.revcrm.graphql
 
 import graphql.Scalars
+import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLEnumType
 import graphql.schema.GraphQLList
 import graphql.schema.GraphQLNonNull
@@ -113,6 +114,14 @@ class EntityMetadata {
             val arg = testFieldsModel.arguments.find { arg -> arg.name == "orderBy" }!!
             assertThat(arg.type).isInstanceOf(GraphQLList::class.java)
             assertThat((arg.type as GraphQLList).wrappedType).isEqualTo(Scalars.GraphQLString)
+        }
+
+        @Test
+        fun `Entity root type has "where" argument`() {
+            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "where" }
+
+            val arg = testFieldsModel.arguments.find { arg -> arg.name == "where" }!!
+            assertThat(arg.type).isEqualTo(ExtendedScalars.Json)
         }
 
         @Test

@@ -1,6 +1,7 @@
 package org.revcrm.graphql.schema
 
 import graphql.Scalars
+import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLArgument
 import graphql.schema.GraphQLEnumType
 import graphql.schema.GraphQLFieldDefinition
@@ -74,6 +75,11 @@ class APISchema(val meta: CRMMetadata) {
                 GraphQLFieldDefinition.newFieldDefinition()
                     .name(entity.name)
                     .type(entityResultsType)
+                    .argument(
+                        GraphQLArgument.newArgument()
+                            .name("where")
+                            .type(ExtendedScalars.Json)
+                            .build())
                     .argument(
                         GraphQLArgument.newArgument()
                             .name("orderBy")
