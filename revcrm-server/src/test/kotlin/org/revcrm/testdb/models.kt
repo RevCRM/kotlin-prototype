@@ -76,6 +76,7 @@ class SensitiveModel(
 @Entity
 class Account(
     var name: String,
+    var contact: String,
     var phone: String,
     var email: String,
     var rating: Int

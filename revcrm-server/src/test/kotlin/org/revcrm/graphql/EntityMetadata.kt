@@ -14,7 +14,6 @@ import org.revcrm.data.CRMMetadata
 import org.revcrm.data.DBService
 import org.revcrm.data.EntityMetadata
 import org.revcrm.data.FieldMetadata
-import org.revcrm.data.FieldService
 
 class EntityMetadata {
 
@@ -50,7 +49,7 @@ class EntityMetadata {
                     "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
                     "enum_field" to FieldMetadata(
                         name = "enum_field", jvmType = "org.hibernate.type.EnumType",
-                        jvmSubtype = "org.revcrm.data.testmodels.EnumFieldOptions"
+                        jvmSubtype = "org.revcrm.testdb.EnumFieldOptions"
                     )
                 )
             ),
@@ -80,7 +79,7 @@ class EntityMetadata {
         every { data.getEntityMetadata() } returns meta
     }
 
-    val schema = APIService(data, FieldService()).apply {
+    val schema = APIService(data).apply {
         initialise()
     }
 
@@ -130,7 +129,7 @@ class EntityMetadata {
         @Test
         fun `ObjectId fields are exposed as expected`() {
             val type = testFieldsModelType.getFieldDefinition("id_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLID)
+            assertThat(type.wrappedType).isEqualTo(GraphQLObjectID)
         }
 
         @Test

@@ -7,7 +7,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.revcrm.data.FieldService
 import org.revcrm.testdb.TEST_ACCOUNTS
 import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.objectIdDeserializer
@@ -16,7 +15,7 @@ import org.revcrm.testdb.resetAccountData
 class ReadingData {
 
     val testDB = TestDB.instance
-    val api = APIService(testDB, FieldService())
+    val api = APIService(testDB)
     val gson = GsonBuilder()
         .registerTypeAdapter(ObjectId::class.java, objectIdDeserializer)
         .create()
