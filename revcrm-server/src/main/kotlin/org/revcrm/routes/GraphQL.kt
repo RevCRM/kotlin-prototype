@@ -36,13 +36,8 @@ fun Routing.graphQL() {
             println("the graphql variables: $variables")
 
             val result = crmSchema.query(query, variables)
-            val data = result.getData<Any>()
-            val response = mutableMapOf("data" to data)
-            if (result.errors.isNotEmpty()) {
-                response.put("errors", result.errors)
-            }
-            call.respondText(gson.toJson(response, Map::class.java), ContentType.Application.Json)
-            // GraphQLErrors(e).asMap()
+            val resJson = result.toSpecification()
+            call.respondText(gson.toJson(resJson, Map::class.java), ContentType.Application.Json)
         }
     }
 }
