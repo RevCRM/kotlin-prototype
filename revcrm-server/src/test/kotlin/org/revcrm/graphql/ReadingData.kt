@@ -29,22 +29,20 @@ class ReadingData {
         api.initialise()
     }
 
-    fun getResults(res: ExecutionResult, entityKey: String): EntitySearchResults<Account> {
+    fun <T> getResults(res: ExecutionResult, entityKey: String, resultClass: Class<T>): EntitySearchResults<T> {
         assertThat(res.errors).hasSize(0)
         val entityData = res.getData<Map<String, Any>>()
         val tree = gson.toJsonTree(entityData.get(entityKey))
         return gson.fromJson(tree, TypeToken.getParameterized(
             EntitySearchResults::class.java,
-            Account::class.java
+            resultClass
         ).type)
     }
 
     @Nested
-    inner class BasicRead {
+    inner class Query_NoArgs {
 
-        @Test
-        fun `query with no args returns all data`() {
-            val res = api.query("""
+        val res = api.query("""
                 query {
                     Account {
                         results {
@@ -57,9 +55,14 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "Account")
+        val result = getResults(res, "Account", Account::class.java)
+
+        @Test
+        fun `returns all rows`() {
             assertThat(result.results).hasSize(TEST_ACCOUNTS.size)
             assertThat(result.results[0].name).isEqualTo(TEST_ACCOUNTS[0].name)
+            assertThat(result.results[1].name).isEqualTo(TEST_ACCOUNTS[1].name)
+            assertThat(result.results[2].name).isEqualTo(TEST_ACCOUNTS[2].name)
         }
     }
 }
