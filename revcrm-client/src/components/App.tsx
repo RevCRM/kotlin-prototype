@@ -16,9 +16,12 @@ import { register as registerDashboard } from "../modules/revcrm-dashboard"
 import { register as registerAccounts } from "../modules/revcrm-accounts"
 import { register as registerEtc } from "../modules/revcrm-etc"
 import { UI } from "../UIManager"
+import { AuthProvider } from "../auth/AuthProvider"
 
 const theme = createMuiTheme()
 const history = createHashHistory()
+
+const authProvider = new AuthProvider()
 
 const cache = new InMemoryCache()
 const client = new ApolloClient({
@@ -37,7 +40,7 @@ export const App = () => (
     <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <ApolloProvider client={client}>
-            <AuthContextProvider history={history}>
+            <AuthContextProvider provider={authProvider} history={history}>
                 <AppLoader>
                     <ViewManager history={history}>
                         <Navigation>

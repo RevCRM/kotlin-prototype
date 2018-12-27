@@ -30,7 +30,7 @@ export const UserMenu = withAuthContext(
     }
 
     render() {
-        const user = this.props.auth.currentUser
+        const user = this.props.auth.currentUser!
         return (
             <div>
                 <IconButton
