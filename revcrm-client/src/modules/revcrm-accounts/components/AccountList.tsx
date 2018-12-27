@@ -1,7 +1,8 @@
 
 import * as React from 'react'
-import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Table, TableHead, TableRow, TableCell, TableBody, Toolbar, IconButton, Checkbox } from '@material-ui/core'
+import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Toolbar, IconButton } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles/colorManipulator'
+import { ListView } from '../../../components/views/ListView'
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -38,14 +39,6 @@ export const styles = (theme: Theme) => createStyles({
     pagination: {
         display: 'flex',
         alignItems: 'center'
-    },
-    resultsHeader: {
-        fontWeight: 'bold'
-    },
-    resultsRow: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.background.default,
-        },
     },
 })
 
@@ -88,80 +81,17 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                     </IconButton>
                 </div>
             </Toolbar>
-            <Table padding="dense">
-                <TableHead>
-                    <TableRow className={props.classes.resultsHeader}>
-                        <TableCell padding="checkbox">
-                            <Checkbox />
-                        </TableCell>
-                        <TableCell>
-                            Task
-                        </TableCell>
-                        <TableCell>
-                            Related To
-                        </TableCell>
-                        <TableCell>
-                            Related To
-                        </TableCell>
-                        <TableCell>
-                            Related To
-                        </TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow hover className={props.classes.resultsRow}>
-                        <TableCell padding="checkbox">
-                            <Checkbox />
-                        </TableCell>
-                        <TableCell>
-                            Prepare Proposal
-                        </TableCell>
-                        <TableCell>
-                            Opportunity 105: New Build
-                        </TableCell>
-                        <TableCell>
-                            Opportunity 105: New Build
-                        </TableCell>
-                        <TableCell>
-                            Opportunity 105: New Build
-                        </TableCell>
-                    </TableRow>
-                    <TableRow hover className={props.classes.resultsRow}>
-                        <TableCell padding="checkbox">
-                            <Checkbox />
-                        </TableCell>
-                        <TableCell>
-                            Prepare Proposal
-                        </TableCell>
-                        <TableCell>
-                            Opportunity 107: Cable Street Works
-                        </TableCell>
-                        <TableCell>
-                            Opportunity 107: Cable Street Works
-                        </TableCell>
-                        <TableCell>
-                            Opportunity 107: Cable Street Works
-                        </TableCell>
-                    </TableRow>
-                    <TableRow hover className={props.classes.resultsRow}>
-                        <TableCell padding="checkbox">
-                            <Checkbox />
-                        </TableCell>
-                        <TableCell>
-                            Buy Milk
-                        </TableCell>
-                        <TableCell>
-                            Personal
-                        </TableCell>
-                        <TableCell>
-                            Personal
-                        </TableCell>
-                        <TableCell>
-                            Personal
-                        </TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
+            <ListView
+                fields={['Name', 'Age', 'Location']}
+                data={[
+                    ['Bob', '21', 'Ipswich'],
+                    ['Angie', '18', 'Colchester'],
+                    ['Tim', '35', 'Wellington'],
+                    ['Dave', '16', 'Auckland'],
+                    ['Jane', '22', 'Testville'],
+                    ['Rob', '42', 'Dunedin'],
+                ]}
+            />
         </div>
     </div>
 ))
