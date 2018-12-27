@@ -1,14 +1,14 @@
-import * as React from 'react'
-import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody } from '@material-ui/core'
+import * as React from "react"
+import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody } from "@material-ui/core"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
     },
     resultsHeader: {
-        fontWeight: 'bold'
+        fontWeight: "bold"
     },
     resultsRow: {
-        '&:nth-of-type(odd)': {
+        "&:nth-of-type(odd)": {
             backgroundColor: theme.palette.background.default,
         },
     },

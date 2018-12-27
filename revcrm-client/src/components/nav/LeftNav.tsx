@@ -1,17 +1,17 @@
-import * as React from 'react'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import { Divider, createStyles, withStyles, WithStyles, Icon, Collapse, Typography } from '@material-ui/core'
-import { IMenuItem, IMenuSubItem } from './types'
-import { UI } from '../../UIManager'
-import { withViewManagerContext, IViewManagerContextProp } from '../views/ViewManager'
+import * as React from "react"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import { Divider, createStyles, withStyles, WithStyles, Icon, Collapse, Typography } from "@material-ui/core"
+import { IMenuItem, IMenuSubItem } from "./types"
+import { UI } from "../../UIManager"
+import { withViewManagerContext, IViewManagerContextProp } from "../views/ViewManager"
 
 const styles = createStyles({
     listItemText: {
         padding: 0,
-        whiteSpace: 'nowrap'
+        whiteSpace: "nowrap"
     }
 })
 
@@ -67,7 +67,7 @@ export const LeftNav = withStyles(styles)(withViewManagerContext(
                         </ListItem>
                         {item.subItems &&
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding style={{ background: '#F2F2F2' }}>
+                                <List component="div" disablePadding style={{ background: "#F2F2F2" }}>
                                     {item.subItems.map((subItem, subItemIdx) => (
                                         <ListItem button key={subItemIdx}
                                             style={{ padding: 8, paddingLeft: 64 }}

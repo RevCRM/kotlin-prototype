@@ -1,5 +1,5 @@
 
-import { IMenuItem } from './components/nav/types'
+import { IMenuItem } from "./components/nav/types"
 
 export interface IPerspective {
     id: string

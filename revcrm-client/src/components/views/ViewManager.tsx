@@ -1,9 +1,9 @@
 
-import * as React from 'react'
-import { IViewContext } from './types'
-import { IPerspective, IView, UI, IPerspectiveView } from '../../UIManager'
-import { History, Location, Action } from 'history'
-import { Omit } from '../../types'
+import * as React from "react"
+import { IViewContext } from "./types"
+import { IPerspective, IView, UI, IPerspectiveView } from "../../UIManager"
+import { History, Location, Action } from "history"
+import { Omit } from "../../types"
 
 export interface IViewManagerLocation {
     pathname: string
@@ -33,7 +33,7 @@ export interface IViewManagerState {
 
 // TODO: Move this somewhere better
 export function getViewStateFromUrl(pathname: string, search: string) {
-    const [ perspectiveId, perspectiveViewId ] = pathname.split('/').slice(1)
+    const [ perspectiveId, perspectiveViewId ] = pathname.split("/").slice(1)
     const perspective = UI.getPerspective(perspectiveId)
     const perspectiveView = UI.getPerspectiveView(perspectiveId, perspectiveViewId)
     const view = perspectiveView ? UI.getView(perspectiveView.viewId) : null
@@ -42,7 +42,7 @@ export function getViewStateFromUrl(pathname: string, search: string) {
         perspectiveView,
         view,
         viewContext: {
-            model: '',
+            model: "",
             modelId: null
         }
     }

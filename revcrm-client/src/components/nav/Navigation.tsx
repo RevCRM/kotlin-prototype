@@ -1,30 +1,30 @@
-import * as React from 'react'
+import * as React from "react"
 
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
-import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
-import { Hidden, Icon, Badge } from '@material-ui/core'
-import { LeftNav } from './LeftNav'
-import { CONFIG } from '../../config'
-import { UserMenu } from './UserMenu'
+import AppBar from "@material-ui/core/AppBar"
+import Toolbar from "@material-ui/core/Toolbar"
+import IconButton from "@material-ui/core/IconButton"
+import Typography from "@material-ui/core/Typography"
+import { withStyles, WithStyles, createStyles, Theme } from "@material-ui/core/styles"
+import Drawer from "@material-ui/core/Drawer"
+import { Hidden, Icon, Badge } from "@material-ui/core"
+import { LeftNav } from "./LeftNav"
+import { CONFIG } from "../../config"
+import { UserMenu } from "./UserMenu"
 
 const leftNavWidth = 260
 
 export const styles = (theme: Theme) => createStyles({
     root: {
-        display: 'flex'
+        display: "flex"
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
-        '@media print': {
-            display: 'none'
+        "@media print": {
+            display: "none"
         }
     },
     leftNav: {
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up("md")]: {
             width: leftNavWidth,
             flexShrink: 0,
         },
@@ -38,12 +38,12 @@ export const styles = (theme: Theme) => createStyles({
     },
     menuButton: {
         marginRight: 16,
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
+        [theme.breakpoints.up("md")]: {
+            display: "none",
         },
     },
     mainBody: {
-        width: '100%'
+        width: "100%"
     }
 })
 

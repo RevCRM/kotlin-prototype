@@ -1,23 +1,23 @@
-import * as React from 'react'
-import { Typography, Grid, Card, CardHeader, TableHead, Table, TableCell, Checkbox, TableBody, TableRow, IconButton, Icon } from '@material-ui/core'
-import { Bar } from 'britecharts-react'
-import withResponsiveness from 'britecharts-react/lib/esm/helpers/withResponsiveness'
-import { colors } from 'britecharts'
+import * as React from "react"
+import { Typography, Grid, Card, CardHeader, TableHead, Table, TableCell, Checkbox, TableBody, TableRow, IconButton, Icon } from "@material-ui/core"
+import { Bar } from "britecharts-react"
+import withResponsiveness from "britecharts-react/lib/esm/helpers/withResponsiveness"
+import { colors } from "britecharts"
 
 const ResponsiveBarChart = withResponsiveness(Bar)
 
 const oppoData = [
     {
         value: 5000000,
-        name: 'New Lead'
+        name: "New Lead"
     },
     {
         value: 10000000,
-        name: 'Qualified'
+        name: "Qualified"
     },
     {
         value: 8500000,
-        name: 'Negotiating'
+        name: "Negotiating"
     },
 ]
 

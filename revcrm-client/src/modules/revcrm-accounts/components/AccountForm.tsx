@@ -1,6 +1,6 @@
 
-import * as React from 'react'
-import { Typography, Paper, Icon, Theme, createStyles, withStyles, WithStyles, IconButton, Button } from '@material-ui/core'
+import * as React from "react"
+import { Typography, Paper, Icon, Theme, createStyles, withStyles, WithStyles, IconButton, Button } from "@material-ui/core"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -8,12 +8,12 @@ export const styles = (theme: Theme) => createStyles({
     filterBox: {
         padding: 12,
         height: 60,
-        display: 'flex',
-        alignItems: 'center',
-        color: '#fff',
+        display: "flex",
+        alignItems: "center",
+        color: "#fff",
         backgroundColor: theme.palette.primary.dark,
         zIndex: theme.zIndex.appBar - 1,
-        position: 'relative'
+        position: "relative"
     },
     backButtonContainer: {
         marginTop: -12,

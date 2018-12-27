@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { IconButton, Icon, Menu, MenuItem, Avatar, Typography, Divider } from '@material-ui/core'
-import { IAuthContextProp, withAuthContext } from '../auth/AuthContext'
+import * as React from "react"
+import { IconButton, Icon, Menu, MenuItem, Avatar, Typography, Divider } from "@material-ui/core"
+import { IAuthContextProp, withAuthContext } from "../auth/AuthContext"
 
 export interface IUserMenuState {
     menuAnchorEl: any
@@ -45,8 +45,8 @@ export const UserMenu = withAuthContext(
                     onClose={this.onMenuClose}
                 >
                     <div style={{
-                        display: 'flex', justifyContent: 'space-around',
-                        padding: 16, paddingBottom: 24, outline: 'none'
+                        display: "flex", justifyContent: "space-around",
+                        padding: 16, paddingBottom: 24, outline: "none"
                     }}>
                         <Avatar style={{ marginRight: 16 }}>R</Avatar>
                         <div>

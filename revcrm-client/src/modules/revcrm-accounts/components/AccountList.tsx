@@ -1,8 +1,8 @@
 
-import * as React from 'react'
-import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Toolbar, IconButton } from '@material-ui/core'
-import { fade } from '@material-ui/core/styles/colorManipulator'
-import { ListView } from '../../../components/views/ListView'
+import * as React from "react"
+import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Toolbar, IconButton } from "@material-ui/core"
+import { fade } from "@material-ui/core/styles/colorManipulator"
+import { ListView } from "../../../components/views/ListView"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -10,35 +10,35 @@ export const styles = (theme: Theme) => createStyles({
     filterBox: {
         padding: 12,
         height: 60,
-        display: 'flex',
-        alignItems: 'center',
-        color: '#fff',
+        display: "flex",
+        alignItems: "center",
+        color: "#fff",
         backgroundColor: theme.palette.primary.dark,
         zIndex: theme.zIndex.appBar - 1,
-        position: 'relative'
+        position: "relative"
     },
     searchBox: {
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up("md")]: {
             minWidth: 350,
         },
     },
     searchInput: {
-        color: '#fff',
+        color: "#fff",
         backgroundColor: fade(theme.palette.common.white, 0.15),
     },
     searchAdornment: {
         marginLeft: 4
     },
     resultsBox: {
-        backgroundColor: '#fff'
+        backgroundColor: "#fff"
     },
     resultsToolbar: {
-        justifyContent: 'space-between',
-        borderBottom: '1px solid #EBEBEB'
+        justifyContent: "space-between",
+        borderBottom: "1px solid #EBEBEB"
     },
     pagination: {
-        display: 'flex',
-        alignItems: 'center'
+        display: "flex",
+        alignItems: "center"
     },
 })
 
@@ -82,14 +82,14 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                 </div>
             </Toolbar>
             <ListView
-                fields={['Name', 'Age', 'Location']}
+                fields={["Name", "Age", "Location"]}
                 data={[
-                    ['Bob', '21', 'Ipswich'],
-                    ['Angie', '18', 'Colchester'],
-                    ['Tim', '35', 'Wellington'],
-                    ['Dave', '16', 'Auckland'],
-                    ['Jane', '22', 'Testville'],
-                    ['Rob', '42', 'Dunedin'],
+                    ["Bob", "21", "Ipswich"],
+                    ["Angie", "18", "Colchester"],
+                    ["Tim", "35", "Wellington"],
+                    ["Dave", "16", "Auckland"],
+                    ["Jane", "22", "Testville"],
+                    ["Rob", "42", "Dunedin"],
                 ]}
             />
         </div>
