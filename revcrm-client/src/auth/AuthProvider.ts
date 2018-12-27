@@ -78,19 +78,10 @@ export class AuthProvider extends EventEmitter {
         this._googleAuth.signIn()  // Triggers a browser redirect
     }
 
-    // TODO: Remove me
-    testAPI = async () => {
+    async currentToken(): Promise<string> {
         const user = this._googleAuth.currentUser.get()
         const tokens = user.getAuthResponse()
-        const idToken = tokens.id_token
-        console.log("Sending test request...")
-        console.log("TOKEN", idToken)
-        const res = fetch("/ping", {
-            headers: {
-                Authorization: "Bearer " + idToken
-            }
-        })
-        console.log(res)
+        return tokens.id_token
     }
 
 }

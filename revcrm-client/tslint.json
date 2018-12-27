@@ -24,6 +24,7 @@
         "no-submodule-imports": false,
         "prefer-conditional-expression": false,
         "trailing-comma": false,
-        "semicolon": [true, "never"]
+        "semicolon": [true, "never"],
+        "curly": false
     }
 }
