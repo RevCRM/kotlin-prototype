@@ -44,7 +44,7 @@ abstract class ParentModel {
 @Entity
 class TestModel2(
     var name: String,
-    var size: Double
+    var number: Int
 ) : ParentModel()
 
 @Entity

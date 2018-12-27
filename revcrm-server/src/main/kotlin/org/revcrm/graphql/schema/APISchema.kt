@@ -85,6 +85,16 @@ class APISchema(val meta: CRMMetadata) {
                             .name("orderBy")
                             .type(GraphQLList(Scalars.GraphQLString))
                             .build())
+                    .argument(
+                        GraphQLArgument.newArgument()
+                            .name("limit")
+                            .type(ExtendedScalars.PositiveInt)
+                            .build())
+                    .argument(
+                        GraphQLArgument.newArgument()
+                            .name("offset")
+                            .type(ExtendedScalars.NonNegativeInt)
+                            .build())
                     .dataFetcher(EntityDataFetcher(entity))
             )
         }

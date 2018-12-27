@@ -125,6 +125,20 @@ class EntityMetadata {
         }
 
         @Test
+        fun `Entity root type has "limit" argument`() {
+            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "limit" }
+            val arg = testFieldsModel.arguments.find { arg -> arg.name == "limit" }!!
+            assertThat(arg.type).isEqualTo(ExtendedScalars.PositiveInt)
+        }
+
+        @Test
+        fun `Entity root type has "offset" argument`() {
+            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "offset" }
+            val arg = testFieldsModel.arguments.find { arg -> arg.name == "offset" }!!
+            assertThat(arg.type).isEqualTo(ExtendedScalars.NonNegativeInt)
+        }
+
+        @Test
         fun `Entity root type contains "results" and "meta" keys`() {
             val resultsType = testFieldsModel.type as GraphQLObjectType
             assertThat(resultsType.name).isEqualTo(testFieldsModel.name + "Results")

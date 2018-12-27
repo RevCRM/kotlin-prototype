@@ -6,5 +6,5 @@ class EntitySearchResults<T>(
 )
 
 class EntitySearchMeta(
-    val totalCount: Int
+    val totalCount: Long
 )

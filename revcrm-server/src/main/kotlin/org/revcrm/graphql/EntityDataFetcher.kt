@@ -5,6 +5,7 @@ import graphql.schema.DataFetchingEnvironment
 import org.revcrm.data.EntityMetadata
 import org.revcrm.graphql.schema.getOrderBy
 import org.revcrm.graphql.schema.getWhere
+import xyz.morphia.query.FindOptions
 
 class EntityDataFetcher(
     private val entity: EntityMetadata
@@ -16,19 +17,34 @@ class EntityDataFetcher(
 
         val where = getWhere(environment)
         val orderBy = getOrderBy(environment)
+        val limit = environment.getArgument<Int?>("limit")
+        val offset = environment.getArgument<Int?>("offset")
 
-        val results = ctx.db.withDB { ds ->
-            val q = if (where != null) ds.createQuery(klass, where) else ds.createQuery(klass)
+        val qResult = ctx.db.withDB { ds ->
+            val q =
+                if (where != null)
+                    ds.createQuery(klass, where)
+                else
+                    ds.createQuery(klass)
+            val options = FindOptions()
+            options.limit(
+                if (limit == null) ctx.defaultResultsLimit else limit
+            )
+            options.skip(
+                if (offset == null) 0 else offset
+            )
             if (orderBy != null) {
                 q.order(orderBy)
             }
-            q.asList()
+            Pair(q.asList(options), q.count())
         }
+
+        val (results, totalCount) = qResult
 
         return EntitySearchResults<Any>(
             results,
             EntitySearchMeta(
-                totalCount = results.size
+                totalCount = totalCount
             )
         )
     }

@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.testdb.TEST_ACCOUNTS
 import org.revcrm.testdb.TestDB
+import org.revcrm.testdb.TestModel2
 import org.revcrm.testdb.objectIdDeserializer
 import org.revcrm.testdb.resetAccountData
+import org.revcrm.testdb.resetTestModel2Data
 
 class ReadingData {
 
@@ -23,6 +25,7 @@ class ReadingData {
     init {
         testDB.withDB { ds ->
             resetAccountData(ds)
+            resetTestModel2Data(ds)
         }
         api.initialise()
     }
@@ -121,6 +124,9 @@ class ReadingData {
                             name
                             contact
                         }
+                        meta {
+                            totalCount
+                        }
                     }
                 }
             """.trimIndent(), mapOf())
@@ -129,8 +135,89 @@ class ReadingData {
         @Test
         fun `returns rows that match the specified "where" clause`() {
             assertThat(result.results.size).isEqualTo(2)
+            assertThat(result.meta.totalCount).isEqualTo(2)
             assertThat(result.results[0].get("contact")).isEqualTo(TEST_ACCOUNTS[3].contact)
             assertThat(result.results[1].get("contact")).isEqualTo(TEST_ACCOUNTS[2].contact)
+        }
+    }
+
+    @Nested
+    inner class Query_LimitAndOffset {
+
+        val fields = "results { id name number } meta { totalCount }"
+
+        @Test
+        fun `by default we return the first "defaultResultsLimit" results`() {
+            val res = api.query("""
+                query {
+                    TestModel2 (orderBy: ["number"]) {
+                        $fields
+                    }
+                }
+            """.trimIndent(), mapOf())
+            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            assertThat(result.results.size).isEqualTo(20) // hardcoded defaultResultsLimit at the moment
+            assertThat(result.meta.totalCount).isGreaterThan(20)
+            assertThat(result.results[0].number).isEqualTo(1)
+            assertThat(result.results[19].number).isEqualTo(20)
+        }
+
+        @Test
+        fun `when "limit" is specified, we return the first n results`() {
+            val res = api.query("""
+                query {
+                    TestModel2 (
+                        limit: 10,
+                        orderBy: ["number"]
+                    ) {
+                        $fields
+                    }
+                }
+            """.trimIndent(), mapOf())
+            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            assertThat(result.results.size).isEqualTo(10)
+            assertThat(result.meta.totalCount).isGreaterThan(20)
+            assertThat(result.results[0].number).isEqualTo(1)
+            assertThat(result.results[9].number).isEqualTo(10)
+        }
+
+        @Test
+        fun `"limit" can be greater than totalCount`() {
+            val res = api.query("""
+                query {
+                    TestModel2 (
+                        limit: 100,
+                        orderBy: ["number"]
+                    ) {
+                        $fields
+                    }
+                }
+            """.trimIndent(), mapOf())
+            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            assertThat(result.results.size).isGreaterThan(20).isLessThan(100)
+            assertThat(result.meta.totalCount).isGreaterThan(20)
+            assertThat(result.results[0].number).isEqualTo(1)
+            assertThat(result.results[20].number).isEqualTo(21)
+        }
+
+        @Test
+        fun `I can use "offset" and "limit" to window the results`() {
+            val res = api.query("""
+                query {
+                    TestModel2 (
+                        offset: 1,
+                        limit: 5,
+                        orderBy: ["number"]
+                    ) {
+                        $fields
+                    }
+                }
+            """.trimIndent(), mapOf())
+            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            assertThat(result.results.size).isEqualTo(5)
+            assertThat(result.meta.totalCount).isGreaterThan(20)
+            assertThat(result.results[0].number).isEqualTo(2)
+            assertThat(result.results[4].number).isEqualTo(6)
         }
     }
 }
