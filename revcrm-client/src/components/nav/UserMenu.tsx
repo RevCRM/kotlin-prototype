@@ -1,36 +1,36 @@
-import * as React from 'react';
-import { IconButton, Icon, Menu, MenuItem, Avatar, Typography, Divider } from '@material-ui/core';
-import { IAuthContextProp, withAuthContext } from '../auth/AuthContext';
+import * as React from 'react'
+import { IconButton, Icon, Menu, MenuItem, Avatar, Typography, Divider } from '@material-ui/core'
+import { IAuthContextProp, withAuthContext } from '../auth/AuthContext'
 
 export interface IUserMenuState {
-    menuAnchorEl: any;
+    menuAnchorEl: any
 }
 
 export const UserMenu = withAuthContext(
     class extends React.Component<IAuthContextProp, IUserMenuState> {
 
     constructor(props: any) {
-        super(props);
+        super(props)
         this.state = {
             menuAnchorEl: null
-        };
+        }
     }
 
     onButtonClick = (event: any) => {
-        this.setState({ menuAnchorEl: event.currentTarget });
+        this.setState({ menuAnchorEl: event.currentTarget })
     }
 
     onMenuClose = () => {
-        this.setState({ menuAnchorEl: null });
+        this.setState({ menuAnchorEl: null })
     }
 
     onLogout = async () => {
-        this.props.auth.logout();
-        this.onMenuClose();
+        this.props.auth.logout()
+        this.onMenuClose()
     }
 
     render() {
-        const user = this.props.auth.currentUser;
+        const user = this.props.auth.currentUser
         return (
             <div>
                 <IconButton
@@ -59,6 +59,6 @@ export const UserMenu = withAuthContext(
                     <MenuItem onClick={this.onLogout}>Logout</MenuItem>
                 </Menu>
             </div>
-        );
+        )
     }
-});
+})

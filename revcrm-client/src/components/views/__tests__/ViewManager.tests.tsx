@@ -1,20 +1,20 @@
 
-import * as React from 'react';
-import * as TestRenderer from 'react-test-renderer';
-import { ViewManager, IViewManagerContext, withViewManagerContext, IViewManagerContextProp } from '../ViewManager';
-import { createMemoryHistory } from 'history';
-import { UI, IPerspective, IView } from '../../../UIManager';
-import { sleep } from '../../../utils/sleep';
+import * as React from 'react'
+import * as TestRenderer from 'react-test-renderer'
+import { ViewManager, IViewManagerContext, withViewManagerContext, IViewManagerContextProp } from '../ViewManager'
+import { createMemoryHistory } from 'history'
+import { UI, IPerspective, IView } from '../../../UIManager'
+import { sleep } from '../../../utils/sleep'
 
 describe('<ViewManager />', () => {
     // let renderer: TestRenderer.ReactTestRenderer;
     // let instance: TestRenderer.ReactTestInstance;
-    let receivedCtx: IViewManagerContext;
+    let receivedCtx: IViewManagerContext
 
     const ViewContextSpy = withViewManagerContext((props: IViewManagerContextProp) => {
-        receivedCtx = props.viewManagerCtx;
-        return <div />;
-    });
+        receivedCtx = props.viewManagerCtx
+        return <div />
+    })
 
     const mockPerspective: IPerspective = {
         id: 'dashboard',
@@ -29,109 +29,109 @@ describe('<ViewManager />', () => {
                 viewId: 'dashboard_team',
             }
         }
-    };
-    UI.registerPerspective(mockPerspective);
+    }
+    UI.registerPerspective(mockPerspective)
 
     const mockMyView: IView = {
         id: 'dashboard',
         model: null,
         component: () => <div id="mockMyDashboard" />
-    };
-    UI.registerView(mockMyView);
+    }
+    UI.registerView(mockMyView)
 
     const mockTeamView: IView = {
         id: 'dashboard_team',
         model: null,
         component: () => <div id="mockTeamDashboard" />
-    };
-    UI.registerView(mockTeamView);
+    }
+    UI.registerView(mockTeamView)
 
     describe('initialisation - when a matching url is set', () => {
-        const expectedUrl = '/dashboard/team';
+        const expectedUrl = '/dashboard/team'
 
         beforeAll(() => {
-            receivedCtx = null as any;
+            receivedCtx = null as any
             const history = createMemoryHistory({
                 initialEntries: ['/dashboard/team']
-            });
+            })
             TestRenderer.create(
                 <ViewManager history={history}>
                     <ViewContextSpy />
                 </ViewManager>
-            );
-        });
+            )
+        })
 
         it('stays at expected url', () => {
-            expect(receivedCtx.history.location.pathname).toEqual(expectedUrl);
-        });
+            expect(receivedCtx.history.location.pathname).toEqual(expectedUrl)
+        })
 
         it('sets correct perspective and view in the context', () => {
-            expect(receivedCtx.perspective).toEqual(mockPerspective);
-            expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views['team']);
-            expect(receivedCtx.view).toEqual(mockTeamView);
-        });
+            expect(receivedCtx.perspective).toEqual(mockPerspective)
+            expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views['team'])
+            expect(receivedCtx.view).toEqual(mockTeamView)
+        })
 
-    });
+    })
 
     describe('initialisation - when a non-matching URL is set', () => {
-        const nonMatchingUrl = '/no_existy';
+        const nonMatchingUrl = '/no_existy'
 
         beforeAll(() => {
-            receivedCtx = null as any;
+            receivedCtx = null as any
             const history = createMemoryHistory({
                 initialEntries: [nonMatchingUrl]
-            });
+            })
             TestRenderer.create(
                 <ViewManager history={history}>
                     <ViewContextSpy />
                 </ViewManager>
-            );
-        });
+            )
+        })
 
         it('stays at expected url', () => {
-            expect(receivedCtx.history.location.pathname).toEqual(nonMatchingUrl);
-        });
+            expect(receivedCtx.history.location.pathname).toEqual(nonMatchingUrl)
+        })
 
         it('perspective and view context is null', () => {
-            expect(receivedCtx.perspective).toEqual(null);
-            expect(receivedCtx.perspectiveView).toEqual(null);
-            expect(receivedCtx.view).toEqual(null);
-        });
+            expect(receivedCtx.perspective).toEqual(null)
+            expect(receivedCtx.perspectiveView).toEqual(null)
+            expect(receivedCtx.view).toEqual(null)
+        })
 
-    });
+    })
 
     describe('when channging perspective', () => {
-        const firstPerspectiveUrl = '/dashboard/team';
-        const secondPerspectiveUrl = '/dashboard/my';
+        const firstPerspectiveUrl = '/dashboard/team'
+        const secondPerspectiveUrl = '/dashboard/my'
 
         beforeAll(() => {
-            receivedCtx = null as any;
+            receivedCtx = null as any
             const history = createMemoryHistory({
                 initialEntries: [firstPerspectiveUrl]
-            });
+            })
             TestRenderer.create(
                 <ViewManager history={history}>
                     <ViewContextSpy />
                 </ViewManager>
-            );
-        });
+            )
+        })
 
         it('starts at expected URL', () => {
-            expect(receivedCtx.history.location.pathname).toEqual(firstPerspectiveUrl);
-        });
+            expect(receivedCtx.history.location.pathname).toEqual(firstPerspectiveUrl)
+        })
 
         it('calling changePerspective redirects to the new URL', async () => {
-            receivedCtx.changePerspective('dashboard', 'my');
-            await sleep(10);
-            expect(receivedCtx.history.location.pathname).toEqual(secondPerspectiveUrl);
-        });
+            receivedCtx.changePerspective('dashboard', 'my')
+            await sleep(10)
+            expect(receivedCtx.history.location.pathname).toEqual(secondPerspectiveUrl)
+        })
 
         it('sets correct perspective and view in the context', () => {
-            expect(receivedCtx.perspective).toEqual(mockPerspective);
-            expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views['my']);
-            expect(receivedCtx.view).toEqual(mockMyView);
-        });
+            expect(receivedCtx.perspective).toEqual(mockPerspective)
+            expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views['my'])
+            expect(receivedCtx.view).toEqual(mockMyView)
+        })
 
-    });
+    })
 
-});
+})

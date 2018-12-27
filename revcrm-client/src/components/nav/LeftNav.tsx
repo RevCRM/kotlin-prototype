@@ -1,19 +1,19 @@
-import * as React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { Divider, createStyles, withStyles, WithStyles, Icon, Collapse, Typography } from '@material-ui/core';
-import { IMenuItem, IMenuSubItem } from './types';
-import { UI } from '../../UIManager';
-import { withViewManagerContext, IViewManagerContextProp } from '../views/ViewManager';
+import * as React from 'react'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import { Divider, createStyles, withStyles, WithStyles, Icon, Collapse, Typography } from '@material-ui/core'
+import { IMenuItem, IMenuSubItem } from './types'
+import { UI } from '../../UIManager'
+import { withViewManagerContext, IViewManagerContextProp } from '../views/ViewManager'
 
 const styles = createStyles({
     listItemText: {
         padding: 0,
         whiteSpace: 'nowrap'
     }
-});
+})
 
 export interface ILeftNavProps extends
     WithStyles<typeof styles>,
@@ -23,17 +23,17 @@ export interface ILeftNavProps extends
 export interface ILeftNavState {
     expandedMenus: {
         [id: string]: boolean
-    };
+    }
 }
 
 export const LeftNav = withStyles(styles)(withViewManagerContext(
     class extends React.Component<ILeftNavProps, ILeftNavState> {
 
     constructor(props: any) {
-        super(props);
+        super(props)
         this.state = {
             expandedMenus: {}
-        };
+        }
     }
 
     onMainButtonClick(item: IMenuItem) {
@@ -42,21 +42,21 @@ export const LeftNav = withStyles(styles)(withViewManagerContext(
                 ...state.expandedMenus,
                 [item.id]: !state.expandedMenus[item.id]
             }
-        }));
+        }))
     }
 
     onSubItemClick(item: IMenuSubItem) {
         this.props.viewManagerCtx.changePerspective(
             item.perspective, item.view
-        );
+        )
     }
 
     render() {
-        const MENU = UI.getMenus();
+        const MENU = UI.getMenus()
         return (
             <List>
                 {MENU.map((item) => {
-                    const expanded = Boolean(this.state.expandedMenus[item.id]);
+                    const expanded = Boolean(this.state.expandedMenus[item.id])
                     return (<div key={item.id}>
                         <ListItem button onClick={() => this.onMainButtonClick(item)}>
                             <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
@@ -78,7 +78,7 @@ export const LeftNav = withStyles(styles)(withViewManagerContext(
                                 </List>
                             </Collapse>
                         }
-                    </div>);
+                    </div>)
                 })}
                 <Divider />
                 <ListItem button>
@@ -89,7 +89,7 @@ export const LeftNav = withStyles(styles)(withViewManagerContext(
                     />
                 </ListItem>
             </List>
-        );
+        )
 
     }
-}));
+}))

@@ -1,6 +1,6 @@
 
-import { UIManager } from '../../UIManager';
-import { Dashboard } from './components/Dashboard';
+import { UIManager } from '../../UIManager'
+import { Dashboard } from './components/Dashboard'
 
 export function register(ui: UIManager) {
 
@@ -13,13 +13,13 @@ export function register(ui: UIManager) {
                 viewId: 'my_dashboard',
             },
         }
-    });
+    })
 
     ui.registerView({
         id: 'my_dashboard',
         model: null,
         component: Dashboard
-    });
+    })
 
     ui.registerMenu({
         id: 'menu_dashboard',
@@ -29,6 +29,6 @@ export function register(ui: UIManager) {
             { label: 'My Dashboard', perspective: 'dashboard', view: 'my' },
             { label: 'Team Dashboard', perspective: 'dashboard', view: 'team' },
         ]
-    });
+    })
 
 }

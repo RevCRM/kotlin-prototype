@@ -1,17 +1,17 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import { Hidden, Icon, Badge } from '@material-ui/core';
-import { LeftNav } from './LeftNav';
-import { CONFIG } from '../../config';
-import { UserMenu } from './UserMenu';
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import { withStyles, WithStyles, createStyles, Theme } from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
+import { Hidden, Icon, Badge } from '@material-ui/core'
+import { LeftNav } from './LeftNav'
+import { CONFIG } from '../../config'
+import { UserMenu } from './UserMenu'
 
-const leftNavWidth = 260;
+const leftNavWidth = 260
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -45,26 +45,26 @@ export const styles = (theme: Theme) => createStyles({
     mainBody: {
         width: '100%'
     }
-});
+})
 
 export interface INavigationState {
-    leftNavOpen: boolean;
+    leftNavOpen: boolean
 }
 
 export const Navigation = withStyles(styles)(
     class extends React.Component<WithStyles<typeof styles>, INavigationState> {
 
     constructor(props: any) {
-        super(props);
+        super(props)
         this.state = {
             leftNavOpen: false
-        };
+        }
     }
 
     onClickMenuButton = () => {
         this.setState((prevState) => ({
             leftNavOpen: !prevState.leftNavOpen
-        }));
+        }))
     }
 
     render() {
@@ -130,7 +130,7 @@ export const Navigation = withStyles(styles)(
                 </main>
 
             </div>
-        );
+        )
     }
 
-});
+})

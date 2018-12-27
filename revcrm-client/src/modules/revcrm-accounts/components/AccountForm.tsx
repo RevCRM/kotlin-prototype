@@ -1,6 +1,6 @@
 
-import * as React from 'react';
-import { Typography, Paper, Icon, Theme, createStyles, withStyles, WithStyles, IconButton, Button } from '@material-ui/core';
+import * as React from 'react'
+import { Typography, Paper, Icon, Theme, createStyles, withStyles, WithStyles, IconButton, Button } from '@material-ui/core'
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -20,7 +20,7 @@ export const styles = (theme: Theme) => createStyles({
         marginBottom: -12,
     },
     form: {}
-});
+})
 
 export const AccountForm = withStyles(styles)((props: WithStyles<typeof styles>) => (
     <div className={props.classes.root}>
@@ -41,4 +41,4 @@ export const AccountForm = withStyles(styles)((props: WithStyles<typeof styles>)
             <h2>Form Goes Here...</h2>
         </div>
     </div>
-));
+))

@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { Typography, Grid, Card, CardHeader, TableHead, Table, TableCell, Checkbox, TableBody, TableRow, IconButton, Icon } from '@material-ui/core';
-import { Bar } from 'britecharts-react';
-import withResponsiveness from 'britecharts-react/lib/esm/helpers/withResponsiveness';
-import { colors } from 'britecharts';
+import * as React from 'react'
+import { Typography, Grid, Card, CardHeader, TableHead, Table, TableCell, Checkbox, TableBody, TableRow, IconButton, Icon } from '@material-ui/core'
+import { Bar } from 'britecharts-react'
+import withResponsiveness from 'britecharts-react/lib/esm/helpers/withResponsiveness'
+import { colors } from 'britecharts'
 
-const ResponsiveBarChart = withResponsiveness(Bar);
+const ResponsiveBarChart = withResponsiveness(Bar)
 
 const oppoData = [
     {
@@ -19,7 +19,7 @@ const oppoData = [
         value: 8500000,
         name: 'Negotiating'
     },
-];
+]
 
 export const Dashboard: React.SFC = () => (
     <div style={{ margin: 16 }}>
@@ -110,4 +110,4 @@ export const Dashboard: React.SFC = () => (
             </Grid>
         </Grid>
     </div>
-);
+)

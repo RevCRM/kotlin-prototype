@@ -1,7 +1,7 @@
 
-import { UIManager } from '../../UIManager';
-import { AccountList } from './components/AccountList';
-import { AccountForm } from './components/AccountForm';
+import { UIManager } from '../../UIManager'
+import { AccountList } from './components/AccountList'
+import { AccountForm } from './components/AccountForm'
 
 export function register(ui: UIManager) {
 
@@ -22,19 +22,19 @@ export function register(ui: UIManager) {
                 viewId: 'accounts_form',
             },
         }
-    });
+    })
 
     ui.registerView({
         id: 'accounts_company_list',
         model: 'account',
         component: AccountList
-    });
+    })
 
     ui.registerView({
         id: 'accounts_form',
         model: 'account',
         component: AccountForm
-    });
+    })
 
     ui.registerMenu({
         id: 'menu_accounts',
@@ -47,6 +47,6 @@ export function register(ui: UIManager) {
             { label: 'Leads', perspective: 'accounts', view: 'leads' },
             { label: 'Data Import', perspective: 'accounts', view: 'form' },
         ]
-    });
+    })
 
 }

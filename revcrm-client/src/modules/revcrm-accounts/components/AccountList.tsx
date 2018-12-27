@@ -1,7 +1,7 @@
 
-import * as React from 'react';
-import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Table, TableHead, TableRow, TableCell, TableBody, Toolbar, IconButton, Checkbox } from '@material-ui/core';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import * as React from 'react'
+import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Table, TableHead, TableRow, TableCell, TableBody, Toolbar, IconButton, Checkbox } from '@material-ui/core'
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -47,7 +47,7 @@ export const styles = (theme: Theme) => createStyles({
             backgroundColor: theme.palette.background.default,
         },
     },
-});
+})
 
 export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>) => (
     <div className={props.classes.root}>
@@ -164,4 +164,4 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
             </Table>
         </div>
     </div>
-));
+))

@@ -1,15 +1,15 @@
 
-import * as React from 'react';
-import * as TestRenderer from 'react-test-renderer';
-import { ViewManager } from '../ViewManager';
-import { View } from '../View';
-import { createMemoryHistory } from 'history';
-import { UI, IPerspective, IView } from '../../../UIManager';
-import { Typography } from '@material-ui/core';
+import * as React from 'react'
+import * as TestRenderer from 'react-test-renderer'
+import { ViewManager } from '../ViewManager'
+import { View } from '../View'
+import { createMemoryHistory } from 'history'
+import { UI, IPerspective, IView } from '../../../UIManager'
+import { Typography } from '@material-ui/core'
 
 describe('<View />', () => {
-    let renderer: TestRenderer.ReactTestRenderer;
-    let instance: TestRenderer.ReactTestInstance;
+    let renderer: TestRenderer.ReactTestRenderer
+    let instance: TestRenderer.ReactTestInstance
 
     const mockPerspective: IPerspective = {
         id: 'dashboard',
@@ -20,56 +20,56 @@ describe('<View />', () => {
                 viewId: 'dashboard',
             },
         }
-    };
-    UI.registerPerspective(mockPerspective);
+    }
+    UI.registerPerspective(mockPerspective)
 
     const mockMyView: IView = {
         id: 'dashboard',
         model: null,
         component: () => <div id="mockMyDashboard" />
-    };
-    UI.registerView(mockMyView);
+    }
+    UI.registerView(mockMyView)
 
     describe('when a Perspective and View is matched', () => {
 
         beforeAll(() => {
             const history = createMemoryHistory({
                 initialEntries: ['/dashboard/my']
-            });
+            })
             renderer = TestRenderer.create(
                 <ViewManager history={history}>
                     <View />
                 </ViewManager>
-            );
-            instance = renderer.root;
-        });
+            )
+            instance = renderer.root
+        })
 
         it('renders the expected component', () => {
             expect(instance.findAll((el) =>
                 el.type == 'div' && el.props.id == 'mockMyDashboard'
-            ).length).toEqual(1);
-        });
+            ).length).toEqual(1)
+        })
 
-    });
+    })
 
     describe('when a Perspective and View is not matched', () => {
 
         beforeAll(() => {
             const history = createMemoryHistory({
                 initialEntries: ['/no_existy']
-            });
+            })
             renderer = TestRenderer.create(
                 <ViewManager history={history}>
                     <View />
                 </ViewManager>
-            );
-            instance = renderer.root;
-        });
+            )
+            instance = renderer.root
+        })
 
         it('renders the expected component', () => {
-            expect(instance.findByType(Typography).props.children).toEqual('Not Found');
-        });
+            expect(instance.findByType(Typography).props.children).toEqual('Not Found')
+        })
 
-    });
+    })
 
-});
+})

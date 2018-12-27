@@ -1,8 +1,8 @@
 
-import * as React from 'react';
-import { Theme, createStyles, CircularProgress, withStyles, WithStyles, Typography, Button } from '@material-ui/core';
-import { withAuthContext, IAuthContextProp } from './auth/AuthContext';
-import { CONFIG } from '../config';
+import * as React from 'react'
+import { Theme, createStyles, CircularProgress, withStyles, WithStyles, Typography, Button } from '@material-ui/core'
+import { withAuthContext, IAuthContextProp } from './auth/AuthContext'
+import { CONFIG } from '../config'
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -17,12 +17,12 @@ const styles = (theme: Theme) => createStyles({
     loader: {
         color: '#fff'
     }
-});
+})
 
 export interface IAppLoaderProps extends
         WithStyles<typeof styles>,
         IAuthContextProp {
-    children: any;
+    children: any
 }
 
 export const AppLoader = withAuthContext(withStyles(styles)((props: IAppLoaderProps) => {
@@ -41,16 +41,16 @@ export const AppLoader = withAuthContext(withStyles(styles)((props: IAppLoaderPr
                     </Button>
                 </div>
             </div>
-        );
+        )
     }
     else if (props.auth.authState == 'logged_in') {
-        return props.children;
+        return props.children
     }
     else {
         return (
             <div className={props.classes.root}>
                 <CircularProgress className={props.classes.loader} />
             </div>
-        );
+        )
     }
-}));
+}))
