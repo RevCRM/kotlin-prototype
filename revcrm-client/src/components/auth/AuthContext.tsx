@@ -107,7 +107,7 @@ export function withAuthContext<
 >(
     Component: React.ComponentType<TComponentProps>
 ): React.ComponentType<TWrapperProps> {
-    return (props: TWrapperProps): React.ReactElement<TComponentProps> => (
+    return (props: any): React.ReactElement<TComponentProps> => (
         <AuthContext.Consumer>{(auth) => (
             <Component auth={auth} {...props} />
         )}</AuthContext.Consumer>

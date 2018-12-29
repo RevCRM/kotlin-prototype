@@ -106,7 +106,7 @@ export function withViewManagerContext<
 >(
     Component: React.ComponentType<TComponentProps>
 ): React.ComponentType<TWrapperProps> {
-    return (props: TWrapperProps): React.ReactElement<TComponentProps> => (
+    return (props: any): React.ReactElement<TComponentProps> => (
         <ViewManagerContext.Consumer>{(ctx) => (
             <Component viewManagerCtx={ctx} {...props} />
         )}</ViewManagerContext.Consumer>
