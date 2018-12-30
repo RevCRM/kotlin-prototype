@@ -110,8 +110,8 @@ class DBServiceTests {
         }
 
         @Test
-        fun `LocalDateTime field returns expected metadata`() {
-            assertThat(fieldsEntity.fields["datetime_field"]!!.jvmType).isEqualTo("java.time.LocalDateTime")
+        fun `OffsetDateTime field returns expected metadata`() {
+            assertThat(fieldsEntity.fields["datetime_field"]!!.jvmType).isEqualTo("java.time.OffsetDateTime")
         }
 
         @Test

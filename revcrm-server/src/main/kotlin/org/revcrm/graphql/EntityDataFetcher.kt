@@ -2,13 +2,13 @@ package org.revcrm.graphql
 
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
-import org.revcrm.meta.EntityMetadata
+import org.revcrm.meta.Entity
 import org.revcrm.graphql.schema.getOrderBy
 import org.revcrm.graphql.schema.getWhere
 import xyz.morphia.query.FindOptions
 
 class EntityDataFetcher(
-    private val entity: EntityMetadata
+    private val entity: Entity
 ) : DataFetcher<Any> {
 
     override fun get(environment: DataFetchingEnvironment): Any {

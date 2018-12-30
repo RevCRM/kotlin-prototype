@@ -6,7 +6,7 @@ import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.LocalTime
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
@@ -30,7 +30,7 @@ class TestFieldsEntity(
     var boolean_field: Boolean,
     var date_field: LocalDate,
     var time_field: LocalTime,
-    var datetime_field: LocalDateTime,
+    var datetime_field: OffsetDateTime,
 
     var enum_field: EnumFieldOptions
 ) : Base()

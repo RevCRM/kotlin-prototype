@@ -3,33 +3,25 @@ package org.revcrm.graphql.schema
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLTypeReference
+import graphql.schema.GraphQLOutputType
 import graphql.schema.PropertyDataFetcher
-import org.revcrm.meta.EntityMetadata
+import org.revcrm.meta.Entity
 
-fun buildEntityObjectType(schema: APISchema, entity: EntityMetadata): GraphQLObjectType {
+fun buildEntityObjectType(schema: APISchema, entity: Entity): GraphQLObjectType {
 
     val entityTypeBuilder = GraphQLObjectType.newObject()
         .name(entity.name)
 
     entity.fields.forEach { _, field ->
 
-        var fieldType = schema.getGraphQLScalarTypeForField(field)
-        if (fieldType == null) {
-            val relatedEntity = schema.meta.getEntityByClassName(field.jvmType)
-            if (relatedEntity != null) {
-                fieldType = GraphQLTypeReference(relatedEntity.name)
-            } else {
-                throw Error("Field type '${field.jvmType}' for field '${entity.name}.${field.name}' has no registered GraphQL Mapping.")
-            }
-        }
+        var fieldType = field.getGraphQLType(schema.meta, entity)
 
         val fieldDef = GraphQLFieldDefinition.newFieldDefinition()
             .name(field.name)
             .dataFetcher(PropertyDataFetcher.fetching<Any>(field.name))
 
         if (field.nullable) {
-            fieldDef.type(fieldType)
+            fieldDef.type(fieldType as GraphQLOutputType)
         } else {
             fieldDef.type(GraphQLNonNull(fieldType))
         }

@@ -6,17 +6,18 @@ import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import org.revcrm.db.DBService
 import org.revcrm.graphql.schema.APISchema
+import org.revcrm.meta.MetadataService
 
 class APIService(
-    private val dbService: DBService
+    private val dbService: DBService,
+    private val meta: MetadataService
 ) {
     lateinit var graphQLSchema: GraphQLSchema
     private lateinit var graphQLExecutor: GraphQL
     private lateinit var schema: APISchema
 
     fun initialise() {
-        var crmMeta = dbService.getEntityMetadata()
-        schema = APISchema(crmMeta)
+        schema = APISchema(meta)
         graphQLSchema = schema.build()
         graphQLExecutor = GraphQL.newGraphQL(graphQLSchema).build()
     }

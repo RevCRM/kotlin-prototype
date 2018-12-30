@@ -13,63 +13,63 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.meta.CRMMetadata
 import org.revcrm.db.DBService
-import org.revcrm.meta.EntityMetadata
-import org.revcrm.meta.FieldMetadata
+import org.revcrm.meta.Entity
+import org.revcrm.meta.EntityField
 
 class EntityMetadata {
 
     val meta = CRMMetadata(
         mapOf(
-            "SensitiveEntity" to EntityMetadata(
+            "SensitiveEntity" to Entity(
                 name = "SensitiveEntity",
                 apiEnabled = false,
                 className = "test.SensitiveEntity",
                 fields = mapOf(
-                    "name" to FieldMetadata(
+                    "name" to EntityField(
                         name = "name", jvmType = "java.lang.String",
                         nullable = false
                     )
                 )
             ),
-            "TestFieldsEntity" to EntityMetadata(
+            "TestFieldsEntity" to Entity(
                 name = "TestFieldsEntity",
                 apiEnabled = true,
                 className = "test.TestFieldsEntity",
                 fields = mapOf(
-                    "id_field" to FieldMetadata(name = "id_field", jvmType = "org.bson.types.ObjectId"),
-                    "int_field" to FieldMetadata(name = "int_field", jvmType = "int"),
-                    "short_field" to FieldMetadata(name = "short_field", jvmType = "short"),
-                    "long_field" to FieldMetadata(name = "long_field", jvmType = "long"),
-                    "float_field" to FieldMetadata(name = "float_field", jvmType = "float"),
-                    "double_field" to FieldMetadata(name = "double_field", jvmType = "double"),
-                    "boolean_field" to FieldMetadata(name = "boolean_field", jvmType = "boolean"),
-                    "string_field" to FieldMetadata(
+                    "id_field" to EntityField(name = "id_field", jvmType = "org.bson.types.ObjectId"),
+                    "int_field" to EntityField(name = "int_field", jvmType = "int"),
+                    "short_field" to EntityField(name = "short_field", jvmType = "short"),
+                    "long_field" to EntityField(name = "long_field", jvmType = "long"),
+                    "float_field" to EntityField(name = "float_field", jvmType = "float"),
+                    "double_field" to EntityField(name = "double_field", jvmType = "double"),
+                    "boolean_field" to EntityField(name = "boolean_field", jvmType = "boolean"),
+                    "string_field" to EntityField(
                         name = "string_field",
                         jvmType = "java.lang.String"
                     ),
-                    "date_field" to FieldMetadata(name = "date_field", jvmType = "java.time.LocalDate"),
-                    "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
-                    "datetime_field" to FieldMetadata(
+                    "date_field" to EntityField(name = "date_field", jvmType = "java.time.LocalDate"),
+                    "time_field" to EntityField(name = "time_field", jvmType = "java.time.LocalTime"),
+                    "datetime_field" to EntityField(
                         name = "datetime_field",
-                        jvmType = "java.time.LocalDateTime"
+                        jvmType = "java.time.OffsetDateTime"
                     ),
-                    "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
-                    "enum_field" to FieldMetadata(
+                    "time_field" to EntityField(name = "time_field", jvmType = "java.time.LocalTime"),
+                    "enum_field" to EntityField(
                         name = "enum_field", jvmType = "enum",
                         jvmSubtype = "org.revcrm.testdb.EnumFieldOptions"
                     )
                 )
             ),
-            "TestConstraintsEntity" to EntityMetadata(
+            "TestConstraintsEntity" to Entity(
                 name = "TestConstraintsEntity",
                 apiEnabled = true,
                 className = "test.TestConstraintsEntity",
                 fields = mapOf(
-                    "nullable_field" to FieldMetadata(
+                    "nullable_field" to EntityField(
                         name = "nullable_field", jvmType = "java.lang.String",
                         nullable = true
                     ),
-                    "non_nullable_field" to FieldMetadata(
+                    "non_nullable_field" to EntityField(
                         name = "non_nullable_field", jvmType = "java.lang.String",
                         nullable = false
                     )

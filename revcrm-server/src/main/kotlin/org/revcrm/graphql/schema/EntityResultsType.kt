@@ -5,9 +5,9 @@ import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLTypeReference
 import graphql.schema.PropertyDataFetcher
-import org.revcrm.meta.EntityMetadata
+import org.revcrm.meta.Entity
 
-fun buildEntityResultsType(schema: APISchema, entity: EntityMetadata): GraphQLObjectType {
+fun buildEntityResultsType(schema: APISchema, entity: Entity): GraphQLObjectType {
     return GraphQLObjectType.newObject()
         .name(entity.name + "Results")
         .field(
