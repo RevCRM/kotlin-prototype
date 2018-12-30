@@ -1,6 +1,6 @@
-package org.revcrm.models.common
+package org.revcrm.entities.common
 
-import org.revcrm.models.BaseModel
+import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 
 @Entity
@@ -10,13 +10,13 @@ class SelectionList(
     var label: String
 //    @Embedded
 //    var options: List<SelectionOption>
-) : BaseModel()
+) : Base()
 
 class SelectionOption(
     var code: String,
     var label: String,
     var seq: Short
-) : BaseModel()
+) : Base()
 
 // fun importSelectionLists(fileName: String, db: DBService) {
 //    val mapper = ObjectMapper(YAMLFactory())

@@ -1,11 +1,11 @@
-package org.revcrm.models
+package org.revcrm.entities
 
 import org.bson.types.ObjectId
 import xyz.morphia.annotations.Id
 import java.time.LocalDateTime
 import xyz.morphia.annotations.PrePersist
 
-abstract class BaseModel {
+abstract class Base {
     @Id
     var id: ObjectId? = null
 

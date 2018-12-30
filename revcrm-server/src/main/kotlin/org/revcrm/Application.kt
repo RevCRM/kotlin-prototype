@@ -23,9 +23,9 @@ import org.revcrm.auth.RevPrincipal
 import org.revcrm.config.Config
 import org.revcrm.data.DBService
 import org.revcrm.graphql.APIService
-import org.revcrm.models.AuthType
-import org.revcrm.models.RevUser
-import org.revcrm.models.RevUserAuth
+import org.revcrm.entities.AuthType
+import org.revcrm.entities.RevUser
+import org.revcrm.entities.RevUserAuth
 import org.revcrm.routes.graphQL
 import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck

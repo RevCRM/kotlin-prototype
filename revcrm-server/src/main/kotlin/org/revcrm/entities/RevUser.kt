@@ -1,4 +1,4 @@
-package org.revcrm.models
+package org.revcrm.entities
 
 import org.revcrm.annotations.Field
 import xyz.morphia.annotations.Entity
@@ -19,4 +19,4 @@ class RevUser(
 
     var last_login: LocalDateTime? = null
 
-) : BaseModel()
+) : Base()

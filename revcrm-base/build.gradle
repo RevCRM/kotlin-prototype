@@ -1,5 +1,5 @@
 
-description = 'RevCRM Base Models'
+description = 'RevCRM Base Entities'
 
 dependencies {
     implementation(project(':revcrm-server'))

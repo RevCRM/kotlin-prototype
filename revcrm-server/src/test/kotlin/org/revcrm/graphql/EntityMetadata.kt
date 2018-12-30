@@ -20,10 +20,10 @@ class EntityMetadata {
 
     val meta = CRMMetadata(
         mapOf(
-            "SensitiveModel" to EntityMetadata(
-                name = "SensitiveModel",
+            "SensitiveEntity" to EntityMetadata(
+                name = "SensitiveEntity",
                 apiEnabled = false,
-                className = "test.SensitiveModel",
+                className = "test.SensitiveEntity",
                 fields = mapOf(
                     "name" to FieldMetadata(
                             name = "name", jvmType = "java.lang.String",
@@ -31,10 +31,10 @@ class EntityMetadata {
                     )
                 )
             ),
-            "TestFieldsModel" to EntityMetadata(
-                name = "TestFieldsModel",
+            "TestFieldsEntity" to EntityMetadata(
+                name = "TestFieldsEntity",
                 apiEnabled = true,
-                className = "test.TestFieldsModel",
+                className = "test.TestFieldsEntity",
                 fields = mapOf(
                     "id_field" to FieldMetadata(name = "id_field", jvmType = "org.bson.types.ObjectId"),
                     "int_field" to FieldMetadata(name = "int_field", jvmType = "int"),
@@ -54,10 +54,10 @@ class EntityMetadata {
                     )
                 )
             ),
-            "TestConstraintsModel" to EntityMetadata(
-                name = "TestConstraintsModel",
+            "TestConstraintsEntity" to EntityMetadata(
+                name = "TestConstraintsEntity",
                 apiEnabled = true,
-                className = "test.TestConstraintsModel",
+                className = "test.TestConstraintsEntity",
                 fields = mapOf(
                     "nullable_field" to FieldMetadata(
                         name = "nullable_field", jvmType = "java.lang.String",
@@ -85,8 +85,8 @@ class EntityMetadata {
     }
 
     val queryType = schema.graphQLSchema.queryType
-    val testFieldsModel = queryType.getFieldDefinition("TestFieldsModel")
-    val testConstraintsModel = queryType.getFieldDefinition("TestConstraintsModel")
+    val testFieldsEntity = queryType.getFieldDefinition("TestFieldsEntity")
+    val testConstraintsEntity = queryType.getFieldDefinition("TestConstraintsEntity")
 
     @Nested
     inner class TopLevelSchema {
@@ -98,53 +98,53 @@ class EntityMetadata {
 
         @Test
         fun `does not register entities with apiEnabled = false`() {
-            assertThat(queryType.getFieldDefinition("SensitiveModel")).isNull()
+            assertThat(queryType.getFieldDefinition("SensitiveEntity")).isNull()
         }
 
         @Test
         fun `registers a GraphQLObjectType for each entity`() {
-            assertThat(testFieldsModel.type is GraphQLObjectType)
-            assertThat(testConstraintsModel.type is GraphQLObjectType)
+            assertThat(testFieldsEntity.type is GraphQLObjectType)
+            assertThat(testConstraintsEntity.type is GraphQLObjectType)
         }
 
         @Test
         fun `Entity root type has "orderBy" argument`() {
-            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "orderBy" }
+            assertThat(testFieldsEntity.arguments).anyMatch { arg -> arg.name == "orderBy" }
 
-            val arg = testFieldsModel.arguments.find { arg -> arg.name == "orderBy" }!!
+            val arg = testFieldsEntity.arguments.find { arg -> arg.name == "orderBy" }!!
             assertThat(arg.type).isInstanceOf(GraphQLList::class.java)
             assertThat((arg.type as GraphQLList).wrappedType).isEqualTo(Scalars.GraphQLString)
         }
 
         @Test
         fun `Entity root type has "where" argument`() {
-            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "where" }
+            assertThat(testFieldsEntity.arguments).anyMatch { arg -> arg.name == "where" }
 
-            val arg = testFieldsModel.arguments.find { arg -> arg.name == "where" }!!
+            val arg = testFieldsEntity.arguments.find { arg -> arg.name == "where" }!!
             assertThat(arg.type).isEqualTo(ExtendedScalars.Json)
         }
 
         @Test
         fun `Entity root type has "limit" argument`() {
-            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "limit" }
-            val arg = testFieldsModel.arguments.find { arg -> arg.name == "limit" }!!
+            assertThat(testFieldsEntity.arguments).anyMatch { arg -> arg.name == "limit" }
+            val arg = testFieldsEntity.arguments.find { arg -> arg.name == "limit" }!!
             assertThat(arg.type).isEqualTo(ExtendedScalars.PositiveInt)
         }
 
         @Test
         fun `Entity root type has "offset" argument`() {
-            assertThat(testFieldsModel.arguments).anyMatch { arg -> arg.name == "offset" }
-            val arg = testFieldsModel.arguments.find { arg -> arg.name == "offset" }!!
+            assertThat(testFieldsEntity.arguments).anyMatch { arg -> arg.name == "offset" }
+            val arg = testFieldsEntity.arguments.find { arg -> arg.name == "offset" }!!
             assertThat(arg.type).isEqualTo(ExtendedScalars.NonNegativeInt)
         }
 
         @Test
         fun `Entity root type contains "results" and "meta" keys`() {
-            val resultsType = testFieldsModel.type as GraphQLObjectType
-            assertThat(resultsType.name).isEqualTo(testFieldsModel.name + "Results")
+            val resultsType = testFieldsEntity.type as GraphQLObjectType
+            assertThat(resultsType.name).isEqualTo(testFieldsEntity.name + "Results")
 
             val resultsListType = resultsType.getFieldDefinition("results").type as GraphQLList
-            assertThat(resultsListType.wrappedType.name).isEqualTo(testFieldsModel.name)
+            assertThat(resultsListType.wrappedType.name).isEqualTo(testFieldsEntity.name)
 
             val metaNode = resultsType.getFieldDefinition("meta")
             assertThat(metaNode.type is GraphQLObjectType)
@@ -154,79 +154,79 @@ class EntityMetadata {
     @Nested
     inner class FieldTypes {
 
-        val resultsType = testFieldsModel.type as GraphQLObjectType
+        val resultsType = testFieldsEntity.type as GraphQLObjectType
         val resultsListType = resultsType.getFieldDefinition("results").type as GraphQLList
-        val testFieldsModelType = resultsListType.wrappedType as GraphQLObjectType
+        val testFieldsEntityType = resultsListType.wrappedType as GraphQLObjectType
 
         @Test
         fun `ObjectId fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("id_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("id_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(GraphQLObjectID)
         }
 
         @Test
         fun `Int fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("int_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("int_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
         }
 
         @Test
         fun `Short fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("short_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("short_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLShort)
         }
 
         @Test
         fun `Long fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("long_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("long_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLLong)
         }
 
         @Test
         fun `Float fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("float_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("float_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLFloat)
         }
 
         @Test
         fun `Double fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("double_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("double_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLFloat)
         }
 
         @Test
         fun `Boolean fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("boolean_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("boolean_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLBoolean)
         }
 
         @Test
         fun `String fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("string_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("string_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
         }
 
         @Test
         fun `Date fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("date_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("date_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
         }
 
         @Test
         fun `Time fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("time_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("time_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
         }
 
         @Test
         fun `DateTime fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("datetime_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("datetime_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
         }
 
         @Test
         fun `Enum fields are exposed as expected`() {
-            val type = testFieldsModelType.getFieldDefinition("enum_field").type as GraphQLNonNull
+            val type = testFieldsEntityType.getFieldDefinition("enum_field").type as GraphQLNonNull
             val enum = type.wrappedType as GraphQLEnumType
             assertThat(enum.values[0].name).isEqualTo("OPTION1")
             assertThat(enum.values[1].name).isEqualTo("OPTION2")
@@ -236,19 +236,19 @@ class EntityMetadata {
     @Nested
     inner class FieldConstraints {
 
-        val resultsType = testConstraintsModel.type as GraphQLObjectType
+        val resultsType = testConstraintsEntity.type as GraphQLObjectType
         val resultsListType = resultsType.getFieldDefinition("results").type as GraphQLList
-        val testConstraintsModelType = resultsListType.wrappedType as GraphQLObjectType
+        val testConstraintsEntityType = resultsListType.wrappedType as GraphQLObjectType
 
         @Test
         fun `Nullable fields are exposed as expected`() {
-            val type = testConstraintsModelType.getFieldDefinition("nullable_field").type
+            val type = testConstraintsEntityType.getFieldDefinition("nullable_field").type
             assertThat(type).isEqualTo(Scalars.GraphQLString)
         }
 
         @Test
         fun `Non-nullable fields are exposed as expected`() {
-            val type = testConstraintsModelType.getFieldDefinition("non_nullable_field").type as GraphQLNonNull
+            val type = testConstraintsEntityType.getFieldDefinition("non_nullable_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
         }
     }

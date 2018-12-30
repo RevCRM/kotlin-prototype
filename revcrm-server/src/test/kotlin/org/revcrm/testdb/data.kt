@@ -16,10 +16,10 @@ fun resetAccountData(ds: Datastore) {
     TEST_ACCOUNTS.forEach { ds.save(it) }
 }
 
-fun resetTestModel2Data(ds: Datastore) {
-    val col = ds.getCollection(TestModel2::class.java)
+fun resetTestEntity2Data(ds: Datastore) {
+    val col = ds.getCollection(TestEntity2::class.java)
     col.remove(BasicDBObject()) // remove all items
     for (i in 1..30) {
-        ds.save(TestModel2("Record $i", i))
+        ds.save(TestEntity2("Record $i", i))
     }
 }

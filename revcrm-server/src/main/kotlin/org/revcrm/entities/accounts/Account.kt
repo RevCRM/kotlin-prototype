@@ -1,7 +1,7 @@
-package org.revcrm.models.accounts
+package org.revcrm.entities.accounts
 
 import org.revcrm.annotations.Field
-import org.revcrm.models.BaseModel
+import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 
 @Entity
@@ -47,4 +47,4 @@ class Account(
 //    @Field("Address")
 //    var primary_address: Address
 
-) : BaseModel()
+) : Base()

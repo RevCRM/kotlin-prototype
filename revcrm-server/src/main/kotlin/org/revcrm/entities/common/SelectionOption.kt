@@ -1,4 +1,4 @@
-package org.revcrm.models.common
+package org.revcrm.entities.common
 
 // fun importSelectionOptions(fileName: String, db: DBService) {
 //    val mapper = ObjectMapper(YAMLFactory())

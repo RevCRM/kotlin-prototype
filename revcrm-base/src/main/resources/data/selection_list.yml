@@ -2,16 +2,16 @@
 ---
 - code: account.types
   label: Account Types
-  model: account
+  entity: account
 
 - code: account.titles
   label: Contact Titles
-  model: account
+  entity: account
 
 - code: account.tags
   label: Account Tags
-  model: account
+  entity: account
 
 - code: account.countries
   label: Countries
-  model: account
+  entity: account

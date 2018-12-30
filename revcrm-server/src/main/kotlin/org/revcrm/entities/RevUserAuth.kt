@@ -1,4 +1,4 @@
-package org.revcrm.models
+package org.revcrm.entities
 
 import org.revcrm.annotations.APIDisabled
 import xyz.morphia.annotations.Entity
@@ -27,4 +27,4 @@ class RevUserAuth(
     var user: RevUser,
     var auth_type: AuthType,
     var auth_id: String
-) : BaseModel()
+) : Base()

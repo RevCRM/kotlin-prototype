@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.testdb.TEST_ACCOUNTS
 import org.revcrm.testdb.TestDB
-import org.revcrm.testdb.TestModel2
+import org.revcrm.testdb.TestEntity2
 import org.revcrm.testdb.objectIdDeserializer
 import org.revcrm.testdb.resetAccountData
-import org.revcrm.testdb.resetTestModel2Data
+import org.revcrm.testdb.resetTestEntity2Data
 
 class ReadingData {
 
@@ -25,7 +25,7 @@ class ReadingData {
     init {
         testDB.withDB { ds ->
             resetAccountData(ds)
-            resetTestModel2Data(ds)
+            resetTestEntity2Data(ds)
         }
         api.initialise()
     }
@@ -150,12 +150,12 @@ class ReadingData {
         fun `by default we return the first "defaultResultsLimit" results`() {
             val res = api.query("""
                 query {
-                    TestModel2 (orderBy: ["number"]) {
+                    TestEntity2 (orderBy: ["number"]) {
                         $fields
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(20) // hardcoded defaultResultsLimit at the moment
             assertThat(result.meta.totalCount).isGreaterThan(20)
             assertThat(result.results[0].number).isEqualTo(1)
@@ -166,7 +166,7 @@ class ReadingData {
         fun `when "limit" is specified, we return the first n results`() {
             val res = api.query("""
                 query {
-                    TestModel2 (
+                    TestEntity2 (
                         limit: 10,
                         orderBy: ["number"]
                     ) {
@@ -174,7 +174,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(10)
             assertThat(result.meta.totalCount).isGreaterThan(20)
             assertThat(result.results[0].number).isEqualTo(1)
@@ -185,7 +185,7 @@ class ReadingData {
         fun `"limit" can be greater than totalCount`() {
             val res = api.query("""
                 query {
-                    TestModel2 (
+                    TestEntity2 (
                         limit: 100,
                         orderBy: ["number"]
                     ) {
@@ -193,7 +193,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isGreaterThan(20).isLessThan(100)
             assertThat(result.meta.totalCount).isGreaterThan(20)
             assertThat(result.results[0].number).isEqualTo(1)
@@ -204,7 +204,7 @@ class ReadingData {
         fun `I can use "offset" and "limit" to window the results`() {
             val res = api.query("""
                 query {
-                    TestModel2 (
+                    TestEntity2 (
                         offset: 1,
                         limit: 5,
                         orderBy: ["number"]
@@ -213,7 +213,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestModel2", TestModel2::class.java)
+            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(5)
             assertThat(result.meta.totalCount).isGreaterThan(20)
             assertThat(result.results[0].number).isEqualTo(2)

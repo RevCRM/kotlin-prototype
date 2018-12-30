@@ -1,6 +1,6 @@
-package org.revcrm.models.accounts
+package org.revcrm.entities.accounts
 
-import org.revcrm.models.BaseModel
+import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 
 @Entity
@@ -12,4 +12,4 @@ class Address(
     var region: String,
     var postal_code: String,
     var country: String
-) : BaseModel()
+) : Base()

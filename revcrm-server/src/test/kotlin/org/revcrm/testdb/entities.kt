@@ -2,7 +2,7 @@ package org.revcrm.testdb
 
 import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
-import org.revcrm.models.BaseModel
+import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
 import java.time.LocalDate
@@ -20,7 +20,7 @@ enum class EnumFieldOptions {
 }
 
 @Entity
-class TestFieldsModel(
+class TestFieldsEntity(
     var string_field: String,
     var short_field: Short,
     var int_field: Int,
@@ -33,22 +33,22 @@ class TestFieldsModel(
     var datetime_field: LocalDateTime,
 
     var enum_field: EnumFieldOptions
-) : BaseModel()
+) : Base()
 
-abstract class ParentModel {
+abstract class ParentEntity {
     @Id
     var id: ObjectId? = null
     var parentField: String? = null
 }
 
 @Entity
-class TestModel2(
+class TestEntity2(
     var name: String,
     var number: Int
-) : ParentModel()
+) : ParentEntity()
 
 @Entity
-class TestConstraintsModel(
+class TestConstraintsEntity(
     var non_nullable_field: String,
 
     var nullable_field: String?,
@@ -65,13 +65,13 @@ class TestConstraintsModel(
     @field:Max(100)
     var max_field: Int
 
-) : BaseModel()
+) : Base()
 
 @Entity
 @APIDisabled
-class SensitiveModel(
+class SensitiveEntity(
     var name: String
-) : BaseModel()
+) : Base()
 
 @Entity
 class Account(
@@ -80,4 +80,4 @@ class Account(
     var phone: String,
     var email: String,
     var rating: Int
-) : BaseModel()
+) : Base()

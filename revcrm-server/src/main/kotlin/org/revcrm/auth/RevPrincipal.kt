@@ -2,7 +2,7 @@ package org.revcrm.auth
 
 import com.auth0.jwt.interfaces.Payload
 import io.ktor.auth.Principal
-import org.revcrm.models.RevUserAuth
+import org.revcrm.entities.RevUserAuth
 
 class JWTPrincipal(val payload: Payload) : Principal
 
