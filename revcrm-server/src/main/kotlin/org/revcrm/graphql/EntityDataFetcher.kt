@@ -7,6 +7,15 @@ import org.revcrm.graphql.schema.getOrderBy
 import org.revcrm.graphql.schema.getWhere
 import xyz.morphia.query.FindOptions
 
+class EntitySearchResults<T>(
+    val results: List<T>,
+    val meta: EntitySearchMeta
+)
+
+class EntitySearchMeta(
+    val totalCount: Long
+)
+
 class EntityDataFetcher(
     private val entity: Entity
 ) : DataFetcher<Any> {

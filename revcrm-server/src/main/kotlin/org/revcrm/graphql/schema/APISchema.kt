@@ -26,6 +26,7 @@ class APISchema(private val meta: MetadataService) {
         val queryType = GraphQLObjectType.newObject()
             .name("Query")
         registerResultsMetaType(schema, code)
+        registerMetadataQueryType(schema, code, queryType)
 
         /**
          * Register Entity Types
@@ -69,9 +70,12 @@ class APISchema(private val meta: MetadataService) {
                 EntityDataFetcher(entity)
             )
         }
+
+        /**
+         * Construct and return schema
+         */
         schema.query(queryType.build())
         schema.codeRegistry(code.build())
-
         return schema.build()
     }
 }
