@@ -1,7 +1,7 @@
 import * as React from "react"
-import gql from "graphql-tag"
 import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody } from "@material-ui/core"
 import { Query } from "react-apollo"
+import { getEntityQuery } from "../../graphql/queryhelpers"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -22,18 +22,17 @@ export interface IListViewProps extends
     data: string[][]
 }
 
-const ACCOUNT_QUERY = gql`
-    query {
-        Account {
-            results {
-                id
-                org_name
-                first_name
-                last_name
-            }
-        }
-    }
-`
+const ACCOUNT_QUERY = getEntityQuery({
+    entity: "Account",
+    fields: [
+        "id",
+        "org_name",
+        "first_name",
+        "last_name",
+        "phone",
+        "email"
+    ]
+})
 
 export const ListView = withStyles(styles)((props: IListViewProps) =>
 
