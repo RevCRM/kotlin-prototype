@@ -11,7 +11,7 @@ open class RelatedEntityField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
-    override val constraints: Map<String, String>,
+    override val constraints: Map<String, String> = mapOf(),
     val relatedEntity: String
 ) : IField {
 

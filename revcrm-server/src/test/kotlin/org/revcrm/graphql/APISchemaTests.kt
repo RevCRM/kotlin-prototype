@@ -11,82 +11,108 @@ import io.mockk.mockkObject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.revcrm.meta.CRMMetadata
 import org.revcrm.db.DBService
 import org.revcrm.meta.Entity
-import org.revcrm.meta.EntityField
+import org.revcrm.meta.MetadataService
+import org.revcrm.meta.fields.BooleanField
+import org.revcrm.meta.fields.DateField
+import org.revcrm.meta.fields.DateTimeField
+import org.revcrm.meta.fields.EnumField
+import org.revcrm.meta.fields.FloatField
+import org.revcrm.meta.fields.IDField
+import org.revcrm.meta.fields.IField
+import org.revcrm.meta.fields.IntegerField
+import org.revcrm.meta.fields.RelatedEntityField
+import org.revcrm.meta.fields.TextField
+import org.revcrm.meta.fields.TimeField
 
-class EntityMetadata {
+class APISchemaTests {
 
-    val meta = CRMMetadata(
-        mapOf(
-            "SensitiveEntity" to Entity(
-                name = "SensitiveEntity",
-                apiEnabled = false,
-                className = "test.SensitiveEntity",
-                fields = mapOf(
-                    "name" to EntityField(
-                        name = "name", jvmType = "java.lang.String",
-                        nullable = false
-                    )
+    /**
+     * Create mock metadata
+     */
+    val entities = listOf<Entity>(
+        Entity(
+            name = "SensitiveEntity",
+            apiEnabled = false,
+            className = "test.SensitiveEntity",
+            fields = mapOf(
+                "name" to TextField(
+                    name = "name", label = "Name",
+                    jvmType = "java.lang.String",
+                    nullable = false, constraints = mapOf()
                 )
-            ),
-            "TestFieldsEntity" to Entity(
-                name = "TestFieldsEntity",
-                apiEnabled = true,
-                className = "test.TestFieldsEntity",
-                fields = mapOf(
-                    "id_field" to EntityField(name = "id_field", jvmType = "org.bson.types.ObjectId"),
-                    "int_field" to EntityField(name = "int_field", jvmType = "int"),
-                    "short_field" to EntityField(name = "short_field", jvmType = "short"),
-                    "long_field" to EntityField(name = "long_field", jvmType = "long"),
-                    "float_field" to EntityField(name = "float_field", jvmType = "float"),
-                    "double_field" to EntityField(name = "double_field", jvmType = "double"),
-                    "boolean_field" to EntityField(name = "boolean_field", jvmType = "boolean"),
-                    "string_field" to EntityField(
-                        name = "string_field",
-                        jvmType = "java.lang.String"
-                    ),
-                    "date_field" to EntityField(name = "date_field", jvmType = "java.time.LocalDate"),
-                    "time_field" to EntityField(name = "time_field", jvmType = "java.time.LocalTime"),
-                    "datetime_field" to EntityField(
-                        name = "datetime_field",
-                        jvmType = "java.time.LocalDateTime"
-                    ),
-                    "time_field" to EntityField(name = "time_field", jvmType = "java.time.LocalTime"),
-                    "enum_field" to EntityField(
-                        name = "enum_field", jvmType = "enum",
-                        jvmSubtype = "org.revcrm.testdb.EnumFieldOptions"
-                    )
-                )
-            ),
-            "TestConstraintsEntity" to Entity(
-                name = "TestConstraintsEntity",
-                apiEnabled = true,
-                className = "test.TestConstraintsEntity",
-                fields = mapOf(
-                    "nullable_field" to EntityField(
-                        name = "nullable_field", jvmType = "java.lang.String",
-                        nullable = true
-                    ),
-                    "non_nullable_field" to EntityField(
-                        name = "non_nullable_field", jvmType = "java.lang.String",
-                        nullable = false
-                    )
+            )
+        ),
+        Entity(
+            name = "TestFieldsEntity",
+            apiEnabled = true,
+            className = "test.TestFieldsEntity",
+            fields = mapOf<String, IField>(
+                "id_field" to IDField(name = "id_field", label = "ID",
+                    jvmType = "org.bson.types.ObjectId", nullable = false),
+                "int_field" to IntegerField(name = "int_field", label = "Integer Field",
+                    jvmType = "int", nullable = false, constraints = mapOf()),
+                "short_field" to IntegerField(name = "short_field", label = "Short Field",
+                    jvmType = "short", nullable = false, constraints = mapOf()),
+                "long_field" to IntegerField(name = "long_field", label = "Long Field",
+                    jvmType = "long", nullable = false, constraints = mapOf()),
+                "float_field" to FloatField(name = "float_field", label = "Float Field",
+                    jvmType = "float", nullable = false, constraints = mapOf()),
+                "double_field" to FloatField(name = "double_field", label = "Double Field",
+                    jvmType = "double", nullable = false, constraints = mapOf()),
+                "boolean_field" to BooleanField(name = "boolean_field", label = "Boolean Field",
+                    jvmType = "boolean", nullable = false),
+                "string_field" to TextField(name = "string_field", label = "String Field",
+                    jvmType = "java.lang.String", nullable = false, constraints = mapOf()),
+                "date_field" to DateField(name = "date_field", label = "Date Field",
+                    jvmType = "java.time.LocalDate", nullable = false, constraints = mapOf()),
+                "time_field" to TimeField(name = "time_field", label = "Time Field",
+                    jvmType = "java.time.LocalTime", nullable = false, constraints = mapOf()),
+                "datetime_field" to DateTimeField(name = "datetime_field", label = "DateTime Field",
+                    jvmType = "java.time.LocalDateTime", nullable = false, constraints = mapOf()),
+                "enum_field" to EnumField(name = "enum_field", label = "Enum Field",
+                    jvmType = "org.revcrm.testdb.EnumFieldOptions", nullable = false),
+                "related_field" to RelatedEntityField(name = "related_field", label = "RelatedEntity Field",
+                    jvmType = "org.revcrm.testdb.TestConstraintsEntity", nullable = false, relatedEntity = "TestConstraintsEntity")
+            )
+        ),
+        Entity(
+            name = "TestConstraintsEntity",
+            apiEnabled = true,
+            className = "test.TestConstraintsEntity",
+            fields = mapOf<String, IField>(
+                "nullable_field" to TextField(name = "nullable_field", label = "Nullable Text Field",
+                    jvmType = "java.lang.String", nullable = true, constraints = mapOf()
+                ),
+                "non_nullable_field" to TextField(name = "non_nullable_field", label = "Non-nullable Text Field",
+                    jvmType = "java.lang.String", nullable = false, constraints = mapOf()
                 )
             )
         )
     )
 
+    /**
+     * Create mock DBService and MetadataService
+     */
     val data = DBService().apply {
         mockkObject(this)
     }
-
     init {
-        every { data.getEntityMetadata() } returns meta
+        every { data.getEntityMappings() } returns listOf()
     }
 
-    val schema = APIService(data).apply {
+    val meta = MetadataService(data).apply {
+        mockkObject(this)
+    }
+    init {
+        every { meta.getEntities() } returns entities
+    }
+
+    /**
+     * Instantiate APIService using mock data sources
+     */
+    val schema = APIService(data, meta).apply {
         initialise()
     }
 
@@ -99,7 +125,7 @@ class EntityMetadata {
 
         @Test
         fun `registers a query object per entity`() {
-            assertThat(queryType.fieldDefinitions).hasSize(meta.entities.size - 1)
+            assertThat(queryType.fieldDefinitions).hasSize(entities.size - 1)
         }
 
         @Test
@@ -179,13 +205,13 @@ class EntityMetadata {
         @Test
         fun `Short fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("short_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLShort)
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
         }
 
         @Test
         fun `Long fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("long_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLLong)
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
         }
 
         @Test
@@ -215,19 +241,19 @@ class EntityMetadata {
         @Test
         fun `Date fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("date_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
+            assertThat(type.wrappedType).isEqualTo(ExtendedScalars.Date)
         }
 
         @Test
         fun `Time fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("time_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLInt)
+            assertThat(type.wrappedType).isEqualTo(ExtendedScalars.Time)
         }
 
         @Test
         fun `DateTime fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("datetime_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLString)
+            assertThat(type.wrappedType).isEqualTo(ExtendedScalars.DateTime)
         }
 
         @Test

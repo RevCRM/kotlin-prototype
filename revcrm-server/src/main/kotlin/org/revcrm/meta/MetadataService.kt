@@ -48,7 +48,7 @@ class MetadataService(
         }
     }
 
-    fun getEntityMetadata(mapping: MappedClass, entityClassNames: List<String>): Entity {
+    private fun getEntityMetadata(mapping: MappedClass, entityClassNames: List<String>): Entity {
         val klass = mapping.clazz.kotlin
         val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 
@@ -76,7 +76,7 @@ class MetadataService(
         )
     }
 
-    fun getEntityField(klass: KClass<*>, propName: String, entityClassNames: List<String>): IField {
+    private fun getEntityField(klass: KClass<*>, propName: String, entityClassNames: List<String>): IField {
         val propInfo = EntityPropInfo(klass, propName)
         if (propInfo.field.type.isEnum) {
             // TODO: Make this customisable
@@ -101,5 +101,9 @@ class MetadataService(
 
     fun getEntities(): List<Entity> {
         return entities.values.toList()
+    }
+
+    fun getEntity(name: String): Entity? {
+        return if (entities.containsKey(name)) entities[name] else null
     }
 }
