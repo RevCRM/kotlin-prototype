@@ -32,7 +32,8 @@ class TestFieldsEntity(
     var time_field: LocalTime,
     var datetime_field: LocalDateTime,
 
-    var enum_field: EnumFieldOptions
+    var enum_field: EnumFieldOptions,
+    var related_field: TestEntity2
 ) : Base()
 
 abstract class ParentEntity {

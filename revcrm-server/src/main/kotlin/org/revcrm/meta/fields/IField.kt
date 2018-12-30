@@ -12,4 +12,7 @@ interface IField {
     val constraints: Map<String, String>
 
     fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType
+
+    val type: String
+        get() = this::class.java.simpleName
 }
