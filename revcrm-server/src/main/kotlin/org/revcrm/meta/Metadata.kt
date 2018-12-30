@@ -1,4 +1,4 @@
-package org.revcrm.data
+package org.revcrm.meta
 
 class FieldMetadata(
     val name: String,

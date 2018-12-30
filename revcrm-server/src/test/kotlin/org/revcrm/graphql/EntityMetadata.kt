@@ -11,10 +11,10 @@ import io.mockk.mockkObject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.revcrm.data.CRMMetadata
-import org.revcrm.data.DBService
-import org.revcrm.data.EntityMetadata
-import org.revcrm.data.FieldMetadata
+import org.revcrm.meta.CRMMetadata
+import org.revcrm.db.DBService
+import org.revcrm.meta.EntityMetadata
+import org.revcrm.meta.FieldMetadata
 
 class EntityMetadata {
 
@@ -26,8 +26,8 @@ class EntityMetadata {
                 className = "test.SensitiveEntity",
                 fields = mapOf(
                     "name" to FieldMetadata(
-                            name = "name", jvmType = "java.lang.String",
-                            nullable = false
+                        name = "name", jvmType = "java.lang.String",
+                        nullable = false
                     )
                 )
             ),
@@ -43,10 +43,16 @@ class EntityMetadata {
                     "float_field" to FieldMetadata(name = "float_field", jvmType = "float"),
                     "double_field" to FieldMetadata(name = "double_field", jvmType = "double"),
                     "boolean_field" to FieldMetadata(name = "boolean_field", jvmType = "boolean"),
-                    "string_field" to FieldMetadata(name = "string_field", jvmType = "java.lang.String"),
+                    "string_field" to FieldMetadata(
+                        name = "string_field",
+                        jvmType = "java.lang.String"
+                    ),
                     "date_field" to FieldMetadata(name = "date_field", jvmType = "java.time.LocalDate"),
                     "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
-                    "datetime_field" to FieldMetadata(name = "datetime_field", jvmType = "java.time.LocalDateTime"),
+                    "datetime_field" to FieldMetadata(
+                        name = "datetime_field",
+                        jvmType = "java.time.LocalDateTime"
+                    ),
                     "time_field" to FieldMetadata(name = "time_field", jvmType = "java.time.LocalTime"),
                     "enum_field" to FieldMetadata(
                         name = "enum_field", jvmType = "enum",

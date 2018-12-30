@@ -2,7 +2,7 @@ package org.revcrm.graphql
 
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
-import org.revcrm.data.EntityMetadata
+import org.revcrm.meta.EntityMetadata
 import org.revcrm.graphql.schema.getOrderBy
 import org.revcrm.graphql.schema.getWhere
 import xyz.morphia.query.FindOptions

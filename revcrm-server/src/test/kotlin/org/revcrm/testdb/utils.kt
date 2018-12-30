@@ -2,7 +2,7 @@
 package org.revcrm.testdb
 
 import org.revcrm.config.Config
-import org.revcrm.data.DBService
+import org.revcrm.db.DBService
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement

@@ -1,8 +1,11 @@
-package org.revcrm.data
+package org.revcrm.db
 
 import com.mongodb.MongoClient
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.config.Config
+import org.revcrm.meta.CRMMetadata
+import org.revcrm.meta.EntityMetadata
+import org.revcrm.meta.FieldMetadata
 import org.revcrm.util.getProperty
 import xyz.morphia.AdvancedDatastore
 import xyz.morphia.Morphia

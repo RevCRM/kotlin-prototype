@@ -5,7 +5,7 @@ import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLTypeReference
 import graphql.schema.PropertyDataFetcher
-import org.revcrm.data.EntityMetadata
+import org.revcrm.meta.EntityMetadata
 
 fun buildEntityObjectType(schema: APISchema, entity: EntityMetadata): GraphQLObjectType {
 

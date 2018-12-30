@@ -11,8 +11,8 @@ import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLScalarType
 import graphql.schema.GraphQLSchema
 import graphql.schema.PropertyDataFetcher
-import org.revcrm.data.CRMMetadata
-import org.revcrm.data.FieldMetadata
+import org.revcrm.meta.CRMMetadata
+import org.revcrm.meta.FieldMetadata
 import org.revcrm.graphql.EntityDataFetcher
 import org.revcrm.graphql.GraphQLObjectID
 

@@ -21,7 +21,7 @@ import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
 import org.revcrm.auth.RevPrincipal
 import org.revcrm.config.Config
-import org.revcrm.data.DBService
+import org.revcrm.db.DBService
 import org.revcrm.graphql.APIService
 import org.revcrm.entities.AuthType
 import org.revcrm.entities.RevUser

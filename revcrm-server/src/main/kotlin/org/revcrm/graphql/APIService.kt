@@ -4,7 +4,7 @@ import graphql.ExecutionInput
 import graphql.ExecutionResult
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
-import org.revcrm.data.DBService
+import org.revcrm.db.DBService
 import org.revcrm.graphql.schema.APISchema
 
 class APIService(
