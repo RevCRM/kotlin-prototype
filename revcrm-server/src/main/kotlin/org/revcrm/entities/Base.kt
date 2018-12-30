@@ -2,20 +2,20 @@ package org.revcrm.entities
 
 import org.bson.types.ObjectId
 import xyz.morphia.annotations.Id
-import java.time.OffsetDateTime
+import java.time.LocalDateTime
 import xyz.morphia.annotations.PrePersist
 
 abstract class Base {
     @Id
     var id: ObjectId? = null
 
-    var created_date: OffsetDateTime? = null
+    var created_date: LocalDateTime? = null
 
-    var updated_date: OffsetDateTime? = null
+    var updated_date: LocalDateTime? = null
 
     @PrePersist
     fun prePersist() {
-        if (created_date == null) created_date = OffsetDateTime.now()
-        updated_date = OffsetDateTime.now()
+        if (created_date == null) created_date = LocalDateTime.now()
+        updated_date = LocalDateTime.now()
     }
 }

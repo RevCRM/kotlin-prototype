@@ -33,7 +33,7 @@ import org.revcrm.routes.staticFiles
 import org.revcrm.util.makeJwtVerifier
 import org.slf4j.LoggerFactory
 import java.text.DateFormat
-import java.time.OffsetDateTime
+import java.time.LocalDateTime
 
 /**
  * To run in intellij, create a new "Application" configuration:
@@ -137,7 +137,7 @@ fun Application.main() {
                 first_name = "System",
                 last_name = "Administrator",
                 email = "admin@revcrm.com",
-                last_login = OffsetDateTime.now()
+                last_login = LocalDateTime.now()
             )
             val auth = RevUserAuth(
                 user = adminUser,
@@ -147,7 +147,7 @@ fun Application.main() {
             ds.save(adminUser)
             ds.save(auth)
         } else {
-            adminUser.last_login = OffsetDateTime.now()
+            adminUser.last_login = LocalDateTime.now()
             ds.save(adminUser)
         }
         adminUser

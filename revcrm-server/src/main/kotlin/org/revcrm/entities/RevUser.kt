@@ -2,7 +2,7 @@ package org.revcrm.entities
 
 import org.revcrm.annotations.Field
 import xyz.morphia.annotations.Entity
-import java.time.OffsetDateTime
+import java.time.LocalDateTime
 import javax.validation.constraints.NotBlank
 
 @Entity
@@ -17,6 +17,6 @@ class RevUser(
     @Field("E-mail Address") @NotBlank
     var email: String,
 
-    var last_login: OffsetDateTime? = null
+    var last_login: LocalDateTime? = null
 
 ) : Base()

@@ -51,7 +51,7 @@ class EntityMetadata {
                     "time_field" to EntityField(name = "time_field", jvmType = "java.time.LocalTime"),
                     "datetime_field" to EntityField(
                         name = "datetime_field",
-                        jvmType = "java.time.OffsetDateTime"
+                        jvmType = "java.time.LocalDateTime"
                     ),
                     "time_field" to EntityField(name = "time_field", jvmType = "java.time.LocalTime"),
                     "enum_field" to EntityField(
