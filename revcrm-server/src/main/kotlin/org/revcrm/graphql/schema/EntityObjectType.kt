@@ -1,24 +1,37 @@
 package org.revcrm.graphql.schema
 
+import graphql.schema.FieldCoordinates
+import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLOutputType
+import graphql.schema.GraphQLSchema
 import graphql.schema.PropertyDataFetcher
 import org.revcrm.meta.Entity
+import org.revcrm.meta.MetadataService
 
-fun buildEntityObjectType(schema: APISchema, entity: Entity): GraphQLObjectType {
+fun registerEntityObjectType(
+    meta: MetadataService,
+    entity: Entity,
+    schema: GraphQLSchema.Builder,
+    code: GraphQLCodeRegistry.Builder
+) {
 
     val entityTypeBuilder = GraphQLObjectType.newObject()
         .name(entity.name)
 
     entity.fields.forEach { _, field ->
 
-        var fieldType = field.getGraphQLType(schema.meta, entity)
+        var fieldType = field.getGraphQLType(meta, entity)
 
         val fieldDef = GraphQLFieldDefinition.newFieldDefinition()
             .name(field.name)
-            .dataFetcher(PropertyDataFetcher.fetching<Any>(field.name))
+
+        code.dataFetcher(
+            FieldCoordinates.coordinates(entity.name, field.name),
+            PropertyDataFetcher.fetching<Any>(field.name)
+        )
 
         if (field.nullable) {
             fieldDef.type(fieldType as GraphQLOutputType)
@@ -29,5 +42,5 @@ fun buildEntityObjectType(schema: APISchema, entity: Entity): GraphQLObjectType 
         entityTypeBuilder.field(fieldDef)
     }
 
-    return entityTypeBuilder.build()
+    schema.additionalType(entityTypeBuilder.build())
 }

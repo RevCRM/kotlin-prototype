@@ -1,26 +1,42 @@
 package org.revcrm.graphql.schema
 
+import graphql.schema.FieldCoordinates
+import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
+import graphql.schema.GraphQLSchema
 import graphql.schema.GraphQLTypeReference
 import graphql.schema.PropertyDataFetcher
 import org.revcrm.meta.Entity
 
-fun buildEntityResultsType(schema: APISchema, entity: Entity): GraphQLObjectType {
-    return GraphQLObjectType.newObject()
-        .name(entity.name + "Results")
+fun registerEntityResultsType(entity: Entity, schema: GraphQLSchema.Builder, code: GraphQLCodeRegistry.Builder): String {
+
+    val resultsTypeName = entity.name + "Results"
+
+    schema.additionalType(GraphQLObjectType.newObject()
+        .name(resultsTypeName)
         .field(
             GraphQLFieldDefinition.newFieldDefinition()
                 .name("results")
                 .type(GraphQLList.list(GraphQLTypeReference(entity.name)))
-                .dataFetcher(PropertyDataFetcher.fetching<Any>("results"))
         )
         .field(
             GraphQLFieldDefinition.newFieldDefinition()
                 .name("meta")
                 .type(GraphQLTypeReference("ResultsMeta"))
-                .dataFetcher(PropertyDataFetcher.fetching<Any>("meta"))
         )
-        .build()
+        .build())
+
+    code
+        .dataFetcher(
+            FieldCoordinates.coordinates(resultsTypeName, "results"),
+            PropertyDataFetcher.fetching<Any>("results")
+        )
+        .dataFetcher(
+            FieldCoordinates.coordinates(resultsTypeName, "meta"),
+            PropertyDataFetcher.fetching<Any>("meta")
+        )
+
+    return resultsTypeName
 }
