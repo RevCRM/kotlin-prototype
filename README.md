@@ -2,10 +2,12 @@
 
 RevCRM is an open source (Apache 2.0 Licensed) CRM platform.
 
-* Enterprise-grade Hibernate ORM
 * Rock-solid JVM-based backend written in Kotlin
+* Easily define Entities and relationships using POJOs + Annotations
+* Auto-generated GraphQL API
+* Entity Validation using JSR 380 Standard Annotations
 * Modern, responsive UI using React and TypeScript
-* Modular architecture. Only install the features you need
+* Modular architecture. Only install the features the customer needs
 
 This project is still very much a work-in-progress but watch this space :)
 
