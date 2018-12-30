@@ -1,6 +1,6 @@
 package org.revcrm.routes
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.http.ContentType
@@ -24,7 +24,9 @@ data class GraphQLRequest(
 fun Routing.graphQL() {
 
     val crmSchema: APIService by inject()
-    val gson = Gson()
+    val gson = GsonBuilder()
+        .serializeNulls()
+        .create()
 
     authenticate("jwt") {
         post<GraphQLRequest> {
