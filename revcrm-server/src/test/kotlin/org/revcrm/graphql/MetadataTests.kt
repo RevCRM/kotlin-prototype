@@ -16,7 +16,10 @@ class EntityMetadataInfo(
 )
 
 class EntityFieldInfo(
-    val name: String
+    val name: String,
+    val label: String,
+    val type: String,
+    val nullable: Boolean
 )
 
 class MetadataTests {
@@ -51,6 +54,9 @@ class MetadataTests {
                         name
                         fields {
                             name
+                            label
+                            type
+                            nullable
                         }
                     }
                 }
@@ -78,6 +84,9 @@ class MetadataTests {
             assertThat(entityInfo.name).isEqualTo(entities[0].name)
             assertThat(entityInfo.fields).hasSize(entities[0].fieldsList.size)
             assertThat(entityInfo.fields[0].name).isEqualTo(entities[0].fieldsList[0].name)
+            assertThat(entityInfo.fields[0].label).isEqualTo(entities[0].fieldsList[0].label)
+            assertThat(entityInfo.fields[0].type).isEqualTo(entities[0].fieldsList[0].type)
+            assertThat(entityInfo.fields[0].nullable).isEqualTo(entities[0].fieldsList[0].nullable)
         }
     }
 }

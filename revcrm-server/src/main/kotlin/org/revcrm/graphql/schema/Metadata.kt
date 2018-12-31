@@ -19,16 +19,32 @@ fun registerMetadataQueryType(
 
     val entityFieldMetaType = GraphQLObjectType.newObject()
         .name("EntityFieldMetadata")
-        .field(
-            GraphQLFieldDefinition.newFieldDefinition()
-                .name("name")
-                .type(Scalars.GraphQLString)
-        )
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+            .name("name")
+            .type(Scalars.GraphQLString))
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+            .name("label")
+            .type(Scalars.GraphQLString))
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+            .name("type")
+            .type(Scalars.GraphQLString))
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+            .name("nullable")
+            .type(Scalars.GraphQLBoolean))
         .build()
-    code.dataFetcher(
-        FieldCoordinates.coordinates("EntityFieldMetadata", "name"),
-        PropertyDataFetcher.fetching<Any>("name")
-    )
+    code
+        .dataFetcher(
+            FieldCoordinates.coordinates("EntityFieldMetadata", "name"),
+            PropertyDataFetcher.fetching<Any>("name"))
+        .dataFetcher(
+            FieldCoordinates.coordinates("EntityFieldMetadata", "label"),
+            PropertyDataFetcher.fetching<Any>("label"))
+        .dataFetcher(
+            FieldCoordinates.coordinates("EntityFieldMetadata", "type"),
+            PropertyDataFetcher.fetching<Any>("type"))
+        .dataFetcher(
+            FieldCoordinates.coordinates("EntityFieldMetadata", "nullable"),
+            PropertyDataFetcher.fetching<Any>("nullable"))
 
     val entityMetaType = GraphQLObjectType.newObject()
         .name("EntityMetadata")
