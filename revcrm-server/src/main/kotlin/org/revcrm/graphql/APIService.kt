@@ -25,6 +25,7 @@ class APIService(
     fun query(query: String, variables: Map<String, Any>?): ExecutionResult {
         val context = APIContext(
             db = dbService,
+            meta = meta,
             defaultResultsLimit = 20 // TODO: Put this in config
         )
         val execInput = ExecutionInput.newExecutionInput()

@@ -10,7 +10,7 @@ import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
 import graphql.schema.GraphQLTypeReference
-import org.revcrm.graphql.EntityDataFetcher
+import org.revcrm.graphql.fetchers.EntityDataFetcher
 import org.revcrm.meta.MetadataService
 
 class APISchema(private val meta: MetadataService) {

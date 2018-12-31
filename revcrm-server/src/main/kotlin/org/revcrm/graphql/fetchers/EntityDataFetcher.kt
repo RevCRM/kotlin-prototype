@@ -1,7 +1,8 @@
-package org.revcrm.graphql
+package org.revcrm.graphql.fetchers
 
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
+import org.revcrm.graphql.APIContext
 import org.revcrm.meta.Entity
 import org.revcrm.graphql.schema.getOrderBy
 import org.revcrm.graphql.schema.getWhere

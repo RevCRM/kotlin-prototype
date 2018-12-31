@@ -91,6 +91,8 @@ class APISchemaTests {
             )
         )
     )
+    val enabledEntities = 2
+    val metadataNodes = 1 // query { Metadata }
 
     /**
      * Create mock DBService and MetadataService
@@ -119,13 +121,14 @@ class APISchemaTests {
     val queryType = schema.graphQLSchema.queryType
     val testFieldsEntity = queryType.getFieldDefinition("TestFieldsEntity")
     val testConstraintsEntity = queryType.getFieldDefinition("TestConstraintsEntity")
+    val metadataNode = queryType.getFieldDefinition("Metadata")
 
     @Nested
     inner class TopLevelSchema {
 
         @Test
         fun `registers a query object per entity`() {
-            assertThat(queryType.fieldDefinitions).hasSize(entities.size - 1)
+            assertThat(queryType.fieldDefinitions).hasSize(enabledEntities + metadataNodes)
         }
 
         @Test
@@ -180,6 +183,14 @@ class APISchemaTests {
 
             val metaNode = resultsType.getFieldDefinition("meta")
             assertThat(metaNode.type is GraphQLObjectType)
+        }
+
+        @Test
+        fun `registers a Metadata node with an "entities" key`() {
+            assertThat(metadataNode.type is GraphQLObjectType)
+
+            val entitiesNode = (metadataNode.type as GraphQLObjectType).getFieldDefinition("entities")
+            assertThat((entitiesNode.type as GraphQLList).wrappedType.name).isEqualTo("EntityMetadata")
         }
     }
 

@@ -82,3 +82,5 @@ class Account(
     var email: String,
     var rating: Int
 ) : Base()
+
+val numberOfApiDisabledEntities = 1

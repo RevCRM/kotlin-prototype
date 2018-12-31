@@ -7,4 +7,7 @@ class Entity(
     val apiEnabled: Boolean,
     val className: String,
     val fields: Map<String, IField>
-)
+) {
+    val fieldsList: List<IField>
+        get() = fields.values.toList()
+}

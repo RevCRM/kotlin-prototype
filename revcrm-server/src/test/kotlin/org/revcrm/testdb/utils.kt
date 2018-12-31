@@ -1,6 +1,8 @@
 
 package org.revcrm.testdb
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.revcrm.config.Config
 import org.revcrm.db.DBService
 import com.google.gson.JsonDeserializationContext
@@ -24,4 +26,10 @@ var objectIdDeserializer: JsonDeserializer<ObjectId> = object : JsonDeserializer
     override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): ObjectId {
         return ObjectId(json.asString)
     }
+}
+
+fun getTestGson(): Gson {
+    return GsonBuilder()
+        .registerTypeAdapter(ObjectId::class.java, objectIdDeserializer)
+        .create()
 }
