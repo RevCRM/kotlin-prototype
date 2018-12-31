@@ -82,14 +82,13 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                 </div>
             </Toolbar>
             <ListView
-                fields={["Name", "Age", "Location"]}
-                data={[
-                    ["Bob", "21", "Ipswich"],
-                    ["Angie", "18", "Colchester"],
-                    ["Tim", "35", "Wellington"],
-                    ["Dave", "16", "Auckland"],
-                    ["Jane", "22", "Testville"],
-                    ["Rob", "42", "Dunedin"],
+                entity="Account"
+                fields={[
+                    "org_name",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone"
                 ]}
             />
         </div>
