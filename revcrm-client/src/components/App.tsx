@@ -17,6 +17,7 @@ import { register as registerAccounts } from "../modules/revcrm-accounts"
 import { register as registerEtc } from "../modules/revcrm-etc"
 import { UI } from "../UIManager"
 import { AuthProvider } from "../auth/AuthProvider"
+import { MetadataContextProvider } from "./meta/Metadata"
 
 const theme = createMuiTheme()
 const history = createHashHistory()
@@ -49,13 +50,15 @@ export const App = () => (
         <CssBaseline />
         <ApolloProvider client={client}>
             <AuthContextProvider provider={authProvider} history={history}>
-                <AppLoader>
-                    <ViewManager history={history}>
-                        <Navigation>
-                            <View />
-                        </Navigation>
-                    </ViewManager>
-                </AppLoader>
+                <MetadataContextProvider client={client}>
+                    <AppLoader>
+                        <ViewManager history={history}>
+                            <Navigation>
+                                <View />
+                            </Navigation>
+                        </ViewManager>
+                    </AppLoader>
+                </MetadataContextProvider>
             </AuthContextProvider>
         </ApolloProvider>
     </MuiThemeProvider>
