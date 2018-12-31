@@ -78,7 +78,7 @@ export const MetadataContextProvider = withAuthContext(
             console.error("Failed to load Metadata", res.errors)
         }
         else {
-            console.log("loaded data", res.data)
+            console.log("Metadata loaded", res.data)
             this.setState({
                 metaState: "loaded",
                 entities: res.data.Metadata.entities

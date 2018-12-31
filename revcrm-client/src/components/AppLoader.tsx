@@ -3,6 +3,7 @@ import * as React from "react"
 import { Theme, createStyles, CircularProgress, withStyles, WithStyles, Typography, Button } from "@material-ui/core"
 import { withAuthContext, IAuthContextProp } from "./auth/AuthContext"
 import { CONFIG } from "../config"
+import { IMetadataContextProp, withMetadataContext } from "./meta/Metadata"
 
 const styles = (theme: Theme) => createStyles({
     root: {
@@ -21,11 +22,12 @@ const styles = (theme: Theme) => createStyles({
 
 export interface IAppLoaderProps extends
         WithStyles<typeof styles>,
-        IAuthContextProp {
+        IAuthContextProp,
+        IMetadataContextProp {
     children: any
 }
 
-export const AppLoader = withAuthContext(withStyles(styles)((props: IAppLoaderProps) => {
+export const AppLoader = withAuthContext(withMetadataContext(withStyles(styles)((props: IAppLoaderProps) => {
     if (props.auth.authState == "not_logged_in") {
         return (
             <div className={props.classes.root}>
@@ -43,7 +45,7 @@ export const AppLoader = withAuthContext(withStyles(styles)((props: IAppLoaderPr
             </div>
         )
     }
-    else if (props.auth.authState == "logged_in") {
+    else if (props.auth.authState == "logged_in" && props.meta.metaState == "loaded") {
         return props.children
     }
     else {
@@ -53,4 +55,4 @@ export const AppLoader = withAuthContext(withStyles(styles)((props: IAppLoaderPr
             </div>
         )
     }
-}))
+})))
