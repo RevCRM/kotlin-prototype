@@ -22,7 +22,7 @@ open class IDField(
 fun mapIDField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return IDField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable
     )

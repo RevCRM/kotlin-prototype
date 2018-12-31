@@ -23,7 +23,7 @@ open class RelatedEntityField(
 fun mapRelatedEntityField(meta: MetadataService, propInfo: EntityPropInfo, relatedEntity: String): IField {
     return RelatedEntityField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = mapOf(),

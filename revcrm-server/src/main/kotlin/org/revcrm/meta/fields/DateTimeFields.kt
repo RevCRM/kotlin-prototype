@@ -48,7 +48,7 @@ open class TimeField(
 fun mapDateTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return DateTimeField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = mapOf()
@@ -58,7 +58,7 @@ fun mapDateTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
 fun mapDateField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return DateField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = mapOf()
@@ -68,7 +68,7 @@ fun mapDateField(meta: MetadataService, propInfo: EntityPropInfo): IField {
 fun mapTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return TimeField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = mapOf()

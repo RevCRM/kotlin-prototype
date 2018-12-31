@@ -2,6 +2,7 @@ package org.revcrm.testdb
 
 import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
+import org.revcrm.annotations.Field
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
@@ -21,7 +22,9 @@ enum class EnumFieldOptions {
 
 @Entity
 class TestFieldsEntity(
+    @Field("Text Field")
     var string_field: String,
+    @Field("Integer Field")
     var short_field: Short,
     var int_field: Int,
     var long_field: Long,

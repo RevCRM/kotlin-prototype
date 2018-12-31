@@ -61,9 +61,10 @@ private fun getNumericConstraints(propInfo: EntityPropInfo): Map<String, String>
 }
 
 fun mapIntegerField(meta: MetadataService, propInfo: EntityPropInfo): IField {
+    val test = propInfo.property.annotations
     return IntegerField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = getNumericConstraints(propInfo)
@@ -73,7 +74,7 @@ fun mapIntegerField(meta: MetadataService, propInfo: EntityPropInfo): IField {
 fun mapFloatField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return FloatField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = getNumericConstraints(propInfo)
@@ -83,7 +84,7 @@ fun mapFloatField(meta: MetadataService, propInfo: EntityPropInfo): IField {
 fun mapDecimalField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return DecimalField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = getNumericConstraints(propInfo)

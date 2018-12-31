@@ -29,7 +29,7 @@ open class EnumField(
 fun mapEnumField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return EnumField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable
     )
@@ -51,7 +51,7 @@ open class BooleanField(
 fun mapBooleanField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return BooleanField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable
     )

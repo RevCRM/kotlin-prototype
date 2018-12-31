@@ -86,6 +86,7 @@ class MetadataServiceTests {
         @Test
         fun `Short field returns expected metadata`() {
             assertThat(fieldsEntity.fields["short_field"]).isInstanceOf(IntegerField::class.java)
+            assertThat(fieldsEntity.fields["short_field"]!!.label).isEqualTo("Integer Field")
             assertThat(fieldsEntity.fields["short_field"]!!.type).isEqualTo("IntegerField")
             assertThat(fieldsEntity.fields["short_field"]!!.jvmType).isEqualTo("short")
         }
@@ -121,6 +122,7 @@ class MetadataServiceTests {
         @Test
         fun `String field returns expected metadata`() {
             assertThat(fieldsEntity.fields["string_field"]).isInstanceOf(TextField::class.java)
+            assertThat(fieldsEntity.fields["string_field"]!!.label).isEqualTo("Text Field")
             assertThat(fieldsEntity.fields["string_field"]!!.type).isEqualTo("TextField")
             assertThat(fieldsEntity.fields["string_field"]!!.jvmType).isEqualTo("java.lang.String")
         }

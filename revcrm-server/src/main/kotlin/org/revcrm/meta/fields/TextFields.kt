@@ -31,7 +31,7 @@ fun mapTextField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     }
     return TextField(
         name = propInfo.name,
-        label = propInfo.name, // TODO: Get from @Field annotation
+        label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
         constraints = constraints
