@@ -1,9 +1,11 @@
 import * as React from "react"
 import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody, Toolbar, Typography, IconButton, Icon } from "@material-ui/core"
 import { Query } from "react-apollo"
-import { getEntityQuery } from "../../graphql/queryhelpers"
+import { getEntityQuery, IEntityQueryResults } from "../../graphql/queryhelpers"
 import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
 import { DocumentNode } from "graphql"
+
+export const DEFAULT_LIMIT = 20
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -34,14 +36,25 @@ export interface IListViewProps extends
     where?: object
 }
 
+export interface IListViewState {
+    limit: number
+    offset: number
+}
+
 export const ListView = withStyles(styles)(withMetadataContext(
-    class extends React.Component<IListViewProps> {
+    class extends React.Component<IListViewProps, IListViewState> {
     entityMeta: IEntityMetadata
     selectedFields: IFieldMetadata[]
     query: DocumentNode
 
     constructor(props: any) {
         super(props)
+
+        this.state = {
+            limit: DEFAULT_LIMIT,
+            offset: 0
+        }
+
         // TODO: This should neither be synchronous nor assume getEntity() returns an entity!
         this.entityMeta = this.props.meta.getEntity(this.props.entity)!
         this.selectedFields = this.props.fields.map(fieldName => {
@@ -52,31 +65,70 @@ export const ListView = withStyles(styles)(withMetadataContext(
 
         this.query = getEntityQuery({
             entity: this.props.entity,
-            fields: this.props.fields
+            fields: this.props.fields,
         })
+    }
+
+    onForwardButtonPress = () => {
+        this.setState({ offset: this.state.offset + this.state.limit })
+    }
+
+    onBackButtonPress = () => {
+        this.setState({ offset: Math.max(this.state.offset - this.state.limit, 0) })
     }
 
     render() {
         return (
-            <Query query={this.query} variables={{ where: this.props.where }}>
+            <Query<IEntityQueryResults>
+                query={this.query}
+                variables={{
+                    where: this.props.where,
+                    limit: this.state.limit,
+                    offset: this.state.offset
+                }}
+            >
                 {({ loading, error, data }) => {
 
                     if (loading) return "Loading..."
                     if (error) return `Error! ${error.message}`
+                    if (!data) return "No data returned"
+
+                    const { results, meta } = data[this.props.entity]
+
+                    const firstItemNumber = meta.totalCount ? meta.offset + 1 : 0
+                    const lastItemNumber = Math.min(
+                        meta.offset + meta.limit,
+                        meta.totalCount
+                    )
+                    let forwardButtonDisabled = true
+                    let backButtonDisabled = true
+                    if (lastItemNumber < meta.totalCount) {
+                        forwardButtonDisabled = false
+                    }
+                    if (firstItemNumber > 1) {
+                        backButtonDisabled = false
+                    }
+
                     return (
                         <div className={this.props.classes.root}>
                             <Toolbar className={this.props.classes.resultsToolbar}>
                                 <Typography variant="title">Companies</Typography>
                                 <div className={this.props.classes.pagination}>
                                     <Typography variant="caption">
-                                        1-20 of 42
+                                        {firstItemNumber}-{lastItemNumber} of {meta.totalCount}
                                     </Typography>
-                                    <IconButton>
+                                    <IconButton
+                                        onClick={this.onBackButtonPress}
+                                        disabled={backButtonDisabled}
+                                    >
                                         <Icon title="Previous Page">
                                             keyboard_arrow_left
                                         </Icon>
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton
+                                        disabled={forwardButtonDisabled}
+                                        onClick={this.onForwardButtonPress}
+                                    >
                                         <Icon title="Next Page">
                                             keyboard_arrow_right
                                         </Icon>
@@ -96,7 +148,7 @@ export const ListView = withStyles(styles)(withMetadataContext(
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {data.Account.results.map((row: any, rowIdx: number) =>
+                                    {results.map((row: any, rowIdx: number) =>
                                         <TableRow
                                             key={rowIdx}
                                             hover className={this.props.classes.resultsRow}
