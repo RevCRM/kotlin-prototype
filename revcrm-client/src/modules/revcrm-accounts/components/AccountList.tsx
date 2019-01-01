@@ -1,8 +1,9 @@
 
 import * as React from "react"
-import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Toolbar, IconButton } from "@material-ui/core"
+import { Typography, Icon, Theme, createStyles, withStyles, WithStyles, Toolbar, IconButton } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { ListView } from "../../../components/views/ListView"
+import { FilterBar } from "../../../components/views/FilterBar"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -44,24 +45,11 @@ export const styles = (theme: Theme) => createStyles({
 
 export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>) => (
     <div className={props.classes.root}>
-        <Paper square className={props.classes.filterBox}>
-            <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                Companies &amp; Contacts
-            </Typography>
-            <Input
-                className={props.classes.searchBox}
-                classes={{
-                    root: props.classes.searchInput,
-                }}
-                disableUnderline={true}
-                placeholder="Search"
-                startAdornment={
-                    <InputAdornment position="start" className={props.classes.searchAdornment}>
-                        <Icon>search</Icon>
-                    </InputAdornment>
-                }
-            />
-        </Paper>
+        <FilterBar
+            title="Companies &amp; Contacts"
+            entity="Account"
+            onFilter={() => null}
+        />
         <div className={props.classes.resultsBox}>
             <Toolbar className={props.classes.resultsToolbar}>
                 <Typography variant="title">Companies</Typography>
