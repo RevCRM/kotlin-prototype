@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Typography, Icon, Theme, createStyles, withStyles, WithStyles, Toolbar, IconButton } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
@@ -48,7 +47,7 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
         <FilterBar
             title="Companies &amp; Contacts"
             entity="Account"
-            onFilter={() => null}
+            onFilter={(where) => console.log("searching", where)}
         />
         <div className={props.classes.resultsBox}>
             <Toolbar className={props.classes.resultsToolbar}>
@@ -79,7 +78,7 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                     "phone"
                 ]}
                 where={{
-                    _text: { $search: "test" }
+                    _text: { _search: "test" }
                 }}
             />
         </div>

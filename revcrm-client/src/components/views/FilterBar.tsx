@@ -3,6 +3,9 @@ import * as React from "react"
 import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { withMetadataContext, IMetadataContextProp } from "../meta/Metadata"
+import { debounce } from "debounce"
+
+export const FILTER_INTERVAL = 500
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -57,7 +60,20 @@ export const FilterBar = withStyles(styles)(withMetadataContext(
         this.setState({
             searchText: e.target.value
         })
+        this.debouncedOnFilter()
     }
+
+    debouncedOnFilter = debounce(() => {
+        const searchVal = this.state.searchText
+        if (searchVal.trim()) {
+            this.props.onFilter({
+                _text: { _search: searchVal }
+            })
+        }
+        else {
+            this.props.onFilter({})
+        }
+    }, FILTER_INTERVAL)
 
     render() {
         return (
