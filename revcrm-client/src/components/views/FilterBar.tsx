@@ -5,7 +5,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator"
 import { withMetadataContext, IMetadataContextProp } from "../meta/Metadata"
 import { debounce } from "debounce"
 
-export const FILTER_INTERVAL = 500
+export const FILTER_INTERVAL = 800
 
 export const styles = (theme: Theme) => createStyles({
     root: {

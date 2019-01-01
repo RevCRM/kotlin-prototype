@@ -1,7 +1,8 @@
 
 import { UIManager } from "../../UIManager"
-import { AccountList } from "./components/AccountList"
 import { AccountForm } from "./components/AccountForm"
+import React from "react"
+import { SearchView } from "../../components/views/SearchView"
 
 export function register(ui: UIManager) {
 
@@ -27,7 +28,18 @@ export function register(ui: UIManager) {
     ui.registerView({
         id: "accounts_company_list",
         model: "account",
-        component: AccountList
+        component: () =>
+            <SearchView
+                entity="Account"
+                title="Companies &amp; Contacts"
+                showFields={[
+                    "org_name",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone"
+                ]}
+            />
     })
 
     ui.registerView({
