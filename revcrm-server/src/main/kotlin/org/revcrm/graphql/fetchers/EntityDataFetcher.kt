@@ -14,6 +14,8 @@ class EntitySearchResults<T>(
 )
 
 class EntitySearchMeta(
+    val limit: Int,
+    val offset: Int, // Morphia only supports Int values for skip()
     val totalCount: Long
 )
 
@@ -27,8 +29,11 @@ class EntityDataFetcher(
 
         val where = getWhere(environment)
         val orderBy = getOrderBy(environment)
-        val limit = environment.getArgument<Int?>("limit")
-        val offset = environment.getArgument<Int?>("offset")
+        val limitArg = environment.getArgument<Int?>("limit")
+        val offsetArg = environment.getArgument<Int?>("offset")
+
+        val limit = if (limitArg == null) ctx.defaultResultsLimit else limitArg
+        val offset = if (offsetArg == null) 0 else offsetArg
 
         val qResult = ctx.db.withDB { ds ->
             val q =
@@ -37,12 +42,8 @@ class EntityDataFetcher(
                 else
                     ds.createQuery(klass)
             val options = FindOptions()
-            options.limit(
-                if (limit == null) ctx.defaultResultsLimit else limit
-            )
-            options.skip(
-                if (offset == null) 0 else offset
-            )
+            options.limit(limit)
+            options.skip(offset)
             if (orderBy != null) {
                 q.order(orderBy)
             }
@@ -54,6 +55,8 @@ class EntityDataFetcher(
         return EntitySearchResults<Any>(
             results,
             EntitySearchMeta(
+                limit = limit,
+                offset = offset,
                 totalCount = totalCount
             )
         )

@@ -14,12 +14,31 @@ fun registerResultsMetaType(schema: GraphQLSchema.Builder, code: GraphQLCodeRegi
             .name("ResultsMeta")
             .field(
                 GraphQLFieldDefinition.newFieldDefinition()
-                    .name("totalCount")
+                    .name("limit")
                     .type(Scalars.GraphQLInt)
             )
+            .field(
+                GraphQLFieldDefinition.newFieldDefinition()
+                    .name("offset")
+                    .type(Scalars.GraphQLInt)
+            )
+            .field(
+                GraphQLFieldDefinition.newFieldDefinition()
+                    .name("totalCount")
+                    .type(Scalars.GraphQLLong)
+            )
             .build())
-    code.dataFetcher(
-        FieldCoordinates.coordinates("ResultsMeta", "totalCount"),
-        PropertyDataFetcher.fetching<Any>("totalCount")
-    )
+    code
+        .dataFetcher(
+            FieldCoordinates.coordinates("ResultsMeta", "limit"),
+            PropertyDataFetcher.fetching<Any>("limit")
+        )
+        .dataFetcher(
+            FieldCoordinates.coordinates("ResultsMeta", "offset"),
+            PropertyDataFetcher.fetching<Any>("offset")
+        )
+        .dataFetcher(
+            FieldCoordinates.coordinates("ResultsMeta", "totalCount"),
+            PropertyDataFetcher.fetching<Any>("totalCount")
+        )
 }

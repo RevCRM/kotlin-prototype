@@ -143,7 +143,9 @@ class ReadingData {
     @Nested
     inner class Query_LimitAndOffset {
 
-        val fields = "results { id name number } meta { totalCount }"
+        val fields = "results { id name number } meta { limit offset totalCount }"
+
+        val defaultLimit = 20 // hardcoded in APIContest.defaultResultsLimit at the moment
 
         @Test
         fun `by default we return the first "defaultResultsLimit" results`() {
@@ -155,10 +157,12 @@ class ReadingData {
                 }
             """.trimIndent(), mapOf())
             val result = getResults(res, "TestEntity2", TestEntity2::class.java)
-            assertThat(result.results.size).isEqualTo(20) // hardcoded defaultResultsLimit at the moment
-            assertThat(result.meta.totalCount).isGreaterThan(20)
+            assertThat(result.results.size).isEqualTo(defaultLimit)
+            assertThat(result.meta.limit).isEqualTo(defaultLimit)
+            assertThat(result.meta.offset).isEqualTo(0)
+            assertThat(result.meta.totalCount).isGreaterThan(defaultLimit.toLong())
             assertThat(result.results[0].number).isEqualTo(1)
-            assertThat(result.results[19].number).isEqualTo(20)
+            assertThat(result.results[19].number).isEqualTo(defaultLimit)
         }
 
         @Test
@@ -175,6 +179,8 @@ class ReadingData {
             """.trimIndent(), mapOf())
             val result = getResults(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(10)
+            assertThat(result.meta.limit).isEqualTo(10)
+            assertThat(result.meta.offset).isEqualTo(0)
             assertThat(result.meta.totalCount).isGreaterThan(20)
             assertThat(result.results[0].number).isEqualTo(1)
             assertThat(result.results[9].number).isEqualTo(10)
@@ -194,6 +200,8 @@ class ReadingData {
             """.trimIndent(), mapOf())
             val result = getResults(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isGreaterThan(20).isLessThan(100)
+            assertThat(result.meta.limit).isEqualTo(100)
+            assertThat(result.meta.offset).isEqualTo(0)
             assertThat(result.meta.totalCount).isGreaterThan(20)
             assertThat(result.results[0].number).isEqualTo(1)
             assertThat(result.results[20].number).isEqualTo(21)
@@ -214,6 +222,8 @@ class ReadingData {
             """.trimIndent(), mapOf())
             val result = getResults(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(5)
+            assertThat(result.meta.limit).isEqualTo(5)
+            assertThat(result.meta.offset).isEqualTo(1)
             assertThat(result.meta.totalCount).isGreaterThan(20)
             assertThat(result.results[0].number).isEqualTo(2)
             assertThat(result.results[4].number).isEqualTo(6)
