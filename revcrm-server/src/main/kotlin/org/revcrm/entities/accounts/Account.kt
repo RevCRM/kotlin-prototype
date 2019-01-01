@@ -3,8 +3,17 @@ package org.revcrm.entities.accounts
 import org.revcrm.annotations.Field
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
+import xyz.morphia.annotations.Index
+import xyz.morphia.annotations.Indexes
+import xyz.morphia.annotations.Field as IndexField
+import xyz.morphia.utils.IndexType
 
 @Entity
+@Indexes(
+    Index(fields = [
+        IndexField(value = "$**", type = IndexType.TEXT)
+    ])
+)
 class Account(
     @Field("Is Organisation?")
     var is_org: Boolean,

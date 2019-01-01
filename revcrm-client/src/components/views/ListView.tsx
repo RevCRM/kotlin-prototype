@@ -23,6 +23,7 @@ export interface IListViewProps extends
                     WithStyles<typeof styles> {
     entity: string
     fields: string[]
+    where?: object
 }
 
 export const ListView = withStyles(styles)(withMetadataContext(
@@ -49,7 +50,7 @@ export const ListView = withStyles(styles)(withMetadataContext(
 
     render() {
         return (
-            <Query query={this.query}>
+            <Query query={this.query} variables={{ where: this.props.where }}>
                 {({ loading, error, data }) => {
 
                     if (loading) return "Loading..."

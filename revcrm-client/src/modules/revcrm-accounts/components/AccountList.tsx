@@ -90,6 +90,9 @@ export const AccountList = withStyles(styles)((props: WithStyles<typeof styles>)
                     "email",
                     "phone"
                 ]}
+                where={{
+                    _text: { $search: "test" }
+                }}
             />
         </div>
     </div>
