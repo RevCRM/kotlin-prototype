@@ -18,6 +18,8 @@ export interface IEntityQueryOptions {
  *       }
  *     }
  *   }
+ *
+ * We dont use the gql tag here because the fields to be queried are metadata-driven
  */
 export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
     const fieldSelections: SelectionNode[] = options.fields.map(field => {
@@ -36,6 +38,16 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
             {
                 kind: "OperationDefinition",
                 operation: "query",
+                variableDefinitions: [
+                    {
+                        kind: "VariableDefinition",
+                        variable: {
+                            kind: "Variable",
+                            name: { kind: "Name", value: "where" }
+                        },
+                        type: { kind: "NamedType", name: { kind: "Name", value: "JSON"}},
+                    },
+                ],
                 selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -45,6 +57,13 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
                                 kind: "Name",
                                 value: options.entity
                             },
+                            arguments: [
+                                {
+                                    kind: "Argument",
+                                    name: { kind: "Name", value: "where" },
+                                    value: { kind: "Variable", name: { kind: "Name", value: "where" }},
+                                }
+                            ],
                             selectionSet: {
                                 kind: "SelectionSet",
                                 selections: [
@@ -57,7 +76,7 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
                                         selectionSet: {
                                             kind: "SelectionSet",
                                             selections: fieldSelections
-                                        }
+                                        },
                                     }
                                 ]
                             }
