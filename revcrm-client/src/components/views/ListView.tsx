@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody } from "@material-ui/core"
+import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody, Toolbar, Typography, IconButton, Icon } from "@material-ui/core"
 import { Query } from "react-apollo"
 import { getEntityQuery } from "../../graphql/queryhelpers"
 import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
@@ -7,6 +7,14 @@ import { DocumentNode } from "graphql"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
+    },
+    resultsToolbar: {
+        justifyContent: "space-between",
+        borderBottom: "1px solid #EBEBEB"
+    },
+    pagination: {
+        display: "flex",
+        alignItems: "center"
     },
     resultsHeader: {
         fontWeight: "bold"
@@ -56,36 +64,56 @@ export const ListView = withStyles(styles)(withMetadataContext(
                     if (loading) return "Loading..."
                     if (error) return `Error! ${error.message}`
                     return (
-                        <Table padding="dense" className={this.props.classes.root}>
-                            <TableHead>
-                                <TableRow className={this.props.classes.resultsHeader}>
-                                    <TableCell padding="checkbox">
-                                        <Checkbox />
-                                    </TableCell>
-                                    {this.selectedFields.map((field) =>
-                                        <TableCell key={field.name}>
-                                            {field.label}
-                                        </TableCell>)}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {data.Account.results.map((row: any, rowIdx: number) =>
-                                    <TableRow
-                                        key={rowIdx}
-                                        hover className={this.props.classes.resultsRow}
-                                    >
+                        <div className={this.props.classes.root}>
+                            <Toolbar className={this.props.classes.resultsToolbar}>
+                                <Typography variant="title">Companies</Typography>
+                                <div className={this.props.classes.pagination}>
+                                    <Typography variant="caption">
+                                        1-20 of 42
+                                    </Typography>
+                                    <IconButton>
+                                        <Icon title="Previous Page">
+                                            keyboard_arrow_left
+                                        </Icon>
+                                    </IconButton>
+                                    <IconButton>
+                                        <Icon title="Next Page">
+                                            keyboard_arrow_right
+                                        </Icon>
+                                    </IconButton>
+                                </div>
+                            </Toolbar>
+                            <Table padding="dense" className={this.props.classes.root}>
+                                <TableHead>
+                                    <TableRow className={this.props.classes.resultsHeader}>
                                         <TableCell padding="checkbox">
                                             <Checkbox />
                                         </TableCell>
                                         {this.selectedFields.map((field) =>
                                             <TableCell key={field.name}>
-                                                {row[field.name]}
-                                            </TableCell>
-                                        )}
+                                                {field.label}
+                                            </TableCell>)}
                                     </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                                </TableHead>
+                                <TableBody>
+                                    {data.Account.results.map((row: any, rowIdx: number) =>
+                                        <TableRow
+                                            key={rowIdx}
+                                            hover className={this.props.classes.resultsRow}
+                                        >
+                                            <TableCell padding="checkbox">
+                                                <Checkbox />
+                                            </TableCell>
+                                            {this.selectedFields.map((field) =>
+                                                <TableCell key={field.name}>
+                                                    {row[field.name]}
+                                                </TableCell>
+                                            )}
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
                     )
                 }}
             </Query>
