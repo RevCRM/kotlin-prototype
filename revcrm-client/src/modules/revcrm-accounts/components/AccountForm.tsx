@@ -5,7 +5,7 @@ import { Typography, Paper, Icon, Theme, createStyles, withStyles, WithStyles, I
 export const styles = (theme: Theme) => createStyles({
     root: {
     },
-    filterBox: {
+    formHeader: {
         padding: 12,
         height: 60,
         display: "flex",
@@ -18,20 +18,27 @@ export const styles = (theme: Theme) => createStyles({
     backButtonContainer: {
         marginTop: -12,
         marginBottom: -12,
+        marginRight: 12
     },
-    form: {}
+    form: {
+
+    }
 })
+
+function goBack() {
+    history.go(-1)
+}
 
 export const AccountForm = withStyles(styles)((props: WithStyles<typeof styles>) => (
     <div className={props.classes.root}>
-        <Paper square className={props.classes.filterBox}>
+        <Paper square className={props.classes.formHeader}>
             <div className={props.classes.backButtonContainer}>
-                <IconButton color="inherit">
-                    <Icon>keyboard_arrow_left</Icon>
+                <IconButton color="inherit" onClick={goBack}>
+                    <Icon>arrow_back</Icon>
                 </IconButton>
             </div>
             <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                New Account
+                Edit Account
             </Typography>
             <Button color="inherit">
                 Save
