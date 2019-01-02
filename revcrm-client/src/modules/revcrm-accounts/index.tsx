@@ -39,6 +39,7 @@ export function register(ui: UIManager) {
                     "email",
                     "phone"
                 ]}
+                detailView="accounts/form"
             />
     })
 

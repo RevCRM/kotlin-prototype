@@ -4,6 +4,7 @@ import { Query } from "react-apollo"
 import { getEntityQuery, IEntityQueryResults } from "../../graphql/queryhelpers"
 import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
 import { DocumentNode } from "graphql"
+import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 
 export const DEFAULT_LIMIT = 20
 
@@ -36,10 +37,12 @@ export const styles = (theme: Theme) => createStyles({
 
 export interface IListViewProps extends
                     IMetadataContextProp,
+                    IViewManagerContextProp,
                     WithStyles<typeof styles> {
     entity: string
     fields: string[]
     where?: object
+    detailView?: string
 }
 
 export interface IListViewState {
@@ -47,7 +50,7 @@ export interface IListViewState {
     offset: number
 }
 
-export const ListView = withStyles(styles)(withMetadataContext(
+export const ListView = withStyles(styles)(withMetadataContext(withViewManagerContext(
     class extends React.Component<IListViewProps, IListViewState> {
     entityMeta: IEntityMetadata
     selectedFields: IFieldMetadata[]
@@ -69,9 +72,14 @@ export const ListView = withStyles(styles)(withMetadataContext(
             return match
         })
 
+        const fieldNames = [...this.props.fields]
+        if (!fieldNames.includes("id")) {
+            fieldNames.push("id")
+        }
+
         this.query = getEntityQuery({
             entity: this.props.entity,
-            fields: this.props.fields,
+            fields: fieldNames,
         })
     }
 
@@ -81,6 +89,15 @@ export const ListView = withStyles(styles)(withMetadataContext(
 
     onBackButtonPress = () => {
         this.setState({ offset: Math.max(this.state.offset - this.state.limit, 0) })
+    }
+
+    onRowClicked(row: any) {
+        if (this.props.detailView) {
+            const [ perspective, view ] = this.props.detailView.split("/")
+            this.props.viewManagerCtx.changePerspective(perspective, view, {
+                id: row["id"]
+            })
+        }
     }
 
     render() {
@@ -158,6 +175,7 @@ export const ListView = withStyles(styles)(withMetadataContext(
                                         <TableRow
                                             key={rowIdx}
                                             hover className={this.props.classes.listRow}
+                                            onClick={() => this.onRowClicked(row)}
                                         >
                                             <TableCell padding="checkbox">
                                                 <Checkbox />
@@ -177,4 +195,4 @@ export const ListView = withStyles(styles)(withMetadataContext(
             </Query>
         )
     }
-}))
+})))

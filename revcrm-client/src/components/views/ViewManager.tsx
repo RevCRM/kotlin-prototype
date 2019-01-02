@@ -4,6 +4,7 @@ import { IViewContext } from "./types"
 import { IPerspective, IView, UI, IPerspectiveView } from "../../UIManager"
 import { History, Location, Action } from "history"
 import { Omit } from "../../types"
+import { buildQueryString } from "../../utils/urls"
 
 export interface IViewManagerLocation {
     pathname: string
@@ -78,7 +79,8 @@ export class ViewManager extends React.Component<IViewManagerProps, IViewManager
     }
 
     changePerspective = (perspectiveId: string, perspectiveViewId: string, context?: IViewContext) => {
-        this.props.history.push(`/${perspectiveId}/${perspectiveViewId}`)
+        const query = context ? "?" + buildQueryString(context) : ""
+        this.props.history.push(`/${perspectiveId}/${perspectiveViewId}${query}`)
     }
 
     render() {

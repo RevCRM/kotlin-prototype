@@ -4,7 +4,7 @@
  * e.g. default_account_id, event_type, etc.
  */
 export interface IViewContext {
-    model: string | null
-    modelId: number | null
+    entity?: string
+    id?: string
     [key: string]: any
 }

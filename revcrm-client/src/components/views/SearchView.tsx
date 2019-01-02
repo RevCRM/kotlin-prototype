@@ -18,6 +18,7 @@ export interface ISearchViewProps extends
     title: string
     entity: string
     showFields: string[]
+    detailView?: string
 }
 
 export interface ISearchViewState {
@@ -51,6 +52,7 @@ export const SearchView = withStyles(styles)(withMetadataContext(
                         entity={this.props.entity}
                         fields={this.props.showFields}
                         where={this.state.where}
+                        detailView={this.props.detailView}
                     />
                 </div>
             </div>
