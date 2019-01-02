@@ -31,7 +31,7 @@ class Account(
     var last_name: String?,
 
     @Field("Account Code")
-    var code: String,
+    var code: String?,
 
     @Field("Phone")
     var phone: String?,
