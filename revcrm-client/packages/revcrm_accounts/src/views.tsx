@@ -37,7 +37,7 @@ export function registerViews(views: ViewManager) {
         related: ['primary_address'],
         component: (
             <CRMFormView>
-                <Panel title="Account Summary" colspan={12}>
+                {/* <Panel title="Account Summary" colspan={12}>
                     <Field name="type" />
                     <Field name="tags" />
                     <Field name="org_name" />
@@ -61,7 +61,7 @@ export function registerViews(views: ViewManager) {
                     <Field name="primary_address.postal_code" />
                     <Field name="primary_address.region" colspan={12} />
                     <Field name="primary_address.country" colspan={12} />
-                </Panel>
+                </Panel> */}
                 <CRMViewContext.Consumer>{(ctx) => (
                     <Tabs colspan={12} tabs={[
                         {

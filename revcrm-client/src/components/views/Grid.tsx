@@ -1,12 +1,12 @@
 
-import * as React from 'react';
-import MUIGrid from '@material-ui/core/Grid';
+import * as React from "react"
+import MUIGrid from "@material-ui/core/Grid"
 
-export type ColspanOptions = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type ColspanOptions = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 export interface IGridProps {
-    colspanNarrow?: ColspanOptions;
-    colspan?: ColspanOptions;
-    colspanWide?: ColspanOptions;
+    colspanNarrow?: ColspanOptions
+    colspan?: ColspanOptions
+    colspanWide?: ColspanOptions
 }
 
 export function getMUIGridItemProps(props: IGridProps) {
@@ -14,7 +14,7 @@ export function getMUIGridItemProps(props: IGridProps) {
         xs: props.colspanNarrow || 12,
         md: props.colspan || 6,
         lg: props.colspanWide || props.colspan || 6
-    };
+    }
 }
 
 export const Grid: React.SFC<{}> = (props) => {
@@ -22,14 +22,14 @@ export const Grid: React.SFC<{}> = (props) => {
         <MUIGrid container spacing={8}>
             {props.children}
         </MUIGrid>
-    );
-};
+    )
+}
 
 export const GridItem: React.SFC<IGridProps> = (props) => {
-    const muiGridProps = getMUIGridItemProps(props);
+    const muiGridProps = getMUIGridItemProps(props)
     return (
         <MUIGrid item {...muiGridProps}>
             {props.children}
         </MUIGrid>
-    );
-};
+    )
+}

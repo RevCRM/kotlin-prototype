@@ -1,26 +1,23 @@
 
-import * as React from 'react';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import { IGridProps, Grid, GridItem } from './Grid';
+import * as React from "react"
+import { IGridProps, Grid, GridItem } from "../Grid"
+import { Paper, CardHeader, CardContent } from "@material-ui/core"
 
 export interface IPanelProps extends IGridProps {
-    title?: string;
+    title?: string
 }
 
 export const Panel: React.SFC<IPanelProps> = (props) => {
-
     return (
         <GridItem {...props} >
-            <Card>
+            <Paper elevation={0} square={true}>
                 {props.title && <CardHeader title={props.title} />}
                 <CardContent>
                     <Grid>
                         {props.children}
                     </Grid>
                 </CardContent>
-            </Card>
+            </Paper>
         </GridItem>
-    );
-};
+    )
+}
