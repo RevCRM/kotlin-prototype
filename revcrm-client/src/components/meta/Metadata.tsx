@@ -3,11 +3,7 @@ import * as React from "react"
 import { Omit } from "../../types"
 import gql from "graphql-tag"
 import { withAuthContext, IAuthContextProp } from "../auth/AuthContext"
-import ApolloClient from "apollo-client"
-import { withApollo } from "react-apollo"
-
-// Unfortunately withApollo HOC typing is not compatible with our HOCs
-const withApolloClient: any = withApollo
+import { IApolloClientProp, withApolloClient } from "../../graphql/withApolloClient"
 
 const METADATA_QUERY = gql`
     query {
@@ -50,8 +46,9 @@ export interface IMetadataContext {
     getEntity(name: string): IEntityMetadata | undefined
 }
 
-export interface IMetadataContextProviderProps extends IAuthContextProp {
-    client: ApolloClient<any>
+export interface IMetadataContextProviderProps extends
+                    IAuthContextProp,
+                    IApolloClientProp {
 }
 
 export interface IMetadataContextProviderState {
