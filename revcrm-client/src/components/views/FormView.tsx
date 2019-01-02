@@ -42,7 +42,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
     render() {
 
-        const id = this.props.viewManagerCtx.viewContext.id
+        const id = this.props.view.context.id
 
         return (
             <Query<IEntityQueryResults>

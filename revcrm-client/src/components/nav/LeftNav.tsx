@@ -46,7 +46,7 @@ export const LeftNav = withStyles(styles)(withViewManagerContext(
     }
 
     onSubItemClick(item: IMenuSubItem) {
-        this.props.viewManagerCtx.changePerspective(
+        this.props.view.changePerspective(
             item.perspective, item.view
         )
     }

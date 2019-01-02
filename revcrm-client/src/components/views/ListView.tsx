@@ -94,7 +94,7 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
     onRowClicked(row: any) {
         if (this.props.detailView) {
             const [ perspective, view ] = this.props.detailView.split("/")
-            this.props.viewManagerCtx.changePerspective(perspective, view, {
+            this.props.view.changePerspective(perspective, view, {
                 id: row["id"]
             })
         }

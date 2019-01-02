@@ -12,7 +12,7 @@ describe("<ViewManager />", () => {
     let receivedCtx: IViewManagerContext
 
     const ViewContextSpy = withViewManagerContext((props: IViewManagerContextProp) => {
-        receivedCtx = props.viewManagerCtx
+        receivedCtx = props.view
         return <div />
     })
 

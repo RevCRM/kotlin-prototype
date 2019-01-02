@@ -16,7 +16,7 @@ export interface IViewManagerContext {
     perspective: IPerspective | null
     perspectiveView: IPerspectiveView | null
     view: IView | null
-    viewContext: IViewContext
+    context: IViewContext
 
     changePerspective(perspectiveId: string, viewId?: string, context?: IViewContext): void
 }
@@ -29,7 +29,7 @@ export interface IViewManagerState {
     perspective: IPerspective | null
     perspectiveView: IPerspectiveView | null
     view: IView | null
-    viewContext: IViewContext
+    context: IViewContext
 }
 
 // TODO: Move this somewhere better
@@ -38,12 +38,12 @@ export function getViewStateFromUrl(pathname: string, search: string) {
     const perspective = UI.getPerspective(perspectiveId)
     const perspectiveView = UI.getPerspectiveView(perspectiveId, perspectiveViewId)
     const view = perspectiveView ? UI.getView(perspectiveView.viewId) : null
-    const viewContext = queryStringToObject(search)
+    const context = queryStringToObject(search)
     return {
         perspective,
         perspectiveView,
         view,
-        viewContext
+        context
     }
 }
 
@@ -97,7 +97,7 @@ export class ViewManager extends React.Component<IViewManagerProps, IViewManager
 }
 
 export interface IViewManagerContextProp {
-    viewManagerCtx: IViewManagerContext
+    view: IViewManagerContext
 }
 
 export function withViewManagerContext<
@@ -108,7 +108,7 @@ export function withViewManagerContext<
 ): React.ComponentType<TWrapperProps> {
     return (props: any): React.ReactElement<TComponentProps> => (
         <ViewManagerContext.Consumer>{(ctx) => (
-            <Component viewManagerCtx={ctx} {...props} />
+            <Component view={ctx} {...props} />
         )}</ViewManagerContext.Consumer>
     )
 }
