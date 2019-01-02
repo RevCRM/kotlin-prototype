@@ -7,7 +7,7 @@ import { withMetadataContext, IMetadataContextProp, IEntityMetadata } from "../m
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 import { DocumentNode } from "graphql"
 import { getEntityQuery, IEntityQueryResults } from "../../graphql/queryhelpers"
-import { Query } from "react-apollo"
+import { IApolloClientProp, withApolloClient } from "../../graphql/withApolloClient"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -15,15 +15,23 @@ export const styles = (theme: Theme) => createStyles({
     }
 })
 
+export type FormViewLoadState = "not_loaded" | "loading" | "loaded" | "load_error"
+
 export interface IFormViewProps extends
                     IMetadataContextProp,
                     IViewManagerContextProp,
+                    IApolloClientProp,
                     WithStyles<typeof styles> {
     entity: string
 }
 
-export const FormView = withStyles(styles)(withMetadataContext(withViewManagerContext(
-    class extends React.Component<IFormViewProps> {
+export interface IFormViewState {
+    loadState: FormViewLoadState
+    entityData: any
+}
+
+export const FormView = withStyles(styles)(withMetadataContext(withViewManagerContext(withApolloClient(
+    class extends React.Component<IFormViewProps, IFormViewState> {
     entityMeta: IEntityMetadata
     query: DocumentNode
 
@@ -38,32 +46,53 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             entity: this.props.entity,
             fields: fieldNames,
         })
+
+        this.state = {
+            loadState: "not_loaded",
+            entityData: null
+        }
+    }
+
+    async initialise() {
+        this.setState({ loadState: "loading" })
+        const ctx = this.props.view.context
+        const res = await this.props.client.query<IEntityQueryResults>({
+            query: this.query,
+            variables: {
+                where: { id: ctx.id }
+            }
+        })
+        if (res.errors && res.errors.length) {
+            this.setState({ loadState: "load_error" })
+            console.error("Failed to load data", res.errors)
+        }
+        else if (!res.data || !res.data[this.props.entity]
+                || res.data[this.props.entity].results.length != 1) {
+            this.setState({ loadState: "load_error" })
+            console.error("Failed to load data", res.errors)
+        }
+        else {
+            const entityData = res.data[this.props.entity].results[0]
+            console.log("Form data loaded", entityData)
+            this.setState({
+                loadState: "loaded",
+                entityData
+            })
+        }
+    }
+
+    componentDidMount() {
+        this.initialise()
     }
 
     render() {
-
-        const id = this.props.view.context.id
-
+        const { loadState } = this.state
+        if (loadState != "loaded") return "Loading..."
         return (
-            <Query<IEntityQueryResults>
-                query={this.query}
-                variables={{
-                    where: { id }
-                }}
-            >
-                {({ loading, error, data }) => {
-
-                    if (loading) return "Loading..."
-                    if (error) return `Error! ${error.message}`
-                    if (!data) return "No data returned"
-
-                    return (
-                        <Grid container spacing={0} className={this.props.classes.root}>
-                            {this.props.children}
-                        </Grid>
-                    )
-                }}
-            </Query>
+            <Grid container spacing={0} className={this.props.classes.root}>
+                {this.props.children}
+            </Grid>
         )
     }
-})))
+
+}))))
