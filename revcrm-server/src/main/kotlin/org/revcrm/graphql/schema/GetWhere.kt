@@ -3,20 +3,28 @@ package org.revcrm.graphql.schema
 import com.mongodb.BasicDBObject
 import com.mongodb.DBObject
 import graphql.schema.DataFetchingEnvironment
+import org.bson.types.ObjectId
 
 /**
- * Replace graphql JSON keys starting with _ with $ for MongoDB queries
- * (because "$" signifies a variable in GraphQL)
+ * Transform an incoming "where" clause as needed so it can be sent to MongoDB:
  *
- * e.g. {first_name: { _eq: "Russell" }}
- * becomes {first_name: { $eq: "Russell" }}
+ * - Replace graphql JSON keys starting with "_" with "$" for MongoDB queries
+ *   (because "$" signifies a variable in GraphQL)
+ *   e.g. {name: { _eq: "Russell" }} becomes {name: { $eq: "Russell" }}
+ *
+ * - Replace "id" or "_id" to 24-character string pairs with an ObjectID
+ *   reference. (this implementation definitely need improvement!)
  */
-private fun convertOperators(obj: MutableMap<Any, Any>) {
-    val toAdd = mutableMapOf<String, Any>()
+internal fun convertOperators(obj: MutableMap<Any, Any>) {
     val toRemove = mutableListOf<String>()
+    val toAdd = mutableMapOf<String, Any>()
     obj.forEach { key, value ->
         if (key is String) {
-            if (key.startsWith("_")) {
+            if ((key == "id" || key == "_id") &&
+                value is String && value.length == 24) {
+                toRemove.add(key)
+                toAdd.put("_id", ObjectId(value))
+            } else if (key.startsWith("_")) {
                 val newKey = "\$${key.substring(1)}"
                 if (obj.containsKey(newKey))
                     throw Error("Cannot translate key '$key' because '$newKey' already exists.")
