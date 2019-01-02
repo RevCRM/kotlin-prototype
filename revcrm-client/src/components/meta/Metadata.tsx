@@ -4,6 +4,10 @@ import { Omit } from "../../types"
 import gql from "graphql-tag"
 import { withAuthContext, IAuthContextProp } from "../auth/AuthContext"
 import ApolloClient from "apollo-client"
+import { withApollo } from "react-apollo"
+
+// Unfortunately withApollo HOC typing is not compatible with our HOCs
+const withApolloClient: any = withApollo
 
 const METADATA_QUERY = gql`
     query {
@@ -57,7 +61,7 @@ export interface IMetadataContextProviderState {
 
 export const MetadataContext = React.createContext<IMetadataContext>(null as any)
 
-export const MetadataContextProvider = withAuthContext(
+export const MetadataContextProvider = withAuthContext(withApolloClient(
     class extends React.Component<IMetadataContextProviderProps, IMetadataContextProviderState> {
 
     constructor(props: any) {
@@ -115,7 +119,7 @@ export const MetadataContextProvider = withAuthContext(
         )
     }
 
-})
+}))
 
 export interface IMetadataContextProp {
     meta: IMetadataContext

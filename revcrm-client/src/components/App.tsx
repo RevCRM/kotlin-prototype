@@ -50,7 +50,7 @@ export const App = () => (
         <CssBaseline />
         <ApolloProvider client={client}>
             <AuthContextProvider provider={authProvider} history={history}>
-                <MetadataContextProvider client={client}>
+                <MetadataContextProvider>
                     <AppLoader>
                         <ViewManager history={history}>
                             <Navigation>
