@@ -4,7 +4,7 @@ import { IViewContext } from "./types"
 import { IPerspective, IView, UI, IPerspectiveView } from "../../UIManager"
 import { History, Location, Action } from "history"
 import { Omit } from "../../types"
-import { buildQueryString } from "../../utils/urls"
+import { buildQueryString, queryStringToObject } from "../../utils/urls"
 
 export interface IViewManagerLocation {
     pathname: string
@@ -38,14 +38,12 @@ export function getViewStateFromUrl(pathname: string, search: string) {
     const perspective = UI.getPerspective(perspectiveId)
     const perspectiveView = UI.getPerspectiveView(perspectiveId, perspectiveViewId)
     const view = perspectiveView ? UI.getView(perspectiveView.viewId) : null
+    const viewContext = queryStringToObject(search)
     return {
         perspective,
         perspectiveView,
         view,
-        viewContext: {
-            model: "",
-            modelId: null
-        }
+        viewContext
     }
 }
 

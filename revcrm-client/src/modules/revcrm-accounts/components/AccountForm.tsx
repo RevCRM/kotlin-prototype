@@ -44,7 +44,7 @@ export const AccountForm = withStyles(styles)((props: WithStyles<typeof styles>)
                 Save
             </Button>
         </Paper>
-        <FormView>
+        <FormView entity="Account">
             <Panel title="Account Summary" colspan={12}>
                 <Field name="type" />
                 <Field name="tags" />

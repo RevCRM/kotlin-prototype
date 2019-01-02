@@ -8,3 +8,12 @@ export function buildQueryString(obj: any) {
     }
     return parts.join("&")
 }
+
+export function queryStringToObject(queryString: string) {
+    const params = new URLSearchParams(queryString)
+    const result: {[key: string]: any} = {}
+    for (const entry of params.entries()) {
+      result[entry[0]] = entry[1]
+    }
+    return result
+}
