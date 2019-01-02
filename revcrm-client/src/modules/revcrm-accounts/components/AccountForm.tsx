@@ -46,7 +46,7 @@ export const AccountForm = withStyles(styles)((props: WithStyles<typeof styles>)
         </Paper>
         <FormView entity="Account">
             <Panel title="Account Summary" colspan={12}>
-                <Field name="type" />
+                <Field name="is_org" />
                 <Field name="tags" />
                 <Field name="org_name" />
                 <Field name="code" />
@@ -62,13 +62,14 @@ export const AccountForm = withStyles(styles)((props: WithStyles<typeof styles>)
                 <Field name="website" colspan={12} />
             </Panel>
             <Panel title="Address">
-                <Field name="primary_address.name" colspan={12} />
+                <h3>Related records TODO</h3>
+                {/* <Field name="primary_address.name" colspan={12} />
                 <Field name="primary_address.address1" colspan={12} />
                 <Field name="primary_address.address2" colspan={12} />
                 <Field name="primary_address.city" />
                 <Field name="primary_address.postal_code" />
                 <Field name="primary_address.region" colspan={12} />
-                <Field name="primary_address.country" colspan={12} />
+                <Field name="primary_address.country" colspan={12} /> */}
             </Panel>
         </FormView>
     </div>

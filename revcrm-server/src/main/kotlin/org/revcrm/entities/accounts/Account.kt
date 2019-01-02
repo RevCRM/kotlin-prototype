@@ -33,6 +33,9 @@ class Account(
     @Field("Account Code")
     var code: String?,
 
+    @Field("Tags")
+    var tags: String?,
+
     @Field("Phone")
     var phone: String?,
 
