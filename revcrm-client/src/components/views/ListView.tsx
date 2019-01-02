@@ -18,13 +18,19 @@ export const styles = (theme: Theme) => createStyles({
         display: "flex",
         alignItems: "center"
     },
-    resultsHeader: {
+    listHeader: {
         fontWeight: "bold"
     },
-    resultsRow: {
+    listHeaderCell: {
+        cursor: "default"
+    },
+    listRow: {
         "&:nth-of-type(odd)": {
             backgroundColor: theme.palette.background.default,
         },
+    },
+    listCell: {
+        cursor: "default"
     },
 })
 
@@ -137,12 +143,12 @@ export const ListView = withStyles(styles)(withMetadataContext(
                             </Toolbar>
                             <Table padding="dense" className={this.props.classes.root}>
                                 <TableHead>
-                                    <TableRow className={this.props.classes.resultsHeader}>
+                                    <TableRow className={this.props.classes.listHeader}>
                                         <TableCell padding="checkbox">
                                             <Checkbox />
                                         </TableCell>
                                         {this.selectedFields.map((field) =>
-                                            <TableCell key={field.name}>
+                                            <TableCell key={field.name} className={this.props.classes.listHeaderCell}>
                                                 {field.label}
                                             </TableCell>)}
                                     </TableRow>
@@ -151,13 +157,13 @@ export const ListView = withStyles(styles)(withMetadataContext(
                                     {results.map((row: any, rowIdx: number) =>
                                         <TableRow
                                             key={rowIdx}
-                                            hover className={this.props.classes.resultsRow}
+                                            hover className={this.props.classes.listRow}
                                         >
                                             <TableCell padding="checkbox">
                                                 <Checkbox />
                                             </TableCell>
                                             {this.selectedFields.map((field) =>
-                                                <TableCell key={field.name}>
+                                                <TableCell key={field.name} className={this.props.classes.listCell}>
                                                     {row[field.name]}
                                                 </TableCell>
                                             )}
