@@ -9,7 +9,7 @@ export interface IGridProps {
     colspanWide?: ColspanOptions
 }
 
-export function getMUIGridItemProps(props: IGridProps) {
+export function getGridWidthProps(props: IGridProps) {
     return {
         xs: props.colspanNarrow || 12,
         md: props.colspan || 6,
@@ -26,7 +26,7 @@ export const Grid: React.SFC<{}> = (props) => {
 }
 
 export const GridItem: React.SFC<IGridProps> = (props) => {
-    const muiGridProps = getMUIGridItemProps(props)
+    const muiGridProps = getGridWidthProps(props)
     return (
         <MUIGrid item {...muiGridProps}>
             {props.children}

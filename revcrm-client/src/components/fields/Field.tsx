@@ -1,8 +1,9 @@
 import * as React from "react"
-import { IGridProps, GridItem } from "../views/Grid"
-import { FormControl, InputLabel, Input, FormHelperText } from "@material-ui/core"
+import { IGridProps } from "../views/Grid"
 import { IMetadataContextProp, withMetadataContext } from "../meta/Metadata"
 import { IFormContextProp, withFormContext } from "../views/FormView"
+import { IFieldComponentProps, IFieldError, getStandardHTMLProps } from "./controls/props"
+import { getFieldControlMapping } from "./controls/mappings"
 
 export interface IFieldProps extends
                     IGridProps,
@@ -10,6 +11,7 @@ export interface IFieldProps extends
                     IFormContextProp {
     name: string
     label?: string
+    component?: React.ComponentType<IFieldComponentProps>
 }
 
 export const Field = withMetadataContext(withFormContext(
@@ -23,33 +25,24 @@ export const Field = withMetadataContext(withFormContext(
 
         if (!field) throw new Error(`Field '${this.props.name}' not found in data for entity '${entity.name}'`)
 
-        const controlId = `field_${this.props.name}`
-        const error = false
+        const value = form.entityData[field.name]
+        const errors: IFieldError[] = []
         const disabled = false
-        const errorText = ""
-        return (
-            <GridItem {...this.props} >
-                <FormControl fullWidth>
-                    <InputLabel
-                        htmlFor={controlId}
-                        error={error}
-                        disabled={disabled}
-                    >
-                        {this.props.label || field.label}
-                    </InputLabel>
-                    <Input
-                        id={controlId}
-                        value={form.entityData[field.name] || ""}
-                        // onChange={(event) => props.onChange(event.target.value)}
-                        error={error}
-                        disabled={disabled}
-                    />
-                    {errorText &&
-                        <FormHelperText error>
-                            {errorText}
-                        </FormHelperText>}
-                </FormControl>
-            </GridItem>
-        )
+
+        const componentProps: IFieldComponentProps = {
+            field,
+            label: this.props.label || field.label,
+            colspanNarrow: this.props.colspanNarrow || 12,
+            colspan: this.props.colspan || 6,
+            colspanWide: this.props.colspanWide || this.props.colspan || 6,
+            value,
+            errors,
+            disabled,
+            onChange: (newValue) => null
+        }
+        const standardProps = getStandardHTMLProps(this.props)
+
+        const Component = this.props.component || getFieldControlMapping(field)
+        return <Component {...componentProps} {...standardProps} />
     }
 }))
