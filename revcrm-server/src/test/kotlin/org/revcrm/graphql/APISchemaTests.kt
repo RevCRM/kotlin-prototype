@@ -17,6 +17,7 @@ import org.revcrm.meta.MetadataService
 import org.revcrm.meta.fields.BooleanField
 import org.revcrm.meta.fields.DateField
 import org.revcrm.meta.fields.DateTimeField
+import org.revcrm.meta.fields.DecimalField
 import org.revcrm.meta.fields.EnumField
 import org.revcrm.meta.fields.FloatField
 import org.revcrm.meta.fields.IDField
@@ -61,6 +62,8 @@ class APISchemaTests {
                     jvmType = "float", nullable = false, constraints = mapOf()),
                 "double_field" to FloatField(name = "double_field", label = "Double Field",
                     jvmType = "double", nullable = false, constraints = mapOf()),
+                "decimal_field" to DecimalField(name = "decimal_field", label = "Decimal Field",
+                    jvmType = "java.math.BigDecimal", nullable = false, constraints = mapOf()),
                 "boolean_field" to BooleanField(name = "boolean_field", label = "Boolean Field",
                     jvmType = "boolean", nullable = false),
                 "string_field" to TextField(name = "string_field", label = "String Field",
@@ -235,6 +238,12 @@ class APISchemaTests {
         fun `Double fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("double_field").type as GraphQLNonNull
             assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLFloat)
+        }
+
+        @Test
+        fun `Decimal fields are exposed as expected`() {
+            val type = testFieldsEntityType.getFieldDefinition("decimal_field").type as GraphQLNonNull
+            assertThat(type.wrappedType).isEqualTo(Scalars.GraphQLBigDecimal)
         }
 
         @Test

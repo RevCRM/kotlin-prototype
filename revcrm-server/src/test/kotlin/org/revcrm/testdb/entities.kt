@@ -6,6 +6,7 @@ import org.revcrm.annotations.Field
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -30,6 +31,7 @@ class TestFieldsEntity(
     var long_field: Long,
     var double_field: Double,
     var float_field: Float,
+    var decimal_field: BigDecimal,
     var boolean_field: Boolean,
     var date_field: LocalDate,
     var time_field: LocalTime,

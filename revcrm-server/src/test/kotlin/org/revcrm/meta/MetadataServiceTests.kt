@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.revcrm.meta.fields.BooleanField
 import org.revcrm.meta.fields.DateField
 import org.revcrm.meta.fields.DateTimeField
+import org.revcrm.meta.fields.DecimalField
 import org.revcrm.meta.fields.EnumField
 import org.revcrm.meta.fields.FloatField
 import org.revcrm.meta.fields.IDField
@@ -110,6 +111,13 @@ class MetadataServiceTests {
             assertThat(fieldsEntity.fields["double_field"]).isInstanceOf(FloatField::class.java)
             assertThat(fieldsEntity.fields["double_field"]!!.type).isEqualTo("FloatField")
             assertThat(fieldsEntity.fields["double_field"]!!.jvmType).isEqualTo("double")
+        }
+
+        @Test
+        fun `BigDecimal field returns expected metadata`() {
+            assertThat(fieldsEntity.fields["decimal_field"]).isInstanceOf(DecimalField::class.java)
+            assertThat(fieldsEntity.fields["decimal_field"]!!.type).isEqualTo("DecimalField")
+            assertThat(fieldsEntity.fields["decimal_field"]!!.jvmType).isEqualTo("java.math.BigDecimal")
         }
 
         @Test

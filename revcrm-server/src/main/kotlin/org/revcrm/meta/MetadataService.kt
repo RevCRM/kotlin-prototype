@@ -6,6 +6,7 @@ import org.revcrm.meta.fields.IField
 import org.revcrm.meta.fields.mapBooleanField
 import org.revcrm.meta.fields.mapDateField
 import org.revcrm.meta.fields.mapDateTimeField
+import org.revcrm.meta.fields.mapDecimalField
 import org.revcrm.meta.fields.mapEnumField
 import org.revcrm.meta.fields.mapFloatField
 import org.revcrm.meta.fields.mapIDField
@@ -34,6 +35,7 @@ class MetadataService(
         addJvmTypeMapper("float", ::mapFloatField)
         addJvmTypeMapper("double", ::mapFloatField)
         addJvmTypeMapper("boolean", ::mapBooleanField)
+        addJvmTypeMapper("java.math.BigDecimal", ::mapDecimalField)
         addJvmTypeMapper("java.lang.String", ::mapTextField)
         addJvmTypeMapper("java.time.LocalDate", ::mapDateField)
         addJvmTypeMapper("java.time.LocalTime", ::mapTimeField)
