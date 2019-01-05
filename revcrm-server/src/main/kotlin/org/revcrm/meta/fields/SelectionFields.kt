@@ -13,6 +13,7 @@ open class EnumField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val properties: Map<String, String> = mapOf(),
     override val constraints: Map<String, String> = mapOf()
 ) : IField {
 
@@ -40,6 +41,7 @@ open class BooleanField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val properties: Map<String, String> = mapOf(),
     override val constraints: Map<String, String> = mapOf()
 ) : IField {
 

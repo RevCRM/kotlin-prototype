@@ -11,6 +11,7 @@ open class DateTimeField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
 
@@ -24,6 +25,7 @@ open class DateField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
 
@@ -37,6 +39,7 @@ open class TimeField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
 
@@ -51,6 +54,7 @@ fun mapDateTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
+        properties = mapOf(),
         constraints = mapOf()
     )
 }
@@ -61,6 +65,7 @@ fun mapDateField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
+        properties = mapOf(),
         constraints = mapOf()
     )
 }
@@ -71,6 +76,7 @@ fun mapTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
+        properties = mapOf(),
         constraints = mapOf()
     )
 }

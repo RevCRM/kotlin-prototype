@@ -9,6 +9,7 @@ interface IField {
     val label: String
     val jvmType: String
     val nullable: Boolean
+    val properties: Map<String, String>
     val constraints: Map<String, String>
 
     fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType

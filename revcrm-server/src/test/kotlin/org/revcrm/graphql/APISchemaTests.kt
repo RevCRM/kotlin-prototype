@@ -41,7 +41,8 @@ class APISchemaTests {
                 "name" to TextField(
                     name = "name", label = "Name",
                     jvmType = "java.lang.String",
-                    nullable = false, constraints = mapOf()
+                    nullable = false, properties = mapOf(),
+                    constraints = mapOf()
                 )
             )
         ),
@@ -53,27 +54,27 @@ class APISchemaTests {
                 "id_field" to IDField(name = "id_field", label = "ID",
                     jvmType = "org.bson.types.ObjectId", nullable = false),
                 "int_field" to IntegerField(name = "int_field", label = "Integer Field",
-                    jvmType = "int", nullable = false, constraints = mapOf()),
+                    jvmType = "int", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "short_field" to IntegerField(name = "short_field", label = "Short Field",
-                    jvmType = "short", nullable = false, constraints = mapOf()),
+                    jvmType = "short", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "long_field" to IntegerField(name = "long_field", label = "Long Field",
-                    jvmType = "long", nullable = false, constraints = mapOf()),
+                    jvmType = "long", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "float_field" to FloatField(name = "float_field", label = "Float Field",
-                    jvmType = "float", nullable = false, constraints = mapOf()),
+                    jvmType = "float", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "double_field" to FloatField(name = "double_field", label = "Double Field",
-                    jvmType = "double", nullable = false, constraints = mapOf()),
+                    jvmType = "double", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "decimal_field" to DecimalField(name = "decimal_field", label = "Decimal Field",
-                    jvmType = "java.math.BigDecimal", nullable = false, constraints = mapOf()),
+                    jvmType = "java.math.BigDecimal", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "boolean_field" to BooleanField(name = "boolean_field", label = "Boolean Field",
                     jvmType = "boolean", nullable = false),
                 "string_field" to TextField(name = "string_field", label = "String Field",
-                    jvmType = "java.lang.String", nullable = false, constraints = mapOf()),
+                    jvmType = "java.lang.String", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "date_field" to DateField(name = "date_field", label = "Date Field",
-                    jvmType = "java.time.LocalDate", nullable = false, constraints = mapOf()),
+                    jvmType = "java.time.LocalDate", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "time_field" to TimeField(name = "time_field", label = "Time Field",
-                    jvmType = "java.time.LocalTime", nullable = false, constraints = mapOf()),
+                    jvmType = "java.time.LocalTime", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "datetime_field" to DateTimeField(name = "datetime_field", label = "DateTime Field",
-                    jvmType = "java.time.LocalDateTime", nullable = false, constraints = mapOf()),
+                    jvmType = "java.time.LocalDateTime", nullable = false, properties = mapOf(), constraints = mapOf()),
                 "enum_field" to EnumField(name = "enum_field", label = "Enum Field",
                     jvmType = "org.revcrm.testdb.EnumFieldOptions", nullable = false),
                 "related_field" to RelatedEntityField(name = "related_field", label = "RelatedEntity Field",
@@ -86,10 +87,10 @@ class APISchemaTests {
             className = "test.TestConstraintsEntity",
             fields = mapOf<String, IField>(
                 "nullable_field" to TextField(name = "nullable_field", label = "Nullable Text Field",
-                    jvmType = "java.lang.String", nullable = true, constraints = mapOf()
+                    jvmType = "java.lang.String", nullable = true, properties = mapOf(), constraints = mapOf()
                 ),
                 "non_nullable_field" to TextField(name = "non_nullable_field", label = "Non-nullable Text Field",
-                    jvmType = "java.lang.String", nullable = false, constraints = mapOf()
+                    jvmType = "java.lang.String", nullable = false, properties = mapOf(), constraints = mapOf()
                 )
             )
         )
