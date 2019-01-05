@@ -1,6 +1,6 @@
 package org.revcrm.entities.accounts
 
-import org.revcrm.annotations.Field
+import org.revcrm.annotations.Label
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Index
@@ -15,48 +15,48 @@ import xyz.morphia.utils.IndexType
     ])
 )
 class Account(
-    @Field("Is Organisation?")
+    @Label("Is Organisation?")
     var is_org: Boolean,
 
-    @Field("Organisation Name")
+    @Label("Organisation Name")
     var org_name: String?,
 
-    @Field("Title")
+    @Label("Title")
     var title: String?,
 
-    @Field("First Name")
+    @Label("First Name")
     var first_name: String?,
 
-    @Field("Last Name")
+    @Label("Last Name")
     var last_name: String?,
 
-    @Field("Account Code")
+    @Label("Account Code")
     var code: String?,
 
-    @Field("Tags")
+    @Label("Tags")
     var tags: String?,
 
-    @Field("Phone")
+    @Label("Phone")
     var phone: String?,
 
-    @Field("Mobile")
+    @Label("Mobile")
     var mobile: String?,
 
-    @Field("Fax")
+    @Label("Fax")
     var fax: String?,
 
-    @Field("Email")
+    @Label("Email")
     var email: String?,
 
-    @Field("Website")
+    @Label("Website")
     var website: String?,
 
-    @Field("Notes")
+    @Label("Notes")
     var notes: String?
 
 //    @ManyToOne
 //    @JoinColumn(name = "primary_address_id")
-//    @Field("Address")
+//    @Label("Address")
 //    var primary_address: Address
 
 ) : Base()

@@ -1,7 +1,7 @@
 package org.revcrm.entities
 
 import org.bson.types.ObjectId
-import org.revcrm.annotations.Field
+import org.revcrm.annotations.Label
 import xyz.morphia.annotations.Id
 import java.time.LocalDateTime
 import xyz.morphia.annotations.PrePersist
@@ -10,10 +10,10 @@ abstract class Base {
     @Id
     var id: ObjectId? = null
 
-    @Field("Date Created")
+    @Label("Date Created")
     var created_date: LocalDateTime? = null
 
-    @Field("Last Updated")
+    @Label("Last Updated")
     var updated_date: LocalDateTime? = null
 
     @PrePersist
