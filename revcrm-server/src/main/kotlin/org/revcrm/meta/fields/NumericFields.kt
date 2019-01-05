@@ -49,13 +49,13 @@ open class DecimalField(
 
 private fun getNumericConstraints(propInfo: EntityPropInfo): Map<String, String> {
     val constraints = mutableMapOf<String, String>()
-    if (propInfo.field.isAnnotationPresent(Min::class.java)) {
-        val min = propInfo.field.getAnnotation(Min::class.java)
-        constraints.set("Min", min.value.toString())
+    val minAnnotation = propInfo.findJavaAnnotation(Min::class.java)
+    val maxAnnotation = propInfo.findJavaAnnotation(Max::class.java)
+    if (minAnnotation != null) {
+        constraints.set("Min", minAnnotation.value.toString())
     }
-    if (propInfo.field.isAnnotationPresent(Max::class.java)) {
-        val max = propInfo.field.getAnnotation(Max::class.java)
-        constraints.set("Max", max.value.toString())
+    if (maxAnnotation != null) {
+        constraints.set("Max", maxAnnotation.value.toString())
     }
     return constraints
 }

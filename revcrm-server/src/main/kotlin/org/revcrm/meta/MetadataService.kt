@@ -80,7 +80,7 @@ class MetadataService(
 
     private fun getEntityField(klass: KClass<*>, propName: String, entityClassNames: List<String>): IField {
         val propInfo = EntityPropInfo(klass, propName)
-        if (propInfo.field.type.isEnum) {
+        if (propInfo.isEnum) {
             // TODO: Make this customisable
             return mapEnumField(this, propInfo)
         } else if (entityClassNames.contains(propInfo.jvmType)) {

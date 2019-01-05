@@ -2,11 +2,11 @@ package org.revcrm.meta
 
 import org.revcrm.annotations.Label
 import org.revcrm.util.getProperty
-import java.lang.reflect.Field
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
+import kotlin.reflect.jvm.javaGetter
 
 /**
  * Takes a KClass and a property name and extracts various
@@ -17,10 +17,10 @@ class EntityPropInfo(
     val name: String
 ) {
     val property: KProperty1<*, *>
-    val field: Field
     val label: String
     val jvmType: String
     val nullable: Boolean
+    val isEnum: Boolean
 
     init {
         val foundProperty = getProperty(klass, name)
@@ -29,11 +29,19 @@ class EntityPropInfo(
 
         property = foundProperty
         nullable = property.returnType.isMarkedNullable
-        field = property.javaField!!
+        var field = property.javaField!!
         jvmType = field.type.name
+        isEnum = field.type.isEnum
 
         val labelAnnotation = property.findAnnotation<Label>()
         label = if (labelAnnotation != null) labelAnnotation.label
             else name
+    }
+
+    fun <T : Annotation> findJavaAnnotation(annotationClass: Class<T>): T? {
+        var annotation = property.javaGetter?.getAnnotation(annotationClass)
+        if (annotation == null)
+            annotation = property.javaField?.getAnnotation(annotationClass)
+        return annotation
     }
 }

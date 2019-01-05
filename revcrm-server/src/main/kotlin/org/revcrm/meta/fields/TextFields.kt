@@ -23,10 +23,10 @@ open class TextField(
 
 fun mapTextField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     val constraints = mutableMapOf<String, String>()
-    if (propInfo.field.isAnnotationPresent(NotEmpty::class.java)) {
+    if (propInfo.findJavaAnnotation(NotEmpty::class.java) != null) {
         constraints.set("NotEmpty", "true")
     }
-    if (propInfo.field.isAnnotationPresent(NotBlank::class.java)) {
+    if (propInfo.findJavaAnnotation(NotBlank::class.java) != null) {
         constraints.set("NotBlank", "true")
     }
     return TextField(
