@@ -1,6 +1,7 @@
 package org.revcrm.graphql.schema
 
 import graphql.Scalars
+import graphql.scalars.ExtendedScalars
 import graphql.schema.FieldCoordinates
 import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLFieldDefinition
@@ -31,6 +32,12 @@ fun registerMetadataQueryType(
         .field(GraphQLFieldDefinition.newFieldDefinition()
             .name("nullable")
             .type(Scalars.GraphQLBoolean))
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+            .name("properties")
+            .type(ExtendedScalars.Json))
+        .field(GraphQLFieldDefinition.newFieldDefinition()
+            .name("constraints")
+            .type(ExtendedScalars.Json))
         .build()
     code
         .dataFetcher(
@@ -45,6 +52,12 @@ fun registerMetadataQueryType(
         .dataFetcher(
             FieldCoordinates.coordinates("EntityFieldMetadata", "nullable"),
             PropertyDataFetcher.fetching<Any>("nullable"))
+        .dataFetcher(
+            FieldCoordinates.coordinates("EntityFieldMetadata", "properties"),
+            PropertyDataFetcher.fetching<Any>("properties"))
+        .dataFetcher(
+            FieldCoordinates.coordinates("EntityFieldMetadata", "constraints"),
+            PropertyDataFetcher.fetching<Any>("constraints"))
 
     val entityMetaType = GraphQLObjectType.newObject()
         .name("EntityMetadata")

@@ -3,6 +3,7 @@ package org.revcrm.testdb
 import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
+import org.revcrm.annotations.MultiLine
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
@@ -13,7 +14,7 @@ import java.time.LocalTime
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.Size
 
 enum class EnumFieldOptions {
     OPTION1,
@@ -59,11 +60,10 @@ class TestConstraintsEntity(
 
     var nullable_field: String?,
 
-    @field:NotEmpty
-    var notempty_field: String,
-
-    @field:NotBlank
-    var notblank_field: String,
+    @MultiLine
+    @get:NotBlank
+    @get:Size(min = 1, max = 10)
+    var textField: String,
 
     @field:Min(10)
     var min_field: Int,

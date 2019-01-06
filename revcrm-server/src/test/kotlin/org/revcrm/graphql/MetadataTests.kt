@@ -19,7 +19,9 @@ class EntityFieldInfo(
     val name: String,
     val label: String,
     val type: String,
-    val nullable: Boolean
+    val nullable: Boolean,
+    val properties: Map<String, String>,
+    val constraints: Map<String, String>
 )
 
 class MetadataTests {
@@ -57,6 +59,8 @@ class MetadataTests {
                             label
                             type
                             nullable
+                            properties
+                            constraints
                         }
                     }
                 }
@@ -87,6 +91,16 @@ class MetadataTests {
             assertThat(entityInfo.fields[0].label).isEqualTo(entities[0].fieldsList[0].label)
             assertThat(entityInfo.fields[0].type).isEqualTo(entities[0].fieldsList[0].type)
             assertThat(entityInfo.fields[0].nullable).isEqualTo(entities[0].fieldsList[0].nullable)
+        }
+
+        @Test
+        fun `includes field properties and constraints as JSON`() {
+            val constraintsEntityMeta = result.find { it.name == "TestConstraintsEntity" }!!
+            val field = constraintsEntityMeta.fields.find { it.name == "textField" }!!
+            assertThat(field.properties.get("MultiLine")).isEqualTo("true")
+            assertThat(field.constraints.get("NotBlank")).isEqualTo("true")
+            assertThat(field.constraints.get("SizeMin")).isEqualTo("1")
+            assertThat(field.constraints.get("SizeMax")).isEqualTo("10")
         }
     }
 }

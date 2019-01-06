@@ -187,13 +187,8 @@ class MetadataServiceTests {
         }
 
         @Test
-        fun `NotEmpty field returns expected metadata`() {
-            assertThat(constraintsEntity.fields["notempty_field"]!!.constraints).containsEntry("NotEmpty", "true")
-        }
-
-        @Test
         fun `NotBlank field returns expected metadata`() {
-            assertThat(constraintsEntity.fields["notblank_field"]!!.constraints).containsEntry("NotBlank", "true")
+            assertThat(constraintsEntity.fields["textField"]!!.constraints).containsEntry("NotBlank", "true")
         }
 
         @Test

@@ -2,7 +2,7 @@ package org.revcrm.meta.fields
 
 import io.mockk.mockkClass
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
 import org.revcrm.meta.EntityPropInfo
