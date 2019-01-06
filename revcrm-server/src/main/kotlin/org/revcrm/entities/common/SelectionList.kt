@@ -1,21 +1,20 @@
 package org.revcrm.entities.common
 
 import org.revcrm.entities.Base
+import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 
 @Entity
 class SelectionList(
     var code: String,
-    var model: String,
-    var label: String
-//    @Embedded
-//    var options: List<SelectionOption>
+    var label: String,
+    @Embedded
+    var options: List<SelectionOption>
 ) : Base()
 
 class SelectionOption(
     var code: String,
-    var label: String,
-    var seq: Short
+    var label: String
 ) : Base()
 
 // fun importSelectionLists(fileName: String, db: DBService) {

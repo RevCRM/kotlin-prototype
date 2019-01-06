@@ -34,6 +34,7 @@ class DBService {
 
     fun getEntityMappings(): Collection<MappedClass> {
         return morphia.mapper.mappedClasses.filter { mapping ->
+            // TODO: Dont filter these out because some are "Enbedded" entities
             val klass = mapping.clazz.kotlin
             klass.findAnnotation<Entity>() != null
         }
