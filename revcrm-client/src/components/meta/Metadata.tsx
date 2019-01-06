@@ -32,6 +32,12 @@ export interface IFieldMetadata {
     label: string
     type: string
     nullable: boolean
+    properties: {
+        [propertyName: string]: string
+    }
+    constraints: {
+        [propertyName: string]: string
+    }
 }
 
 export interface IEntityMetadata {

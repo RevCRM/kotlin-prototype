@@ -13,6 +13,7 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
 
     const gridWidthProps = getGridWidthProps(props)
     const fieldId = props.field.name
+    const { MultiLine } = props.field.properties
 
     const hasErrors = props.errors.length > 0
     let errorText = ""
@@ -20,13 +21,12 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
         errorText += err.message + ". "
     })
 
-    // // multi-line to do
     const mlOptions: any = {}
-    // if (multiLine) {
-    //     mlOptions.multiline = true
-    //     mlOptions.rowsMax = 5
-    //     mlOptions.rows = 5
-    // }
+    if (MultiLine == "true") {
+        mlOptions.multiline = true
+        mlOptions.rowsMax = 5
+        mlOptions.rows = 5
+    }
 
     return (
         <Grid item {...gridWidthProps} style={props.style}>

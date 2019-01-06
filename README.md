@@ -39,3 +39,10 @@ docker build -t revcrm:latest .
 ```
 docker run --rm -it --env-file=revcrm.env -p 8800:8800 revcrm:latest
 ```
+
+### Developing the Client
+
+The revcrm-client is automatically built as part of the gradle build, but it is also a self-contained NodeJS project
+which can be worked on seperately.
+
+Please note that you'll need at least **NodeJS v10.x** installed to build & test the client.
