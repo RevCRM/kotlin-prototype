@@ -15,6 +15,8 @@ const METADATA_QUERY = gql`
                     label
                     type
                     nullable
+                    properties
+                    constraints
                 }
             }
         }

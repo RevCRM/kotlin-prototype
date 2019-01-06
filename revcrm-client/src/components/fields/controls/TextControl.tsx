@@ -1,13 +1,9 @@
 
 import * as React from "react"
 
-import Grid from "@material-ui/core/Grid"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
-import Input from "@material-ui/core/Input"
-import InputLabel from "@material-ui/core/InputLabel"
 import { IFieldComponentProps } from "./props"
 import { getGridWidthProps } from "../../views/Grid"
+import { Grid, FormControl, InputLabel, Input, FormHelperText } from "@material-ui/core"
 
 export const TextControl: React.StatelessComponent<IFieldComponentProps> = (props) => {
 

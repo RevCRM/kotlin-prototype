@@ -1,6 +1,7 @@
 package org.revcrm.entities.accounts
 
 import org.revcrm.annotations.Label
+import org.revcrm.annotations.MultiLine
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Index
@@ -52,6 +53,7 @@ class Account(
     var website: String?,
 
     @Label("Notes")
+    @MultiLine
     var notes: String?
 
 //    @ManyToOne
