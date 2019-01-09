@@ -29,7 +29,15 @@ class APISchema(private val meta: MetadataService) {
         registerMetadataQueryType(schema, code, queryType)
 
         /**
-         * Register Entity Types
+         * Register Embedded Types
+         */
+        val embeddedEntities = meta.getEmbeddedEntities()
+        embeddedEntities.forEach { entity ->
+            registerEntityObjectType(meta, entity, schema, code)
+        }
+
+        /**
+         * Register Main Entity Types
          */
         val entities = meta.getEntities()
         entities.forEach { entity ->

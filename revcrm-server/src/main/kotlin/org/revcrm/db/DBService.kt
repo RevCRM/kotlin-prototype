@@ -43,4 +43,12 @@ class DBService {
             match
         }
     }
+
+    fun getEntityClassNames(): List<String> {
+        return config.entityClasses
+    }
+
+    fun getEmbeddedClassNames(): List<String> {
+        return config.embeddedClasses
+    }
 }

@@ -16,7 +16,6 @@ class MetadataService(
 ) {
     private val jvmTypeMappers = mutableMapOf<String, JvmTypeMapper>()
 
-    private val entityClassNames: MutableList<String>
     private val entities = mutableMapOf<String, Entity>()
     private val embeddedEntities = mutableMapOf<String, Entity>()
 
@@ -36,10 +35,14 @@ class MetadataService(
         addJvmTypeMapper("java.util.List", ::mapListField)
 
         val mappedClasses = db.getEntityMappings()
-        entityClassNames = mappedClasses.map { it.clazz.name }.toMutableList()
+        val entityClassNames = db.getEntityClassNames()
+        val embeddedClassNames = db.getEmbeddedClassNames()
         mappedClasses.forEach { mapping ->
             val entityMeta = getEntityMetadata(mapping, entityClassNames)
-            addEntity(entityMeta.name, entityMeta)
+            if (entityClassNames.find { it == entityMeta.className } != null)
+                addEntity(entityMeta.name, entityMeta)
+            else if (embeddedClassNames.find { it == entityMeta.className } != null)
+                addEmbeddedEntity(entityMeta.name, entityMeta)
         }
     }
 
@@ -104,5 +107,13 @@ class MetadataService(
 
     fun getEntity(name: String): Entity? {
         return if (entities.containsKey(name)) entities[name] else null
+    }
+
+    fun getEmbeddedEntities(): List<Entity> {
+        return embeddedEntities.values.toList()
+    }
+
+    fun getEmbeddedEntity(name: String): Entity? {
+        return if (embeddedEntities.containsKey(name)) entities[name] else null
     }
 }
