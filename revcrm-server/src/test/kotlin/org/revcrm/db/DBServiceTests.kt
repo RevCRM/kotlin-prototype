@@ -4,8 +4,6 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.testdb.TestDB
-import xyz.morphia.annotations.Entity
-import kotlin.reflect.full.findAnnotation
 
 class DBServiceTests {
 
@@ -16,9 +14,13 @@ class DBServiceTests {
     inner class EntityMappings {
 
         @Test
-        fun `returns only entities with @Entity annotation`() {
+        fun `returns only entities in the entityClasses list`() {
+            val entityClassNames = mutableListOf<String>()
+            entityClassNames.addAll(testDB.getEntityClassNames())
+            entityClassNames.addAll(testDB.getEmbeddedClassNames())
+
             assertThat(entities).allMatch { entity ->
-                entity.clazz.kotlin.findAnnotation<Entity>() != null
+                entityClassNames.find { it == entity.clazz.name } != null
             }
         }
     }

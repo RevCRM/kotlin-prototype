@@ -104,15 +104,13 @@ class APISchemaTests {
     val data = DBService().apply {
         mockkObject(this)
     }
-    init {
-        every { data.getEntityMappings() } returns listOf()
-    }
 
     val meta = MetadataService(data).apply {
         mockkObject(this)
     }
     init {
         every { meta.getEntities() } returns entities
+        every { meta.getEmbeddedEntities() } returns listOf()
     }
 
     /**

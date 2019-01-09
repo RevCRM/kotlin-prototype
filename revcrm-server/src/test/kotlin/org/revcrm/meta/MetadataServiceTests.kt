@@ -21,6 +21,10 @@ class MetadataServiceTests {
     val testDB = TestDB.instance
     val meta = MetadataService(testDB)
 
+    init {
+        meta.initialise()
+    }
+
     @Nested
     inner class EntityMetadata {
 

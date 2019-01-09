@@ -26,6 +26,7 @@ class ReadingData {
             resetAccountData(ds)
             resetTestEntity2Data(ds)
         }
+        meta.initialise()
         api.initialise()
     }
 

@@ -5,7 +5,12 @@ object TestDB {
 
     private fun createTestDB() = getDBServiceForEntities(
         listOf(
-            "org.revcrm.testdb"
-        )
+            "org.revcrm.testdb.TestFieldsEntity",
+            "org.revcrm.testdb.TestEntity2",
+            "org.revcrm.testdb.TestConstraintsEntity",
+            "org.revcrm.testdb.SensitiveEntity",
+            "org.revcrm.testdb.Account"
+        ),
+        listOf()
     )
 }

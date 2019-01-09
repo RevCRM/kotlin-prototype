@@ -32,6 +32,7 @@ class MetadataTests {
     val gson = getTestGson()
 
     init {
+        meta.initialise()
         api.initialise()
     }
 
