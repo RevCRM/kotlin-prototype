@@ -53,8 +53,7 @@ fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
                     jvmType = propInfo.jvmType,
                     nullable = propInfo.nullable
                 )
-            }
-            else {
+            } else {
                 return RelatedEntityListField(
                     name = propInfo.name,
                     label = propInfo.label,
