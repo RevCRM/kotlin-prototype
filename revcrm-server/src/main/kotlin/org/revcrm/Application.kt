@@ -57,7 +57,8 @@ fun Application.main() {
     val config = Config(
         dbUrl = c.property("revcrm.db.url").getString(),
         dbName = c.property("revcrm.db.name").getString(),
-        entityPackages = c.property("revcrm.entityPackages").getList()
+        entityClasses = c.property("revcrm.entityClasses").getList(),
+        embeddedClasses = c.property("revcrm.embeddedClasses").getList()
     )
 
     log.info("Initialising Database Connection...")

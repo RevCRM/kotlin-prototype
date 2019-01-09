@@ -18,7 +18,8 @@ class DBService {
         newConfig: Config
     ) {
         config = newConfig
-        config.entityPackages.forEach { morphia.mapPackage(it) }
+        config.entityClasses.forEach { morphia.map(Class.forName(it)) }
+        config.embeddedClasses.forEach { morphia.map(Class.forName(it)) }
         client = MongoClient(config.dbUrl)
         datastore = morphia.createDatastore(client, config.dbName) as AdvancedDatastore
         datastore.ensureIndexes()
@@ -34,9 +35,12 @@ class DBService {
 
     fun getEntityMappings(): Collection<MappedClass> {
         return morphia.mapper.mappedClasses.filter { mapping ->
-            // TODO: Dont filter these out because some are "Enbedded" entities
-            val klass = mapping.clazz.kotlin
-            klass.findAnnotation<Entity>() != null
+            // Return only classes in entity class lists
+            val className = mapping.clazz.name
+            var match = config.entityClasses.find { it == className } != null
+            if (match == false)
+                match = config.embeddedClasses.find { it == className } != null
+            match
         }
     }
 }

@@ -11,12 +11,12 @@ import com.google.gson.JsonElement
 import org.bson.types.ObjectId
 import java.lang.reflect.Type
 
-fun getDBServiceForEntities(entityPackages: List<String>): DBService {
+fun getDBServiceForEntities(entityClasses: List<String>): DBService {
     val dbService = DBService()
     val config = Config(
         dbUrl = "127.0.0.1:27017",
         dbName = "revcrm_tests",
-        entityPackages = entityPackages
+        entityClasses = entityClasses
     )
     dbService.initialise(config)
     return dbService
