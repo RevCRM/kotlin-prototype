@@ -33,7 +33,9 @@ class MetadataService(
         addJvmTypeMapper("java.time.LocalDateTime", ::mapDateTimeField)
         addJvmTypeMapper("org.bson.types.ObjectId", ::mapIDField)
         addJvmTypeMapper("java.util.List", ::mapListField)
+    }
 
+    fun initialise() {
         val mappedClasses = db.getEntityMappings()
         val entityClassNames = db.getEntityClassNames()
         val embeddedClassNames = db.getEmbeddedClassNames()

@@ -26,6 +26,7 @@ import org.revcrm.graphql.APIService
 import org.revcrm.entities.AuthType
 import org.revcrm.entities.RevUser
 import org.revcrm.entities.RevUserAuth
+import org.revcrm.meta.MetadataService
 import org.revcrm.routes.graphQL
 import org.revcrm.routes.graphiQL
 import org.revcrm.routes.healthCheck
@@ -64,6 +65,14 @@ fun Application.main() {
     log.info("Initialising Database Connection...")
     val db: DBService by inject()
     db.initialise(config)
+
+    log.info("Initialising Metadata...")
+    val meta: MetadataService by inject()
+    meta.initialise()
+
+    log.info("Initialising GraphQL Schema...")
+    val schema: APIService by inject()
+    schema.initialise()
 
     install(DefaultHeaders) {
         header("Server", "RevCRM")
@@ -119,11 +128,6 @@ fun Application.main() {
         graphiQL()
         healthCheck()
     }
-
-    log.info("Initialising GraphQL Schema...")
-
-    val schema: APIService by inject()
-    schema.initialise()
 
     log.info("TEMP: Ensuring test user...")
     val adminUser = db.withDB { ds ->
