@@ -16,6 +16,8 @@ abstract class Base {
     @Label("Last Updated")
     var updated_date: LocalDateTime? = null
 
+    var data_id: String? = null
+
     @PrePersist
     fun prePersist() {
         if (created_date == null) created_date = LocalDateTime.now()

@@ -21,6 +21,7 @@ import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
 import org.revcrm.auth.RevPrincipal
 import org.revcrm.config.Config
+import org.revcrm.data.DataLoader
 import org.revcrm.db.DBService
 import org.revcrm.graphql.APIService
 import org.revcrm.entities.AuthType
@@ -61,10 +62,15 @@ fun Application.main() {
         entityClasses = c.property("revcrm.entityClasses").getList(),
         embeddedClasses = c.property("revcrm.embeddedClasses").getList()
     )
+    val data = c.property("revcrm.data").getList()
 
     log.info("Initialising Database Connection...")
     val db: DBService by inject()
     db.initialise(config)
+
+    log.info("Loading Data...")
+    val loader = DataLoader(db)
+    loader.import(data)
 
     log.info("Initialising Metadata...")
     val meta: MetadataService by inject()

@@ -1,0 +1,16 @@
+{
+    "data": [
+        {
+            "entity": "org.revcrm.entities.common.SelectionList",
+            "data_id": "account_sources",
+            "data": {
+                "code" : "account_sources",
+                "label" : "Account Sources",
+                "options" : [ 
+                    { "code" : "newsletter", "label" : "Newsletter" }, 
+                    { "code" : "web", "label" : "Web Search" }
+                ]
+            }
+        }
+    ]
+}
