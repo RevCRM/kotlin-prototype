@@ -28,20 +28,20 @@ const OPTIONS_QUERY = gql`
     }
 `
 
-interface ISelectionOption {
+export interface ISelectionList {
+    code: string
+    label: string
+    options: ISelectionOption[]
+}
+
+export interface ISelectionOption {
     code: string
     label: string
 }
 
-interface IOptionsQueryResponse {
+export interface IOptionsQueryResponse {
     SelectionList: {
-        results: [
-            {
-                code: string
-                label: string
-                options: ISelectionOption[]
-            }
-        ]
+        results: ISelectionList[]
     }
 }
 
@@ -125,7 +125,7 @@ export const SelectControl = withApolloClient(
                         error={hasErrors}
                         disabled={this.props.disabled}
                     >
-                        <MenuItem value=""></MenuItem>
+                        <MenuItem value="">(none)</MenuItem>
                         {opts.map(({ code, label }, index) => (
                             <MenuItem key={index} value={code}>{label}</MenuItem>
                         ))}

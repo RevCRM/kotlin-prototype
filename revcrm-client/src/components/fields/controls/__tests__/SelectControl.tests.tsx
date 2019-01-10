@@ -1,14 +1,19 @@
 
 import * as React from "react"
 import * as TestRenderer from "react-test-renderer"
-import { SelectControl } from "../SelectControl"
+import { SelectControl, IOptionsQueryResponse, ISelectionList } from "../SelectControl"
 import { IFieldComponentProps } from "../props"
 import { Grid, InputLabel, FormHelperText, Select } from "@material-ui/core"
+import { MockApolloClient } from "../../../../__testutils__/mockapollo"
+
+jest.mock("../../../../graphql/withApolloClient")
+const setClient = require("../../../../graphql/withApolloClient").setClient
 
 describe("SelectControl", () => {
 
     let renderer: TestRenderer.ReactTestRenderer
     let instance: TestRenderer.ReactTestInstance
+    const mockClient = new MockApolloClient()
 
     function getComponentProps(): IFieldComponentProps {
         return {
@@ -33,6 +38,27 @@ describe("SelectControl", () => {
             onChange: jest.fn()
         }
     }
+
+    const selectionList: ISelectionList = {
+        code: "account_sources",
+        label: "Account Sources",
+        options: [
+            { code: "option1", label: "Option 1" },
+            { code: "option2", label: "Option 2" },
+            { code: "option3", label: "Option 3" }
+        ]
+    }
+
+    beforeAll(() => {
+        mockClient.setQueryResult<IOptionsQueryResponse>({
+            data: {
+                SelectionList: {
+                    results: [selectionList]
+                }
+            }
+        })
+        setClient(mockClient)
+    })
 
     function render(props: IFieldComponentProps) {
         renderer = TestRenderer.create(
@@ -71,12 +97,25 @@ describe("SelectControl", () => {
         })
 
         it("Renders a Select component with expected props", () => {
-            const input = instance.findByType(Select)
-            expect(input).toBeDefined()
-            expect(input.props.inputProps.id).toEqual(props.field.name)
-            expect(input.props.value).toEqual(props.value)
-            expect(input.props.disabled).toEqual(props.disabled)
-            expect(input.props.error).toEqual(false)
+            const select = instance.findByType(Select)
+            expect(select).toBeDefined()
+            expect(select.props.inputProps.id).toEqual(props.field.name)
+            expect(select.props.value).toEqual(props.value)
+            expect(select.props.disabled).toEqual(props.disabled)
+            expect(select.props.error).toEqual(false)
+        })
+
+        it("Select component has correct options", () => {
+            const select = instance.findByType(Select)
+            const blankOpt = select.props.children[0]
+            expect(blankOpt.props.value).toEqual("")
+            // expect(blankOpt.props.children).to.be.undefined
+            const selectionOpts = select.props.children[1]
+            expect(selectionOpts.length).toEqual(selectionList.options.length)
+            expect(selectionOpts[0].props.value).toEqual("option1")
+            expect(selectionOpts[0].props.children).toEqual("Option 1")
+            expect(selectionOpts[1].props.value).toEqual("option2")
+            expect(selectionOpts[1].props.children).toEqual("Option 2")
         })
 
         it("does not render form helper text when there are no errors", () => {
