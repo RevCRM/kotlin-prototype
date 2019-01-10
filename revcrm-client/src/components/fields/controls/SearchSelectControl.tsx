@@ -2,10 +2,12 @@ import React from "react"
 import Autosuggest from "react-autosuggest"
 import match from "autosuggest-highlight/match"
 import parse from "autosuggest-highlight/parse"
-import TextField from "@material-ui/core/TextField"
 import Paper from "@material-ui/core/Paper"
 import MenuItem from "@material-ui/core/MenuItem"
-import { withStyles } from "@material-ui/core/styles"
+import { withStyles, Theme, createStyles, WithStyles } from "@material-ui/core/styles"
+import { IFieldComponentProps } from "./props"
+import { Input, Grid, FormControl, InputLabel } from "@material-ui/core"
+import { getGridWidthProps, IMUIGridProps } from "../../views/Grid"
 
 const suggestions = [
     { label: "Afghanistan" },
@@ -44,16 +46,13 @@ const suggestions = [
     { label: "Brunei Darussalam" },
 ]
 
-const styles = (theme: any) => ({
-    root: {
-    },
+export const styles = (theme: Theme) => createStyles({
     container: {
         position: "relative",
     },
     suggestionsContainerOpen: {
         position: "absolute",
         zIndex: 1,
-        marginTop: theme.spacing.unit,
         left: 0,
         right: 0,
     },
@@ -70,26 +69,39 @@ const styles = (theme: any) => ({
     },
 })
 
-class IntegrationAutosuggest extends React.Component {
+export interface ISearchSelectControlProps extends
+                                IFieldComponentProps,
+                                WithStyles<typeof styles> {
+}
 
-    state = {
-        single: "",
-        popper: "",
-        suggestions: [],
+export interface ISearchSelectControlState {
+    search: string
+    suggestions: any[]
+}
+
+export const SearchSelectControl: any = withStyles(styles)(
+    class extends React.Component<ISearchSelectControlProps, ISearchSelectControlState> {
+    gridWidthProps: IMUIGridProps
+
+    constructor(props: any) {
+        super(props)
+        this.gridWidthProps = getGridWidthProps(props)
+        this.state = {
+            search: "",
+            suggestions: []
+        }
     }
 
     getSuggestions(value: any) {
         const inputValue = value.trim().toLowerCase()
-        const inputLength = inputValue.length
         let count = 0
-        return inputLength === 0
-            ? []
-            : suggestions.filter(suggestion => {
-                const keep =
-                    count < 10 && suggestion.label.toLowerCase().includes(inputValue)
-                if (keep) count += 1
-                return keep
-            })
+        return suggestions.filter(suggestion => {
+            const keep =
+                count < 10 &&
+                (inputValue == "" || suggestion.label.toLowerCase().includes(inputValue))
+            if (keep) count += 1
+            return keep
+        })
     }
 
     handleSuggestionsFetchRequested = (fetch: any) => {
@@ -100,19 +112,32 @@ class IntegrationAutosuggest extends React.Component {
         this.setState({ suggestions: [] })
     }
 
-    handleChange = (name: any) => (event: any, target: any) => {
-        this.setState({ [name]: target.newValue })
+    handleChange = (event: any, target: any) => {
+        this.setState({ search: target.newValue })
     }
 
-    renderInputComponent(inputProps: any) {
-        const { classes, inputRef, ...otherProps } = inputProps
+    renderInputComponent = (inputProps: any) => {
+        const { classes, ref, inputRef = () => null, ...otherProps } = inputProps
+        const fieldId = this.props.field.name
+        const hasErrors = this.props.errors.length > 0
         return (
-            <TextField
-                fullWidth
-                InputProps={{
-                    ...otherProps,
-                }}
-            />
+            <FormControl fullWidth>
+                <InputLabel
+                    htmlFor={fieldId}
+                    error={hasErrors}
+                    shrink={true}
+                >
+                    {this.props.label}
+                </InputLabel>
+                <Input
+                    fullWidth
+                    inputRef={(node) => {
+                        ref(node)
+                        inputRef(node)
+                    }}
+                    {...otherProps}
+                />
+            </FormControl>
         )
     }
 
@@ -120,7 +145,11 @@ class IntegrationAutosuggest extends React.Component {
         return suggestion.label
     }
 
-    renderSuggestion(suggestion: any, props: any) {
+    shouldRenderSuggestions = (inputValue: any) => {
+        return true
+    }
+
+    renderSuggestion = (suggestion: any, props: any) => {
         const matches = match(suggestion.label, props.query)
         const parts = parse(suggestion.label, matches)
         return (
@@ -145,14 +174,15 @@ class IntegrationAutosuggest extends React.Component {
     render() {
         const { classes } = this.props as any
         return (
-            <div className={classes.root}>
+            <Grid item {...this.gridWidthProps} style={this.props.style}>
                 <Autosuggest
                     renderInputComponent={this.renderInputComponent}
                     renderSuggestion={this.renderSuggestion}
+                    shouldRenderSuggestions={this.shouldRenderSuggestions}
                     getSuggestionValue={this.getSuggestionValue}
                     inputProps={{
-                        value: this.state.single,
-                        onChange: this.handleChange("single"),
+                        value: this.state.search,
+                        onChange: this.handleChange
                     }}
                     theme={{
                         container: classes.container,
@@ -169,9 +199,7 @@ class IntegrationAutosuggest extends React.Component {
                     onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
                     onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                 />
-            </div>
+            </Grid>
         )
     }
-}
-
-export const SearchSelectControl: any = withStyles(styles as any)(IntegrationAutosuggest)
+})
