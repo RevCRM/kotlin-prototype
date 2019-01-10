@@ -13,6 +13,7 @@ open class IntegerField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
@@ -27,6 +28,7 @@ open class FloatField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
@@ -41,6 +43,7 @@ open class DecimalField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
@@ -70,6 +73,7 @@ fun mapIntegerField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
+        apiEnabled = propInfo.apiEnabled,
         properties = mapOf(),
         constraints = getNumericConstraints(propInfo)
     )
@@ -81,6 +85,7 @@ fun mapFloatField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
+        apiEnabled = propInfo.apiEnabled,
         properties = mapOf(),
         constraints = getNumericConstraints(propInfo)
     )
@@ -92,6 +97,7 @@ fun mapDecimalField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
+        apiEnabled = propInfo.apiEnabled,
         properties = mapOf(),
         constraints = getNumericConstraints(propInfo)
     )

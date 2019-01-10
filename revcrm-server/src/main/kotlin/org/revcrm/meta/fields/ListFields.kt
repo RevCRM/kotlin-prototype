@@ -15,6 +15,7 @@ open class StringListField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String> = mapOf(),
     override val constraints: Map<String, String> = mapOf()
 ) : IField {
@@ -29,6 +30,7 @@ open class EmbeddedEntityListField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String> = mapOf(),
     override val constraints: Map<String, String> = mapOf()
 ) : IField {
@@ -51,7 +53,8 @@ fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
                     name = propInfo.name,
                     label = propInfo.label,
                     jvmType = propInfo.jvmType,
-                    nullable = propInfo.nullable
+                    nullable = propInfo.nullable,
+                    apiEnabled = propInfo.apiEnabled
                 )
             } else {
                 return EmbeddedEntityListField(
@@ -59,6 +62,7 @@ fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
                     label = propInfo.label,
                     jvmType = propInfo.jvmType,
                     nullable = propInfo.nullable,
+                    apiEnabled = propInfo.apiEnabled,
                     constraints = mapOf(
                         "Entity" to listTypeName.split(".").last()
                     )

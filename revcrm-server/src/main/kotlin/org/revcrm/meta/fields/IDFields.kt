@@ -11,6 +11,7 @@ open class IDField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String> = mapOf(),
     override val constraints: Map<String, String> = mapOf()
 ) : IField {
@@ -25,6 +26,7 @@ fun mapIDField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         name = propInfo.name,
         label = propInfo.label,
         jvmType = propInfo.jvmType,
-        nullable = propInfo.nullable
+        nullable = propInfo.nullable,
+        apiEnabled = propInfo.apiEnabled
     )
 }

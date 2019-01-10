@@ -1,6 +1,7 @@
 package org.revcrm.entities
 
 import org.bson.types.ObjectId
+import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
 import xyz.morphia.annotations.Id
 import java.time.LocalDateTime
@@ -16,6 +17,7 @@ abstract class Base {
     @Label("Last Updated")
     var updated_date: LocalDateTime? = null
 
+    @APIDisabled
     var data_id: String? = null
 
     @PrePersist

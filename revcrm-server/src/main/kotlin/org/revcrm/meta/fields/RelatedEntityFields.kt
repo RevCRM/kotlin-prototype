@@ -11,6 +11,7 @@ open class RelatedEntityField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String> = mapOf(),
     override val constraints: Map<String, String> = mapOf(),
     val relatedEntity: String
@@ -27,6 +28,7 @@ fun mapRelatedEntityField(meta: MetadataService, propInfo: EntityPropInfo, relat
         label = propInfo.label,
         jvmType = propInfo.jvmType,
         nullable = propInfo.nullable,
+        apiEnabled = propInfo.apiEnabled,
         constraints = mapOf(),
         relatedEntity = relatedEntity
     )

@@ -39,7 +39,7 @@ class APISchemaTests {
             className = "test.SensitiveEntity",
             fields = mapOf(
                 "name" to TextField(
-                    name = "name", label = "Name",
+                    name = "name", label = "Name", apiEnabled = true,
                     jvmType = "java.lang.String",
                     nullable = false, properties = mapOf(),
                     constraints = mapOf()
@@ -51,34 +51,36 @@ class APISchemaTests {
             apiEnabled = true,
             className = "test.TestFieldsEntity",
             fields = mapOf<String, IField>(
-                "id_field" to IDField(name = "id_field", label = "ID",
+                "id_field" to IDField(name = "id_field", label = "ID", apiEnabled = true,
                     jvmType = "org.bson.types.ObjectId", nullable = false),
-                "int_field" to IntegerField(name = "int_field", label = "Integer Field",
+                "int_field" to IntegerField(name = "int_field", label = "Integer Field", apiEnabled = true,
                     jvmType = "int", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "short_field" to IntegerField(name = "short_field", label = "Short Field",
+                "short_field" to IntegerField(name = "short_field", label = "Short Field", apiEnabled = true,
                     jvmType = "short", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "long_field" to IntegerField(name = "long_field", label = "Long Field",
+                "long_field" to IntegerField(name = "long_field", label = "Long Field", apiEnabled = true,
                     jvmType = "long", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "float_field" to FloatField(name = "float_field", label = "Float Field",
+                "float_field" to FloatField(name = "float_field", label = "Float Field", apiEnabled = true,
                     jvmType = "float", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "double_field" to FloatField(name = "double_field", label = "Double Field",
+                "double_field" to FloatField(name = "double_field", label = "Double Field", apiEnabled = true,
                     jvmType = "double", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "decimal_field" to DecimalField(name = "decimal_field", label = "Decimal Field",
+                "decimal_field" to DecimalField(name = "decimal_field", label = "Decimal Field", apiEnabled = true,
                     jvmType = "java.math.BigDecimal", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "boolean_field" to BooleanField(name = "boolean_field", label = "Boolean Field",
+                "boolean_field" to BooleanField(name = "boolean_field", label = "Boolean Field", apiEnabled = true,
                     jvmType = "boolean", nullable = false),
-                "string_field" to TextField(name = "string_field", label = "String Field",
+                "string_field" to TextField(name = "string_field", label = "String Field", apiEnabled = true,
                     jvmType = "java.lang.String", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "date_field" to DateField(name = "date_field", label = "Date Field",
+                "date_field" to DateField(name = "date_field", label = "Date Field", apiEnabled = true,
                     jvmType = "java.time.LocalDate", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "time_field" to TimeField(name = "time_field", label = "Time Field",
+                "time_field" to TimeField(name = "time_field", label = "Time Field", apiEnabled = true,
                     jvmType = "java.time.LocalTime", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "datetime_field" to DateTimeField(name = "datetime_field", label = "DateTime Field",
+                "datetime_field" to DateTimeField(name = "datetime_field", label = "DateTime Field", apiEnabled = true,
                     jvmType = "java.time.LocalDateTime", nullable = false, properties = mapOf(), constraints = mapOf()),
-                "enum_field" to EnumField(name = "enum_field", label = "Enum Field",
+                "enum_field" to EnumField(name = "enum_field", label = "Enum Field", apiEnabled = true,
                     jvmType = "org.revcrm.testdb.EnumFieldOptions", nullable = false),
-                "related_field" to RelatedEntityField(name = "related_field", label = "RelatedEntity Field",
-                    jvmType = "org.revcrm.testdb.TestConstraintsEntity", nullable = false, relatedEntity = "TestConstraintsEntity")
+                "related_field" to RelatedEntityField(name = "related_field", label = "RelatedEntity Field", apiEnabled = true,
+                    jvmType = "org.revcrm.testdb.TestConstraintsEntity", nullable = false, relatedEntity = "TestConstraintsEntity"),
+                "api_disabled_field" to TextField(name = "api_disabled_field", label = "Disabled Field", apiEnabled = false,
+                    jvmType = "java.lang.String", nullable = false, properties = mapOf(), constraints = mapOf())
             )
         ),
         Entity(
@@ -86,10 +88,10 @@ class APISchemaTests {
             apiEnabled = true,
             className = "test.TestConstraintsEntity",
             fields = mapOf<String, IField>(
-                "nullable_field" to TextField(name = "nullable_field", label = "Nullable Text Field",
+                "nullable_field" to TextField(name = "nullable_field", label = "Nullable Text Field", apiEnabled = true,
                     jvmType = "java.lang.String", nullable = true, properties = mapOf(), constraints = mapOf()
                 ),
-                "non_nullable_field" to TextField(name = "non_nullable_field", label = "Non-nullable Text Field",
+                "non_nullable_field" to TextField(name = "non_nullable_field", label = "Non-nullable Text Field", apiEnabled = true,
                     jvmType = "java.lang.String", nullable = false, properties = mapOf(), constraints = mapOf()
                 )
             )
@@ -281,6 +283,11 @@ class APISchemaTests {
             val enum = type.wrappedType as GraphQLEnumType
             assertThat(enum.values[0].name).isEqualTo("OPTION1")
             assertThat(enum.values[1].name).isEqualTo("OPTION2")
+        }
+
+        @Test
+        fun `Fields with apiEnabled = false are not exposed`() {
+            assertThat(testFieldsEntityType.getFieldDefinition("api_disabled_field")).isNull()
         }
     }
 

@@ -1,7 +1,9 @@
 package org.revcrm.meta
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
 import javax.validation.constraints.NotBlank
 import kotlin.reflect.full.findAnnotation
@@ -19,6 +21,13 @@ class EntityWithGetterAnnotation(
 class EntityWithFieldAnnotation(
     @field:NotBlank
     var property: String
+)
+
+class EntityWithFieldAPIDisabled(
+    var normalProperty: String,
+
+    @APIDisabled
+    var disabledProperty: String
 )
 
 class EntityPropInfoTests {
@@ -50,5 +59,22 @@ class EntityPropInfoTests {
         val propInfo = EntityPropInfo(EntityWithFieldAnnotation::class, "property")
         val annotation = propInfo.findJavaAnnotation(NotBlank::class.java)
         assertThat(annotation).isNotNull()
+    }
+
+    @Nested
+    inner class APIDisabledFields {
+
+        @Test
+        fun `Properties have apiEnabled = true by default`() {
+            val propInfo = EntityPropInfo(EntityWithFieldAPIDisabled::class, "normalProperty")
+            assertThat(propInfo.apiEnabled).isTrue()
+        }
+
+        @Test
+        fun `Properties have apiEnabled = false when @APIDisabled is applied`() {
+            val propInfo = EntityPropInfo(EntityWithFieldAPIDisabled::class, "disabledProperty")
+            assertThat(propInfo.apiEnabled).isFalse()
+        }
+
     }
 }

@@ -7,6 +7,7 @@ import org.revcrm.meta.MetadataService
 interface IField {
     val name: String
     val label: String
+    val apiEnabled: Boolean
     val jvmType: String
     val nullable: Boolean
     val properties: Map<String, String>

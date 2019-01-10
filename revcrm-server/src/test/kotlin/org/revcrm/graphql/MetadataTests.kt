@@ -9,6 +9,7 @@ import org.revcrm.meta.MetadataService
 import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.getTestGson
 import org.revcrm.testdb.numberOfApiDisabledEntities
+import org.revcrm.testdb.testFieldsEntityDisabledFields
 
 class EntityMetadataInfo(
     val name: String,
@@ -83,15 +84,24 @@ class MetadataTests {
         }
 
         @Test
+        fun `does not include fields where apiEnabled = false`() {
+            val entityWithDisabledField = result.find { it.name == "TestFieldsEntity" }!!
+            assertThat(entityWithDisabledField.fields).noneMatch { it.name == "api_disabled_field" }
+        }
+
+        @Test
         fun `entity metadata matches entities from MetadataService`() {
-            // NB: Assumes that the first entity is does not have apiDisabled = true
-            val entityInfo = result[0]
-            assertThat(entityInfo.name).isEqualTo(entities[0].name)
-            assertThat(entityInfo.fields).hasSize(entities[0].fieldsList.size)
-            assertThat(entityInfo.fields[0].name).isEqualTo(entities[0].fieldsList[0].name)
-            assertThat(entityInfo.fields[0].label).isEqualTo(entities[0].fieldsList[0].label)
-            assertThat(entityInfo.fields[0].type).isEqualTo(entities[0].fieldsList[0].type)
-            assertThat(entityInfo.fields[0].nullable).isEqualTo(entities[0].fieldsList[0].nullable)
+            val entityInfo = entities.find { it.name == "TestFieldsEntity" }!!
+            var resultInfo = result.find { it.name == "TestFieldsEntity" }!!
+            assertThat(resultInfo.name).isEqualTo(entityInfo.name)
+            assertThat(resultInfo.fields).hasSize(entityInfo.fields.size - testFieldsEntityDisabledFields)
+
+            var entityFieldInfo = entityInfo.fields["string_field"]!!
+            var resultFieldInfo = resultInfo.fields.find { it.name == "string_field" }!!
+            assertThat(resultFieldInfo.name).isEqualTo(entityFieldInfo.name)
+            assertThat(resultFieldInfo.label).isEqualTo(entityFieldInfo.label)
+            assertThat(resultFieldInfo.type).isEqualTo(entityFieldInfo.type)
+            assertThat(resultFieldInfo.nullable).isEqualTo(entityFieldInfo.nullable)
         }
 
         @Test

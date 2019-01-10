@@ -17,6 +17,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
 val numberOfApiDisabledEntities = 1
+val testFieldsEntityDisabledFields = 2  // data_id from Base() and api_disabled_field
 
 enum class EnumFieldOptions {
     OPTION1,
@@ -39,6 +40,9 @@ class TestFieldsEntity(
     var date_field: LocalDate,
     var time_field: LocalTime,
     var datetime_field: LocalDateTime,
+
+    @APIDisabled
+    var api_disabled_field: String,
 
     var enum_field: EnumFieldOptions,
     var related_field: TestEntity2

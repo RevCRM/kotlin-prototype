@@ -11,6 +11,8 @@ import graphql.schema.GraphQLSchema
 import graphql.schema.PropertyDataFetcher
 import graphql.schema.StaticDataFetcher
 import org.revcrm.graphql.fetchers.EntityMetadataFetcher
+import org.revcrm.meta.Entity
+import org.revcrm.meta.fields.IField
 
 fun registerMetadataQueryType(
     schema: GraphQLSchema.Builder,
@@ -79,7 +81,9 @@ fun registerMetadataQueryType(
         )
         .dataFetcher(
             FieldCoordinates.coordinates("EntityMetadata", "fields"),
-            PropertyDataFetcher.fetching<Any>("fieldsList")
+            PropertyDataFetcher.fetching<List<IField>, Entity> { entity ->
+                entity.fields.values.toList().filter { it.apiEnabled }
+            }
         )
 
     val metadataType = GraphQLObjectType.newObject()

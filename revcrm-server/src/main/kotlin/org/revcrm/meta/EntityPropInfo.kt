@@ -1,5 +1,6 @@
 package org.revcrm.meta
 
+import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
 import org.revcrm.util.getProperty
 import kotlin.reflect.KClass
@@ -20,6 +21,7 @@ class EntityPropInfo(
     val label: String
     val jvmType: String
     val nullable: Boolean
+    val apiEnabled: Boolean
     val isEnum: Boolean
 
     init {
@@ -29,6 +31,7 @@ class EntityPropInfo(
 
         property = foundProperty
         nullable = property.returnType.isMarkedNullable
+        apiEnabled = property.findAnnotation<APIDisabled>() == null
         var field = property.javaField!!
         jvmType = field.type.name
         isEnum = field.type.isEnum

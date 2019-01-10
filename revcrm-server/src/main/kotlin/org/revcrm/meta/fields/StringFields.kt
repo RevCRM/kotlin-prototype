@@ -17,6 +17,7 @@ open class TextField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
@@ -31,6 +32,7 @@ open class SelectField(
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
+    override val apiEnabled: Boolean,
     override val properties: Map<String, String>,
     override val constraints: Map<String, String>
 ) : IField {
@@ -52,6 +54,7 @@ fun mapStringField(meta: MetadataService, propInfo: EntityPropInfo): IField {
             label = propInfo.label,
             jvmType = propInfo.jvmType,
             nullable = propInfo.nullable,
+            apiEnabled = propInfo.apiEnabled,
             properties = properties,
             constraints = constraints
         )
@@ -75,6 +78,7 @@ fun mapStringField(meta: MetadataService, propInfo: EntityPropInfo): IField {
             label = propInfo.label,
             jvmType = propInfo.jvmType,
             nullable = propInfo.nullable,
+            apiEnabled = propInfo.apiEnabled,
             properties = properties,
             constraints = constraints
         )
