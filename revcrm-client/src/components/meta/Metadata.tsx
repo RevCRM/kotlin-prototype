@@ -4,6 +4,7 @@ import { Omit } from "../../types"
 import gql from "graphql-tag"
 import { withAuthContext, IAuthContextProp } from "../auth/AuthContext"
 import { IApolloClientProp, withApolloClient } from "../../graphql/withApolloClient"
+import { LoadState } from "../utils/types"
 
 const METADATA_QUERY = gql`
     query {
@@ -47,10 +48,8 @@ export interface IEntityMetadata {
     fields: IFieldMetadata[]
 }
 
-export type MetadataLoadState = "not_loaded" | "loading" | "loaded" | "load_error"
-
 export interface IMetadataContext {
-    metaState: MetadataLoadState
+    metaState: LoadState
     getEntity(name: string): IEntityMetadata | undefined
 }
 
@@ -60,7 +59,7 @@ export interface IMetadataContextProviderProps extends
 }
 
 export interface IMetadataContextProviderState {
-    metaState: MetadataLoadState
+    metaState: LoadState
     entities: IEntityMetadata[]
 }
 

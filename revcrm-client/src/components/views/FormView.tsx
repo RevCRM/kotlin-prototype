@@ -8,14 +8,13 @@ import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 import { DocumentNode } from "graphql"
 import { getEntityQuery, IEntityQueryResults } from "../../graphql/queryhelpers"
 import { IApolloClientProp, withApolloClient } from "../../graphql/withApolloClient"
+import { LoadState } from "../utils/types"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
         background: "#fff"
     }
 })
-
-export type FormViewLoadState = "not_loaded" | "loading" | "loaded" | "load_error"
 
 export interface IFormViewProps extends
                     IMetadataContextProp,
@@ -26,7 +25,7 @@ export interface IFormViewProps extends
 }
 
 export interface IFormContext {
-    loadState: FormViewLoadState
+    loadState: LoadState
     entity: string
     entityData: any
 }

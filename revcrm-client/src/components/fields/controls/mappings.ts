@@ -2,6 +2,7 @@ import { IFieldMetadata } from "../../meta/Metadata"
 import { IFieldComponentProps } from "./props"
 import { TextControl } from "./TextControl"
 import { CheckboxControl } from "./CheckboxControl"
+import { SelectControl } from "./SelectControl"
 
 export function getFieldControlMapping(field: IFieldMetadata) {
 
@@ -13,6 +14,7 @@ export function getFieldControlMapping(field: IFieldMetadata) {
         DecimalField: TextControl,
         BooleanField: CheckboxControl,
         TextField: TextControl,
+        SelectField: SelectControl,
         DateField: TextControl,
         TimeField: TextControl,
         DateTimeField: TextControl,
@@ -20,5 +22,9 @@ export function getFieldControlMapping(field: IFieldMetadata) {
         RelatedEntityField: TextControl,
     }
 
-    return mappings[field.type]
+    const control = mappings[field.type]
+    if (!control)
+        throw new Error(`No control mapping for field type '${field.type}'.`)
+
+    return control
 }

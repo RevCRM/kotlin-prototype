@@ -9,7 +9,13 @@ export interface IGridProps {
     colspanWide?: ColspanOptions
 }
 
-export function getGridWidthProps(props: IGridProps) {
+export interface IMUIGridProps {
+    xs: ColspanOptions
+    md: ColspanOptions
+    lg: ColspanOptions
+}
+
+export function getGridWidthProps(props: IGridProps): IMUIGridProps {
     return {
         xs: props.colspanNarrow || 12,
         md: props.colspan || 6,
