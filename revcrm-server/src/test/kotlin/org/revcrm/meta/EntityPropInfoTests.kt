@@ -75,6 +75,5 @@ class EntityPropInfoTests {
             val propInfo = EntityPropInfo(EntityWithFieldAPIDisabled::class, "disabledProperty")
             assertThat(propInfo.apiEnabled).isFalse()
         }
-
     }
 }
