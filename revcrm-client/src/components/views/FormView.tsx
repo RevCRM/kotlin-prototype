@@ -3,7 +3,7 @@ import * as React from "react"
 import Grid from "@material-ui/core/Grid"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
 import { Theme, createStyles, Omit } from "@material-ui/core"
-import { withMetadataContext, IMetadataContextProp, IEntityMetadata } from "../meta/Metadata"
+import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 import { DocumentNode } from "graphql"
 import { getEntityQuery, IEntityQueryResults } from "../../graphql/queryhelpers"
@@ -28,6 +28,7 @@ export interface IFormContext {
     loadState: LoadState
     entity: string
     entityData: any
+    onFieldChange(field: IFieldMetadata, value: any): void
 }
 
 export const FormContext = React.createContext<IFormContext>(null as any)
@@ -52,7 +53,8 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
         this.state = {
             loadState: "not_loaded",
             entity: this.props.entity,
-            entityData: null
+            entityData: null,
+            onFieldChange: this.onFieldChange
         }
     }
 
@@ -86,6 +88,11 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
     componentDidMount() {
         this.initialise()
+    }
+
+    onFieldChange = (field: IFieldMetadata, value: any) => {
+        const entityData = this.state.entityData
+        Object.assign(entityData, { [field.name]: value })
     }
 
     render() {

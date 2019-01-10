@@ -125,9 +125,9 @@ export const SelectControl = withApolloClient(
                         error={hasErrors}
                         disabled={this.props.disabled}
                     >
-                        <MenuItem value="">(none)</MenuItem>
+                        <MenuItem dense value=""></MenuItem>
                         {opts.map(({ code, label }, index) => (
-                            <MenuItem key={index} value={code}>{label}</MenuItem>
+                            <MenuItem dense key={index} value={code}>{label}</MenuItem>
                         ))}
                     </Select>
                     {errorText &&
