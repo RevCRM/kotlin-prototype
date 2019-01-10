@@ -2,6 +2,7 @@ package org.revcrm.entities.accounts
 
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
+import org.revcrm.annotations.SelectionList
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Index
@@ -23,6 +24,7 @@ class Account(
     var org_name: String?,
 
     @Label("Title")
+    @SelectionList("contact_titles")
     var title: String?,
 
     @Label("First Name")
@@ -35,7 +37,12 @@ class Account(
     var code: String?,
 
     @Label("Tags")
+    @SelectionList("account_tags")
     var tags: String?,
+
+    @Label("Source")
+    @SelectionList("account_sources")
+    var source: String?,
 
     @Label("Phone")
     var phone: String?,

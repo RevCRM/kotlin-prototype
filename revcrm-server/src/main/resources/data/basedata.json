@@ -7,8 +7,41 @@
                 "code" : "account_sources",
                 "label" : "Account Sources",
                 "options" : [ 
-                    { "code" : "newsletter", "label" : "Newsletter" }, 
-                    { "code" : "web", "label" : "Web Search" }
+                    { "code" : "advert", "label" : "Advert" }, 
+                    { "code" : "referral", "label" : "Referral" }, 
+                    { "code" : "web_search", "label" : "Web Search" }
+                ]
+            }
+        },
+        {
+            "entity": "org.revcrm.entities.common.SelectionList",
+            "data_id": "account_tags",
+            "data": {
+                "code" : "account_tags",
+                "label" : "Account Tags",
+                "options" : [ 
+                    { "code" : "lead", "label" : "Lead" }, 
+                    { "code" : "customer", "label" : "Customer" }, 
+                    { "code" : "supplier", "label" : "Supplier" }, 
+                    { "code" : "potential_supplier", "label" : "Potential Supplier" }
+                ]
+            }
+        },
+        {
+            "entity": "org.revcrm.entities.common.SelectionList",
+            "data_id": "contact_titles",
+            "data": {
+                "code" : "contact_titles",
+                "label" : "Contact Titles",
+                "options" : [ 
+                    { "code" : "Mr", "label" : "Mr" }, 
+                    { "code" : "Mrs", "label" : "Mrs" }, 
+                    { "code" : "Miss", "label" : "Miss" },
+                    { "code" : "Ms", "label" : "Ms" }, 
+                    { "code" : "Sir", "label" : "Sir" }, 
+                    { "code" : "Madam", "label" : "Madam" }, 
+                    { "code" : "Dr", "label" : "Dr" }, 
+                    { "code" : "Prof", "label" : "Prof" }
                 ]
             }
         }

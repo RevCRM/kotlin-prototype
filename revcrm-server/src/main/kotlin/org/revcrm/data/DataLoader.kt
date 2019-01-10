@@ -15,7 +15,7 @@ class CRMEntityData {
     var data: Any? = null
 }
 
-class DataLoader (private val db: DBService) {
+class DataLoader(private val db: DBService) {
 
     fun import(dataFiles: List<String>) {
         val gson = Gson()
@@ -55,7 +55,8 @@ class DataLoader (private val db: DBService) {
         file: String,
         index: Int,
         data: CRMEntityData,
-        message: String): Error {
+        message: String
+    ): Error {
         return Error("$file[$index]: Entity: ${data.entity}, ID: ${data.data_id}: $message")
     }
 }

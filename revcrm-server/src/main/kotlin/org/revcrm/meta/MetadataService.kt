@@ -13,7 +13,7 @@ import org.revcrm.meta.fields.mapIDField
 import org.revcrm.meta.fields.mapIntegerField
 import org.revcrm.meta.fields.mapListField
 import org.revcrm.meta.fields.mapRelatedEntityField
-import org.revcrm.meta.fields.mapTextField
+import org.revcrm.meta.fields.mapStringField
 import org.revcrm.meta.fields.mapTimeField
 import xyz.morphia.mapping.MappedClass
 import kotlin.reflect.KClass
@@ -39,7 +39,7 @@ class MetadataService(
         addJvmTypeMapper("double", ::mapFloatField)
         addJvmTypeMapper("boolean", ::mapBooleanField)
         addJvmTypeMapper("java.math.BigDecimal", ::mapDecimalField)
-        addJvmTypeMapper("java.lang.String", ::mapTextField)
+        addJvmTypeMapper("java.lang.String", ::mapStringField)
         addJvmTypeMapper("java.time.LocalDate", ::mapDateField)
         addJvmTypeMapper("java.time.LocalTime", ::mapTimeField)
         addJvmTypeMapper("java.time.LocalDateTime", ::mapDateTimeField)
