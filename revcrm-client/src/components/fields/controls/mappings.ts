@@ -2,7 +2,7 @@ import { IFieldMetadata } from "../../meta/Metadata"
 import { IFieldComponentProps } from "./props"
 import { TextControl } from "./TextControl"
 import { CheckboxControl } from "./CheckboxControl"
-import { SelectControl } from "./SelectControl"
+import { SearchSelectControl } from "./SearchSelectControl"
 
 export function getFieldControlMapping(field: IFieldMetadata) {
 
@@ -14,7 +14,7 @@ export function getFieldControlMapping(field: IFieldMetadata) {
         DecimalField: TextControl,
         BooleanField: CheckboxControl,
         TextField: TextControl,
-        SelectField: SelectControl,
+        SelectField: SearchSelectControl,
         DateField: TextControl,
         TimeField: TextControl,
         DateTimeField: TextControl,
