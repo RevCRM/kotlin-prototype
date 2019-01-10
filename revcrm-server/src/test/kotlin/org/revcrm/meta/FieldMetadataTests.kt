@@ -16,57 +16,13 @@ import org.revcrm.meta.fields.RelatedEntityField
 import org.revcrm.meta.fields.TextField
 import org.revcrm.meta.fields.TimeField
 
-class MetadataServiceTests {
+class FieldMetadataTests {
 
     val testDB = TestDB.instance
     val meta = MetadataService(testDB)
 
     init {
         meta.initialise()
-    }
-
-    @Nested
-    inner class EntityMetadata {
-
-        @Test
-        fun `returns only entities with @Entity annotation`() {
-            assertThat(meta.getEntity("TestFieldsEntity")).isNotNull()
-            assertThat(meta.getEntity("TestEntity2")).isNotNull()
-            assertThat(meta.getEntity("ParentEntity")).isNull()
-        }
-
-        @Test
-        fun `apiEnabled defaults to true`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.apiEnabled).isTrue()
-            assertThat(meta.getEntity("TestEntity2")!!.apiEnabled).isTrue()
-        }
-
-        @Test
-        fun `entity name matches name`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.name).isEqualTo("TestFieldsEntity")
-            assertThat(meta.getEntity("TestEntity2")!!.name).isEqualTo("TestEntity2")
-        }
-
-        @Test
-        fun `entity className matches full class name`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.className).isEqualTo("org.revcrm.testdb.TestFieldsEntity")
-            assertThat(meta.getEntity("TestEntity2")!!.className).isEqualTo("org.revcrm.testdb.TestEntity2")
-        }
-
-        @Test
-        fun `returns Base entity fields`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.fields)
-                .containsKey("id")
-                .containsKey("created_date")
-                .containsKey("updated_date")
-        }
-
-        @Test
-        fun `returns own fields`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.fields)
-                .containsKey("string_field")
-                .containsKey("int_field")
-        }
     }
 
     @Nested
@@ -203,15 +159,6 @@ class MetadataServiceTests {
         @Test
         fun `Max field returns expected metadata`() {
             assertThat(constraintsEntity.fields["max_field"]!!.constraints).containsEntry("Max", "100")
-        }
-    }
-
-    @Nested
-    inner class SensitiveEntities {
-
-        @Test
-        fun `entities annotated with @APIDisabled have apiEnabled = false`() {
-            assertThat(meta.getEntity("SensitiveEntity")!!.apiEnabled).isFalse()
         }
     }
 }

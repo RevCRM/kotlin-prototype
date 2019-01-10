@@ -12,6 +12,7 @@ class SelectionList(
     var options: List<SelectionOption>
 ) : Base()
 
+@Entity
 class SelectionOption(
     var code: String,
     var label: String

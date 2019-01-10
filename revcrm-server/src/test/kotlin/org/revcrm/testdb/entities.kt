@@ -16,6 +16,8 @@ import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
+val numberOfApiDisabledEntities = 1
+
 enum class EnumFieldOptions {
     OPTION1,
     OPTION2,
@@ -88,4 +90,18 @@ class Account(
     var rating: Int
 ) : Base()
 
-val numberOfApiDisabledEntities = 1
+@Entity
+class TestWithEmbeddedEntity(
+    var label: String,
+    var options: List<TestEmbeddedEntity>?
+) : Base()
+
+@Entity
+class TestEmbeddedEntity(
+    var value: String
+) : Base()
+
+@Entity
+class TestWithStringList(
+    var values: List<String>
+) : Base()

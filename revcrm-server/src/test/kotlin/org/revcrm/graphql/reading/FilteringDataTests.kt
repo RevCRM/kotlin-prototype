@@ -1,25 +1,22 @@
-package org.revcrm.graphql
+package org.revcrm.graphql.reading
 
-import com.google.gson.reflect.TypeToken
-import graphql.ExecutionResult
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.revcrm.graphql.fetchers.EntitySearchResults
+import org.revcrm.graphql.APIService
+import org.revcrm.graphql.mapGraphQLResult
 import org.revcrm.meta.MetadataService
 import org.revcrm.testdb.TEST_ACCOUNTS
 import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.TestEntity2
-import org.revcrm.testdb.getTestGson
 import org.revcrm.testdb.resetAccountData
 import org.revcrm.testdb.resetTestEntity2Data
 
-class ReadingData {
+class FilteringDataTests {
 
     val testDB = TestDB.instance
     val meta = MetadataService(testDB)
     val api = APIService(testDB, meta)
-    val gson = getTestGson()
 
     init {
         testDB.withDB { ds ->
@@ -28,16 +25,6 @@ class ReadingData {
         }
         meta.initialise()
         api.initialise()
-    }
-
-    fun <T> getResults(res: ExecutionResult, entityKey: String, resultClass: Class<T>): EntitySearchResults<T> {
-        assertThat(res.errors).hasSize(0)
-        val entityData = res.getData<Map<String, Any>>()
-        val tree = gson.toJsonTree(entityData.get(entityKey))
-        return gson.fromJson(tree, TypeToken.getParameterized(
-            EntitySearchResults::class.java,
-            resultClass
-        ).type)
     }
 
     @Nested
@@ -54,7 +41,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = getResults(res, "Account", Map::class.java)
+        val result = mapGraphQLResult(res, "Account", Map::class.java)
 
         @Test
         fun `returns all rows`() {
@@ -94,7 +81,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = getResults(res, "Account", Map::class.java)
+        val result = mapGraphQLResult(res, "Account", Map::class.java)
 
         @Test
         fun `returns rows sorted by name then contact`() {
@@ -130,7 +117,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = getResults(res, "Account", Map::class.java)
+        val result = mapGraphQLResult(res, "Account", Map::class.java)
 
         @Test
         fun `returns rows that match the specified "where" clause`() {
@@ -157,7 +144,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(defaultLimit)
             assertThat(result.meta.limit).isEqualTo(defaultLimit)
             assertThat(result.meta.offset).isEqualTo(0)
@@ -178,7 +165,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(10)
             assertThat(result.meta.limit).isEqualTo(10)
             assertThat(result.meta.offset).isEqualTo(0)
@@ -199,7 +186,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isGreaterThan(20).isLessThan(100)
             assertThat(result.meta.limit).isEqualTo(100)
             assertThat(result.meta.offset).isEqualTo(0)
@@ -221,7 +208,7 @@ class ReadingData {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = getResults(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(5)
             assertThat(result.meta.limit).isEqualTo(5)
             assertThat(result.meta.offset).isEqualTo(1)

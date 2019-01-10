@@ -9,8 +9,12 @@ object TestDB {
             "org.revcrm.testdb.TestEntity2",
             "org.revcrm.testdb.TestConstraintsEntity",
             "org.revcrm.testdb.SensitiveEntity",
-            "org.revcrm.testdb.Account"
+            "org.revcrm.testdb.Account",
+            "org.revcrm.testdb.TestWithEmbeddedEntity",
+            "org.revcrm.testdb.TestWithStringList"
         ),
-        listOf()
+        listOf(
+            "org.revcrm.testdb.TestEmbeddedEntity"
+        )
     )
 }

@@ -1,10 +1,12 @@
 package org.revcrm.meta.fields
 
+import graphql.Scalars
 import io.mockk.mockkClass
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
+import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
 import javax.validation.constraints.NotBlank
@@ -44,5 +46,12 @@ class TextFieldTests {
         assertThat(field.constraints).containsEntry("NotBlank", "true")
         assertThat(field.constraints).containsEntry("SizeMin", "1")
         assertThat(field.constraints).containsEntry("SizeMax", "10")
+    }
+
+    @Test
+    fun `returns the expected GraphQL Type`() {
+        val mockEntity = Entity("mock", false, "mock", mapOf())
+        val gqlType = field.getGraphQLType(meta, mockEntity)
+        assertThat(gqlType).isEqualTo(Scalars.GraphQLString)
     }
 }

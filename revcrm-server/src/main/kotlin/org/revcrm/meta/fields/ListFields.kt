@@ -24,18 +24,18 @@ open class StringListField(
     }
 }
 
-open class RelatedEntityListField(
+open class EmbeddedEntityListField(
     override val name: String,
     override val label: String,
     override val jvmType: String,
     override val nullable: Boolean,
     override val properties: Map<String, String> = mapOf(),
-    override val constraints: Map<String, String> = mapOf(),
-    val relatedEntity: String
+    override val constraints: Map<String, String> = mapOf()
 ) : IField {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
-        return GraphQLTypeReference(relatedEntity)
+        val relatedEntity = constraints.get("Entity")!!
+        return GraphQLList(GraphQLTypeReference(relatedEntity))
     }
 }
 
@@ -54,12 +54,14 @@ fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
                     nullable = propInfo.nullable
                 )
             } else {
-                return RelatedEntityListField(
+                return EmbeddedEntityListField(
                     name = propInfo.name,
                     label = propInfo.label,
                     jvmType = propInfo.jvmType,
                     nullable = propInfo.nullable,
-                    relatedEntity = listTypeName.split(".").last()
+                    constraints = mapOf(
+                        "Entity" to listTypeName.split(".").last()
+                    )
                 )
             }
         }

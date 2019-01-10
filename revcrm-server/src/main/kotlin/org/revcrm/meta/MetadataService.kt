@@ -128,6 +128,6 @@ class MetadataService(
     }
 
     fun getEmbeddedEntity(name: String): Entity? {
-        return if (embeddedEntities.containsKey(name)) entities[name] else null
+        return if (embeddedEntities.containsKey(name)) embeddedEntities[name] else null
     }
 }

@@ -10,6 +10,19 @@ val TEST_ACCOUNTS = listOf(
     Account("Dereks Dogs Co", "Derek", "55443322", "joan@woof.org", 8)
 )
 
+val TEST_EMBEDDED_ENTITIES = listOf(
+    TestWithEmbeddedEntity("Test 1", listOf(
+        TestEmbeddedEntity("Option 1"), TestEmbeddedEntity("Option 2"))),
+    TestWithEmbeddedEntity("Test 2", listOf(
+        TestEmbeddedEntity("Option 3"))),
+    TestWithEmbeddedEntity("Test 3", null)
+)
+
+val TEST_STRING_LISTS = listOf(
+    TestWithStringList(listOf("Option 1", "Option 2", "Option 3")),
+    TestWithStringList(listOf("Option 4", "Option 5"))
+)
+
 fun resetAccountData(ds: Datastore) {
     val col = ds.getCollection(Account::class.java)
     col.remove(BasicDBObject()) // remove all items
@@ -22,4 +35,16 @@ fun resetTestEntity2Data(ds: Datastore) {
     for (i in 1..30) {
         ds.save(TestEntity2("Record $i", i))
     }
+}
+
+fun resetEmbeddedEntityData(ds: Datastore) {
+    val col = ds.getCollection(TestWithEmbeddedEntity::class.java)
+    col.remove(BasicDBObject()) // remove all items
+    TEST_EMBEDDED_ENTITIES.forEach { ds.save(it) }
+}
+
+fun resetStringListData(ds: Datastore) {
+    val col = ds.getCollection(TestWithStringList::class.java)
+    col.remove(BasicDBObject()) // remove all items
+    TEST_STRING_LISTS.forEach { ds.save(it) }
 }
