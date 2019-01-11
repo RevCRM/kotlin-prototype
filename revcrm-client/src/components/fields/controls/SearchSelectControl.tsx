@@ -1,50 +1,32 @@
 import React from "react"
-import Autosuggest from "react-autosuggest"
+import Autosuggest, { SuggestionSelectedEventData, SuggestionHighlightedParams } from "react-autosuggest"
 import match from "autosuggest-highlight/match"
 import parse from "autosuggest-highlight/parse"
 import Paper from "@material-ui/core/Paper"
 import MenuItem from "@material-ui/core/MenuItem"
 import { withStyles, Theme, createStyles, WithStyles } from "@material-ui/core/styles"
 import { IFieldComponentProps } from "./props"
-import { Input, Grid, FormControl, InputLabel } from "@material-ui/core"
+import { Input, Grid, FormControl, InputLabel, InputAdornment, Icon } from "@material-ui/core"
 import { getGridWidthProps, IMUIGridProps } from "../../views/Grid"
+import { ISelectionOption, IOptionsQueryResponse } from "./SelectControl"
+import gql from "graphql-tag"
+import { IApolloClientProp, withApolloClient } from "../../../graphql/withApolloClient"
+import { LoadState } from "../../utils/types"
 
-const data = [
-    { label: "Afghanistan" },
-    { label: "Aland Islands" },
-    { label: "Albania" },
-    { label: "Algeria" },
-    { label: "American Samoa" },
-    { label: "Andorra" },
-    { label: "Angola" },
-    { label: "Anguilla" },
-    { label: "Antarctica" },
-    { label: "Antigua and Barbuda" },
-    { label: "Argentina" },
-    { label: "Armenia" },
-    { label: "Aruba" },
-    { label: "Australia" },
-    { label: "Austria" },
-    { label: "Azerbaijan" },
-    { label: "Bahamas" },
-    { label: "Bahrain" },
-    { label: "Bangladesh" },
-    { label: "Barbados" },
-    { label: "Belarus" },
-    { label: "Belgium" },
-    { label: "Belize" },
-    { label: "Benin" },
-    { label: "Bermuda" },
-    { label: "Bhutan" },
-    { label: "Bolivia, Plurinational State of" },
-    { label: "Bonaire, Sint Eustatius and Saba" },
-    { label: "Bosnia and Herzegovina" },
-    { label: "Botswana" },
-    { label: "Bouvet Island" },
-    { label: "Brazil" },
-    { label: "British Indian Ocean Territory" },
-    { label: "Brunei Darussalam" },
-]
+const OPTIONS_QUERY = gql`
+    query ($code: String!) {
+        SelectionList ( where: { code: $code }) {
+            results {
+                code
+                label
+                options {
+                    code
+                    label
+                }
+            }
+        }
+    }
+`
 
 export const styles = (theme: Theme) => createStyles({
     container: {
@@ -71,10 +53,14 @@ export const styles = (theme: Theme) => createStyles({
 
 export interface ISearchSelectControlProps extends
                                 IFieldComponentProps,
+                                IApolloClientProp,
                                 WithStyles<typeof styles> {
 }
 
 export interface ISearchSelectControlState {
+    loadState: LoadState
+    options: ISelectionOption[]
+    value: ISelectionOption | null
     search: string
     suggestions: any[]
     hasMore: boolean
@@ -82,7 +68,7 @@ export interface ISearchSelectControlState {
 
 export const MAX_RESULTS = 8
 
-export const SearchSelectControl: any = withStyles(styles)(
+export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
     class extends React.Component<ISearchSelectControlProps, ISearchSelectControlState> {
     gridWidthProps: IMUIGridProps
 
@@ -90,15 +76,43 @@ export const SearchSelectControl: any = withStyles(styles)(
         super(props)
         this.gridWidthProps = getGridWidthProps(props)
         this.state = {
+            loadState: "not_loaded",
+            options: [],
+            value: null,
             search: "",
             suggestions: [],
             hasMore: false
         }
     }
 
+    async initialise() {
+        this.setState({ loadState: "loading" })
+        const res = await this.props.client.query<IOptionsQueryResponse>({
+            query: OPTIONS_QUERY,
+            variables: {
+                code: this.props.field.constraints.SelectionList
+            }
+        })
+        if (res.errors && res.errors.length) {
+            this.setState({ loadState: "load_error" })
+            console.error("Failed to load options", res.errors)
+        }
+        else {
+            console.log("options loaded", res.data)
+            this.setState({
+                loadState: "loaded",
+                options: res.data.SelectionList.results[0].options
+            })
+        }
+    }
+
+    async componentDidMount() {
+        this.initialise()
+    }
+
     handleSuggestionsFetchRequested = (input: any) => {
         const inputValue = input.value.trim().toLowerCase()
-        const matches = data.filter(item => (
+        const matches = this.state.options.filter(item => (
             inputValue == "" || item.label.toLowerCase().includes(inputValue)
         ))
         const suggestions = matches.slice(0, MAX_RESULTS)
@@ -107,12 +121,33 @@ export const SearchSelectControl: any = withStyles(styles)(
         this.setState({ suggestions, hasMore })
     }
 
-    handleSuggestionsClearRequested = () => {
-        this.setState({ suggestions: [] })
+    shouldRenderSuggestions = (inputValue: any) => {
+        return true
     }
 
-    handleChange = (event: any, target: any) => {
+    handleInputClearRequested = () => {
+        this.setState({ value: null, search: "" })
+    }
+
+    handleSuggestionsClearRequested = () => {
+        this.setState({ suggestions: [] })
+        this.props.onChange(null)
+    }
+
+    handleSearchChange = (event: any, target: any) => {
         this.setState({ search: target.newValue })
+    }
+
+    onSuggestionSelected = (event: any, data: SuggestionSelectedEventData<ISelectionOption>) => {
+        this.setState({ value: data.suggestion })
+        this.props.onChange(data.suggestion.code)
+    }
+
+    onSuggestionHighlighted = (params: SuggestionHighlightedParams) => {
+        if (params.suggestion) {
+            this.setState({ value: params.suggestion })
+            this.props.onChange(params.suggestion.code)
+        }
     }
 
     renderInputComponent = (inputProps: any) => {
@@ -134,6 +169,18 @@ export const SearchSelectControl: any = withStyles(styles)(
                         ref(node)
                         inputRef(node)
                     }}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            {this.state.value &&
+                                <Icon fontSize="small" style={{ cursor: "pointer" }}
+                                    onClick={this.handleInputClearRequested}
+                                >clear</Icon>}
+                            {!this.state.value &&
+                                <Icon fontSize="small" style={{ cursor: "pointer" }}
+                                    onClick={() => alert("drop down thing")}
+                            >arrow_drop_down</Icon>}
+                        </InputAdornment>
+                    }
                     {...otherProps}
                 />
             </FormControl>
@@ -142,10 +189,6 @@ export const SearchSelectControl: any = withStyles(styles)(
 
     getSuggestionValue(suggestion: any) {
         return suggestion.label
-    }
-
-    shouldRenderSuggestions = (inputValue: any) => {
-        return true
     }
 
     renderSuggestion = (suggestion: any, props: any) => {
@@ -181,7 +224,7 @@ export const SearchSelectControl: any = withStyles(styles)(
                     getSuggestionValue={this.getSuggestionValue}
                     inputProps={{
                         value: this.state.search,
-                        onChange: this.handleChange
+                        onChange: this.handleSearchChange
                     }}
                     theme={{
                         container: classes.container,
@@ -193,7 +236,7 @@ export const SearchSelectControl: any = withStyles(styles)(
                         <Paper {...options.containerProps} square>
                             {options.children}
                             {this.state.hasMore && <MenuItem dense>
-                                <em style={{ fontWeight: 500 }}>
+                                <em style={{ fontWeight: 300 }}>
                                     More...
                                 </em>
                             </MenuItem>}
@@ -202,8 +245,10 @@ export const SearchSelectControl: any = withStyles(styles)(
                     suggestions={this.state.suggestions}
                     onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
                     onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+                    onSuggestionSelected={this.onSuggestionSelected}
+                    onSuggestionHighlighted={this.onSuggestionHighlighted}
                 />
             </Grid>
         )
     }
-})
+}))

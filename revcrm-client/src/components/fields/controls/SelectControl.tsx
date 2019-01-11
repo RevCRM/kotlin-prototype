@@ -81,7 +81,7 @@ export const SelectControl = withApolloClient(
             console.error("Failed to load options", res.errors)
         }
         else {
-            console.log("Metadata loaded", res.data)
+            console.log("options loaded", res.data)
             this.setState({
                 loadState: "loaded",
                 options: res.data.SelectionList.results[0].options
