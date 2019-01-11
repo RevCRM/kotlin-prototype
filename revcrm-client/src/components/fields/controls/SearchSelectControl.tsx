@@ -1,5 +1,5 @@
 import React from "react"
-import Autosuggest, { SuggestionSelectedEventData, SuggestionHighlightedParams } from "react-autosuggest"
+import Autosuggest, { SuggestionSelectedEventData, BlurEvent } from "react-autosuggest"
 import match from "autosuggest-highlight/match"
 import parse from "autosuggest-highlight/parse"
 import Paper from "@material-ui/core/Paper"
@@ -71,6 +71,7 @@ export const MAX_RESULTS = 8
 export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
     class extends React.Component<ISearchSelectControlProps, ISearchSelectControlState> {
     gridWidthProps: IMUIGridProps
+    searchInputRef!: HTMLInputElement
 
     constructor(props: any) {
         super(props)
@@ -129,9 +130,9 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
         this.setState({ value: null, search: "" })
     }
 
-    handleInputBlur = () => {
-        // make sure input reflects currently selected value
-        this.setState({ search: this.state.value ? this.state.value.label : "" })
+    handleInputBlur = (event: any, params: BlurEvent<ISelectionOption>) => {
+        const value = params.highlightedSuggestion || this.state.value
+        this.setState({ value, search: value ? value.label : "" })
     }
 
     handleSuggestionsClearRequested = () => {
@@ -148,11 +149,8 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
         this.props.onChange(data.suggestion.code)
     }
 
-    onSuggestionHighlighted = (params: SuggestionHighlightedParams) => {
-        if (params.suggestion) {
-            this.setState({ value: params.suggestion })
-            this.props.onChange(params.suggestion.code)
-        }
+    focusInput = () => {
+        this.searchInputRef.focus()
     }
 
     renderInputComponent = (inputProps: any) => {
@@ -173,6 +171,7 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                     inputRef={(node) => {
                         ref(node)
                         inputRef(node)
+                        this.searchInputRef = node
                     }}
                     endAdornment={
                         <InputAdornment position="end">
@@ -182,8 +181,8 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                                 >clear</Icon>}
                             {!this.state.value &&
                                 <Icon fontSize="small" style={{ cursor: "pointer" }}
-                                    onClick={() => alert("drop down thing")}
-                            >arrow_drop_down</Icon>}
+                                    onClick={this.focusInput}
+                                >arrow_drop_down</Icon>}
                         </InputAdornment>
                     }
                     {...otherProps}
@@ -252,7 +251,6 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                     onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
                     onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
                     onSuggestionSelected={this.onSuggestionSelected}
-                    onSuggestionHighlighted={this.onSuggestionHighlighted}
                 />
             </Grid>
         )
