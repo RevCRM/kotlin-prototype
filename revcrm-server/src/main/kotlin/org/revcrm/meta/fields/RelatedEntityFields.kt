@@ -1,5 +1,6 @@
 package org.revcrm.meta.fields
 
+import graphql.Scalars
 import graphql.schema.GraphQLType
 import graphql.schema.GraphQLTypeReference
 import org.revcrm.meta.Entity
@@ -19,6 +20,10 @@ open class RelatedEntityField(
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return GraphQLTypeReference(relatedEntity)
+    }
+
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return Scalars.GraphQLString
     }
 }
 

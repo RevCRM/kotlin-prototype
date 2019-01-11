@@ -1,16 +1,8 @@
 package org.revcrm.graphql.schema
 
-import graphql.Scalars
-import graphql.scalars.ExtendedScalars
-import graphql.schema.FieldCoordinates
-import graphql.schema.GraphQLArgument
 import graphql.schema.GraphQLCodeRegistry
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
-import graphql.schema.GraphQLTypeReference
-import org.revcrm.graphql.fetchers.EntityDataFetcher
 import org.revcrm.meta.MetadataService
 
 class APISchema(private val meta: MetadataService) {
@@ -25,6 +17,8 @@ class APISchema(private val meta: MetadataService) {
          */
         val queryType = GraphQLObjectType.newObject()
             .name("Query")
+        val mutationType = GraphQLObjectType.newObject()
+            .name("Mutation")
         registerResultsMetaType(schema, code)
         registerMetadataQueryType(schema, code, queryType)
 
@@ -37,52 +31,27 @@ class APISchema(private val meta: MetadataService) {
         }
 
         /**
-         * Register Main Entity Types
+         * Register Main Entity Query & Mutation fields
          */
         val entities = meta.getEntities()
         entities.forEach { entity ->
 
             if (!entity.apiEnabled) return@forEach
 
+            val resultsTypeName = entity.name + "Results"
             registerEntityObjectType(meta, entity, schema, code)
+            registerEntityResultsType(entity, resultsTypeName, schema, code)
+            registerEntityQueryField(queryType, entity, resultsTypeName, code)
 
-            val resultsTypeName = registerEntityResultsType(entity, schema, code)
-
-            queryType.field(
-                GraphQLFieldDefinition.newFieldDefinition()
-                    .name(entity.name)
-                    .type(GraphQLTypeReference(resultsTypeName))
-                    .argument(
-                        GraphQLArgument.newArgument()
-                            .name("where")
-                            .type(ExtendedScalars.Json)
-                            .build())
-                    .argument(
-                        GraphQLArgument.newArgument()
-                            .name("orderBy")
-                            .type(GraphQLList(Scalars.GraphQLString))
-                            .build())
-                    .argument(
-                        GraphQLArgument.newArgument()
-                            .name("limit")
-                            .type(ExtendedScalars.PositiveInt)
-                            .build())
-                    .argument(
-                        GraphQLArgument.newArgument()
-                            .name("offset")
-                            .type(ExtendedScalars.NonNegativeInt)
-                            .build())
-            )
-            code.dataFetcher(
-                FieldCoordinates.coordinates("Query", entity.name),
-                EntityDataFetcher(entity)
-            )
+            registerEntityInputObjectType(meta, entity, schema, code)
+            registerEntityMutations(mutationType, entity, code)
         }
 
         /**
          * Construct and return schema
          */
         schema.query(queryType.build())
+        schema.mutation(mutationType.build())
         schema.codeRegistry(code.build())
         return schema.build()
     }

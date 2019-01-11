@@ -10,10 +10,12 @@ import graphql.schema.GraphQLTypeReference
 import graphql.schema.PropertyDataFetcher
 import org.revcrm.meta.Entity
 
-fun registerEntityResultsType(entity: Entity, schema: GraphQLSchema.Builder, code: GraphQLCodeRegistry.Builder): String {
-
-    val resultsTypeName = entity.name + "Results"
-
+fun registerEntityResultsType(
+    entity: Entity,
+    resultsTypeName: String,
+    schema: GraphQLSchema.Builder,
+    code: GraphQLCodeRegistry.Builder
+) {
     schema.additionalType(GraphQLObjectType.newObject()
         .name(resultsTypeName)
         .field(
@@ -37,6 +39,4 @@ fun registerEntityResultsType(entity: Entity, schema: GraphQLSchema.Builder, cod
             FieldCoordinates.coordinates(resultsTypeName, "meta"),
             PropertyDataFetcher.fetching<Any>("meta")
         )
-
-    return resultsTypeName
 }

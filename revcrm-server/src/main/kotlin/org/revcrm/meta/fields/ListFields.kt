@@ -39,6 +39,10 @@ open class EmbeddedEntityListField(
         val relatedEntity = constraints.get("Entity")!!
         return GraphQLList(GraphQLTypeReference(relatedEntity))
     }
+
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return GraphQLList(Scalars.GraphQLString)
+    }
 }
 
 fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
