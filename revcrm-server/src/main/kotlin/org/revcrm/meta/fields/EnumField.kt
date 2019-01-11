@@ -35,6 +35,7 @@ open class EnumField(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapEnumField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return EnumField(
         name = propInfo.name,

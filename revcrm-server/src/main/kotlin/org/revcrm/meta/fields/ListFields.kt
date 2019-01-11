@@ -45,6 +45,7 @@ open class EmbeddedEntityListField(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     val type = propInfo.property.javaField!!.genericType
     val typeDesc = type.toString()

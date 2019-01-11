@@ -21,6 +21,7 @@ open class IDField(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapIDField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return IDField(
         name = propInfo.name,

@@ -51,6 +51,7 @@ open class TimeField(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapDateTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return DateTimeField(
         name = propInfo.name,
@@ -63,6 +64,7 @@ fun mapDateTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapDateField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return DateField(
         name = propInfo.name,
@@ -75,6 +77,7 @@ fun mapDateField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapTimeField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return TimeField(
         name = propInfo.name,

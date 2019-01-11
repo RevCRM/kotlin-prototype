@@ -21,6 +21,7 @@ open class BooleanField(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapBooleanField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     return BooleanField(
         name = propInfo.name,

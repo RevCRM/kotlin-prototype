@@ -42,6 +42,7 @@ open class SelectField(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapStringField(meta: MetadataService, propInfo: EntityPropInfo): IField {
     val properties = mutableMapOf<String, String>()
     val constraints = mutableMapOf<String, String>()

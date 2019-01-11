@@ -27,6 +27,7 @@ open class RelatedEntityField(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 fun mapRelatedEntityField(meta: MetadataService, propInfo: EntityPropInfo, relatedEntity: String): IField {
     return RelatedEntityField(
         name = propInfo.name,

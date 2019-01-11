@@ -14,6 +14,7 @@ import org.revcrm.graphql.fetchers.EntityMetadataFetcher
 import org.revcrm.meta.Entity
 import org.revcrm.meta.fields.IField
 
+@Suppress("UNUSED_PARAMETER")
 fun registerMetadataQueryType(
     schema: GraphQLSchema.Builder,
     code: GraphQLCodeRegistry.Builder,

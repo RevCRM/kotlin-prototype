@@ -18,7 +18,7 @@ class EntityCreateDataFetcher(
         val tree = gson.toJsonTree(data)
         val record = gson.fromJson(tree, klass)
 
-        val result = ctx.db.withDB { ds ->
+        ctx.db.withDB { ds ->
             ds.save(record)
         }
 
