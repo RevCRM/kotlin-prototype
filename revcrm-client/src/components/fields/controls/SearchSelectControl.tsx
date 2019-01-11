@@ -129,6 +129,11 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
         this.setState({ value: null, search: "" })
     }
 
+    handleInputBlur = () => {
+        // make sure input reflects currently selected value
+        this.setState({ search: this.state.value ? this.state.value.label : "" })
+    }
+
     handleSuggestionsClearRequested = () => {
         this.setState({ suggestions: [] })
         this.props.onChange(null)
@@ -224,7 +229,8 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                     getSuggestionValue={this.getSuggestionValue}
                     inputProps={{
                         value: this.state.search,
-                        onChange: this.handleSearchChange
+                        onChange: this.handleSearchChange,
+                        onBlur: this.handleInputBlur
                     }}
                     theme={{
                         container: classes.container,
