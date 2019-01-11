@@ -9,7 +9,7 @@ import { IFieldComponentProps } from "./props"
 import { Input, Grid, FormControl, InputLabel } from "@material-ui/core"
 import { getGridWidthProps, IMUIGridProps } from "../../views/Grid"
 
-const suggestions = [
+const data = [
     { label: "Afghanistan" },
     { label: "Aland Islands" },
     { label: "Albania" },
@@ -77,7 +77,10 @@ export interface ISearchSelectControlProps extends
 export interface ISearchSelectControlState {
     search: string
     suggestions: any[]
+    hasMore: boolean
 }
+
+export const MAX_RESULTS = 8
 
 export const SearchSelectControl: any = withStyles(styles)(
     class extends React.Component<ISearchSelectControlProps, ISearchSelectControlState> {
@@ -88,24 +91,20 @@ export const SearchSelectControl: any = withStyles(styles)(
         this.gridWidthProps = getGridWidthProps(props)
         this.state = {
             search: "",
-            suggestions: []
+            suggestions: [],
+            hasMore: false
         }
     }
 
-    getSuggestions(value: any) {
-        const inputValue = value.trim().toLowerCase()
-        let count = 0
-        return suggestions.filter(suggestion => {
-            const keep =
-                count < 10 &&
-                (inputValue == "" || suggestion.label.toLowerCase().includes(inputValue))
-            if (keep) count += 1
-            return keep
-        })
-    }
+    handleSuggestionsFetchRequested = (input: any) => {
+        const inputValue = input.value.trim().toLowerCase()
+        const matches = data.filter(item => (
+            inputValue == "" || item.label.toLowerCase().includes(inputValue)
+        ))
+        const suggestions = matches.slice(0, MAX_RESULTS)
+        const hasMore = matches.length > MAX_RESULTS
 
-    handleSuggestionsFetchRequested = (fetch: any) => {
-        this.setState({ suggestions: this.getSuggestions(fetch.value) })
+        this.setState({ suggestions, hasMore })
     }
 
     handleSuggestionsClearRequested = () => {
@@ -192,7 +191,12 @@ export const SearchSelectControl: any = withStyles(styles)(
                     }}
                     renderSuggestionsContainer={options => (
                         <Paper {...options.containerProps} square>
-                        {options.children}
+                            {options.children}
+                            {this.state.hasMore && <MenuItem dense>
+                                <em style={{ fontWeight: 500 }}>
+                                    More...
+                                </em>
+                            </MenuItem>}
                         </Paper>
                     )}
                     suggestions={this.state.suggestions}
