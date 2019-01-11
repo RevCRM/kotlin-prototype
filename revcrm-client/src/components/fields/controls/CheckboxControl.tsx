@@ -20,7 +20,7 @@ export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (
     return (
         <Grid item {...gridWidthProps} style={props.style}>
 
-            <FormControl fullWidth>
+            <FormControl>
                 <FormControlLabel
                     control={
                         <Checkbox
