@@ -18,7 +18,10 @@ class DBService {
         config = newConfig
         config.entityClasses.forEach { morphia.map(Class.forName(it)) }
         config.embeddedClasses.forEach { morphia.map(Class.forName(it)) }
+
         client = MongoClient(config.dbUrl)
+
+        morphia.mapper.addInterceptor(EntityValidator())
         datastore = morphia.createDatastore(client, config.dbName) as AdvancedDatastore
         datastore.ensureIndexes()
     }
