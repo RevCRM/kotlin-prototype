@@ -7,7 +7,7 @@ import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLTypeReference
-import org.revcrm.graphql.fetchers.EntityDataFetcher
+import org.revcrm.graphql.fetchers.EntityCreateDataFetcher
 import org.revcrm.meta.Entity
 
 fun registerEntityMutations(
@@ -28,6 +28,6 @@ fun registerEntityMutations(
     )
     code.dataFetcher(
         FieldCoordinates.coordinates("Mutation", createMutationName),
-        EntityDataFetcher(entity)
+        EntityCreateDataFetcher(entity)
     )
 }

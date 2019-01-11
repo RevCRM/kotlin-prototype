@@ -23,9 +23,13 @@ val TEST_STRING_LISTS = listOf(
     TestWithStringList(listOf("Option 4", "Option 5"))
 )
 
-fun resetAccountData(ds: Datastore) {
+fun deleteAccountData(ds: Datastore) {
     val col = ds.getCollection(Account::class.java)
     col.remove(BasicDBObject()) // remove all items
+}
+
+fun resetAccountData(ds: Datastore) {
+    deleteAccountData(ds)
     TEST_ACCOUNTS.forEach { ds.save(it) }
 }
 

@@ -9,7 +9,7 @@ import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLList
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLTypeReference
-import org.revcrm.graphql.fetchers.EntityDataFetcher
+import org.revcrm.graphql.fetchers.EntityQueryDataFetcher
 import org.revcrm.meta.Entity
 
 fun registerEntityQueryField(
@@ -45,6 +45,6 @@ fun registerEntityQueryField(
     )
     code.dataFetcher(
         FieldCoordinates.coordinates("Query", entity.name),
-        EntityDataFetcher(entity)
+        EntityQueryDataFetcher(entity)
     )
 }

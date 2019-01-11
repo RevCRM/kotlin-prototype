@@ -19,7 +19,7 @@ class EntitySearchMeta(
     val totalCount: Long
 )
 
-class EntityDataFetcher(
+class EntityQueryDataFetcher(
     private val entity: Entity
 ) : DataFetcher<Any> {
 

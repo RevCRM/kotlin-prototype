@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions
 import org.revcrm.graphql.fetchers.EntitySearchResults
 import org.revcrm.testdb.getTestGson
 
-fun <T> mapGraphQLResult(res: ExecutionResult, entityKey: String, resultClass: Class<T>): EntitySearchResults<T> {
+fun <T> mapGraphQLQueryResult(res: ExecutionResult, entityKey: String, resultClass: Class<T>): EntitySearchResults<T> {
     val gson = getTestGson()
     Assertions.assertThat(res.errors).hasSize(0)
     val entityData = res.getData<Map<String, Any>>()
@@ -15,4 +15,12 @@ fun <T> mapGraphQLResult(res: ExecutionResult, entityKey: String, resultClass: C
         EntitySearchResults::class.java,
         resultClass
     ).type)
+}
+
+fun <T> mapGraphQLMutationResult(res: ExecutionResult, entityKey: String, resultClass: Class<T>): T {
+    val gson = getTestGson()
+    Assertions.assertThat(res.errors).hasSize(0)
+    val entityData = res.getData<Map<String, Any>>()
+    val tree = gson.toJsonTree(entityData.get(entityKey))
+    return gson.fromJson(tree, resultClass)
 }

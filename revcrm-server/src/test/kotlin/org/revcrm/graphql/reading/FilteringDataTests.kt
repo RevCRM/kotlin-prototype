@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.graphql.APIService
-import org.revcrm.graphql.mapGraphQLResult
+import org.revcrm.graphql.mapGraphQLQueryResult
 import org.revcrm.meta.MetadataService
 import org.revcrm.testdb.TEST_ACCOUNTS
 import org.revcrm.testdb.TestDB
@@ -41,7 +41,7 @@ class FilteringDataTests {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = mapGraphQLResult(res, "Account", Map::class.java)
+        val result = mapGraphQLQueryResult(res, "Account", Map::class.java)
 
         @Test
         fun `returns all rows`() {
@@ -81,7 +81,7 @@ class FilteringDataTests {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = mapGraphQLResult(res, "Account", Map::class.java)
+        val result = mapGraphQLQueryResult(res, "Account", Map::class.java)
 
         @Test
         fun `returns rows sorted by name then contact`() {
@@ -117,7 +117,7 @@ class FilteringDataTests {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = mapGraphQLResult(res, "Account", Map::class.java)
+        val result = mapGraphQLQueryResult(res, "Account", Map::class.java)
 
         @Test
         fun `returns rows that match the specified "where" clause`() {
@@ -144,7 +144,7 @@ class FilteringDataTests {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLQueryResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(defaultLimit)
             assertThat(result.meta.limit).isEqualTo(defaultLimit)
             assertThat(result.meta.offset).isEqualTo(0)
@@ -165,7 +165,7 @@ class FilteringDataTests {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLQueryResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(10)
             assertThat(result.meta.limit).isEqualTo(10)
             assertThat(result.meta.offset).isEqualTo(0)
@@ -186,7 +186,7 @@ class FilteringDataTests {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLQueryResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isGreaterThan(20).isLessThan(100)
             assertThat(result.meta.limit).isEqualTo(100)
             assertThat(result.meta.offset).isEqualTo(0)
@@ -208,7 +208,7 @@ class FilteringDataTests {
                     }
                 }
             """.trimIndent(), mapOf())
-            val result = mapGraphQLResult(res, "TestEntity2", TestEntity2::class.java)
+            val result = mapGraphQLQueryResult(res, "TestEntity2", TestEntity2::class.java)
             assertThat(result.results.size).isEqualTo(5)
             assertThat(result.meta.limit).isEqualTo(5)
             assertThat(result.meta.offset).isEqualTo(1)

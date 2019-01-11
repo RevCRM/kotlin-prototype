@@ -4,7 +4,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.graphql.APIService
-import org.revcrm.graphql.mapGraphQLResult
+import org.revcrm.graphql.mapGraphQLQueryResult
 import org.revcrm.meta.MetadataService
 import org.revcrm.testdb.TEST_EMBEDDED_ENTITIES
 import org.revcrm.testdb.TEST_STRING_LISTS
@@ -44,7 +44,7 @@ class EmbeddedEntityTests {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = mapGraphQLResult(res, "TestWithEmbeddedEntity", TestWithEmbeddedEntity::class.java)
+        val result = mapGraphQLQueryResult(res, "TestWithEmbeddedEntity", TestWithEmbeddedEntity::class.java)
 
         @Test
         fun `returns all rows`() {
@@ -83,7 +83,7 @@ class EmbeddedEntityTests {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = mapGraphQLResult(res, "TestWithStringList", TestWithStringList::class.java)
+        val result = mapGraphQLQueryResult(res, "TestWithStringList", TestWithStringList::class.java)
 
         @Test
         fun `returns all rows`() {
