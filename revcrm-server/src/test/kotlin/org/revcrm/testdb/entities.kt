@@ -61,6 +61,7 @@ class TestEntity2(
 ) : ParentEntity()
 
 @Entity
+@TestClassValidator
 class TestConstraintsEntity(
     var non_nullable_field: String,
 

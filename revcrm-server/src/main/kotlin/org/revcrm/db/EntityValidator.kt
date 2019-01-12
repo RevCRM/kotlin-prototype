@@ -17,6 +17,6 @@ class EntityValidator : AbstractEntityInterceptor() {
     override fun prePersist(ent: Any, dbObj: DBObject, mapper: Mapper) {
         val violations = validator.validate(ent)
         if (!violations.isEmpty())
-            throw EntityValidationException(violations)
+            throw EntityValidationError(violations)
     }
 }
