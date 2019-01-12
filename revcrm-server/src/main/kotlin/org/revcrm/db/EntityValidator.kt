@@ -6,7 +6,13 @@ import xyz.morphia.mapping.Mapper
 import javax.validation.Validation
 import javax.validation.Validator
 
-class EntityValidator : AbstractEntityInterceptor() {
+interface Validate {
+    fun validate(errors: EntityValidationData)
+}
+
+class EntityValidator(
+    private val db: DBService
+) : AbstractEntityInterceptor() {
     val validator: Validator
 
     init {
@@ -16,7 +22,15 @@ class EntityValidator : AbstractEntityInterceptor() {
 
     override fun prePersist(ent: Any, dbObj: DBObject, mapper: Mapper) {
         val violations = validator.validate(ent)
+        val errorData: EntityValidationData
         if (!violations.isEmpty())
-            throw EntityValidationError(violations)
+            errorData = EntityValidationData(violations)
+        else
+            errorData = EntityValidationData()
+        if (ent is Validate) {
+            ent.validate(errorData)
+        }
+        if (errorData.hasErrors())
+            throw EntityValidationError(errorData)
     }
 }

@@ -33,54 +33,8 @@ fun getValidationMessage(violations: Set<ConstraintViolation<*>>): String {
     return sb.toString()
 }
 
-class EntityError(
-    val entity: String,
-    val entityPath: String,
-    val errorCode: String,
-    val message: String
-)
-
-class FieldError(
-    val entity: String,
-    val fieldPath: String,
-    val errorCode: String,
-    val message: String
-)
-
-class EntityValidationErrorData(
-    val entityErrors: List<EntityError>,
-    val fieldErrors: List<FieldError>
-)
-
 class EntityValidationError(
-    vio: Set<ConstraintViolation<*>>
+    val errorData: EntityValidationData
 ) : ConstraintViolationException(
-    getValidationMessage(vio), vio
-) {
-    fun getValidationErrorData(): EntityValidationErrorData {
-        val fieldErrors = mutableListOf<FieldError>()
-        val entityErrors = mutableListOf<EntityError>()
-        constraintViolations.forEach { vio ->
-
-            val annotationName = vio.constraintDescriptor.annotation?.annotationClass?.simpleName
-            val errorCode = if (annotationName != null) annotationName else ""
-
-            if (isEntityError(vio)) {
-                entityErrors.add(EntityError(
-                    entity = vio.leafBean::class.java.simpleName,
-                    entityPath = vio.propertyPath.toString(),
-                    errorCode = errorCode,
-                    message = vio.message
-                ))
-            } else {
-                fieldErrors.add(FieldError(
-                    entity = vio.leafBean::class.java.simpleName,
-                    fieldPath = vio.propertyPath.toString(),
-                    errorCode = errorCode,
-                    message = vio.message
-                ))
-            }
-        }
-        return EntityValidationErrorData(entityErrors, fieldErrors)
-    }
-}
+    getValidationMessage(errorData.violations), errorData.violations
+)

@@ -21,7 +21,7 @@ class DBService {
 
         client = MongoClient(config.dbUrl)
 
-        morphia.mapper.addInterceptor(EntityValidator())
+        morphia.mapper.addInterceptor(EntityValidator(this))
         datastore = morphia.createDatastore(client, config.dbName) as AdvancedDatastore
         datastore.ensureIndexes()
     }

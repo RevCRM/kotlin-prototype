@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.revcrm.testdb.TestConstraintsEntity
 import org.revcrm.testdb.TestDB
+import org.revcrm.testdb.TestWithInternalClassValidation
 
 class ValidationTests {
 
@@ -66,7 +67,7 @@ class ValidationTests {
                 ds.save(invalidEntity)
             }
         }
-        val errorData = exception.getValidationErrorData()
+        val errorData = exception.errorData
 
         assertThat(errorData.entityErrors).hasSize(0)
         assertThat(errorData.fieldErrors).hasSize(3)
@@ -106,7 +107,7 @@ class ValidationTests {
                 ds.save(invalidEntity)
             }
         }
-        val errorData = exception.getValidationErrorData()
+        val errorData = exception.errorData
         assertThat(errorData.fieldErrors.size).isGreaterThan(0)
         assertThat(errorData.entityErrors).hasSize(1)
         assertThat(errorData.entityErrors[0]).matches { err ->
@@ -115,6 +116,30 @@ class ValidationTests {
             err.errorCode == "TestClassValidator" &&
             err.message == "TestClassValidator says this entity is invalid"
         }
+    }
+
+    @Test
+    fun `Entities that implement Validate interface trigger class-level validation`() {
+
+        val invalidEntity = TestWithInternalClassValidation(
+            numericField = 0,
+            textField = "invalid"
+        )
+
+        val exception = assertThrows<EntityValidationError> {
+            testDB.withDB { ds ->
+                ds.save(invalidEntity)
+            }
+        }
+        val errorData = exception.errorData
+        assertThat(errorData.fieldErrors).hasSize(1)
+        assertThat(errorData.fieldErrors[0].fieldPath).isEqualTo("numericField")
+        assertThat(errorData.entityErrors).hasSize(2)
+        assertThat(errorData.entityErrors).allMatch { err ->
+            err.entity == "TestWithInternalClassValidation"
+        }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail" }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail2" }
     }
 
     @Test

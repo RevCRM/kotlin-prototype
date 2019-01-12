@@ -4,6 +4,8 @@ import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
+import org.revcrm.db.EntityValidationData
+import org.revcrm.db.Validate
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
@@ -79,6 +81,21 @@ class TestConstraintsEntity(
     var max_field: Int
 
 ) : Base()
+
+@Entity
+class TestWithInternalClassValidation(
+    @field:Min(10)
+    val numericField: Int,
+    val textField: String
+) : Validate, Base() {
+
+    override fun validate(errors: EntityValidationData) {
+        if (textField == "invalid") {
+            errors.addEntityError(this, "Fail", "textField must not be invalid!")
+            errors.addEntityError(this, "Fail2", "Adding more errors, because we can :)")
+        }
+    }
+}
 
 @Entity
 @APIDisabled
