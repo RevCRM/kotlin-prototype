@@ -1,14 +1,13 @@
 package org.revcrm.db
 
 import com.mongodb.DBObject
+import org.revcrm.annotations.OnValidate
 import xyz.morphia.AbstractEntityInterceptor
 import xyz.morphia.mapping.Mapper
 import javax.validation.Validation
 import javax.validation.Validator
-
-interface Validate {
-    fun validate(errors: EntityValidationData)
-}
+import kotlin.reflect.KFunction
+import kotlin.reflect.full.findAnnotation
 
 class EntityValidator(
     private val db: DBService
@@ -27,9 +26,15 @@ class EntityValidator(
             errorData = EntityValidationData(violations)
         else
             errorData = EntityValidationData()
-        if (ent is Validate) {
-            ent.validate(errorData)
+
+        // Call any @OnValidate entity function
+        // TODO: Searches class members on every call so needs optimising!
+        val member = ent::class.members.find { m -> m.findAnnotation<OnValidate>() != null }
+        if (member != null) {
+            val method = member as KFunction
+            method.call(ent, errorData)
         }
+
         if (errorData.hasErrors())
             throw EntityValidationError(errorData)
     }

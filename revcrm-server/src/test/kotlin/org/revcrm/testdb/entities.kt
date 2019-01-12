@@ -4,8 +4,8 @@ import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
+import org.revcrm.annotations.OnValidate
 import org.revcrm.db.EntityValidationData
-import org.revcrm.db.Validate
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
@@ -17,6 +17,7 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
+import kotlin.reflect.full.findAnnotation
 
 val numberOfApiDisabledEntities = 1
 val testFieldsEntityDisabledFields = 2 // data_id from Base() and api_disabled_field
@@ -83,16 +84,17 @@ class TestConstraintsEntity(
 ) : Base()
 
 @Entity
-class TestWithInternalClassValidation(
+class TestWithOnValidateDecorator(
     @field:Min(10)
     val numericField: Int,
     val textField: String
-) : Validate, Base() {
+) : Base() {
 
-    override fun validate(errors: EntityValidationData) {
+    @OnValidate
+    fun validate(validation: EntityValidationData) {
         if (textField == "invalid") {
-            errors.addEntityError(this, "Fail", "textField must not be invalid!")
-            errors.addEntityError(this, "Fail2", "Adding more errors, because we can :)")
+            validation.addEntityError(this, "Fail", "textField must not be invalid!")
+            validation.addEntityError(this, "Fail2", "Adding more errors, because we can :)")
         }
     }
 }

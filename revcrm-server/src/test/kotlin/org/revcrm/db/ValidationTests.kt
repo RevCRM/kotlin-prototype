@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.revcrm.testdb.TestConstraintsEntity
 import org.revcrm.testdb.TestDB
-import org.revcrm.testdb.TestWithInternalClassValidation
+import org.revcrm.testdb.TestWithOnValidateDecorator
 
 class ValidationTests {
 
@@ -119,30 +119,6 @@ class ValidationTests {
     }
 
     @Test
-    fun `Entities that implement Validate interface trigger class-level validation`() {
-
-        val invalidEntity = TestWithInternalClassValidation(
-            numericField = 0,
-            textField = "invalid"
-        )
-
-        val exception = assertThrows<EntityValidationError> {
-            testDB.withDB { ds ->
-                ds.save(invalidEntity)
-            }
-        }
-        val errorData = exception.errorData
-        assertThat(errorData.fieldErrors).hasSize(1)
-        assertThat(errorData.fieldErrors[0].fieldPath).isEqualTo("numericField")
-        assertThat(errorData.entityErrors).hasSize(2)
-        assertThat(errorData.entityErrors).allMatch { err ->
-            err.entity == "TestWithInternalClassValidation"
-        }
-        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail" }
-        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail2" }
-    }
-
-    @Test
     fun `EntityValidationError is not raised when trying to save a valid entity`() {
 
         val validEntity = TestConstraintsEntity(
@@ -159,4 +135,66 @@ class ValidationTests {
             }
         }
     }
+
+    @Test
+    fun `We can use our @OnValidate decorator for extra class-level validation`() {
+
+        val invalidEntity = TestWithOnValidateDecorator(
+            numericField = 0,
+            textField = "invalid"
+        )
+
+        val exception = assertThrows<EntityValidationError> {
+            testDB.withDB { ds ->
+                ds.save(invalidEntity)
+            }
+        }
+        val errorData = exception.errorData
+        assertThat(errorData.fieldErrors).hasSize(1)
+        assertThat(errorData.fieldErrors[0].fieldPath).isEqualTo("numericField")
+        assertThat(errorData.entityErrors).hasSize(2)
+        assertThat(errorData.entityErrors).allMatch { err ->
+            err.entity == "TestWithOnValidateDecorator"
+        }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail" }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail2" }
+    }
+
+    @Test
+    fun `Errors added by the @OnValidate-decorated method cause EntityValidationError`() {
+
+        val invalidEntity = TestWithOnValidateDecorator(
+            numericField = 100,
+            textField = "invalid"
+        )
+
+        val exception = assertThrows<EntityValidationError> {
+            testDB.withDB { ds ->
+                ds.save(invalidEntity)
+            }
+        }
+        val errorData = exception.errorData
+        assertThat(errorData.fieldErrors).hasSize(0)
+        assertThat(errorData.entityErrors).hasSize(2)
+        assertThat(errorData.entityErrors).allMatch { err ->
+            err.entity == "TestWithOnValidateDecorator"
+        }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail" }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail2" }
+    }
+
+    @Test
+    fun `Entity with @OnValidate can be valid`() {
+
+        val validEntity = TestWithOnValidateDecorator(
+            numericField = 100,
+            textField = "valid"
+        )
+        assertDoesNotThrow {
+            testDB.withDB { ds ->
+                ds.save(validEntity)
+            }
+        }
+    }
+
 }
