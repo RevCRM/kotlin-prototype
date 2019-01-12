@@ -17,7 +17,6 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
-import kotlin.reflect.full.findAnnotation
 
 val numberOfApiDisabledEntities = 1
 val testFieldsEntityDisabledFields = 2 // data_id from Base() and api_disabled_field
