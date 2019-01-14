@@ -9,6 +9,7 @@ import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
 import graphql.schema.GraphQLTypeReference
 import org.revcrm.graphql.fetchers.EntityCreateDataFetcher
+import org.revcrm.graphql.fetchers.EntityUpdateDataFetcher
 import org.revcrm.meta.Entity
 
 fun registerEntityMutations(
@@ -19,6 +20,7 @@ fun registerEntityMutations(
 ) {
 
     // Create
+
     val createMutationName = "create${entity.name}"
     val createResultTypeName = "Create${entity.name}Result"
 
@@ -26,7 +28,7 @@ fun registerEntityMutations(
 
     mutationType.field(
         GraphQLFieldDefinition.newFieldDefinition()
-            .name("create${entity.name}")
+            .name(createMutationName)
             .type(GraphQLTypeReference(createResultTypeName))
             .argument(
                 GraphQLArgument.newArgument()
@@ -37,5 +39,27 @@ fun registerEntityMutations(
     code.dataFetcher(
         FieldCoordinates.coordinates("Mutation", createMutationName),
         EntityCreateDataFetcher(entity)
+    )
+
+    // Update
+
+    val updateMutationName = "update${entity.name}"
+    val updateResultTypeName = "Update${entity.name}Result"
+
+    registerEntityMutationResultType(entity, updateResultTypeName, schema)
+
+    mutationType.field(
+        GraphQLFieldDefinition.newFieldDefinition()
+            .name(updateMutationName)
+            .type(GraphQLTypeReference(updateResultTypeName))
+            .argument(
+                GraphQLArgument.newArgument()
+                    .name("data")
+                    .type(GraphQLNonNull(GraphQLTypeReference(entity.name + "Input")))
+                    .build())
+    )
+    code.dataFetcher(
+        FieldCoordinates.coordinates("Mutation", updateMutationName),
+        EntityUpdateDataFetcher(entity)
     )
 }

@@ -6,6 +6,7 @@ import org.revcrm.db.EntityValidationData
 import org.revcrm.db.EntityValidationError
 import org.revcrm.graphql.APIContext
 import org.revcrm.meta.Entity
+import org.revcrm.util.getGson
 
 class EntityCreateDataFetcher(
     private val entity: Entity
