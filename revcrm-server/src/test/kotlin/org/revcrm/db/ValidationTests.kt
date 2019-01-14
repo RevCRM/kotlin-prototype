@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.revcrm.testdb.TestConstraintsEntity
 import org.revcrm.testdb.TestDB
-import org.revcrm.testdb.TestWithOnValidateDecorator
+import org.revcrm.testdb.TestWithValidateMethod
 
 class ValidationTests {
 
@@ -137,9 +137,9 @@ class ValidationTests {
     }
 
     @Test
-    fun `We can use our @OnValidate decorator for extra class-level validation`() {
+    fun `We can use our @Validate decorator for extra class-level validation`() {
 
-        val invalidEntity = TestWithOnValidateDecorator(
+        val invalidEntity = TestWithValidateMethod(
             numericField = 0,
             textField = "invalid"
         )
@@ -154,16 +154,16 @@ class ValidationTests {
         assertThat(errorData.fieldErrors[0].fieldPath).isEqualTo("numericField")
         assertThat(errorData.entityErrors).hasSize(2)
         assertThat(errorData.entityErrors).allMatch { err ->
-            err.entity == "TestWithOnValidateDecorator"
+            err.entity == "TestWithValidateMethod"
         }
         assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail" }
         assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail2" }
     }
 
     @Test
-    fun `Errors added by the @OnValidate-decorated method cause EntityValidationError`() {
+    fun `Errors added by the @Validate-decorated method cause EntityValidationError`() {
 
-        val invalidEntity = TestWithOnValidateDecorator(
+        val invalidEntity = TestWithValidateMethod(
             numericField = 100,
             textField = "invalid"
         )
@@ -177,16 +177,16 @@ class ValidationTests {
         assertThat(errorData.fieldErrors).hasSize(0)
         assertThat(errorData.entityErrors).hasSize(2)
         assertThat(errorData.entityErrors).allMatch { err ->
-            err.entity == "TestWithOnValidateDecorator"
+            err.entity == "TestWithValidateMethod"
         }
         assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail" }
         assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail2" }
     }
 
     @Test
-    fun `Entity with @OnValidate can be valid`() {
+    fun `Entity with @Validate can be valid`() {
 
-        val validEntity = TestWithOnValidateDecorator(
+        val validEntity = TestWithValidateMethod(
             numericField = 100,
             textField = "valid"
         )

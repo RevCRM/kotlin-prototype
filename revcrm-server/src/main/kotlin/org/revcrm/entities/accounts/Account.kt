@@ -2,7 +2,7 @@ package org.revcrm.entities.accounts
 
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
-import org.revcrm.annotations.OnValidate
+import org.revcrm.annotations.Validate
 import org.revcrm.annotations.SelectionList
 import org.revcrm.db.EntityValidationData
 import org.revcrm.entities.Base
@@ -72,7 +72,7 @@ class Account(
 
 ) : Base() {
 
-    @OnValidate
+    @Validate
     fun validate(validation: EntityValidationData) {
         if (is_org && org_name.isNullOrBlank()) {
             validation.addFieldError(this,

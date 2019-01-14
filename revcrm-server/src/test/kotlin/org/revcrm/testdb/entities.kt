@@ -4,7 +4,8 @@ import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
-import org.revcrm.annotations.OnValidate
+import org.revcrm.annotations.Validate
+import org.revcrm.annotations.ValidateDelete
 import org.revcrm.db.EntityValidationData
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
@@ -84,13 +85,13 @@ class TestConstraintsEntity(
 ) : Base()
 
 @Entity
-class TestWithOnValidateDecorator(
+class TestWithValidateMethod(
     @field:Min(10)
     val numericField: Int,
     val textField: String
 ) : Base() {
 
-    @OnValidate
+    @Validate
     fun validate(validation: EntityValidationData) {
         if (textField == "invalid") {
             validation.addEntityError(this, "Fail", "textField must not be invalid!")
@@ -132,3 +133,16 @@ class TestWithStringList(
     @field:NotEmpty
     var values: List<String>
 ) : Base()
+
+@Entity
+class TestWithValidatedDelete(
+    val status: String
+) {
+
+    @ValidateDelete
+    fun validateDelete(validation: EntityValidationData) {
+        if (status == "nodelete") {
+            validation.addEntityError(this, "Denied", "You cannot delete an entity in this status")
+        }
+    }
+}

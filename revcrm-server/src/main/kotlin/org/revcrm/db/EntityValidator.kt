@@ -1,7 +1,7 @@
 package org.revcrm.db
 
 import com.mongodb.DBObject
-import org.revcrm.annotations.OnValidate
+import org.revcrm.annotations.Validate
 import xyz.morphia.AbstractEntityInterceptor
 import xyz.morphia.mapping.Mapper
 import javax.validation.Validation
@@ -27,9 +27,9 @@ class EntityValidator(
         else
             errorData = EntityValidationData()
 
-        // Call any @OnValidate entity function
+        // Call any @Validate entity function
         // TODO: Searches class members on every call so needs optimising!
-        val member = ent::class.members.find { m -> m.findAnnotation<OnValidate>() != null }
+        val member = ent::class.members.find { m -> m.findAnnotation<Validate>() != null }
         if (member != null) {
             val method = member as KFunction
             method.call(ent, errorData)
