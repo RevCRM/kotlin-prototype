@@ -1,7 +1,5 @@
 import React from "react"
 import Autosuggest, { SuggestionSelectedEventData, BlurEvent } from "react-autosuggest"
-import match from "autosuggest-highlight/match"
-import parse from "autosuggest-highlight/parse"
 import Paper from "@material-ui/core/Paper"
 import MenuItem from "@material-ui/core/MenuItem"
 import { withStyles, Theme, createStyles, WithStyles } from "@material-ui/core/styles"
@@ -128,6 +126,7 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
 
     handleInputClearRequested = () => {
         this.setState({ value: null, search: "" })
+        setTimeout(this.focusInput, 10)
     }
 
     handleInputBlur = (event: any, params: BlurEvent<ISelectionOption>) => {
@@ -196,23 +195,9 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
     }
 
     renderSuggestion = (suggestion: any, props: any) => {
-        const matches = match(suggestion.label, props.query)
-        const parts = parse(suggestion.label, matches)
         return (
-            <MenuItem dense selected={props.isHighlighted} component="div">
-                <div>
-                    {parts.map((part, index) => {
-                    return part.highlight ? (
-                        <span key={String(index)} style={{ fontWeight: 500 }}>
-                        {part.text}
-                        </span>
-                    ) : (
-                        <strong key={String(index)} style={{ fontWeight: 300 }}>
-                        {part.text}
-                        </strong>
-                    )
-                    })}
-                </div>
+            <MenuItem dense selected={props.isHighlighted}>
+                {suggestion.label}
             </MenuItem>
         )
     }
