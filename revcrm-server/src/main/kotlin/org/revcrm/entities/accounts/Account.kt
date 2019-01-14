@@ -2,7 +2,9 @@ package org.revcrm.entities.accounts
 
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
+import org.revcrm.annotations.OnValidate
 import org.revcrm.annotations.SelectionList
+import org.revcrm.db.EntityValidationData
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Index
@@ -68,4 +70,20 @@ class Account(
 //    @Label("Address")
 //    var primary_address: Address
 
-) : Base()
+) : Base() {
+
+    @OnValidate
+    fun validate(validation: EntityValidationData) {
+        if (is_org && org_name.isNullOrBlank()) {
+            validation.addFieldError(this,
+                fieldPath = "org_name",
+                errorCode = "NotBlank",
+                message = "Organisation Name cannot be blank")
+        } else if (!is_org && last_name.isNullOrBlank()) {
+            validation.addFieldError(this,
+                fieldPath = "last_name",
+                errorCode = "NotBlank",
+                message = "Last Name cannot be blank")
+        }
+    }
+}
