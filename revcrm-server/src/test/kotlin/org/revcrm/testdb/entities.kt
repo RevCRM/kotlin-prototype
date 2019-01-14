@@ -16,6 +16,7 @@ import java.time.LocalTime
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
 val numberOfApiDisabledEntities = 1
@@ -127,5 +128,7 @@ class TestEmbeddedEntity(
 
 @Entity
 class TestWithStringList(
+    var name: String,
+    @field:NotEmpty
     var values: List<String>
 ) : Base()

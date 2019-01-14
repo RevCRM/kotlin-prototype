@@ -78,6 +78,7 @@ class EmbeddedEntityTests {
                     TestWithStringList {
                         results {
                             id
+                            name
                             values
                         }
                     }
@@ -92,7 +93,9 @@ class EmbeddedEntityTests {
 
         @Test
         fun `each row has expected data`() {
+            assertThat(result.results[0].name).isEqualTo(TEST_STRING_LISTS[0].name)
             assertThat(result.results[0].values).containsAll(TEST_STRING_LISTS[0].values)
+            assertThat(result.results[1].name).isEqualTo(TEST_STRING_LISTS[1].name)
             assertThat(result.results[1].values).containsAll(TEST_STRING_LISTS[1].values)
         }
     }

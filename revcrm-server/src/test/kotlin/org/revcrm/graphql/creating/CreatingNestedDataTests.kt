@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test
 import org.revcrm.graphql.APIService
 import org.revcrm.graphql.mapGraphQLMutationResult
 import org.revcrm.meta.MetadataService
-import org.revcrm.testdb.Account
 import org.revcrm.testdb.TestDB
-import org.revcrm.testdb.deleteAccountData
+import org.revcrm.testdb.TestWithStringList
+import org.revcrm.testdb.deleteStringListData
 
-class CreatingDataTests {
+class CreatingNestedDataTests {
 
     val testDB = TestDB.instance
     val meta = MetadataService(testDB)
@@ -18,26 +18,23 @@ class CreatingDataTests {
 
     init {
         testDB.withDB { ds ->
-            deleteAccountData(ds)
+            deleteStringListData(ds)
         }
         meta.initialise()
         api.initialise()
     }
 
     @Nested
-    inner class CreateRecord {
+    inner class CreateNestedData {
 
         val data = "\$data"
         val res = api.query("""
-                mutation ($data: AccountInput!) {
-                    createAccount (data: $data) {
+                mutation ($data: TestWithStringListInput!) {
+                    createTestWithStringList (data: $data) {
                         result {
                             id
                             name
-                            contact
-                            phone
-                            email
-                            rating
+                            values
                         }
                         validation {
                             hasErrors
@@ -54,24 +51,17 @@ class CreatingDataTests {
             mapOf(
                 "data" to mapOf(
                     "name" to "Test Name",
-                    "contact" to "Test Contact",
-                    "phone" to "Test Phone",
-                    "email" to "Test Email",
-                    "rating" to 10
+                    "values" to listOf("value1", "value2")
                 )
             )
         )
-        val result = mapGraphQLMutationResult(res, "createAccount", Account::class.java)
+        val result = mapGraphQLMutationResult(res, "createTestWithStringList", TestWithStringList::class.java)
 
         @Test
-        fun `returns new Account data and ID`() {
+        fun `returns new record data and ID`() {
             assertThat(result.result).isNotNull()
-            assertThat(result.result.id).isNotNull()
             assertThat(result.result.name).isEqualTo("Test Name")
-            assertThat(result.result.contact).isEqualTo("Test Contact")
-            assertThat(result.result.phone).isEqualTo("Test Phone")
-            assertThat(result.result.email).isEqualTo("Test Email")
-            assertThat(result.result.rating).isEqualTo(10)
+            assertThat(result.result.values).contains("value1", "value2")
         }
 
         @Test
@@ -84,26 +74,23 @@ class CreatingDataTests {
         @Test
         fun `new record is stored in the database`() {
             testDB.withDB { ds ->
-                val match = ds.createQuery(Account::class.java)
-                    .field("_id").equal(result.result.id)
-                    .get()
+                val match = ds.get(TestWithStringList::class.java, result.result.id)
                 assertThat(match).isNotNull()
                 assertThat(match.name).isEqualTo("Test Name")
+                assertThat(match.values).contains("value1", "value2")
             }
         }
     }
 
     @Nested
-    inner class CreateValidationErrors {
+    inner class NestedDataValidationError {
 
         val data = "\$data"
         val res = api.query("""
-                mutation ($data: AccountInput!) {
-                    createAccount (data: $data) {
+                mutation ($data: TestWithStringListInput!) {
+                    createTestWithStringList (data: $data) {
                         result {
                             id
-                            name
-                            contact
                         }
                         validation {
                             hasErrors
@@ -122,12 +109,12 @@ class CreatingDataTests {
             """.trimIndent(),
             mapOf(
                 "data" to mapOf(
-                    "name" to "",
-                    "contact" to "invalid record"
+                    "name" to "invalid record",
+                    "values" to listOf<String>()
                 )
             )
         )
-        val result = mapGraphQLMutationResult(res, "createAccount", Account::class.java)
+        val result = mapGraphQLMutationResult(res, "createTestWithStringList", TestWithStringList::class.java)
 
         @Test
         fun `does not return result`() {
@@ -140,18 +127,18 @@ class CreatingDataTests {
             assertThat(result.validation.entityErrors).hasSize(0)
             assertThat(result.validation.fieldErrors.size).isGreaterThan(0)
             assertThat(result.validation.fieldErrors).anyMatch { err ->
-                err.entity == "Account" &&
-                err.fieldPath == "name" &&
-                err.code == "NotBlank" &&
-                err.message.contains("must not be blank")
+                err.entity == "TestWithStringList" &&
+                    err.fieldPath == "values" &&
+                    err.code == "NotEmpty" &&
+                    err.message.contains("must not be empty")
             }
         }
 
         @Test
         fun `new record is NOT stored in the database`() {
             testDB.withDB { ds ->
-                val match = ds.createQuery(Account::class.java)
-                    .field("contact").equal("invalid record")
+                val match = ds.createQuery(TestWithStringList::class.java)
+                    .field("name").equal("invalid record")
                     .get()
                 assertThat(match).isNull()
             }
