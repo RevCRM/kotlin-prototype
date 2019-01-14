@@ -82,6 +82,7 @@ class MetadataService(
 
         return Entity(
             name = mapping.collectionName,
+            idField = idField.name,
             apiEnabled = apiEnabled,
             className = mapping.clazz.name,
             fields = fields.toMap()

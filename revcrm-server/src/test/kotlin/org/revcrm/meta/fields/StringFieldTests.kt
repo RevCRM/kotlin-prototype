@@ -61,7 +61,7 @@ class StringFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", false, "mock", mapOf())
+            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isEqualTo(Scalars.GraphQLString)
         }
@@ -91,7 +91,7 @@ class StringFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", false, "mock", mapOf())
+            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isEqualTo(Scalars.GraphQLString)
         }

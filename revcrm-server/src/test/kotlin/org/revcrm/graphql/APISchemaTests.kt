@@ -35,6 +35,7 @@ class APISchemaTests {
     val entities = listOf<Entity>(
         Entity(
             name = "SensitiveEntity",
+            idField = "id",
             apiEnabled = false,
             className = "test.SensitiveEntity",
             fields = mapOf(
@@ -48,6 +49,7 @@ class APISchemaTests {
         ),
         Entity(
             name = "TestFieldsEntity",
+            idField = "id",
             apiEnabled = true,
             className = "test.TestFieldsEntity",
             fields = mapOf<String, IField>(
@@ -85,6 +87,7 @@ class APISchemaTests {
         ),
         Entity(
             name = "TestConstraintsEntity",
+            idField = "id",
             apiEnabled = true,
             className = "test.TestConstraintsEntity",
             fields = mapOf<String, IField>(

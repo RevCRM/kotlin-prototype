@@ -38,6 +38,12 @@ class EntityMetadataTests {
         }
 
         @Test
+        fun `entity id field is set`() {
+            assertThat(meta.getEntity("TestFieldsEntity")!!.idField).isEqualTo("id")
+            assertThat(meta.getEntity("TestEntity2")!!.idField).isEqualTo("id")
+        }
+
+        @Test
         fun `entity className matches full class name`() {
             assertThat(meta.getEntity("TestFieldsEntity")!!.className).isEqualTo("org.revcrm.testdb.TestFieldsEntity")
             assertThat(meta.getEntity("TestEntity2")!!.className).isEqualTo("org.revcrm.testdb.TestEntity2")

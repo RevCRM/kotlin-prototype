@@ -52,7 +52,7 @@ class ListFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", false, "mock", mapOf())
+            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isInstanceOf(GraphQLList::class.java)
 
@@ -81,7 +81,7 @@ class ListFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", false, "mock", mapOf())
+            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isInstanceOf(GraphQLList::class.java)
 

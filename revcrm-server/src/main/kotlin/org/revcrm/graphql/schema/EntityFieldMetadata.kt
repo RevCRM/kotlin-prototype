@@ -42,25 +42,6 @@ fun registerMetadataQueryType(
             .name("constraints")
             .type(ExtendedScalars.Json))
         .build()
-    code
-        .dataFetcher(
-            FieldCoordinates.coordinates("EntityFieldMetadata", "name"),
-            PropertyDataFetcher.fetching<Any>("name"))
-        .dataFetcher(
-            FieldCoordinates.coordinates("EntityFieldMetadata", "label"),
-            PropertyDataFetcher.fetching<Any>("label"))
-        .dataFetcher(
-            FieldCoordinates.coordinates("EntityFieldMetadata", "type"),
-            PropertyDataFetcher.fetching<Any>("type"))
-        .dataFetcher(
-            FieldCoordinates.coordinates("EntityFieldMetadata", "nullable"),
-            PropertyDataFetcher.fetching<Any>("nullable"))
-        .dataFetcher(
-            FieldCoordinates.coordinates("EntityFieldMetadata", "properties"),
-            PropertyDataFetcher.fetching<Any>("properties"))
-        .dataFetcher(
-            FieldCoordinates.coordinates("EntityFieldMetadata", "constraints"),
-            PropertyDataFetcher.fetching<Any>("constraints"))
 
     val entityMetaType = GraphQLObjectType.newObject()
         .name("EntityMetadata")
@@ -71,15 +52,16 @@ fun registerMetadataQueryType(
         )
         .field(
             GraphQLFieldDefinition.newFieldDefinition()
+                .name("idField")
+                .type(Scalars.GraphQLString)
+        )
+        .field(
+            GraphQLFieldDefinition.newFieldDefinition()
                 .name("fields")
                 .type(GraphQLList(entityFieldMetaType))
         )
         .build()
     code
-        .dataFetcher(
-            FieldCoordinates.coordinates("EntityMetadata", "name"),
-            PropertyDataFetcher.fetching<Any>("name")
-        )
         .dataFetcher(
             FieldCoordinates.coordinates("EntityMetadata", "fields"),
             PropertyDataFetcher.fetching<List<IField>, Entity> { entity ->
