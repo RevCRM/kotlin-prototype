@@ -186,6 +186,76 @@ class UpdatingDataTests {
     }
 
     @Nested
+    inner class UpdateValidationErrors {
+        val recordId: ObjectId
+
+        init {
+            recordId = setUpData(testDB)
+        }
+
+        val data = "\$data"
+        val res = api.query(
+            """
+                mutation ($data: AccountInput!) {
+                    updateAccount (data: $data) {
+                        result {
+                            id
+                        }
+                        validation {
+                            hasErrors
+                            entityErrors {
+                                code
+                            }
+                            fieldErrors {
+                                entity
+                                fieldPath
+                                code
+                                message
+                            }
+                        }
+                    }
+                }
+            """.trimIndent(),
+            mapOf(
+                "data" to mapOf(
+                    "id" to recordId,
+                    "name" to "",
+                    "contact" to "invalid record"
+                )
+            )
+        )
+        val result = mapGraphQLMutationResult(res, "updateAccount", Account::class.java)
+
+        @Test
+        fun `does not return result`() {
+            assertThat(result.result).isNull()
+        }
+
+        @Test
+        fun `returns expected validation data`() {
+            assertThat(result.validation).isNotNull()
+            assertThat(result.validation.entityErrors).hasSize(0)
+            assertThat(result.validation.fieldErrors.size).isGreaterThan(0)
+            assertThat(result.validation.fieldErrors).anyMatch { err ->
+                err.entity == "Account" &&
+                    err.fieldPath == "name" &&
+                    err.code == "NotBlank" &&
+                    err.message.contains("must not be blank")
+            }
+        }
+
+        @Test
+        fun `new record is NOT stored in the database`() {
+            testDB.withDB { ds ->
+                val match = ds.createQuery(Account::class.java)
+                    .field("contact").equal("invalid record")
+                    .get()
+                assertThat(match).isNull()
+            }
+        }
+    }
+
+    @Nested
     inner class NoIDSpecified {
 
         init {
