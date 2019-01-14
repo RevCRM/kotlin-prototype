@@ -29,7 +29,7 @@ class DataLoader(private val db: DBService) {
                 if (data.entity == null || data.data_id == null || data.data == null)
                     throw importError(file, idx, data, "entity, data_id or data missing")
 
-                if (db.getEntityClassNames().find { it == data.entity } == null)
+                if (!db.classIsEntity(data.entity!!))
                     throw importError(file, idx, data, "not a registered entity")
 
                 val klass = Class.forName(data.entity)

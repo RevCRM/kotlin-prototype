@@ -57,6 +57,7 @@ subprojects {
 
     noArg {
         annotation("xyz.morphia.annotations.Entity")
+        annotation("org.revcrm.annotations.EmbeddedEntity")
     }
     
     kapt {

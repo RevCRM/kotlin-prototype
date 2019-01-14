@@ -17,7 +17,6 @@ class DBService {
     ) {
         config = newConfig
         config.entityClasses.forEach { morphia.map(Class.forName(it)) }
-        config.embeddedClasses.forEach { morphia.map(Class.forName(it)) }
 
         client = MongoClient(config.dbUrl)
 
@@ -51,5 +50,13 @@ class DBService {
 
     fun getEmbeddedClassNames(): List<String> {
         return config.embeddedClasses
+    }
+
+    fun classIsEntity(className: String): Boolean {
+        return config.entityClasses.find { it == className } != null
+    }
+
+    fun classIsEmbeddedEntity(className: String): Boolean {
+        return config.embeddedClasses.find { it == className } != null
     }
 }

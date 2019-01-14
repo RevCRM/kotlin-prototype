@@ -1,5 +1,6 @@
 package org.revcrm.entities.common
 
+import org.revcrm.annotations.EmbeddedEntity
 import org.revcrm.entities.Base
 import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
@@ -12,8 +13,8 @@ class SelectionList(
     var options: List<SelectionOption>
 ) : Base()
 
-@Entity
+@EmbeddedEntity
 class SelectionOption(
     var code: String,
     var label: String
-) : Base()
+)

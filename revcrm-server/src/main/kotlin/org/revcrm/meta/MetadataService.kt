@@ -49,18 +49,16 @@ class MetadataService(
 
     fun initialise() {
         val mappedClasses = db.getEntityMappings()
-        val entityClassNames = db.getEntityClassNames()
-        val embeddedClassNames = db.getEmbeddedClassNames()
         mappedClasses.forEach { mapping ->
-            val entityMeta = getEntityMetadata(mapping, entityClassNames)
-            if (entityClassNames.find { it == entityMeta.className } != null)
+            val entityMeta = getEntityMetadata(mapping)
+            if (db.classIsEntity(entityMeta.className))
                 addEntity(entityMeta.name, entityMeta)
-            else if (embeddedClassNames.find { it == entityMeta.className } != null)
+            else if (db.classIsEmbeddedEntity(entityMeta.className))
                 addEmbeddedEntity(entityMeta.name, entityMeta)
         }
     }
 
-    private fun getEntityMetadata(mapping: MappedClass, entityClassNames: List<String>): Entity {
+    private fun getEntityMetadata(mapping: MappedClass): Entity {
         val klass = mapping.clazz.kotlin
         val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 
@@ -69,28 +67,32 @@ class MetadataService(
         // Get ID Field
         val idField = mapping.idField
         if (idField == null) {
-            throw Error("Id field for entity '${klass.simpleName}' is not defined.")
+            if (db.classIsEntity(mapping.clazz.name)) {
+                throw Error("Id field for entity '${klass.simpleName}' is not defined.")
+            }
+        } else {
+            val idMeta = getEntityField(klass, idField.name)
+            fields.put(idMeta.name, idMeta)
         }
-        val idMeta = getEntityField(klass, idField.name, entityClassNames)
-        fields.put(idMeta.name, idMeta)
 
         // Get Other Columns
         mapping.persistenceFields.forEach { field ->
-            val meta = getEntityField(klass, field.javaFieldName, entityClassNames)
+            val meta = getEntityField(klass, field.javaFieldName)
             fields.put(meta.name, meta)
         }
 
         return Entity(
             name = mapping.collectionName,
-            idField = idField.name,
+            idField = if (idField == null) null else idField.name,
             apiEnabled = apiEnabled,
             className = mapping.clazz.name,
             fields = fields.toMap()
         )
     }
 
-    private fun getEntityField(klass: KClass<*>, propName: String, entityClassNames: List<String>): IField {
+    private fun getEntityField(klass: KClass<*>, propName: String): IField {
         val propInfo = EntityPropInfo(klass, propName)
+        val entityClassNames = db.getEntityClassNames()
         if (propInfo.isEnum) {
             // TODO: Make this customisable
             return mapEnumField(this, propInfo)
