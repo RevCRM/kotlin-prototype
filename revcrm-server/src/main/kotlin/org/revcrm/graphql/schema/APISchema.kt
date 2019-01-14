@@ -21,6 +21,7 @@ class APISchema(private val meta: MetadataService) {
             .name("Mutation")
         registerResultsMetaType(schema, code)
         registerMutationResultValidationType(schema, code)
+        registerEntityDeleteResultType(schema)
         registerMetadataQueryType(schema, code, queryType)
 
         /**

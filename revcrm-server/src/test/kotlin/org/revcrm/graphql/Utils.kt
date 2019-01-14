@@ -3,6 +3,7 @@ package org.revcrm.graphql
 import com.google.gson.reflect.TypeToken
 import graphql.ExecutionResult
 import org.assertj.core.api.Assertions
+import org.revcrm.graphql.fetchers.EntityDeleteResult
 import org.revcrm.graphql.fetchers.EntityMutationResult
 import org.revcrm.graphql.fetchers.EntitySearchResults
 import org.revcrm.testdb.getTestGson
@@ -27,4 +28,12 @@ fun <T> mapGraphQLMutationResult(res: ExecutionResult, entityKey: String, result
         EntityMutationResult::class.java,
         resultClass
     ).type)
+}
+
+fun mapGraphQLDeleteResult(res: ExecutionResult, entityKey: String): EntityDeleteResult {
+    val gson = getTestGson()
+    Assertions.assertThat(res.errors).hasSize(0)
+    val entityData = res.getData<Map<String, Any>>()
+    val tree = gson.toJsonTree(entityData.get(entityKey))
+    return gson.fromJson(tree, EntityDeleteResult::class.java)
 }

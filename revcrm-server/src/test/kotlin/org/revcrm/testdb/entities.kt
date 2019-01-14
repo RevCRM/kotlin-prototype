@@ -137,11 +137,11 @@ class TestWithStringList(
 @Entity
 class TestWithValidatedDelete(
     val status: String
-) {
+) : Base() {
 
     @ValidateDelete
     fun validateDelete(validation: EntityValidationData) {
-        if (status == "nodelete") {
+        if (status == "no_delete") {
             validation.addEntityError(this, "Denied", "You cannot delete an entity in this status")
         }
     }

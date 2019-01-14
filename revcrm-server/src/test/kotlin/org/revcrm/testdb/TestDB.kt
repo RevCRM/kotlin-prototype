@@ -11,7 +11,8 @@ object TestDB {
             "org.revcrm.testdb.SensitiveEntity",
             "org.revcrm.testdb.Account",
             "org.revcrm.testdb.TestWithEmbeddedEntity",
-            "org.revcrm.testdb.TestWithStringList"
+            "org.revcrm.testdb.TestWithStringList",
+            "org.revcrm.testdb.TestWithValidatedDelete"
         ),
         listOf(
             "org.revcrm.testdb.TestEmbeddedEntity"
