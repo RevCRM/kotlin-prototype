@@ -5,25 +5,14 @@ import javax.validation.ConstraintViolation
 class EntityError(
     val entity: String,
     val entityPath: String,
-    val errorCode: String,
+    val code: String,
     val message: String
-) {
-    constructor(
-        obj: Any,
-        errorCode: String,
-        message: String
-    ): this(
-        entity = obj.javaClass.simpleName,
-        entityPath = "",
-        errorCode = errorCode,
-        message = message
-    )
-}
+)
 
 class FieldError(
     val entity: String,
     val fieldPath: String,
-    val errorCode: String,
+    val code: String,
     val message: String
 )
 
@@ -46,14 +35,14 @@ class EntityValidationData {
                 entityErrors.add(EntityError(
                     entity = vio.leafBean::class.java.simpleName,
                     entityPath = vio.propertyPath.toString(),
-                    errorCode = errorCode,
+                    code = errorCode,
                     message = vio.message
                 ))
             } else {
                 fieldErrors.add(FieldError(
                     entity = vio.leafBean::class.java.simpleName,
                     fieldPath = vio.propertyPath.toString(),
-                    errorCode = errorCode,
+                    code = errorCode,
                     message = vio.message
                 ))
             }
@@ -72,7 +61,16 @@ class EntityValidationData {
         entityErrors.add(EntityError(
             entity = obj.javaClass.simpleName,
             entityPath = "",
-            errorCode = errorCode,
+            code = errorCode,
+            message = message
+        ))
+    }
+
+    fun addFieldError(obj: Any, fieldPath: String, errorCode: String, message: String) {
+        fieldErrors.add(FieldError(
+            entity = obj.javaClass.simpleName,
+            fieldPath = fieldPath,
+            code = errorCode,
             message = message
         ))
     }

@@ -76,17 +76,17 @@ class ValidationTests {
         }
         assertThat(errorData.fieldErrors).anyMatch { err ->
             err.fieldPath == "textField" &&
-            err.errorCode == "Size" &&
+            err.code == "Size" &&
             err.message.contains("size must be between ")
         }
         assertThat(errorData.fieldErrors).anyMatch { err ->
             err.fieldPath == "min_field" &&
-                err.errorCode == "Min" &&
+                err.code == "Min" &&
                 err.message.contains("must be greater than or equal to ")
         }
         assertThat(errorData.fieldErrors).anyMatch { err ->
             err.fieldPath == "max_field" &&
-                err.errorCode == "Max" &&
+                err.code == "Max" &&
                 err.message.contains("must be less than or equal to ")
         }
     }
@@ -113,7 +113,7 @@ class ValidationTests {
         assertThat(errorData.entityErrors[0]).matches { err ->
             err.entity == "TestConstraintsEntity" &&
             err.entityPath == "" &&
-            err.errorCode == "TestClassValidator" &&
+            err.code == "TestClassValidator" &&
             err.message == "TestClassValidator says this entity is invalid"
         }
     }
@@ -156,8 +156,8 @@ class ValidationTests {
         assertThat(errorData.entityErrors).allMatch { err ->
             err.entity == "TestWithOnValidateDecorator"
         }
-        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail" }
-        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail2" }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail" }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail2" }
     }
 
     @Test
@@ -179,8 +179,8 @@ class ValidationTests {
         assertThat(errorData.entityErrors).allMatch { err ->
             err.entity == "TestWithOnValidateDecorator"
         }
-        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail" }
-        assertThat(errorData.entityErrors).anyMatch { err -> err.errorCode == "Fail2" }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail" }
+        assertThat(errorData.entityErrors).anyMatch { err -> err.code == "Fail2" }
     }
 
     @Test

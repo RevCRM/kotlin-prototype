@@ -2,6 +2,8 @@ package org.revcrm.graphql.fetchers
 
 import graphql.schema.DataFetcher
 import graphql.schema.DataFetchingEnvironment
+import org.revcrm.db.EntityValidationData
+import org.revcrm.db.EntityValidationError
 import org.revcrm.graphql.APIContext
 import org.revcrm.meta.Entity
 
@@ -18,10 +20,26 @@ class EntityCreateDataFetcher(
         val tree = gson.toJsonTree(data)
         val record = gson.fromJson(tree, klass)
 
-        ctx.db.withDB { ds ->
-            ds.save(record)
+        var validationData: EntityValidationData? = null
+
+        try {
+            ctx.db.withDB { ds ->
+                ds.save(record)
+            }
+        } catch (e: EntityValidationError) {
+            validationData = e.errorData
         }
 
-        return record
+        if (validationData == null) {
+            return EntityMutationResult(
+                result = record,
+                validation = EntityValidationData()
+            )
+        } else {
+            return EntityMutationResult(
+                result = null,
+                validation = validationData
+            )
+        }
     }
 }

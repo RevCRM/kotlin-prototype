@@ -5,7 +5,6 @@ import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLInputObjectField
 import graphql.schema.GraphQLInputObjectType
 import graphql.schema.GraphQLInputType
-import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLSchema
 import graphql.schema.PropertyDataFetcher
 import org.revcrm.meta.Entity
@@ -35,11 +34,9 @@ fun registerEntityInputObjectType(
             PropertyDataFetcher.fetching<Any>(field.name)
         )
 
-        if (field.nullable) {
-            fieldDef.type(fieldType as GraphQLInputType)
-        } else {
-            fieldDef.type(GraphQLNonNull(fieldType))
-        }
+        // Input type fields should be nullable to allow partial updates
+        // FUTURE: it might be better to have separate Create/Update input types?
+        fieldDef.type(fieldType as GraphQLInputType)
 
         entityInputTypeBuilder.field(fieldDef)
     }

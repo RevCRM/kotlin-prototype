@@ -106,6 +106,7 @@ class SensitiveEntity(
 
 @Entity
 class Account(
+    @field:NotBlank
     var name: String,
     var contact: String,
     var phone: String,
