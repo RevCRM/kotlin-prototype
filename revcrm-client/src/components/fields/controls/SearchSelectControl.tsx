@@ -125,18 +125,17 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
     }
 
     handleInputClearRequested = () => {
-        this.setState({ value: null, search: "" })
+        this.onChange(null)
         setTimeout(this.focusInput, 10)
     }
 
     handleInputBlur = (event: any, params: BlurEvent<ISelectionOption>) => {
         const value = params.highlightedSuggestion || this.state.value
-        this.setState({ value, search: value ? value.label : "" })
+        this.onChange(value)
     }
 
     handleSuggestionsClearRequested = () => {
         this.setState({ suggestions: [] })
-        this.props.onChange(null)
     }
 
     handleSearchChange = (event: any, target: any) => {
@@ -144,8 +143,17 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
     }
 
     onSuggestionSelected = (event: any, data: SuggestionSelectedEventData<ISelectionOption>) => {
-        this.setState({ value: data.suggestion })
-        this.props.onChange(data.suggestion.code)
+        if (data.suggestion) {
+            this.onChange(data.suggestion)
+        }
+    }
+
+    onChange = (value: ISelectionOption | null) => {
+        this.setState({
+            value: value ? value : null,
+            search: value ? value.label : ""
+        })
+        this.props.onChange(value ? value.code : null)
     }
 
     focusInput = () => {
@@ -196,7 +204,7 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
 
     renderSuggestion = (suggestion: any, props: any) => {
         return (
-            <MenuItem dense selected={props.isHighlighted}>
+            <MenuItem dense selected={props.isHighlighted} component="div">
                 {suggestion.label}
             </MenuItem>
         )
