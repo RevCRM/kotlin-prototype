@@ -11,6 +11,7 @@ const METADATA_QUERY = gql`
         Metadata {
             entities {
                 name
+                idField
                 fields {
                     name
                     label
@@ -45,6 +46,7 @@ export interface IFieldMetadata {
 
 export interface IEntityMetadata {
     name: string
+    idField: string
     fields: IFieldMetadata[]
 }
 

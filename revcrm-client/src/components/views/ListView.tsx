@@ -112,7 +112,7 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
             >
                 {({ loading, error, data }) => {
 
-                    if (loading) return "Loading..."
+                    if (loading) return null
                     if (error) return `Error! ${error.message}`
                     if (!data) return "No data returned"
 
