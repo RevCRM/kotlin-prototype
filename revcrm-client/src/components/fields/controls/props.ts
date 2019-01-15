@@ -21,6 +21,7 @@ export interface IFieldComponentProps extends IStandardComponentProps  {
     value: any
     errors: IFieldError[]
     disabled: boolean
+    readonly: boolean
     onChange: (value: any) => void
 }
 

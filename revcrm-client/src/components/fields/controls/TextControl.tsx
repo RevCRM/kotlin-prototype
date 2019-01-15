@@ -4,6 +4,7 @@ import * as React from "react"
 import { IFieldComponentProps } from "./props"
 import { getGridWidthProps } from "../../views/Grid"
 import { Grid, FormControl, InputLabel, Input, FormHelperText } from "@material-ui/core"
+import { ReadOnlyValue } from "./ReadOnlyValue"
 
 export const TextControl: React.StatelessComponent<IFieldComponentProps> = (props) => {
 
@@ -35,15 +36,18 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
                 >
                     {props.label}
                 </InputLabel>
-                <Input
-                    id={fieldId}
-                    type="text"
-                    value={props.value || ""}
-                    onChange={(event) => props.onChange(event.target.value)}
-                    error={hasErrors}
-                    disabled={props.disabled}
-                    {...mlOptions}
-                />
+                {!props.readonly &&
+                    <Input
+                        id={fieldId}
+                        type="text"
+                        value={props.value || ""}
+                        onChange={(event) => props.onChange(event.target.value)}
+                        error={hasErrors}
+                        disabled={props.disabled}
+                        {...mlOptions}
+                    />}
+                {props.readonly &&
+                    <ReadOnlyValue>{props.value || ""}</ReadOnlyValue>}
                 {errorText &&
                     <FormHelperText error>
                         {errorText}

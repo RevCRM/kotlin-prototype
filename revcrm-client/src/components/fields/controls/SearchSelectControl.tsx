@@ -10,6 +10,7 @@ import { ISelectionOption, IOptionsQueryResponse } from "./SelectControl"
 import gql from "graphql-tag"
 import { IApolloClientProp, withApolloClient } from "../../../graphql/withApolloClient"
 import { LoadState } from "../../utils/types"
+import { ReadOnlyValue } from "./ReadOnlyValue"
 
 const OPTIONS_QUERY = gql`
     query ($code: String!) {
@@ -162,39 +163,29 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
 
     renderInputComponent = (inputProps: any) => {
         const { classes, ref, inputRef = () => null, ...otherProps } = inputProps
-        const fieldId = this.props.field.name
-        const hasErrors = this.props.errors.length > 0
         return (
-            <FormControl fullWidth>
-                <InputLabel
-                    htmlFor={fieldId}
-                    error={hasErrors}
-                    shrink={true}
-                >
-                    {this.props.label}
-                </InputLabel>
-                <Input
-                    fullWidth
-                    inputRef={(node) => {
-                        ref(node)
-                        inputRef(node)
-                        this.searchInputRef = node
-                    }}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            {this.state.value &&
-                                <Icon fontSize="small" style={{ cursor: "pointer" }}
-                                    onClick={this.handleInputClearRequested}
-                                >clear</Icon>}
-                            {!this.state.value &&
-                                <Icon fontSize="small" style={{ cursor: "pointer" }}
-                                    onClick={this.focusInput}
-                                >arrow_drop_down</Icon>}
-                        </InputAdornment>
-                    }
-                    {...otherProps}
-                />
-            </FormControl>
+            <Input
+                fullWidth
+                inputRef={(node) => {
+                    ref(node)
+                    inputRef(node)
+                    this.searchInputRef = node
+                }}
+                endAdornment={
+                    <InputAdornment position="end">
+                        {this.state.value &&
+                            <Icon fontSize="small" style={{ cursor: "pointer" }}
+                                onClick={this.handleInputClearRequested}
+                            >clear</Icon>}
+                        {!this.state.value &&
+                            <Icon fontSize="small" style={{ cursor: "pointer" }}
+                                onClick={this.focusInput}
+                            >arrow_drop_down</Icon>}
+                    </InputAdornment>
+                }
+                {...otherProps}
+                style={{ marginTop: 16 }}
+            />
         )
     }
 
@@ -212,39 +203,53 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
 
     render() {
         const { classes } = this.props as any
+        const fieldId = this.props.field.name
+        const hasErrors = this.props.errors.length > 0
         return (
             <Grid item {...this.gridWidthProps} style={this.props.style}>
-                <Autosuggest
-                    renderInputComponent={this.renderInputComponent}
-                    renderSuggestion={this.renderSuggestion}
-                    shouldRenderSuggestions={this.shouldRenderSuggestions}
-                    getSuggestionValue={this.getSuggestionValue}
-                    inputProps={{
-                        value: this.state.search,
-                        onChange: this.handleSearchChange,
-                        onBlur: this.handleInputBlur
-                    }}
-                    theme={{
-                        container: classes.container,
-                        suggestionsContainerOpen: classes.suggestionsContainerOpen,
-                        suggestionsList: classes.suggestionsList,
-                        suggestion: classes.suggestion,
-                    }}
-                    renderSuggestionsContainer={options => (
-                        <Paper {...options.containerProps} square>
-                            {options.children}
-                            {this.state.hasMore && <MenuItem dense>
-                                <em style={{ fontWeight: 300 }}>
-                                    More...
-                                </em>
-                            </MenuItem>}
-                        </Paper>
-                    )}
-                    suggestions={this.state.suggestions}
-                    onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-                    onSuggestionSelected={this.onSuggestionSelected}
-                />
+                <FormControl fullWidth>
+                    <InputLabel
+                        htmlFor={fieldId}
+                        error={hasErrors}
+                        shrink={true}
+                    >
+                        {this.props.label}
+                    </InputLabel>
+                    {!this.props.readonly &&
+                        <Autosuggest
+                            renderInputComponent={this.renderInputComponent}
+                            renderSuggestion={this.renderSuggestion}
+                            shouldRenderSuggestions={this.shouldRenderSuggestions}
+                            getSuggestionValue={this.getSuggestionValue}
+                            inputProps={{
+                                value: this.state.search,
+                                onChange: this.handleSearchChange,
+                                onBlur: this.handleInputBlur
+                            }}
+                            theme={{
+                                container: classes.container,
+                                suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                                suggestionsList: classes.suggestionsList,
+                                suggestion: classes.suggestion,
+                            }}
+                            renderSuggestionsContainer={options => (
+                                <Paper {...options.containerProps} square>
+                                    {options.children}
+                                    {this.state.hasMore && <MenuItem dense>
+                                        <em style={{ fontWeight: 300 }}>
+                                            More...
+                                        </em>
+                                    </MenuItem>}
+                                </Paper>
+                            )}
+                            suggestions={this.state.suggestions}
+                            onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+                            onSuggestionSelected={this.onSuggestionSelected}
+                        />}
+                    {this.props.readonly &&
+                        <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
+                </FormControl>
             </Grid>
         )
     }

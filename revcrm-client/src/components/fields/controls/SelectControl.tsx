@@ -12,6 +12,7 @@ import { getGridWidthProps, IMUIGridProps } from "../../views/Grid"
 import { LoadState } from "../../utils/types"
 import gql from "graphql-tag"
 import { withApolloClient, IApolloClientProp } from "../../../graphql/withApolloClient"
+import { ReadOnlyValue } from "./ReadOnlyValue"
 
 const OPTIONS_QUERY = gql`
     query ($code: String!) {
@@ -116,20 +117,23 @@ export const SelectControl = withApolloClient(
                     >
                         {this.props.label}
                     </InputLabel>
-                    <Select
-                        value={this.props.value || ""}
-                        onChange={(event) => this.props.onChange(event.target.value || null)}
-                        inputProps={{
-                            id: fieldId
-                        }}
-                        error={hasErrors}
-                        disabled={this.props.disabled}
-                    >
-                        <MenuItem dense value=""></MenuItem>
-                        {opts.map(({ code, label }, index) => (
-                            <MenuItem dense key={index} value={code}>{label}</MenuItem>
-                        ))}
-                    </Select>
+                    {!this.props.readonly &&
+                        <Select
+                            value={this.props.value || ""}
+                            onChange={(event) => this.props.onChange(event.target.value || null)}
+                            inputProps={{
+                                id: fieldId
+                            }}
+                            error={hasErrors}
+                            disabled={this.props.disabled}
+                        >
+                            <MenuItem dense value=""></MenuItem>
+                            {opts.map(({ code, label }, index) => (
+                                <MenuItem dense key={index} value={code}>{label}</MenuItem>
+                            ))}
+                        </Select>}
+                    {this.props.readonly &&
+                        <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
                     {errorText &&
                         <FormHelperText error>
                             {errorText}

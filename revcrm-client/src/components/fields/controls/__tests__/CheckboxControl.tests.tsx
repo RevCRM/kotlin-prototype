@@ -27,6 +27,7 @@ describe("CheckboxControl", () => {
             value: true,
             errors: [],
             disabled: false,
+            readonly: false,
             style: {marginTop: 10},
             onChange: jest.fn()
         }
@@ -83,6 +84,30 @@ describe("CheckboxControl", () => {
         it("applies passed-in style", () => {
             const outerDiv = instance.findAll(el => el.type == "div")[0]
             expect(outerDiv.props.style).toEqual({marginTop: 10})
+        })
+
+    })
+
+    describe("readonly mode", () => {
+        const props = getComponentProps()
+        props.readonly = true
+
+        beforeAll(() => {
+            render(props)
+        })
+
+        it("renders an FormControlLabel component containing props.label and no error", () => {
+            const label = instance.findByType(FormControlLabel)
+            expect(label).toBeDefined()
+            expect(label.props.label).toEqual(props.label)
+            expect(label.props.label).not.toEqual(props.field.label)
+        })
+
+        it("Renders a disabled Checkbox component with current value", () => {
+            const cb = instance.findByType(Checkbox)
+            expect(cb).toBeDefined()
+            expect(cb.props.checked).toEqual(props.value)
+            expect(cb.props.disabled).toEqual(props.readonly)
         })
 
     })

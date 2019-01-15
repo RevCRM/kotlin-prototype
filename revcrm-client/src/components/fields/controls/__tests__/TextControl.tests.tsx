@@ -4,6 +4,7 @@ import * as TestRenderer from "react-test-renderer"
 import { TextControl } from "../TextControl"
 import { IFieldComponentProps } from "../props"
 import { Grid, InputLabel, Input, FormHelperText } from "@material-ui/core"
+import { ReadOnlyValue } from "../ReadOnlyValue"
 
 describe("TextControl", () => {
 
@@ -27,6 +28,7 @@ describe("TextControl", () => {
             value: "some value",
             errors: [],
             disabled: false,
+            readonly: false,
             style: {marginTop: 10},
             onChange: jest.fn()
         }
@@ -111,6 +113,35 @@ describe("TextControl", () => {
             expect(input).toBeDefined()
             expect(input.props.multiline).toEqual(true)
             expect(input.props.rowsMax).toEqual(5)
+        })
+
+    })
+
+    describe("readonly mode", () => {
+        const props = getComponentProps()
+        props.readonly = true
+
+        beforeAll(() => {
+            render(props)
+        })
+
+        it("renders an InputLabel component containing props.label and no error", () => {
+            const label = instance.findByType(InputLabel)
+            expect(label).toBeDefined()
+            expect(label.props.children).toEqual(props.label)
+            expect(label.props.children).not.toEqual(props.field.label)
+            expect(label.props.error).toEqual(false)
+        })
+
+        it("Does not render an Input component with expected props", () => {
+            const input = instance.findAllByType(Input)
+            expect(input.length).toEqual(0)
+        })
+
+        it("Renders the ReadOnlyValue component with expected props", () => {
+            const component = instance.findByType(ReadOnlyValue)
+            expect(component).toBeDefined()
+            expect(component.props.children).toEqual(props.value)
         })
 
     })

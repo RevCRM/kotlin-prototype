@@ -30,8 +30,8 @@ export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (
                             color="primary"
                         />
                     }
-                    disabled={props.disabled}
                     label={props.label}
+                    disabled={props.disabled || props.readonly}
                 />
                 {errorText &&
                     <FormHelperText error style={{ marginTop: 0 }}>

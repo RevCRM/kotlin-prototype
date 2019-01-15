@@ -42,11 +42,13 @@ export interface IFormViewProps extends
 
 export interface IFormViewState {
     loadState: LoadState
+    mode: "view" | "edit"
     dirtyFields: string[]
 }
 
 export interface IFormContext {
     loadState: LoadState
+    mode: "view" | "edit"
     entity: string
     entityData: any
     dirtyFields: string[]
@@ -76,6 +78,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
         this.state = {
             loadState: "not_loaded",
+            mode: "view",
             dirtyFields: [],
         }
     }
@@ -121,6 +124,14 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
         }
     }
 
+    onEditPressed = () => {
+        this.setState({ mode: "edit" })
+    }
+
+    onCancelPressed = () => {
+        this.setState({ mode: "view" })
+    }
+
     save = (): IEntityMutationResult => {
         const idValue = this.entityData[this.entityMeta.idField]
         const isNew = Boolean(idValue)
@@ -132,6 +143,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             updateData[field] = this.entityData[field]
         )
         console.log("update data", updateData)
+        this.setState({ mode: "view" })
         return null as any
     }
 
@@ -140,13 +152,14 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
     }
 
     render() {
-        const { loadState, dirtyFields } = this.state
+        const { loadState, mode, dirtyFields } = this.state
         const { entity } = this.props
         if (loadState != "loaded") return null
 
         const formContext: IFormContext = {
             loadState,
             entity,
+            mode,
             entityData: this.entityData,
             dirtyFields,
             onFieldChange: this.onFieldChange,
@@ -162,11 +175,21 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                         </IconButton>
                     </div>
                     <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                        Edit {this.entityMeta.name}
+                        {this.entityMeta.name}
                     </Typography>
-                    <Button color="inherit" onClick={this.save}>
-                        Save
-                    </Button>
+                    {mode == "view" &&
+                        <Button color="inherit" onClick={this.onEditPressed}>
+                            Edit
+                        </Button>}
+                    {mode == "edit" && <>
+                        <Button color="inherit" onClick={this.save}>
+                            Save
+                        </Button>
+                        <Button color="inherit" onClick={this.onCancelPressed}>
+                            Cancel
+                        </Button>
+                    </>}
+
                 </Paper>
                 <Grid container spacing={0} className={this.props.classes.root}>
                     {this.props.children}

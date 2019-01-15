@@ -46,6 +46,7 @@ export const Field = withMetadataContext(withFormContext(
         const { value } = this.state
         const errors: IFieldError[] = []
         const disabled = false
+        const readonly = this.props.form.mode == "view"
 
         const componentProps: IFieldComponentProps = {
             field: this.field,
@@ -56,6 +57,7 @@ export const Field = withMetadataContext(withFormContext(
             value,
             errors,
             disabled,
+            readonly,
             onChange: this.onChange
         }
         const standardProps = getStandardHTMLProps(this.props)

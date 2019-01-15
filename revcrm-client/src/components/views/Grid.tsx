@@ -25,7 +25,7 @@ export function getGridWidthProps(props: IGridProps): IMUIGridProps {
 
 export const Grid: React.SFC<{}> = (props) => {
     return (
-        <MUIGrid container spacing={8}>
+        <MUIGrid container spacing={16}>
             {props.children}
         </MUIGrid>
     )
