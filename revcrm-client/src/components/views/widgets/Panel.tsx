@@ -1,23 +1,29 @@
-
 import * as React from "react"
 import { IGridProps, Grid, GridItem } from "../Grid"
-import { CardHeader, CardContent, Card } from "@material-ui/core"
+import { CardHeader, CardContent, Card, Theme, createStyles, WithStyles, withStyles } from "@material-ui/core"
 
-export interface IPanelProps extends IGridProps {
+export const styles = (theme: Theme) => createStyles({
+    cardRoot: {
+        overflow: "visible"
+    }
+})
+
+export interface IPanelProps extends
+        IGridProps,
+        WithStyles<typeof styles> {
     title?: string
+    children?: any
 }
 
-export const Panel: React.SFC<IPanelProps> = (props) => {
+export const Panel = withStyles(styles)((props: IPanelProps) => {
     return (
-        <GridItem {...props} >
-            <Card>
+        <GridItem {...props}>
+            <Card classes={{ root: props.classes.cardRoot }}>
                 {props.title && <CardHeader title={props.title} />}
                 <CardContent>
-                    <Grid>
-                        {props.children}
-                    </Grid>
+                    <Grid>{props.children}</Grid>
                 </CardContent>
             </Card>
         </GridItem>
     )
-}
+})
