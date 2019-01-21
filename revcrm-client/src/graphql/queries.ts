@@ -1,4 +1,5 @@
-import { DocumentNode, FieldNode, SelectionSetNode } from "graphql"
+import { DocumentNode } from "graphql"
+import { getFieldSelectionSet } from "./helpers"
 
 export interface IEntityQueryOptions {
     entity: string
@@ -46,18 +47,18 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
                 variableDefinitions: [
                     {
                         kind: "VariableDefinition",
-                        variable: { kind: "Variable", name: { kind: "Name", value: "where" }},
-                        type: { kind: "NamedType", name: { kind: "Name", value: "JSON"}},
+                        variable: { kind: "Variable", name: { kind: "Name", value: "where" } },
+                        type: { kind: "NamedType", name: { kind: "Name", value: "JSON" } },
                     },
                     {
                         kind: "VariableDefinition",
-                        variable: { kind: "Variable", name: { kind: "Name", value: "limit" }},
-                        type: { kind: "NamedType", name: { kind: "Name", value: "PositiveInt"}},
+                        variable: { kind: "Variable", name: { kind: "Name", value: "limit" } },
+                        type: { kind: "NamedType", name: { kind: "Name", value: "PositiveInt" } },
                     },
                     {
                         kind: "VariableDefinition",
-                        variable: { kind: "Variable", name: { kind: "Name", value: "offset" }},
-                        type: { kind: "NamedType", name: { kind: "Name", value: "NonNegativeInt"}},
+                        variable: { kind: "Variable", name: { kind: "Name", value: "offset" } },
+                        type: { kind: "NamedType", name: { kind: "Name", value: "NonNegativeInt" } },
                     },
                 ],
                 selectionSet: {
@@ -70,17 +71,17 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
                                 {
                                     kind: "Argument",
                                     name: { kind: "Name", value: "where" },
-                                    value: { kind: "Variable", name: { kind: "Name", value: "where" }},
+                                    value: { kind: "Variable", name: { kind: "Name", value: "where" } },
                                 },
                                 {
                                     kind: "Argument",
                                     name: { kind: "Name", value: "limit" },
-                                    value: { kind: "Variable", name: { kind: "Name", value: "limit" }},
+                                    value: { kind: "Variable", name: { kind: "Name", value: "limit" } },
                                 },
                                 {
                                     kind: "Argument",
                                     name: { kind: "Name", value: "offset" },
-                                    value: { kind: "Variable", name: { kind: "Name", value: "offset" }},
+                                    value: { kind: "Variable", name: { kind: "Name", value: "offset" } },
                                 },
                             ],
                             selectionSet: {
@@ -88,7 +89,7 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
                                 selections: [
                                     {
                                         kind: "Field",
-                                        name: { kind: "Name", value: "results"},
+                                        name: { kind: "Name", value: "results" },
                                         selectionSet: fieldSelectionSet
                                     },
                                     {
@@ -105,20 +106,4 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
         ],
     }
     return queryAST
-}
-
-function getFieldSelectionSet(fieldNames: string[]): SelectionSetNode {
-    return {
-        kind: "SelectionSet",
-        selections: fieldNames.map(field => {
-            const fieldNode: FieldNode = {
-                kind: "Field",
-                name: {
-                    kind: "Name",
-                    value: field
-                }
-            }
-            return fieldNode
-        })
-    }
 }

@@ -6,10 +6,10 @@ import { Theme, createStyles, Omit, Paper, IconButton, Icon, Typography, Button 
 import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 import { DocumentNode } from "graphql"
-import { getEntityQuery, IEntityQueryResults } from "../../graphql/queryhelpers"
+import { getEntityQuery, IEntityQueryResults } from "../../graphql/queries"
 import { IApolloClientProp, withApolloClient } from "../../graphql/withApolloClient"
 import { LoadState } from "../utils/types"
-import { IEntityMutationResult } from "../../graphql/types"
+import { IEntityMutationResult, getEntityMutation, getEntityMutationName, IEntityMutationOptions } from "../../graphql/mutations"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -61,7 +61,7 @@ export interface IFormContext {
     entityData: any
     dirtyFields: string[]
     onFieldChange(field: IFieldMetadata, value: any): void
-    save(): IEntityMutationResult
+    save(): Promise<IEntityMutationResult>
 }
 
 export const FormContext = React.createContext<IFormContext>(null as any)
@@ -136,7 +136,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
         }
 
         onFieldChange = (field: IFieldMetadata, value: any) => {
-            console.log("field changed", field, value)
+            console.log("field changed", field.name, value)
             Object.assign(this.entityData, { [field.name]: value })
             if (!this.state.dirtyFields.includes(field.name)) {
                 const dirtyFields = [...this.state.dirtyFields, field.name]
@@ -152,17 +152,48 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             this.setState({ mode: "view" })
         }
 
-        save = (): IEntityMutationResult => {
+        save = async (): Promise<IEntityMutationResult> => {
+            const fieldNames = this.entityMeta.fields.map((field) => field.name)
             const idValue = this.entityData[this.entityMeta.idField]
-            const isNew = Boolean(idValue)
+            const isNew = !idValue
             console.log("isNew", isNew)
-            const updateData: any = {
-                [this.entityMeta.idField]: idValue
+            if (isNew) {
+                const data = { ...this.entityData }
+                const mutationOptions: IEntityMutationOptions = {
+                    entity: this.props.entity,
+                    operation: "create",
+                    resultFields: fieldNames
+                }
+                const mutation = getEntityMutation(mutationOptions)
+                const mutationName = getEntityMutationName(mutationOptions)
+                const res = await this.props.client.mutate({
+                    mutation,
+                    variables: { data }
+                })
+                const resData: IEntityMutationResult = res.data as any  // mutate() typings dont seem to set this
+                if (res.errors && res.errors.length) {
+                    throw new Error("Mutation failed: " + JSON.stringify(res.errors))
+                }
+                else if (!resData || !resData[mutationName]
+                    || resData[mutationName].validation) {
+                    throw new Error("API did not return expected data: " + JSON.stringify(res))
+                }
+                else if (resData[mutationName].validation.hasErrors) {
+                    throw new Error("Validation errors occured: " + JSON.stringify(resData[mutationName].validation))
+                }
+                else {
+                    // load returned data
+                    this.entityData = resData[mutationName].result
+                }
             }
-            this.state.dirtyFields.forEach(field =>
-                updateData[field] = this.entityData[field]
-            )
-            console.log("update data", updateData)
+            else {
+                const updateData: any = {
+                    [this.entityMeta.idField]: idValue
+                }
+                this.state.dirtyFields.forEach(field =>
+                    updateData[field] = this.entityData[field]
+                )
+            }
             this.setState({ mode: "view" })
             return null as any
         }

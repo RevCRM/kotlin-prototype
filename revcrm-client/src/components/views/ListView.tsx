@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody, Toolbar, Typography, IconButton, Icon } from "@material-ui/core"
 import { Query } from "react-apollo"
-import { getEntityQuery, IEntityQueryResults } from "../../graphql/queryhelpers"
+import { getEntityQuery, IEntityQueryResults } from "../../graphql/queries"
 import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
 import { DocumentNode } from "graphql"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
