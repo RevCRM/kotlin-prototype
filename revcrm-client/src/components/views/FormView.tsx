@@ -33,22 +33,24 @@ export const styles = (theme: Theme) => createStyles({
 })
 
 export interface IFormViewProps extends
-                    IMetadataContextProp,
-                    IViewManagerContextProp,
-                    IApolloClientProp,
-                    WithStyles<typeof styles> {
+    IMetadataContextProp,
+    IViewManagerContextProp,
+    IApolloClientProp,
+    WithStyles<typeof styles> {
     entity: string
 }
 
+export type FormMode = "view" | "edit"
+
 export interface IFormViewState {
     loadState: LoadState
-    mode: "view" | "edit"
+    mode: FormMode
     dirtyFields: string[]
 }
 
 export interface IFormContext {
     loadState: LoadState
-    mode: "view" | "edit"
+    mode: FormMode
     entity: string
     entityData: any
     dirtyFields: string[]
@@ -60,145 +62,157 @@ export const FormContext = React.createContext<IFormContext>(null as any)
 
 export const FormView = withStyles(styles)(withMetadataContext(withViewManagerContext(withApolloClient(
     class extends React.Component<IFormViewProps, IFormViewState> {
-    entityMeta: IEntityMetadata
-    entityData: any
-    query: DocumentNode
+        entityMeta: IEntityMetadata
+        entityData: any
+        query: DocumentNode
 
-    constructor(props: any) {
-        super(props)
+        constructor(props: any) {
+            super(props)
 
-        // TODO: This should neither be synchronous nor assume getEntity() returns an entity!
-        this.entityMeta = this.props.meta.getEntity(this.props.entity)!
-        const fieldNames = this.entityMeta.fields.map((field) => field.name)
+            // TODO: This should neither be synchronous nor assume getEntity() returns an entity!
+            this.entityMeta = this.props.meta.getEntity(this.props.entity)!
+            const fieldNames = this.entityMeta.fields.map((field) => field.name)
 
-        this.query = getEntityQuery({
-            entity: this.props.entity,
-            fields: fieldNames,
-        })
+            this.query = getEntityQuery({
+                entity: this.props.entity,
+                fields: fieldNames,
+            })
 
-        this.state = {
-            loadState: "not_loaded",
-            mode: "view",
-            dirtyFields: [],
-        }
-    }
-
-    async initialise() {
-        this.setState({ loadState: "loading" })
-        const ctx = this.props.view.context
-        const res = await this.props.client.query<IEntityQueryResults>({
-            query: this.query,
-            variables: {
-                where: { id: ctx.id }
+            this.state = {
+                loadState: "not_loaded",
+                mode: "view",
+                dirtyFields: [],
             }
-        })
-        if (res.errors && res.errors.length) {
-            this.setState({ loadState: "load_error" })
-            console.error("Failed to load data", res.errors)
         }
-        else if (!res.data || !res.data[this.props.entity]
-                || res.data[this.props.entity].results.length != 1) {
-            this.setState({ loadState: "load_error" })
-            console.error("Failed to load data", res.errors)
-        }
-        else {
-            this.entityData = res.data[this.props.entity].results[0]
-            console.log("Form data loaded", this.entityData)
+
+        async initialise() {
+            this.setState({ loadState: "loading" })
+            const ctx = this.props.view.context
+            let mode: FormMode = "view"
+            try {
+                if (ctx.id) {
+                    const res = await this.props.client.query<IEntityQueryResults>({
+                        query: this.query,
+                        variables: {
+                            where: { id: ctx.id }
+                        }
+                    })
+                    if (res.errors && res.errors.length) {
+                        throw new Error("Failed to load data: " + JSON.stringify(res.errors))
+                    }
+                    else if (!res.data || !res.data[this.props.entity]
+                        || res.data[this.props.entity].results.length != 1) {
+                        throw new Error("API did not return expected data: " + JSON.stringify(res))
+                    }
+                    else {
+                        this.entityData = res.data[this.props.entity].results[0]
+                    }
+                }
+                else {
+                    // new record
+                    this.entityData = {}
+                    mode = "edit"
+                }
+            }
+            catch (e) {
+                console.log(e)
+                this.setState({ loadState: "load_error" })
+            }
             this.setState({
                 loadState: "loaded",
+                mode,
                 dirtyFields: []
             })
         }
-    }
 
-    componentDidMount() {
-        this.initialise()
-    }
-
-    onFieldChange = (field: IFieldMetadata, value: any) => {
-        console.log("field changed", field, value)
-        Object.assign(this.entityData, { [field.name]: value })
-        if (!this.state.dirtyFields.includes(field.name)) {
-            const dirtyFields = [...this.state.dirtyFields, field.name]
-            this.setState({ dirtyFields })
-        }
-    }
-
-    onEditPressed = () => {
-        this.setState({ mode: "edit" })
-    }
-
-    onCancelPressed = () => {
-        this.setState({ mode: "view" })
-    }
-
-    save = (): IEntityMutationResult => {
-        const idValue = this.entityData[this.entityMeta.idField]
-        const isNew = Boolean(idValue)
-        console.log("isNew", isNew)
-        const updateData: any = {
-            [this.entityMeta.idField]: idValue
-        }
-        this.state.dirtyFields.forEach(field =>
-            updateData[field] = this.entityData[field]
-        )
-        console.log("update data", updateData)
-        this.setState({ mode: "view" })
-        return null as any
-    }
-
-    goBack() {
-        history.go(-1)
-    }
-
-    render() {
-        const { loadState, mode, dirtyFields } = this.state
-        const { entity } = this.props
-        if (loadState != "loaded") return null
-
-        const formContext: IFormContext = {
-            loadState,
-            entity,
-            mode,
-            entityData: this.entityData,
-            dirtyFields,
-            onFieldChange: this.onFieldChange,
-            save: this.save
+        componentDidMount() {
+            this.initialise()
         }
 
-        return (
-            <FormContext.Provider value={formContext}>
-                <Paper square className={this.props.classes.formHeader}>
-                    <div className={this.props.classes.backButtonContainer}>
-                        <IconButton color="inherit" onClick={this.goBack}>
-                            <Icon>arrow_back</Icon>
-                        </IconButton>
-                    </div>
-                    <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                        {this.entityMeta.name}
-                    </Typography>
-                    {mode == "view" &&
-                        <Button color="inherit" onClick={this.onEditPressed}>
-                            Edit
+        onFieldChange = (field: IFieldMetadata, value: any) => {
+            console.log("field changed", field, value)
+            Object.assign(this.entityData, { [field.name]: value })
+            if (!this.state.dirtyFields.includes(field.name)) {
+                const dirtyFields = [...this.state.dirtyFields, field.name]
+                this.setState({ dirtyFields })
+            }
+        }
+
+        onEditPressed = () => {
+            this.setState({ mode: "edit" })
+        }
+
+        onCancelPressed = () => {
+            this.setState({ mode: "view" })
+        }
+
+        save = (): IEntityMutationResult => {
+            const idValue = this.entityData[this.entityMeta.idField]
+            const isNew = Boolean(idValue)
+            console.log("isNew", isNew)
+            const updateData: any = {
+                [this.entityMeta.idField]: idValue
+            }
+            this.state.dirtyFields.forEach(field =>
+                updateData[field] = this.entityData[field]
+            )
+            console.log("update data", updateData)
+            this.setState({ mode: "view" })
+            return null as any
+        }
+
+        goBack() {
+            history.go(-1)
+        }
+
+        render() {
+            const { loadState, mode, dirtyFields } = this.state
+            const { entity, view } = this.props
+            if (loadState != "loaded") return null
+
+            const formContext: IFormContext = {
+                loadState,
+                entity,
+                mode,
+                entityData: this.entityData,
+                dirtyFields,
+                onFieldChange: this.onFieldChange,
+                save: this.save
+            }
+
+            return (
+                <FormContext.Provider value={formContext}>
+                    <Paper square className={this.props.classes.formHeader}>
+                        <div className={this.props.classes.backButtonContainer}>
+                            <IconButton color="inherit" onClick={this.goBack}>
+                                <Icon>arrow_back</Icon>
+                            </IconButton>
+                        </div>
+                        <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
+                            {(view.context.id ? "" : "New ") + this.entityMeta.name}
+                        </Typography>
+                        {mode == "view" &&
+                            <Button color="inherit" onClick={this.onEditPressed}>
+                                Edit
                         </Button>}
-                    {mode == "edit" && <>
-                        <Button color="inherit" onClick={this.save}>
-                            Save
+                        {mode == "edit" && <>
+                            <Button color="inherit" onClick={this.save}>
+                                Save
                         </Button>
-                        <Button color="inherit" onClick={this.onCancelPressed}>
-                            Cancel
+                            <Button color="inherit" onClick={this.onCancelPressed}>
+                                Cancel
                         </Button>
-                    </>}
+                        </>}
 
-                </Paper>
-                <Grid container spacing={0} className={this.props.classes.root}>
-                    {this.props.children}
-                </Grid>
-            </FormContext.Provider>
-        )
-    }
+                    </Paper>
+                    <Grid container spacing={0} className={this.props.classes.root}>
+                        {this.props.children}
+                    </Grid>
+                </FormContext.Provider>
+            )
+        }
 
-}))))
+    }))))
 
 export interface IFormContextProp {
     form: IFormContext

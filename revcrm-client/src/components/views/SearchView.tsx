@@ -46,6 +46,7 @@ export const SearchView = withStyles(styles)(withMetadataContext(
                         entity={this.props.entity}
                         searchPlaceholderText={"Search " + this.props.title}
                         onFilter={this.onFilter}
+                        newRecordView={this.props.detailView}
                     />
                     <div className={this.props.classes.resultsBox}>
                         <ListView

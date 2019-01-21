@@ -4,6 +4,7 @@ import { Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, Wi
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { withMetadataContext, IMetadataContextProp } from "../meta/Metadata"
 import { debounce } from "debounce"
+import { IViewManagerContextProp, withViewManagerContext } from "./ViewManager"
 
 export const FILTER_INTERVAL = 800
 
@@ -37,8 +38,10 @@ export const styles = (theme: Theme) => createStyles({
 
 export interface IFilterBarProps extends
     IMetadataContextProp,
+    IViewManagerContextProp,
     WithStyles<typeof styles> {
     entity: string
+    newRecordView?: string
     searchPlaceholderText?: string
     onFilter(where: object): void
 }
@@ -47,7 +50,7 @@ export interface IFilterBarState {
     searchText: string
 }
 
-export const FilterBar = withStyles(styles)(withMetadataContext(
+export const FilterBar = withStyles(styles)(withMetadataContext(withViewManagerContext(
     class extends React.Component<IFilterBarProps, IFilterBarState> {
 
         constructor(props: any) {
@@ -76,6 +79,13 @@ export const FilterBar = withStyles(styles)(withMetadataContext(
             }
         }, FILTER_INTERVAL)
 
+        onNewButtonClicked = () => {
+            if (this.props.newRecordView) {
+                const [perspective, view] = this.props.newRecordView.split("/")
+                this.props.view.changePerspective(perspective, view)
+            }
+        }
+
         render() {
             const searchPlaceholderText = this.props.searchPlaceholderText || "Search"
             return (
@@ -97,7 +107,10 @@ export const FilterBar = withStyles(styles)(withMetadataContext(
                             }
                         />
                         <div>
-                            <Button variant="contained" color="secondary" className={this.props.classes.actionButton}>
+                            <Button variant="contained" color="secondary"
+                                className={this.props.classes.actionButton}
+                                onClick={this.onNewButtonClicked}
+                            >
                                 New
                             </Button>
                         </div>
@@ -105,4 +118,4 @@ export const FilterBar = withStyles(styles)(withMetadataContext(
                 </div>
             )
         }
-    }))
+    })))
