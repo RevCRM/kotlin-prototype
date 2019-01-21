@@ -13,7 +13,6 @@ import { IEntityMutationResult, getEntityMutation, getEntityMutationName, IEntit
 
 export const styles = (theme: Theme) => createStyles({
     root: {
-        background: "#fff"
     },
     formHeader: {
         padding: 12,
@@ -175,10 +174,11 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                     throw new Error("Mutation failed: " + JSON.stringify(res.errors))
                 }
                 else if (!resData || !resData[mutationName]
-                    || resData[mutationName].validation) {
+                    || !resData[mutationName].validation) {
                     throw new Error("API did not return expected data: " + JSON.stringify(res))
                 }
                 else if (resData[mutationName].validation.hasErrors) {
+                    alert("validation errors: " + JSON.stringify(resData[mutationName].validation))
                     throw new Error("Validation errors occured: " + JSON.stringify(resData[mutationName].validation))
                 }
                 else {
@@ -187,12 +187,39 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                 }
             }
             else {
-                const updateData: any = {
+                const data: any = {
                     [this.entityMeta.idField]: idValue
                 }
                 this.state.dirtyFields.forEach(field =>
-                    updateData[field] = this.entityData[field]
+                    data[field] = this.entityData[field]
                 )
+                const mutationOptions: IEntityMutationOptions = {
+                    entity: this.props.entity,
+                    operation: "update",
+                    resultFields: fieldNames
+                }
+                const mutation = getEntityMutation(mutationOptions)
+                const mutationName = getEntityMutationName(mutationOptions)
+                const res = await this.props.client.mutate({
+                    mutation,
+                    variables: { data }
+                })
+                const resData: IEntityMutationResult = res.data as any  // mutate() typings dont seem to set this
+                if (res.errors && res.errors.length) {
+                    throw new Error("Mutation failed: " + JSON.stringify(res.errors))
+                }
+                else if (!resData || !resData[mutationName]
+                    || !resData[mutationName].validation) {
+                    throw new Error("API did not return expected data: " + JSON.stringify(res))
+                }
+                else if (resData[mutationName].validation.hasErrors) {
+                    alert("validation errors: " + JSON.stringify(resData[mutationName].validation))
+                    throw new Error("Validation errors occured: " + JSON.stringify(resData[mutationName].validation))
+                }
+                else {
+                    // load returned data
+                    this.entityData = resData[mutationName].result
+                }
             }
             this.setState({ mode: "view" })
             return null as any
@@ -246,10 +273,12 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                         </>}
 
                     </Paper>
-                    <Grid container spacing={0} className={classes.root}>
-                        {this.props.children}
-                    </Grid>
-                </FormContext.Provider>
+                    <div style={{ margin: 6 }}>
+                        <Grid container spacing={8} className={classes.root}>
+                            {this.props.children}
+                        </Grid>
+                    </div>
+                    </FormContext.Provider>
             )
         }
 
