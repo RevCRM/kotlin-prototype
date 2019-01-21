@@ -1,7 +1,7 @@
 
 import * as React from "react"
 import { IViewContext } from "./types"
-import { IPerspective, IView, UI, IPerspectiveView } from "../../UIManager"
+import { IPerspective, IView, UI } from "../../UIManager"
 import { History, Location, Action } from "history"
 import { Omit } from "../../types"
 import { buildQueryString, queryStringToObject } from "../../utils/urls"
@@ -13,9 +13,9 @@ export interface IViewManagerLocation {
 
 export interface IViewManagerContext {
     history: History<any>
-    perspective: IPerspective | null
-    perspectiveView: IPerspectiveView | null
-    view: IView | null
+    perspective: IPerspective
+    viewName: string
+    view: IView
     context: IViewContext
 
     changePerspective(perspectiveId: string, viewId?: string, context?: IViewContext): void
@@ -26,23 +26,23 @@ export interface IViewManagerProps {
 }
 
 export interface IViewManagerState {
-    perspective: IPerspective | null
-    perspectiveView: IPerspectiveView | null
-    view: IView | null
+    perspective: IPerspective
+    viewName: string
+    view: IView
     context: IViewContext
 }
 
 // TODO: Move this somewhere better
 export function getViewStateFromUrl(pathname: string, search: string) {
-    const [ perspectiveId, perspectiveViewId ] = pathname.split("/").slice(1)
+    const [perspectiveId, viewName] = pathname.split("/").slice(1)
     const perspective = UI.getPerspective(perspectiveId)
-    const perspectiveView = UI.getPerspectiveView(perspectiveId, perspectiveViewId)
+    const perspectiveView = perspective ? perspective.views[viewName] : null
     const view = perspectiveView ? UI.getView(perspectiveView.viewId) : null
     const context = queryStringToObject(search)
     return {
-        perspective,
-        perspectiveView,
-        view,
+        perspective: perspective!,
+        viewName: viewName,
+        view: view!,
         context
     }
 }

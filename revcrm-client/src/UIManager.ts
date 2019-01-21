@@ -5,13 +5,11 @@ export interface IPerspective {
     id: string
     title: string
     views: {
-        [perspectiveViewId: string]: IPerspectiveView;
+        [viewName: string]: {
+            title: string
+            viewId: string
+        };
     }
-}
-
-export interface IPerspectiveView {
-    title: string
-    viewId: string
 }
 
 export interface IView {
@@ -58,14 +56,6 @@ export class UIManager {
         const perspective = this._perspectives[perspectiveId]
         if (perspective) {
             return perspective
-        }
-        return null
-    }
-
-    getPerspectiveView(perspectiveId: string, perspectiveViewId: string) {
-        const perspective = this._perspectives[perspectiveId]
-        if (perspective && perspective.views[perspectiveViewId]) {
-            return perspective.views[perspectiveViewId]
         }
         return null
     }

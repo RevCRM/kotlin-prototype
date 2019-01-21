@@ -12,12 +12,19 @@ const styles = createStyles({
     listItemText: {
         padding: 0,
         whiteSpace: "nowrap"
+    },
+    subItemList: {
+        background: "#F2F2F2"
+    },
+    selectedSubItem: {
+        background: "#BBB"
     }
 })
 
 export interface ILeftNavProps extends
     WithStyles<typeof styles>,
     IViewManagerContextProp {
+
 }
 
 export interface ILeftNavState {
@@ -29,67 +36,75 @@ export interface ILeftNavState {
 export const LeftNav = withStyles(styles)(withViewManagerContext(
     class extends React.Component<ILeftNavProps, ILeftNavState> {
 
-    constructor(props: any) {
-        super(props)
-        this.state = {
-            expandedMenus: {}
-        }
-    }
-
-    onMainButtonClick(item: IMenuItem) {
-        this.setState((state) => ({
-            expandedMenus: {
-                ...state.expandedMenus,
-                [item.id]: !state.expandedMenus[item.id]
+        constructor(props: any) {
+            super(props)
+            this.state = {
+                expandedMenus: {}
             }
-        }))
-    }
+        }
 
-    onSubItemClick(item: IMenuSubItem) {
-        this.props.view.changePerspective(
-            item.perspective, item.view
-        )
-    }
+        onMainButtonClick(item: IMenuItem) {
+            this.setState((state) => ({
+                expandedMenus: {
+                    ...state.expandedMenus,
+                    [item.id]: !state.expandedMenus[item.id]
+                }
+            }))
+        }
 
-    render() {
-        const MENU = UI.getMenus()
-        return (
-            <List>
-                {MENU.map((item) => {
-                    const expanded = Boolean(this.state.expandedMenus[item.id])
-                    return (<div key={item.id}>
-                        <ListItem button onClick={() => this.onMainButtonClick(item)}>
-                            <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
-                            <ListItemText
-                                primary={item.label}
-                                classes={{ root: this.props.classes.listItemText }}
-                            />
-                        </ListItem>
-                        {item.subItems &&
-                            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                <List component="div" disablePadding style={{ background: "#F2F2F2" }}>
-                                    {item.subItems.map((subItem, subItemIdx) => (
-                                        <ListItem button key={subItemIdx}
-                                            style={{ padding: 8, paddingLeft: 64 }}
-                                            onClick={() => this.onSubItemClick(subItem)}>
-                                            <Typography variant="body2">{subItem.label}</Typography>
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Collapse>
-                        }
-                    </div>)
-                })}
-                <Divider />
-                <ListItem button>
-                    <ListItemIcon><Icon>settings</Icon></ListItemIcon>
-                    <ListItemText
-                        primary="System Administration"
-                        classes={{ root: this.props.classes.listItemText }}
-                    />
-                </ListItem>
-            </List>
-        )
+        onSubItemClick(item: IMenuSubItem) {
+            this.props.view.changePerspective(
+                item.perspective, item.view
+            )
+        }
 
-    }
-}))
+        render() {
+            const MENU = UI.getMenus()
+
+            const perspectiveId = this.props.view.perspective.id
+            const viewName = this.props.view.viewName
+
+            return (
+                <List>
+                    {MENU.map((item) => {
+                        const expanded = Boolean(this.state.expandedMenus[item.id])
+                        return (<div key={item.id}>
+                            <ListItem button onClick={() => this.onMainButtonClick(item)}>
+                                <ListItemIcon><Icon>{item.icon}</Icon></ListItemIcon>
+                                <ListItemText
+                                    primary={item.label}
+                                    classes={{ root: this.props.classes.listItemText }}
+                                />
+                            </ListItem>
+                            {item.subItems &&
+                                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding className={this.props.classes.subItemList}>
+                                        {item.subItems.map((subItem, subItemIdx) => {
+                                            const isSelected = item.perspective == perspectiveId && subItem.view == viewName
+                                            return (
+                                                <ListItem button key={subItemIdx}
+                                                    style={{ padding: 8, paddingLeft: 64 }}
+                                                    className={isSelected ? this.props.classes.selectedSubItem : undefined}
+                                                    onClick={() => this.onSubItemClick(subItem)}>
+                                                    <Typography variant="body2">{subItem.label}</Typography>
+                                                </ListItem>
+                                            )
+                                        })}
+                                    </List>
+                                </Collapse>
+                            }
+                        </div>)
+                    })}
+                    <Divider />
+                    <ListItem button>
+                        <ListItemIcon><Icon>settings</Icon></ListItemIcon>
+                        <ListItemText
+                            primary="System Administration"
+                            classes={{ root: this.props.classes.listItemText }}
+                        />
+                    </ListItem>
+                </List>
+            )
+
+        }
+    }))

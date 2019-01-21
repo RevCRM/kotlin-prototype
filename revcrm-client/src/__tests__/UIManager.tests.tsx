@@ -25,10 +25,8 @@ describe("UIManager", () => {
         ui.registerPerspective(mockPerspective)
         ui.registerView(mockMyView)
 
-        const perspective = ui.getPerspective(mockPerspective.id)
-        const view = ui.getPerspectiveView(
-            mockPerspective.id, "my"
-        )
+        const perspective = ui.getPerspective(mockPerspective.id)!
+        const view = perspective.views["my"]
 
         expect(perspective).toEqual(mockPerspective)
         expect(view).toEqual(mockPerspective.views["my"])
@@ -40,14 +38,6 @@ describe("UIManager", () => {
         ui.registerView(mockMyView)
 
         expect(ui.getPerspective("no_existy")).toBeNull()
-    })
-
-    it("getPerspectiveView returns null if perspective view does not exist", () => {
-        const ui = new UIManager()
-        ui.registerPerspective(mockPerspective)
-        ui.registerView(mockMyView)
-
-        expect(ui.getPerspectiveView("no_existy", "no_existings")).toBeNull()
     })
 
     it("getView returns null if view does not exist", () => {

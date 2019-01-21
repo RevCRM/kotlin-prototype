@@ -67,14 +67,14 @@ describe("<ViewManager />", () => {
 
         it("sets correct perspective and view in the context", () => {
             expect(receivedCtx.perspective).toEqual(mockPerspective)
-            expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views["team"])
+            expect(receivedCtx.viewName).toEqual("team")
             expect(receivedCtx.view).toEqual(mockTeamView)
         })
 
     })
 
     describe("initialisation - when a non-matching URL is set", () => {
-        const nonMatchingUrl = "/no_existy"
+        const nonMatchingUrl = "/no_perspective"
 
         beforeAll(() => {
             receivedCtx = null as any
@@ -93,9 +93,9 @@ describe("<ViewManager />", () => {
         })
 
         it("perspective and view context is null", () => {
-            expect(receivedCtx.perspective).toEqual(null)
-            expect(receivedCtx.perspectiveView).toEqual(null)
-            expect(receivedCtx.view).toEqual(null)
+            expect(receivedCtx.perspective).toBeNull()
+            expect(receivedCtx.viewName).toBeUndefined()
+            expect(receivedCtx.view).toBeNull()
         })
 
     })
@@ -128,7 +128,7 @@ describe("<ViewManager />", () => {
 
         it("sets correct perspective and view in the context", () => {
             expect(receivedCtx.perspective).toEqual(mockPerspective)
-            expect(receivedCtx.perspectiveView).toEqual(mockPerspective.views["my"])
+            expect(receivedCtx.viewName).toEqual("my")
             expect(receivedCtx.view).toEqual(mockMyView)
         })
 

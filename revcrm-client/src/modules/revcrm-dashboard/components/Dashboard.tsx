@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Typography, Grid, Card, CardHeader, TableHead, Table, TableCell, Checkbox, TableBody, TableRow, IconButton, Icon } from "@material-ui/core"
 import { Bar } from "britecharts-react"
-import withResponsiveness from "britecharts-react/lib/esm/helpers/withResponsiveness"
+import withResponsiveness from "britecharts-react/helpers/withResponsiveness"
 import { colors } from "britecharts"
 
 const ResponsiveBarChart = withResponsiveness(Bar)
