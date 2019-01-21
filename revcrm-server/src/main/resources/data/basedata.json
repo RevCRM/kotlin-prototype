@@ -23,7 +23,8 @@
                     { "code" : "lead", "label" : "Lead" }, 
                     { "code" : "customer", "label" : "Customer" }, 
                     { "code" : "supplier", "label" : "Supplier" }, 
-                    { "code" : "potential_supplier", "label" : "Potential Supplier" }
+                    { "code" : "potential_supplier", "label" : "Potential Supplier" },
+                    { "code" : "partner", "label" : "Partner" }
                 ]
             }
         },

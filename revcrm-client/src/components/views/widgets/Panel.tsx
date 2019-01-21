@@ -1,7 +1,7 @@
 
 import * as React from "react"
 import { IGridProps, Grid, GridItem } from "../Grid"
-import { Paper, CardHeader, CardContent } from "@material-ui/core"
+import { CardHeader, CardContent, Card } from "@material-ui/core"
 
 export interface IPanelProps extends IGridProps {
     title?: string
@@ -10,14 +10,14 @@ export interface IPanelProps extends IGridProps {
 export const Panel: React.SFC<IPanelProps> = (props) => {
     return (
         <GridItem {...props} >
-            <Paper elevation={0} square={true}>
+            <Card>
                 {props.title && <CardHeader title={props.title} />}
                 <CardContent>
                     <Grid>
                         {props.children}
                     </Grid>
                 </CardContent>
-            </Paper>
+            </Card>
         </GridItem>
     )
 }

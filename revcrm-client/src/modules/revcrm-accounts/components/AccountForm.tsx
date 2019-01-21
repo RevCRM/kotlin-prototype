@@ -15,8 +15,8 @@ export const AccountForm = () => (
         </Panel>
         <Panel title="Contact Details">
             <Field name="title" colspan={2} />
-            <Field name="first_name" colspan={5} />
-            <Field name="last_name" colspan={5} />
+            <Field name="first_name" colspan={4} />
+            <Field name="last_name" colspan={6} />
             <Field name="phone" />
             <Field name="email" />
             <Field name="mobile" />
