@@ -26,8 +26,8 @@ export function register(ui: UIManager) {
         icon: "insert_chart",
         label: "Dashboard",
         subItems: [
-            { label: "My Dashboard", perspective: "dashboard", view: "my" },
-            { label: "Team Dashboard", perspective: "dashboard", view: "team" },
+            { label: "My Dashboard", perspective: "dashboard", viewName: "my" },
+            { label: "Team Dashboard", perspective: "dashboard", viewName: "team" },
         ]
     })
 

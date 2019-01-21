@@ -52,13 +52,12 @@ export function register(ui: UIManager) {
     ui.registerMenu({
         id: "menu_accounts",
         label: "Companies & Contacts",
-        perspective: "accounts",
         icon: "supervised_user_circle",
         subItems: [
-            { label: "Companies", perspective: "accounts", view: "companies" },
-            { label: "Contacts", perspective: "accounts", view: "contacts" },
-            { label: "Leads", perspective: "accounts", view: "leads" },
-            { label: "Data Import", perspective: "accounts", view: "form" },
+            { label: "Companies", perspective: "accounts", viewName: "companies" },
+            { label: "Contacts", perspective: "accounts", viewName: "contacts" },
+            { label: "Leads", perspective: "accounts", viewName: "leads" },
+            { label: "Data Import", perspective: "accounts", viewName: "form" },
         ]
     })
 
