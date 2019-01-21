@@ -1,6 +1,6 @@
 
 import * as React from "react"
-import { Typography, Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles } from "@material-ui/core"
+import { Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Button } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
 import { withMetadataContext, IMetadataContextProp } from "../meta/Metadata"
 import { debounce } from "debounce"
@@ -21,9 +21,7 @@ export const styles = (theme: Theme) => createStyles({
         position: "relative"
     },
     searchBox: {
-        [theme.breakpoints.up("md")]: {
-            minWidth: 350,
-        },
+        flexGrow: 1
     },
     searchInput: {
         color: "#fff",
@@ -32,13 +30,16 @@ export const styles = (theme: Theme) => createStyles({
     searchAdornment: {
         marginLeft: 4
     },
+    actionButton: {
+        marginLeft: 12
+    }
 })
 
 export interface IFilterBarProps extends
-                    IMetadataContextProp,
-                    WithStyles<typeof styles> {
-    title: string
+    IMetadataContextProp,
+    WithStyles<typeof styles> {
     entity: string
+    searchPlaceholderText?: string
     onFilter(where: object): void
 }
 
@@ -49,56 +50,59 @@ export interface IFilterBarState {
 export const FilterBar = withStyles(styles)(withMetadataContext(
     class extends React.Component<IFilterBarProps, IFilterBarState> {
 
-    constructor(props: any) {
-        super(props)
-        this.state = {
-            searchText: ""
+        constructor(props: any) {
+            super(props)
+            this.state = {
+                searchText: ""
+            }
         }
-    }
 
-    onSearchChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            searchText: e.target.value
-        })
-        this.debouncedOnFilter()
-    }
-
-    debouncedOnFilter = debounce(() => {
-        const searchVal = this.state.searchText
-        if (searchVal.trim()) {
-            this.props.onFilter({
-                _text: { _search: searchVal }
+        onSearchChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+            this.setState({
+                searchText: e.target.value
             })
+            this.debouncedOnFilter()
         }
-        else {
-            this.props.onFilter({})
-        }
-    }, FILTER_INTERVAL)
 
-    render() {
-        return (
-            <div className={this.props.classes.root}>
-                <Paper square className={this.props.classes.filterBar}>
-                    <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                        {this.props.title}
-                    </Typography>
-                    <Input
-                        className={this.props.classes.searchBox}
-                        classes={{
-                            root: this.props.classes.searchInput,
-                        }}
-                        disableUnderline={true}
-                        placeholder="Search"
-                        value={this.state.searchText}
-                        onChange={this.onSearchChanged}
-                        startAdornment={
-                            <InputAdornment position="start" className={this.props.classes.searchAdornment}>
-                                <Icon>search</Icon>
-                            </InputAdornment>
-                        }
-                    />
-                </Paper>
-            </div>
-        )
-    }
-}))
+        debouncedOnFilter = debounce(() => {
+            const searchVal = this.state.searchText
+            if (searchVal.trim()) {
+                this.props.onFilter({
+                    _text: { _search: searchVal }
+                })
+            }
+            else {
+                this.props.onFilter({})
+            }
+        }, FILTER_INTERVAL)
+
+        render() {
+            const searchPlaceholderText = this.props.searchPlaceholderText || "Search"
+            return (
+                <div className={this.props.classes.root}>
+                    <Paper square className={this.props.classes.filterBar}>
+                        <Input
+                            className={this.props.classes.searchBox}
+                            classes={{
+                                root: this.props.classes.searchInput,
+                            }}
+                            disableUnderline={true}
+                            placeholder={searchPlaceholderText}
+                            value={this.state.searchText}
+                            onChange={this.onSearchChanged}
+                            startAdornment={
+                                <InputAdornment position="start" className={this.props.classes.searchAdornment}>
+                                    <Icon>search</Icon>
+                                </InputAdornment>
+                            }
+                        />
+                        <div>
+                            <Button variant="contained" color="secondary" className={this.props.classes.actionButton}>
+                                New
+                            </Button>
+                        </div>
+                    </Paper>
+                </div>
+            )
+        }
+    }))
