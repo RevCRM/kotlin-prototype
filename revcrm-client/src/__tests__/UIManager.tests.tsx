@@ -9,7 +9,8 @@ const mockPerspective: IPerspective = {
             title: "My Dashboard",
             viewId: "dashboard",
         },
-    }
+    },
+    defaultView: "my"
 }
 
 const mockMyView: IView = {

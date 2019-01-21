@@ -10,6 +10,7 @@ export interface IPerspective {
             viewId: string
         };
     }
+    defaultView: string
 }
 
 export interface IView {

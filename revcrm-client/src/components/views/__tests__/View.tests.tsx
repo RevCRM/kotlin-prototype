@@ -19,7 +19,8 @@ describe("<View />", () => {
                 title: "My Dashboard",
                 viewId: "dashboard",
             },
-        }
+        },
+        defaultView: "my"
     }
     UI.registerPerspective(mockPerspective)
 

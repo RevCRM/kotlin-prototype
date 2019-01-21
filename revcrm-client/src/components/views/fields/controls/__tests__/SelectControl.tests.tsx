@@ -7,8 +7,8 @@ import { Grid, InputLabel, FormHelperText, Select } from "@material-ui/core"
 import { MockApolloClient } from "../../../../../__testutils__/mockapollo"
 import { ReadOnlyValue } from "../ReadOnlyValue"
 
-jest.mock("../../../../graphql/withApolloClient")
-const setClient = require("../../../../graphql/withApolloClient").setClient
+jest.mock("../../../../../graphql/withApolloClient")
+const setClient = require("../../../../../graphql/withApolloClient").setClient
 
 describe("SelectControl", () => {
 

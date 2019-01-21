@@ -61,7 +61,7 @@ export const LeftNav = withStyles(styles)(withViewManagerContext(
         render() {
             const MENU = UI.getMenus()
 
-            const perspectiveId = this.props.view.perspective.id
+            const perspective = this.props.view.perspective
             const viewName = this.props.view.viewName
 
             return (
@@ -80,7 +80,10 @@ export const LeftNav = withStyles(styles)(withViewManagerContext(
                                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                                     <List component="div" disablePadding className={this.props.classes.subItemList}>
                                         {item.subItems.map((subItem, subItemIdx) => {
-                                            const isSelected = subItem.perspective == perspectiveId && subItem.viewName == viewName
+                                            const isSelected =
+                                                perspective
+                                                && subItem.perspective == perspective.id
+                                                && (!subItem.viewName || subItem.viewName == viewName)
                                             return (
                                                 <ListItem button key={subItemIdx}
                                                     style={{ padding: 8, paddingLeft: 64 }}

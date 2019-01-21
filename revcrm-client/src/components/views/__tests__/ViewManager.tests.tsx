@@ -28,7 +28,8 @@ describe("<ViewManager />", () => {
                 title: "Team Dashboard",
                 viewId: "dashboard_team",
             }
-        }
+        },
+        defaultView: "my"
     }
     UI.registerPerspective(mockPerspective)
 
@@ -46,7 +47,7 @@ describe("<ViewManager />", () => {
     }
     UI.registerView(mockTeamView)
 
-    describe("initialisation - when a matching url is set", () => {
+    describe("initialisation - when a matching perspective and view is set", () => {
         const expectedUrl = "/dashboard/team"
 
         beforeAll(() => {
@@ -73,6 +74,32 @@ describe("<ViewManager />", () => {
 
     })
 
+    describe("initialisation - when just a matching perspective is set", () => {
+
+        beforeAll(() => {
+            receivedCtx = null as any
+            const history = createMemoryHistory({
+                initialEntries: ["/dashboard"]
+            })
+            TestRenderer.create(
+                <ViewManager history={history}>
+                    <ViewContextSpy />
+                </ViewManager>
+            )
+        })
+
+        it("stays at expected url", () => {
+            expect(receivedCtx.history.location.pathname).toEqual("/dashboard")
+        })
+
+        it("sets correct perspective and view in the context", () => {
+            expect(receivedCtx.perspective).toEqual(mockPerspective)
+            expect(receivedCtx.viewName).toEqual("my")
+            expect(receivedCtx.view).toEqual(mockMyView)
+        })
+
+    })
+
     describe("initialisation - when a non-matching URL is set", () => {
         const nonMatchingUrl = "/no_perspective"
 
@@ -94,7 +121,7 @@ describe("<ViewManager />", () => {
 
         it("perspective and view context is null", () => {
             expect(receivedCtx.perspective).toBeNull()
-            expect(receivedCtx.viewName).toBeUndefined()
+            expect(receivedCtx.viewName).toBeNull()
             expect(receivedCtx.view).toBeNull()
         })
 

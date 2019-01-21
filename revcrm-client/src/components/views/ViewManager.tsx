@@ -34,15 +34,30 @@ export interface IViewManagerState {
 
 // TODO: Move this somewhere better
 export function getViewStateFromUrl(pathname: string, search: string) {
-    const [perspectiveId, viewName] = pathname.split("/").slice(1)
-    const perspective = UI.getPerspective(perspectiveId)
-    const perspectiveView = perspective ? perspective.views[viewName] : null
-    const view = perspectiveView ? UI.getView(perspectiveView.viewId) : null
+    const [urlPerspectiveId, urlViewName] = pathname.split("/").slice(1)
+    let perspective: IPerspective = null as any
+    let viewName: string = null as any
+    let view: IView = null as any
+    perspective = UI.getPerspective(urlPerspectiveId)!
+    if (perspective && urlViewName) {
+        const perspectiveView = perspective.views[urlViewName]
+        if (perspectiveView) {
+            view = UI.getView(perspectiveView.viewId)!
+            viewName = view ? urlViewName : null as any
+        }
+    }
+    else if (perspective) {
+        const perspectiveView = perspective.views[perspective.defaultView]
+        if (perspectiveView) {
+            view = UI.getView(perspectiveView.viewId)!
+            viewName = view ? perspective.defaultView : null as any
+        }
+    }
     const context = queryStringToObject(search)
     return {
-        perspective: perspective!,
-        viewName: viewName,
-        view: view!,
+        perspective,
+        viewName,
+        view,
         context
     }
 }
@@ -76,9 +91,14 @@ export class ViewManager extends React.Component<IViewManagerProps, IViewManager
         this._locationUnlisten()
     }
 
-    changePerspective = (perspectiveId: string, perspectiveViewId: string, context?: IViewContext) => {
+    changePerspective = (perspectiveId: string, perspectiveViewId?: string, context?: IViewContext) => {
         const query = context ? "?" + buildQueryString(context) : ""
-        this.props.history.push(`/${perspectiveId}/${perspectiveViewId}${query}`)
+        let url = "/" + perspectiveId
+        if (perspectiveViewId) {
+            url += "/" + perspectiveViewId
+        }
+        url += query
+        this.props.history.push(url)
     }
 
     render() {

@@ -9,5 +9,5 @@ export interface IMenuItem {
 export interface IMenuSubItem {
     label: string
     perspective: string
-    viewName: string
+    viewName?: string
 }

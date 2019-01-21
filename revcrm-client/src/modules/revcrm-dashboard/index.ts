@@ -12,7 +12,8 @@ export function register(ui: UIManager) {
                 title: "My Dashboard",
                 viewId: "my_dashboard",
             },
-        }
+        },
+        defaultView: "my"
     })
 
     ui.registerView({
