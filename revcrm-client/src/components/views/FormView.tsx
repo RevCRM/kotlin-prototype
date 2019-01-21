@@ -30,6 +30,12 @@ export const styles = (theme: Theme) => createStyles({
         marginBottom: -12,
         marginRight: 12
     },
+    actionButton: {
+        marginLeft: 12
+    },
+    actionButtonIcon: {
+        marginRight: theme.spacing.unit
+    }
 })
 
 export interface IFormViewProps extends
@@ -167,7 +173,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
         render() {
             const { loadState, mode, dirtyFields } = this.state
-            const { entity, view } = this.props
+            const { entity, view, classes } = this.props
             if (loadState != "loaded") return null
 
             const formContext: IFormContext = {
@@ -182,8 +188,8 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
             return (
                 <FormContext.Provider value={formContext}>
-                    <Paper square className={this.props.classes.formHeader}>
-                        <div className={this.props.classes.backButtonContainer}>
+                    <Paper square className={classes.formHeader}>
+                        <div className={classes.backButtonContainer}>
                             <IconButton color="inherit" onClick={this.goBack}>
                                 <Icon>arrow_back</Icon>
                             </IconButton>
@@ -193,19 +199,23 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                         </Typography>
                         {mode == "view" &&
                             <Button color="inherit" onClick={this.onEditPressed}>
+                                <Icon className={classes.actionButtonIcon}>edit</Icon>
                                 Edit
-                        </Button>}
+                            </Button>}
                         {mode == "edit" && <>
-                            <Button color="inherit" onClick={this.save}>
-                                Save
-                        </Button>
-                            <Button color="inherit" onClick={this.onCancelPressed}>
+                            <Button variant="contained" color="default" className={classes.actionButton}
+                                onClick={this.onCancelPressed}>
                                 Cancel
-                        </Button>
+                            </Button>
+                            <Button variant="contained" color="secondary" className={classes.actionButton}
+                                onClick={this.save}>
+                                <Icon className={classes.actionButtonIcon}>done</Icon>
+                                Save
+                            </Button>
                         </>}
 
                     </Paper>
-                    <Grid container spacing={0} className={this.props.classes.root}>
+                    <Grid container spacing={0} className={classes.root}>
                         {this.props.children}
                     </Grid>
                 </FormContext.Provider>

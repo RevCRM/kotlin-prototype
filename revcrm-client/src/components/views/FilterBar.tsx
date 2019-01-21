@@ -33,6 +33,9 @@ export const styles = (theme: Theme) => createStyles({
     },
     actionButton: {
         marginLeft: 12
+    },
+    actionButtonIcon: {
+        marginRight: theme.spacing.unit
     }
 })
 
@@ -87,30 +90,32 @@ export const FilterBar = withStyles(styles)(withMetadataContext(withViewManagerC
         }
 
         render() {
+            const { classes } = this.props
             const searchPlaceholderText = this.props.searchPlaceholderText || "Search"
             return (
-                <div className={this.props.classes.root}>
-                    <Paper square className={this.props.classes.filterBar}>
+                <div className={classes.root}>
+                    <Paper square className={classes.filterBar}>
                         <Input
-                            className={this.props.classes.searchBox}
+                            className={classes.searchBox}
                             classes={{
-                                root: this.props.classes.searchInput,
+                                root: classes.searchInput,
                             }}
                             disableUnderline={true}
                             placeholder={searchPlaceholderText}
                             value={this.state.searchText}
                             onChange={this.onSearchChanged}
                             startAdornment={
-                                <InputAdornment position="start" className={this.props.classes.searchAdornment}>
+                                <InputAdornment position="start" className={classes.searchAdornment}>
                                     <Icon>search</Icon>
                                 </InputAdornment>
                             }
                         />
                         <div>
                             <Button variant="contained" color="secondary"
-                                className={this.props.classes.actionButton}
+                                className={classes.actionButton}
                                 onClick={this.onNewButtonClicked}
                             >
+                                <Icon className={classes.actionButtonIcon}>add</Icon>
                                 New
                             </Button>
                         </div>
