@@ -67,6 +67,8 @@ export interface ISearchSelectControlState {
 
 export const MAX_RESULTS = 8
 
+// TODO: TESTS!!
+
 export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
     class extends React.Component<ISearchSelectControlProps, ISearchSelectControlState> {
         gridWidthProps: IMUIGridProps
@@ -99,9 +101,13 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
             }
             else {
                 console.log("options loaded", res.data)
+                const options = res.data.SelectionList.results[0].options
+                const selectedOption = options.find(opt => opt.code == this.props.value)
                 this.setState({
                     loadState: "loaded",
-                    options: res.data.SelectionList.results[0].options
+                    options,
+                    value: selectedOption || null,
+                    search: selectedOption ? selectedOption.label : ""
                 })
             }
         }
@@ -252,7 +258,7 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                                 onSuggestionSelected={this.onSuggestionSelected}
                             />}
                         {this.props.readonly &&
-                            <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
+                            <ReadOnlyValue>{this.state.search}</ReadOnlyValue>}
                     </FormControl>
                 </Grid>
             )
