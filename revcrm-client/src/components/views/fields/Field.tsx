@@ -1,7 +1,7 @@
 import * as React from "react"
-import { IGridProps } from "../views/Grid"
-import { IMetadataContextProp, withMetadataContext, IFieldMetadata } from "../meta/Metadata"
-import { IFormContextProp, withFormContext } from "../views/FormView"
+import { IGridProps } from "../Grid"
+import { IMetadataContextProp, withMetadataContext, IFieldMetadata } from "../../meta/Metadata"
+import { IFormContextProp, withFormContext } from "../FormView"
 import { IFieldComponentProps, IFieldError, getStandardHTMLProps } from "./controls/props"
 import { getFieldControlMapping } from "./controls/mappings"
 

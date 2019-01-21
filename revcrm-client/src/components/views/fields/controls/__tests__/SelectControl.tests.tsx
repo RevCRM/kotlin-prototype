@@ -4,7 +4,7 @@ import * as TestRenderer from "react-test-renderer"
 import { SelectControl, IOptionsQueryResponse, ISelectionList } from "../SelectControl"
 import { IFieldComponentProps } from "../props"
 import { Grid, InputLabel, FormHelperText, Select } from "@material-ui/core"
-import { MockApolloClient } from "../../../../__testutils__/mockapollo"
+import { MockApolloClient } from "../../../../../__testutils__/mockapollo"
 import { ReadOnlyValue } from "../ReadOnlyValue"
 
 jest.mock("../../../../graphql/withApolloClient")

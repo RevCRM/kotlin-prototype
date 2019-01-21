@@ -8,10 +8,10 @@ import InputLabel from "@material-ui/core/InputLabel"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
 import { IFieldComponentProps } from "./props"
-import { getGridWidthProps, IMUIGridProps } from "../../views/Grid"
-import { LoadState } from "../../utils/types"
+import { getGridWidthProps, IMUIGridProps } from "../../Grid"
+import { LoadState } from "../../../utils/types"
 import gql from "graphql-tag"
-import { withApolloClient, IApolloClientProp } from "../../../graphql/withApolloClient"
+import { withApolloClient, IApolloClientProp } from "../../../../graphql/withApolloClient"
 import { ReadOnlyValue } from "./ReadOnlyValue"
 
 const OPTIONS_QUERY = gql`

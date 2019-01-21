@@ -2,7 +2,7 @@
 import * as React from "react"
 
 import { IFieldComponentProps } from "./props"
-import { getGridWidthProps } from "../../views/Grid"
+import { getGridWidthProps } from "../../Grid"
 import { Grid, FormControl, FormControlLabel, Checkbox, FormHelperText } from "@material-ui/core"
 
 export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (props) => {

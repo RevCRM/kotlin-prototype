@@ -1,4 +1,4 @@
-import { IFieldMetadata } from "../../meta/Metadata"
+import { IFieldMetadata } from "../../../meta/Metadata"
 import { IFieldComponentProps } from "./props"
 import { TextControl } from "./TextControl"
 import { CheckboxControl } from "./CheckboxControl"

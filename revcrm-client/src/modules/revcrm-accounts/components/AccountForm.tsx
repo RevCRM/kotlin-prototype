@@ -1,7 +1,7 @@
 
 import * as React from "react"
 import { Panel } from "../../../components/views/widgets/Panel"
-import { Field } from "../../../components/fields/Field"
+import { Field } from "../../../components/views/fields/Field"
 import { FormView } from "../../../components/views/FormView"
 
 export const AccountForm = () => (

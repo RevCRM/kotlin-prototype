@@ -1,6 +1,6 @@
 import * as React from "react"
-import { ColspanOptions } from "../../views/Grid"
-import { IFieldMetadata } from "../../meta/Metadata"
+import { ColspanOptions } from "../../Grid"
+import { IFieldMetadata } from "../../../meta/Metadata"
 
 export interface IStandardComponentProps {
     style?: Partial<React.CSSProperties>

@@ -2,7 +2,7 @@
 import * as React from "react"
 
 import { IFieldComponentProps } from "./props"
-import { getGridWidthProps } from "../../views/Grid"
+import { getGridWidthProps } from "../../../views/Grid"
 import { Grid, FormControl, InputLabel, Input, FormHelperText } from "@material-ui/core"
 import { ReadOnlyValue } from "./ReadOnlyValue"
 
