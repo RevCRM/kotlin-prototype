@@ -25,8 +25,13 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
         mlOptions.rows = 5
     }
 
+    const style = {
+        minHeight: 64,
+        ...props.style
+    }
+
     return (
-        <Grid item {...gridWidthProps} style={props.style}>
+        <Grid item {...gridWidthProps} style={style}>
 
             <FormControl fullWidth>
                 <InputLabel

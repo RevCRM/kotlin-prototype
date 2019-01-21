@@ -58,89 +58,94 @@ export interface ISelectControlState {
 
 export const SelectControl = withApolloClient(
     class extends React.Component<ISelectControlProps, ISelectControlState> {
-    gridWidthProps: IMUIGridProps
+        gridWidthProps: IMUIGridProps
 
-    constructor(props: any) {
-        super(props)
-        this.gridWidthProps = getGridWidthProps(props)
-        this.state = {
-            loadState: "not_loaded",
-            options: []
-        }
-    }
-
-    async initialise() {
-        this.setState({ loadState: "loading" })
-        const res = await this.props.client.query<IOptionsQueryResponse>({
-            query: OPTIONS_QUERY,
-            variables: {
-                code: this.props.field.constraints.SelectionList
+        constructor(props: any) {
+            super(props)
+            this.gridWidthProps = getGridWidthProps(props)
+            this.state = {
+                loadState: "not_loaded",
+                options: []
             }
-        })
-        if (res.errors && res.errors.length) {
-            this.setState({ loadState: "load_error" })
-            console.error("Failed to load options", res.errors)
         }
-        else {
-            console.log("options loaded", res.data)
-            this.setState({
-                loadState: "loaded",
-                options: res.data.SelectionList.results[0].options
+
+        async initialise() {
+            this.setState({ loadState: "loading" })
+            const res = await this.props.client.query<IOptionsQueryResponse>({
+                query: OPTIONS_QUERY,
+                variables: {
+                    code: this.props.field.constraints.SelectionList
+                }
             })
+            if (res.errors && res.errors.length) {
+                this.setState({ loadState: "load_error" })
+                console.error("Failed to load options", res.errors)
+            }
+            else {
+                console.log("options loaded", res.data)
+                this.setState({
+                    loadState: "loaded",
+                    options: res.data.SelectionList.results[0].options
+                })
+            }
         }
-    }
 
-    async componentDidMount() {
-        this.initialise()
-    }
+        async componentDidMount() {
+            this.initialise()
+        }
 
-    render() {
+        render() {
 
-        const fieldId = this.props.field.name
+            const fieldId = this.props.field.name
 
-        const hasErrors = this.props.errors.length > 0
-        let errorText = ""
-        this.props.errors.forEach((err) => {
-            errorText += err.message + ". "
-        })
+            const hasErrors = this.props.errors.length > 0
+            let errorText = ""
+            this.props.errors.forEach((err) => {
+                errorText += err.message + ". "
+            })
 
-        const opts = this.state.options
+            const opts = this.state.options
 
-        return (
-            <Grid item {...this.gridWidthProps} style={this.props.style}>
+            const style = {
+                minHeight: 64,
+                ...this.props.style
+            }
 
-                <FormControl fullWidth>
-                    <InputLabel
-                        htmlFor={fieldId}
-                        error={hasErrors}
-                        shrink={true}
-                    >
-                        {this.props.label}
-                    </InputLabel>
-                    {!this.props.readonly &&
-                        <Select
-                            value={this.props.value || ""}
-                            onChange={(event) => this.props.onChange(event.target.value || null)}
-                            inputProps={{
-                                id: fieldId
-                            }}
+            return (
+                <Grid item {...this.gridWidthProps} style={style}>
+
+                    <FormControl fullWidth>
+                        <InputLabel
+                            htmlFor={fieldId}
                             error={hasErrors}
-                            disabled={this.props.disabled}
+                            shrink={true}
                         >
-                            <MenuItem dense value=""></MenuItem>
-                            {opts.map(({ code, label }, index) => (
-                                <MenuItem dense key={index} value={code}>{label}</MenuItem>
-                            ))}
-                        </Select>}
-                    {this.props.readonly &&
-                        <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
-                    {errorText &&
-                        <FormHelperText error>
-                            {errorText}
-                        </FormHelperText>}
-                </FormControl>
+                            {this.props.label}
+                        </InputLabel>
+                        {!this.props.readonly &&
+                            <Select
+                                value={this.props.value || ""}
+                                onChange={(event) => this.props.onChange(event.target.value || null)}
+                                inputProps={{
+                                    id: fieldId
+                                }}
+                                error={hasErrors}
+                                disabled={this.props.disabled}
+                            >
+                                <MenuItem dense value=""></MenuItem>
+                                {opts.map(({ code, label }, index) => (
+                                    <MenuItem dense key={index} value={code}>{label}</MenuItem>
+                                ))}
+                            </Select>}
+                        {this.props.readonly &&
+                            <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
+                        {errorText &&
+                            <FormHelperText error>
+                                {errorText}
+                            </FormHelperText>}
+                    </FormControl>
 
-            </Grid>
-        )
-    }
-})
+                </Grid>
+            )
+        }
+    })
