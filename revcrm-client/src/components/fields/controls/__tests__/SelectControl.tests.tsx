@@ -5,7 +5,7 @@ import { SelectControl, IOptionsQueryResponse, ISelectionList } from "../SelectC
 import { IFieldComponentProps } from "../props"
 import { Grid, InputLabel, FormHelperText, Select } from "@material-ui/core"
 import { MockApolloClient } from "../../../../__testutils__/mockapollo"
-import { ReadOnlyValue } from "../ReadOnlyValue";
+import { ReadOnlyValue } from "../ReadOnlyValue"
 
 jest.mock("../../../../graphql/withApolloClient")
 const setClient = require("../../../../graphql/withApolloClient").setClient
@@ -36,7 +36,7 @@ describe("SelectControl", () => {
             errors: [],
             disabled: false,
             readonly: false,
-            style: {marginTop: 10},
+            style: { marginTop: 10 },
             onChange: jest.fn()
         }
     }
@@ -127,7 +127,7 @@ describe("SelectControl", () => {
 
         it("applies passed-in style", () => {
             const outerDiv = instance.findAll(el => el.type == "div")[0]
-            expect(outerDiv.props.style).toEqual({marginTop: 10})
+            expect(outerDiv.props.style).toMatchObject({ marginTop: 10 })
         })
 
     })

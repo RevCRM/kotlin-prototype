@@ -18,13 +18,6 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
         errorText += err.message + ". "
     })
 
-    const mlOptions: any = {}
-    if (MultiLine == "true") {
-        mlOptions.multiline = true
-        mlOptions.rowsMax = 5
-        mlOptions.rows = 5
-    }
-
     const style = {
         minHeight: 64,
         ...props.style
@@ -49,7 +42,7 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
                         onChange={(event) => props.onChange(event.target.value)}
                         error={hasErrors}
                         disabled={props.disabled}
-                        {...mlOptions}
+                        multiline={MultiLine == "true"}
                     />}
                 {props.readonly &&
                     <ReadOnlyValue>{props.value || ""}</ReadOnlyValue>}

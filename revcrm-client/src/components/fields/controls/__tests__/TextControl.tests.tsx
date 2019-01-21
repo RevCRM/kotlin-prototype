@@ -29,7 +29,7 @@ describe("TextControl", () => {
             errors: [],
             disabled: false,
             readonly: false,
-            style: {marginTop: 10},
+            style: { marginTop: 10 },
             onChange: jest.fn()
         }
     }
@@ -87,7 +87,7 @@ describe("TextControl", () => {
 
         it("applies passed-in style", () => {
             const outerDiv = instance.findAll(el => el.type == "div")[0]
-            expect(outerDiv.props.style).toEqual({marginTop: 10})
+            expect(outerDiv.props.style).toMatchObject({ marginTop: 10 })
         })
 
     })
@@ -100,8 +100,7 @@ describe("TextControl", () => {
 
             const input = instance.findByType(Input)
             expect(input).toBeDefined()
-            expect(input.props.multiline).toBeUndefined()
-            expect(input.props.rowsMax).toBeUndefined()
+            expect(input.props.multiline).toBeFalsy()
         })
 
         it("when properties.MultiLine == true, input is multi-line", () => {
@@ -112,7 +111,6 @@ describe("TextControl", () => {
             const input = instance.findByType(Input)
             expect(input).toBeDefined()
             expect(input.props.multiline).toEqual(true)
-            expect(input.props.rowsMax).toEqual(5)
         })
 
     })
