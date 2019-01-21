@@ -8,7 +8,7 @@ import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
 import graphql.schema.GraphQLTypeReference
-import org.revcrm.graphql.GraphQLObjectID
+import org.revcrm.graphql.types.GraphQLObjectID
 import org.revcrm.graphql.fetchers.EntityCreateDataFetcher
 import org.revcrm.graphql.fetchers.EntityDeleteDataFetcher
 import org.revcrm.graphql.fetchers.EntityUpdateDataFetcher

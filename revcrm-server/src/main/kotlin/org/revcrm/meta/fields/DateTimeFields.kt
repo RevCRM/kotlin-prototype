@@ -1,7 +1,9 @@
 package org.revcrm.meta.fields
 
-import graphql.scalars.ExtendedScalars
 import graphql.schema.GraphQLType
+import org.revcrm.graphql.types.GraphQLDate
+import org.revcrm.graphql.types.GraphQLDateTime
+import org.revcrm.graphql.types.GraphQLTime
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
@@ -17,7 +19,7 @@ open class DateTimeField(
 ) : IField {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
-        return ExtendedScalars.DateTime
+        return GraphQLDateTime
     }
 }
 
@@ -32,7 +34,7 @@ open class DateField(
 ) : IField {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
-        return ExtendedScalars.Date
+        return GraphQLDate
     }
 }
 
@@ -47,7 +49,7 @@ open class TimeField(
 ) : IField {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
-        return ExtendedScalars.Time
+        return GraphQLTime
     }
 }
 

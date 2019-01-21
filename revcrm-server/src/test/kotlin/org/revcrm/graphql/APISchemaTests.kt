@@ -12,6 +12,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.db.DBService
+import org.revcrm.graphql.types.GraphQLDate
+import org.revcrm.graphql.types.GraphQLDateTime
+import org.revcrm.graphql.types.GraphQLObjectID
+import org.revcrm.graphql.types.GraphQLTime
 import org.revcrm.meta.Entity
 import org.revcrm.meta.MetadataService
 import org.revcrm.meta.fields.BooleanField
@@ -265,19 +269,19 @@ class APISchemaTests {
         @Test
         fun `Date fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("date_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(ExtendedScalars.Date)
+            assertThat(type.wrappedType).isEqualTo(GraphQLDate)
         }
 
         @Test
         fun `Time fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("time_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(ExtendedScalars.Time)
+            assertThat(type.wrappedType).isEqualTo(GraphQLTime)
         }
 
         @Test
         fun `DateTime fields are exposed as expected`() {
             val type = testFieldsEntityType.getFieldDefinition("datetime_field").type as GraphQLNonNull
-            assertThat(type.wrappedType).isEqualTo(ExtendedScalars.DateTime)
+            assertThat(type.wrappedType).isEqualTo(GraphQLDateTime)
         }
 
         @Test

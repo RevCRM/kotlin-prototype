@@ -1,7 +1,7 @@
 package org.revcrm.meta.fields
 
 import graphql.schema.GraphQLType
-import org.revcrm.graphql.GraphQLObjectID
+import org.revcrm.graphql.types.GraphQLObjectID
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
