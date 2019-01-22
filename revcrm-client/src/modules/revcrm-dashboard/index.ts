@@ -7,6 +7,7 @@ export function register(ui: UIManager) {
     ui.registerPerspective({
         id: "dashboard",
         title: "Dashboard",
+        model: "Dashboard",
         views: {
             my: {
                 title: "My Dashboard",

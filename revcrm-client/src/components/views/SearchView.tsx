@@ -3,6 +3,7 @@ import { Theme, createStyles, withStyles, WithStyles } from "@material-ui/core"
 import { FilterBar } from "./FilterBar"
 import { ListView } from "./ListView"
 import { IMetadataContextProp, withMetadataContext } from "../meta/Metadata"
+import { IViewManagerContextProp, withViewManagerContext } from "./ViewManager"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -14,6 +15,7 @@ export const styles = (theme: Theme) => createStyles({
 
 export interface ISearchViewProps extends
     IMetadataContextProp,
+    IViewManagerContextProp,
     WithStyles<typeof styles> {
     title: string
     entity: string
@@ -25,17 +27,24 @@ export interface ISearchViewState {
     where: object
 }
 
-export const SearchView = withStyles(styles)(withMetadataContext(
+export const SearchView = withStyles(styles)(withMetadataContext(withViewManagerContext(
     class extends React.Component<ISearchViewProps, ISearchViewState> {
+        perspectiveWhere: object
 
         constructor(props: any) {
             super(props)
+            const { perspective } = this.props.view
+            this.perspectiveWhere = perspective.where ? perspective.where : {}
             this.state = {
-                where: {}
+                where: {...this.perspectiveWhere}
             }
         }
 
-        onFilter = (where: object) => {
+        onFilter = (filterWhere: object) => {
+            const where = {
+                ...filterWhere,
+                ...this.perspectiveWhere
+            }
             this.setState({ where })
         }
 
@@ -60,4 +69,4 @@ export const SearchView = withStyles(styles)(withMetadataContext(
                 </div>
             )
         }
-    }))
+    })))

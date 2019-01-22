@@ -19,6 +19,7 @@ describe("<ViewManager />", () => {
     const mockPerspective: IPerspective = {
         id: "dashboard",
         title: "Dashboard",
+        model: "Dashboard",
         views: {
             my: {
                 title: "My Dashboard",

@@ -4,6 +4,8 @@ import { IMenuItem } from "./components/nav/types"
 export interface IPerspective {
     id: string
     title: string
+    model: string
+    where?: object
     views: {
         [viewName: string]: {
             title: string

@@ -16,8 +16,7 @@ export function registerContactViews(ui: UIManager) {
                 entity="Account"
                 title="Contacts"
                 showFields={[
-                    "first_name",
-                    "last_name",
+                    "record_name",
                     "tags",
                     "email",
                     "phone",
