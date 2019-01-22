@@ -2,7 +2,7 @@ package org.revcrm.meta
 
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.db.DBService
-import org.revcrm.meta.fields.IField
+import org.revcrm.meta.fields.Field
 import org.revcrm.meta.fields.mapBooleanField
 import org.revcrm.meta.fields.mapDateField
 import org.revcrm.meta.fields.mapDateTimeField
@@ -15,12 +15,13 @@ import org.revcrm.meta.fields.mapListField
 import org.revcrm.meta.fields.mapRelatedEntityField
 import org.revcrm.meta.fields.mapStringField
 import org.revcrm.meta.fields.mapTimeField
-import xyz.morphia.mapping.MappedClass
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
+import kotlin.reflect.full.memberProperties
 
 typealias JvmTypeMapper = (
-    (meta: MetadataService, propInfo: EntityPropInfo) -> IField
+    (meta: MetadataService, propInfo: EntityPropInfo) -> Field
 )
 
 class MetadataService(
@@ -48,50 +49,41 @@ class MetadataService(
     }
 
     fun initialise() {
-        val mappedClasses = db.getEntityMappings()
-        mappedClasses.forEach { mapping ->
-            val entityMeta = getEntityMetadata(mapping)
-            if (db.classIsEntity(entityMeta.className))
-                addEntity(entityMeta.name, entityMeta)
-            else if (db.classIsEmbeddedEntity(entityMeta.className))
-                addEmbeddedEntity(entityMeta.name, entityMeta)
+        db.getEmbeddedClassNames().forEach { className ->
+            val entityMeta = getEntityMetadata(className)
+            addEmbeddedEntity(entityMeta.name, entityMeta)
+        }
+        db.getEntityClassNames().forEach { className ->
+            val entityMeta = getEntityMetadata(className)
+            if (entityMeta.idField == null) {
+                throw Error("Id field for entity '${entityMeta.name}' is not defined.")
+            }
+            addEntity(entityMeta.name, entityMeta)
         }
     }
 
-    private fun getEntityMetadata(mapping: MappedClass): Entity {
-        val klass = mapping.clazz.kotlin
+    fun getEntityMetadata(className: String): Entity {
+        val klass = Class.forName(className).kotlin
         val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 
-        val fields = mutableMapOf<String, IField>()
+        val fields = mutableMapOf<String, Field>()
 
-        // Get ID Field
-        val idField = mapping.idField
-        if (idField == null) {
-            if (db.classIsEntity(mapping.clazz.name)) {
-                throw Error("Id field for entity '${klass.simpleName}' is not defined.")
-            }
-        } else {
-            val idMeta = getEntityField(klass, idField.name)
-            fields.put(idMeta.name, idMeta)
-        }
-
-        // Get Other Columns
-        mapping.persistenceFields.forEach { field ->
-            val meta = getEntityField(klass, field.javaFieldName)
+        // Get Entity Property Metadata
+        klass.memberProperties.forEach { property ->
+            val meta = getEntityField(klass, property)
             fields.put(meta.name, meta)
         }
 
         return Entity(
-            name = mapping.collectionName,
-            idField = if (idField == null) null else idField.name,
+            name = klass.simpleName!!,
             apiEnabled = apiEnabled,
-            className = mapping.clazz.name,
+            className = className,
             fields = fields.toMap()
         )
     }
 
-    private fun getEntityField(klass: KClass<*>, propName: String): IField {
-        val propInfo = EntityPropInfo(klass, propName)
+    private fun getEntityField(klass: KClass<*>, property: KProperty1<*, *>): Field {
+        val propInfo = EntityPropInfo(klass, property)
         val entityClassNames = db.getEntityClassNames()
         if (propInfo.isEnum) {
             // TODO: Make this customisable

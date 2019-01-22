@@ -4,7 +4,6 @@ import com.mongodb.MongoClient
 import org.revcrm.config.Config
 import xyz.morphia.AdvancedDatastore
 import xyz.morphia.Morphia
-import xyz.morphia.mapping.MappedClass
 
 class DBService {
     private val morphia = Morphia()
@@ -31,17 +30,6 @@ class DBService {
 
     fun getClient(): MongoClient {
         return client
-    }
-
-    fun getEntityMappings(): Collection<MappedClass> {
-        return morphia.mapper.mappedClasses.filter { mapping ->
-            // Return only classes in entity class lists
-            val className = mapping.clazz.name
-            var match = config.entityClasses.find { it == className } != null
-            if (match == false)
-                match = config.embeddedClasses.find { it == className } != null
-            match
-        }
     }
 
     fun getEntityClassNames(): List<String> {
