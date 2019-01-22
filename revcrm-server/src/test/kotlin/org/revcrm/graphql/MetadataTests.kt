@@ -96,7 +96,7 @@ class MetadataTests {
             val entityInfo = entities.find { it.name == "TestFieldsEntity" }!!
             var resultInfo = result.find { it.name == "TestFieldsEntity" }!!
             assertThat(resultInfo.name).isEqualTo(entityInfo.name)
-            assertThat(resultInfo.idField).isEqualTo(entityInfo.idField)
+            assertThat(resultInfo.idField).isEqualTo(entityInfo.idField!!.name)
             assertThat(resultInfo.fields).hasSize(entityInfo.fields.size - testFieldsEntityDisabledFields)
 
             var entityFieldInfo = entityInfo.fields["string_field"]!!

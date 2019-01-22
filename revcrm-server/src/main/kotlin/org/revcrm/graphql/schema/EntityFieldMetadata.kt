@@ -12,7 +12,7 @@ import graphql.schema.PropertyDataFetcher
 import graphql.schema.StaticDataFetcher
 import org.revcrm.graphql.fetchers.EntityMetadataFetcher
 import org.revcrm.meta.Entity
-import org.revcrm.meta.fields.IField
+import org.revcrm.meta.fields.Field
 
 @Suppress("UNUSED_PARAMETER")
 fun registerMetadataQueryType(
@@ -64,8 +64,14 @@ fun registerMetadataQueryType(
     code
         .dataFetcher(
             FieldCoordinates.coordinates("EntityMetadata", "fields"),
-            PropertyDataFetcher.fetching<List<IField>, Entity> { entity ->
+            PropertyDataFetcher.fetching<List<Field>, Entity> { entity ->
                 entity.fields.values.toList().filter { it.apiEnabled }
+            }
+        )
+        .dataFetcher(
+            FieldCoordinates.coordinates("EntityMetadata", "idField"),
+            PropertyDataFetcher.fetching<String, Entity> { entity ->
+                entity.idField?.name
             }
         )
 

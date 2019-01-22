@@ -9,8 +9,8 @@ import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
 import org.revcrm.annotations.SelectionList
 import org.revcrm.meta.Entity
-import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
+import org.revcrm.meta.getEntityPropInfo
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
@@ -30,10 +30,15 @@ class EntityWithSelectField(
 
 class StringFieldTests {
 
+    val mockEntity = Entity(
+        name = "mock", apiEnabled = true,
+        className = "Mock", fields = mapOf()
+    )
+
     @Nested
     inner class TextField {
 
-        val propInfo = EntityPropInfo(EntityWithTextField::class, "textField")
+        val propInfo = getEntityPropInfo(EntityWithTextField::class, "textField")
         var meta = mockkClass(MetadataService::class)
 
         val field = mapStringField(meta, propInfo)
@@ -61,7 +66,6 @@ class StringFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isEqualTo(Scalars.GraphQLString)
         }
@@ -70,7 +74,7 @@ class StringFieldTests {
     @Nested
     inner class SelectField {
 
-        val propInfo = EntityPropInfo(EntityWithSelectField::class, "selectField")
+        val propInfo = getEntityPropInfo(EntityWithSelectField::class, "selectField")
         var meta = mockkClass(MetadataService::class)
 
         val field = mapStringField(meta, propInfo)
@@ -91,7 +95,6 @@ class StringFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isEqualTo(Scalars.GraphQLString)
         }

@@ -2,8 +2,9 @@ package org.revcrm.meta
 
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
-import org.revcrm.util.getProperty
+import xyz.morphia.annotations.Id
 import kotlin.reflect.KClass
+import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
@@ -15,26 +16,34 @@ import kotlin.reflect.jvm.javaGetter
  */
 class EntityPropInfo(
     val klass: KClass<*>,
-    val name: String
-) {
     val property: KProperty1<*, *>
+) {
+    val name: String
     val label: String
     val jvmType: String
-    val nullable: Boolean
-    val apiEnabled: Boolean
+    val isNullable: Boolean
+    val isImmutable: Boolean
+    val isApiEnabled: Boolean
     val isEnum: Boolean
+    val isIdField: Boolean
 
     init {
-        val foundProperty = getProperty(klass, name)
-        if (foundProperty == null)
-            throw Error("Could not retrieve property '${klass.simpleName}.$name'.")
-
-        property = foundProperty
-        nullable = property.returnType.isMarkedNullable
-        apiEnabled = property.findAnnotation<APIDisabled>() == null
-        var field = property.javaField!!
-        jvmType = field.type.name
-        isEnum = field.type.isEnum
+        name = property.name
+        isNullable = property.returnType.isMarkedNullable
+        isApiEnabled = property.findAnnotation<APIDisabled>() == null
+        if (property is KMutableProperty<*>) {
+            isImmutable = false
+            var field = property.javaField!!
+            jvmType = field.type.name
+            isEnum = field.type.isEnum
+            isIdField = field.getAnnotation(Id::class.java) != null
+        } else {
+            isImmutable = true
+            isIdField = false
+            var getter = property.javaGetter!!
+            jvmType = getter.returnType.name
+            isEnum = getter.returnType.isEnum
+        }
 
         val labelAnnotation = property.findAnnotation<Label>()
         label = if (labelAnnotation != null) labelAnnotation.label

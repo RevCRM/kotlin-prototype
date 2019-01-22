@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.annotations.Label
 import org.revcrm.meta.Entity
-import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
+import org.revcrm.meta.getEntityPropInfo
 
 class EntityWithEmbeddedEntityListField(
     @Label("Embedded Entity List")
@@ -28,10 +28,15 @@ class EntityWithStringListField(
 
 class ListFieldTests {
 
+    val mockEntity = Entity(
+        name = "mock", apiEnabled = true,
+        className = "Mock", fields = mapOf()
+    )
+
     @Nested
     inner class EmbeddedEntityListField {
 
-        val propInfo = EntityPropInfo(EntityWithEmbeddedEntityListField::class, "entityList")
+        val propInfo = getEntityPropInfo(EntityWithEmbeddedEntityListField::class, "entityList")
         var meta = mockkClass(MetadataService::class)
 
         val field = mapListField(meta, propInfo)
@@ -52,7 +57,6 @@ class ListFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isInstanceOf(GraphQLList::class.java)
 
@@ -65,7 +69,7 @@ class ListFieldTests {
     @Nested
     inner class StringListField {
 
-        val propInfo = EntityPropInfo(EntityWithStringListField::class, "stringList")
+        val propInfo = getEntityPropInfo(EntityWithStringListField::class, "stringList")
         var meta = mockkClass(MetadataService::class)
 
         val field = mapListField(meta, propInfo)
@@ -81,7 +85,6 @@ class ListFieldTests {
 
         @Test
         fun `returns the expected GraphQL Type`() {
-            val mockEntity = Entity("mock", "id", false, "mock", mapOf())
             val gqlType = field.getGraphQLType(meta, mockEntity)
             assertThat(gqlType).isInstanceOf(GraphQLList::class.java)
 

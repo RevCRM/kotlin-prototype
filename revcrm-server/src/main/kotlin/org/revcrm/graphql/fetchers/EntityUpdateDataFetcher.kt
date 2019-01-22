@@ -19,14 +19,14 @@ class EntityUpdateDataFetcher(
         val klass = Class.forName(entity.className)
 
         val data = environment.getArgument<Map<String, Any>>("data")
-        val recordId = data.get(entity.idField)
+        val recordId = data.get(entity.idField!!.name)
 
         if (data == null || recordId == null || !(recordId is String)) {
             val validation = EntityValidationData()
             validation.entityErrors.add(EntityError(
                 entity = entity.name, entityPath = "",
                 code = "IDMissing",
-                message = "cannot update without '${entity.idField}' field"
+                message = "cannot update without '${entity.idField!!.name}' field"
             ))
             return EntityMutationResult(null, validation)
         }

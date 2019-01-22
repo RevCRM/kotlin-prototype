@@ -39,8 +39,8 @@ class EntityMetadataTests {
 
         @Test
         fun `entity id field is set`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.idField).isEqualTo("id")
-            assertThat(meta.getEntity("TestEntity2")!!.idField).isEqualTo("id")
+            assertThat(meta.getEntity("TestFieldsEntity")!!.idField!!.name).isEqualTo("id")
+            assertThat(meta.getEntity("TestEntity2")!!.idField!!.name).isEqualTo("id")
         }
 
         @Test

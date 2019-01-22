@@ -35,6 +35,8 @@ class FieldMetadataTests {
             assertThat(fieldsEntity.fields["id"]).isInstanceOf(IDField::class.java)
             assertThat(fieldsEntity.fields["id"]!!.type).isEqualTo("IDField")
             assertThat(fieldsEntity.fields["id"]!!.jvmType).isEqualTo("org.bson.types.ObjectId")
+            assertThat(fieldsEntity.fields["id"]!!.idField).isTrue()
+            assertThat(fieldsEntity.fields["id"]!!.readonly).isFalse()
         }
 
         @Test
@@ -42,6 +44,8 @@ class FieldMetadataTests {
             assertThat(fieldsEntity.fields["int_field"]).isInstanceOf(IntegerField::class.java)
             assertThat(fieldsEntity.fields["int_field"]!!.type).isEqualTo("IntegerField")
             assertThat(fieldsEntity.fields["int_field"]!!.jvmType).isEqualTo("int")
+            assertThat(fieldsEntity.fields["int_field"]!!.idField).isFalse()
+            assertThat(fieldsEntity.fields["int_field"]!!.readonly).isFalse()
         }
 
         @Test
@@ -128,6 +132,14 @@ class FieldMetadataTests {
             assertThat(fieldsEntity.fields["related_field"]).isInstanceOf(RelatedEntityField::class.java)
             assertThat(fieldsEntity.fields["related_field"]!!.type).isEqualTo("RelatedEntityField")
             assertThat(fieldsEntity.fields["related_field"]!!.jvmType).isEqualTo("org.revcrm.testdb.TestEntity2")
+        }
+
+        @Test
+        fun `Readonly field returns expected metadata`() {
+            assertThat(fieldsEntity.fields["readonly_field"]).isInstanceOf(TextField::class.java)
+            assertThat(fieldsEntity.fields["readonly_field"]!!.type).isEqualTo("TextField")
+            assertThat(fieldsEntity.fields["readonly_field"]!!.jvmType).isEqualTo("java.lang.String")
+            assertThat(fieldsEntity.fields["readonly_field"]!!.readonly).isTrue()
         }
     }
 
