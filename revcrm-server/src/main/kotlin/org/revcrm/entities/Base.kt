@@ -20,7 +20,7 @@ abstract class Base {
     @APIDisabled
     var data_id: String? = null
 
-    open val recordName: String
+    open val record_name: String
         get() {
             return "${this::class.simpleName} id ${this.id}"
         }

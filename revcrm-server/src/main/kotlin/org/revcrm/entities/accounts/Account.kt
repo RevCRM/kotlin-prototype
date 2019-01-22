@@ -73,12 +73,12 @@ class Account(
 ) : Base() {
 
     @Label("Name")
-    override val recordName: String
+    override val record_name: String
     get() {
         return if (is_company)
             company_name.toString()
         else
-            "${title ?: ""} ${first_name ?: ""} ${last_name ?: ""}"
+            "${title ?: ""} ${first_name ?: ""} ${last_name ?: ""}".trim()
     }
 
     @Validate
