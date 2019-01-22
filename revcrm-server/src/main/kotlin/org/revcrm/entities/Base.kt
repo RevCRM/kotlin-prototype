@@ -20,6 +20,11 @@ abstract class Base {
     @APIDisabled
     var data_id: String? = null
 
+    open val recordName: String
+        get() {
+            return "${this::class.simpleName} id ${this.id}"
+        }
+
     @PrePersist
     fun prePersist() {
         if (created_date == null) created_date = LocalDateTime.now()

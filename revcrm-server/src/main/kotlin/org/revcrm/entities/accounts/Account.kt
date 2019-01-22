@@ -19,11 +19,11 @@ import xyz.morphia.utils.IndexType
     ])
 )
 class Account(
-    @Label("Is Organisation?")
-    var is_org: Boolean,
+    @Label("Is Company?")
+    var is_company: Boolean,
 
-    @Label("Organisation Name")
-    var org_name: String?,
+    @Label("Company Name")
+    var company_name: String?,
 
     @Label("Title")
     @SelectionList("contact_titles")
@@ -72,18 +72,27 @@ class Account(
 
 ) : Base() {
 
+    @Label("Name")
+    override val recordName: String
+    get() {
+        return if (is_company)
+            company_name.toString()
+        else
+            "${title ?: ""} ${first_name ?: ""} ${last_name ?: ""}"
+    }
+
     @Validate
     fun validate(validation: EntityValidationData) {
-        if (is_org && org_name.isNullOrBlank()) {
+        if (is_company && company_name.isNullOrBlank()) {
             validation.addFieldError(this,
-                fieldPath = "org_name",
+                fieldPath = "company_name",
                 errorCode = "NotBlank",
-                message = "Organisation Name cannot be blank")
-        } else if (!is_org && last_name.isNullOrBlank()) {
+                message = "Company Name cannot be blank")
+        } else if (!is_company && last_name.isNullOrBlank()) {
             validation.addFieldError(this,
                 fieldPath = "last_name",
                 errorCode = "NotBlank",
-                message = "Last Name cannot be blank")
+                message = "Contact Last Name cannot be blank")
         }
     }
 }
