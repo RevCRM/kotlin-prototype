@@ -19,6 +19,10 @@ open class StringListField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return GraphQLList(Scalars.GraphQLString)
     }
+
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return GraphQLList(Scalars.GraphQLString)
+    }
 }
 
 open class EmbeddedEntityListField(
