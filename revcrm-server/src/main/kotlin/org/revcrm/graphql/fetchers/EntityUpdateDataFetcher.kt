@@ -39,7 +39,7 @@ class EntityUpdateDataFetcher(
             validation.entityErrors.add(EntityError(
                 entity = entity.name, entityPath = "",
                 code = "IDNotFound",
-                message = "the specified '${entity.idField}' was not found"
+                message = "the specified '${entity.idField!!.name}' was not found"
             ))
             return EntityMutationResult(null, validation)
         }
