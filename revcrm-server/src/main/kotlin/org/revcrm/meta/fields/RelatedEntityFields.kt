@@ -1,6 +1,5 @@
 package org.revcrm.meta.fields
 
-import graphql.Scalars
 import graphql.schema.GraphQLType
 import graphql.schema.GraphQLTypeReference
 import org.revcrm.meta.Entity
@@ -8,34 +7,28 @@ import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
 
 open class RelatedEntityField(
-    override val name: String,
-    override val label: String,
-    override val jvmType: String,
-    override val nullable: Boolean,
-    override val apiEnabled: Boolean,
-    override val properties: Map<String, String> = mapOf(),
-    override val constraints: Map<String, String> = mapOf(),
-    val relatedEntity: String
-) : IField {
+    propInfo: EntityPropInfo,
+    properties: Map<String, String> = mapOf(),
+    constraints: Map<String, String> = mapOf()
+) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+        val relatedEntity = constraints.get("Entity")!!
         return GraphQLTypeReference(relatedEntity)
     }
 
     override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
-        return Scalars.GraphQLString
+        val relatedEntity = constraints.get("Entity")!! + "Input"
+        return GraphQLTypeReference(relatedEntity)
     }
 }
 
 @Suppress("UNUSED_PARAMETER")
-fun mapRelatedEntityField(meta: MetadataService, propInfo: EntityPropInfo, relatedEntity: String): IField {
+fun mapRelatedEntityField(meta: MetadataService, propInfo: EntityPropInfo, relatedEntity: String): Field {
     return RelatedEntityField(
-        name = propInfo.name,
-        label = propInfo.label,
-        jvmType = propInfo.jvmType,
-        nullable = propInfo.nullable,
-        apiEnabled = propInfo.apiEnabled,
-        constraints = mapOf(),
-        relatedEntity = relatedEntity
+        propInfo,
+        constraints = mapOf(
+            "Entity" to relatedEntity
+        )
     )
 }

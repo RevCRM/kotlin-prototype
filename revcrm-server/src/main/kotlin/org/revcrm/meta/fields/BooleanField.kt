@@ -7,14 +7,10 @@ import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
 
 open class BooleanField(
-    override val name: String,
-    override val label: String,
-    override val jvmType: String,
-    override val nullable: Boolean,
-    override val apiEnabled: Boolean,
-    override val properties: Map<String, String> = mapOf(),
-    override val constraints: Map<String, String> = mapOf()
-) : IField {
+    propInfo: EntityPropInfo,
+    properties: Map<String, String> = mapOf(),
+    constraints: Map<String, String> = mapOf()
+) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLBoolean
@@ -22,12 +18,6 @@ open class BooleanField(
 }
 
 @Suppress("UNUSED_PARAMETER")
-fun mapBooleanField(meta: MetadataService, propInfo: EntityPropInfo): IField {
-    return BooleanField(
-        name = propInfo.name,
-        label = propInfo.label,
-        jvmType = propInfo.jvmType,
-        nullable = propInfo.nullable,
-        apiEnabled = propInfo.apiEnabled
-    )
+fun mapBooleanField(meta: MetadataService, propInfo: EntityPropInfo): Field {
+    return BooleanField(propInfo)
 }

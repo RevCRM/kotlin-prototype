@@ -9,14 +9,10 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
 open class IntegerField(
-    override val name: String,
-    override val label: String,
-    override val jvmType: String,
-    override val nullable: Boolean,
-    override val apiEnabled: Boolean,
-    override val properties: Map<String, String>,
-    override val constraints: Map<String, String>
-) : IField {
+    propInfo: EntityPropInfo,
+    properties: Map<String, String> = mapOf(),
+    constraints: Map<String, String> = mapOf()
+) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLInt
@@ -24,14 +20,10 @@ open class IntegerField(
 }
 
 open class FloatField(
-    override val name: String,
-    override val label: String,
-    override val jvmType: String,
-    override val nullable: Boolean,
-    override val apiEnabled: Boolean,
-    override val properties: Map<String, String>,
-    override val constraints: Map<String, String>
-) : IField {
+    propInfo: EntityPropInfo,
+    properties: Map<String, String> = mapOf(),
+    constraints: Map<String, String> = mapOf()
+) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLFloat
@@ -39,14 +31,10 @@ open class FloatField(
 }
 
 open class DecimalField(
-    override val name: String,
-    override val label: String,
-    override val jvmType: String,
-    override val nullable: Boolean,
-    override val apiEnabled: Boolean,
-    override val properties: Map<String, String>,
-    override val constraints: Map<String, String>
-) : IField {
+    propInfo: EntityPropInfo,
+    properties: Map<String, String> = mapOf(),
+    constraints: Map<String, String> = mapOf()
+) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLBigDecimal
@@ -67,40 +55,25 @@ private fun getNumericConstraints(propInfo: EntityPropInfo): Map<String, String>
 }
 
 @Suppress("UNUSED_PARAMETER")
-fun mapIntegerField(meta: MetadataService, propInfo: EntityPropInfo): IField {
+fun mapIntegerField(meta: MetadataService, propInfo: EntityPropInfo): Field {
     return IntegerField(
-        name = propInfo.name,
-        label = propInfo.label,
-        jvmType = propInfo.jvmType,
-        nullable = propInfo.nullable,
-        apiEnabled = propInfo.apiEnabled,
-        properties = mapOf(),
+        propInfo,
         constraints = getNumericConstraints(propInfo)
     )
 }
 
 @Suppress("UNUSED_PARAMETER")
-fun mapFloatField(meta: MetadataService, propInfo: EntityPropInfo): IField {
+fun mapFloatField(meta: MetadataService, propInfo: EntityPropInfo): Field {
     return FloatField(
-        name = propInfo.name,
-        label = propInfo.label,
-        jvmType = propInfo.jvmType,
-        nullable = propInfo.nullable,
-        apiEnabled = propInfo.apiEnabled,
-        properties = mapOf(),
+        propInfo,
         constraints = getNumericConstraints(propInfo)
     )
 }
 
 @Suppress("UNUSED_PARAMETER")
-fun mapDecimalField(meta: MetadataService, propInfo: EntityPropInfo): IField {
+fun mapDecimalField(meta: MetadataService, propInfo: EntityPropInfo): Field {
     return DecimalField(
-        name = propInfo.name,
-        label = propInfo.label,
-        jvmType = propInfo.jvmType,
-        nullable = propInfo.nullable,
-        apiEnabled = propInfo.apiEnabled,
-        properties = mapOf(),
+        propInfo,
         constraints = getNumericConstraints(propInfo)
     )
 }

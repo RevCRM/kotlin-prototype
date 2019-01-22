@@ -11,14 +11,10 @@ import org.revcrm.meta.MetadataService
 import kotlin.reflect.jvm.javaField
 
 open class StringListField(
-    override val name: String,
-    override val label: String,
-    override val jvmType: String,
-    override val nullable: Boolean,
-    override val apiEnabled: Boolean,
-    override val properties: Map<String, String> = mapOf(),
-    override val constraints: Map<String, String> = mapOf()
-) : IField {
+    propInfo: EntityPropInfo,
+    properties: Map<String, String> = mapOf(),
+    constraints: Map<String, String> = mapOf()
+) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return GraphQLList(Scalars.GraphQLString)
@@ -26,14 +22,10 @@ open class StringListField(
 }
 
 open class EmbeddedEntityListField(
-    override val name: String,
-    override val label: String,
-    override val jvmType: String,
-    override val nullable: Boolean,
-    override val apiEnabled: Boolean,
-    override val properties: Map<String, String> = mapOf(),
-    override val constraints: Map<String, String> = mapOf()
-) : IField {
+    propInfo: EntityPropInfo,
+    properties: Map<String, String> = mapOf(),
+    constraints: Map<String, String> = mapOf()
+) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         val relatedEntity = constraints.get("Entity")!!
@@ -47,7 +39,7 @@ open class EmbeddedEntityListField(
 }
 
 @Suppress("UNUSED_PARAMETER")
-fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
+fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): Field {
     val type = propInfo.property.javaField!!.genericType
     val typeDesc = type.toString()
     if (type is ParameterizedType && type.rawType.typeName == "java.util.List") {
@@ -55,20 +47,10 @@ fun mapListField(meta: MetadataService, propInfo: EntityPropInfo): IField {
         if (typeArgs.size == 1) {
             val listTypeName = typeArgs[0].typeName
             if (listTypeName == "java.lang.String") {
-                return StringListField(
-                    name = propInfo.name,
-                    label = propInfo.label,
-                    jvmType = propInfo.jvmType,
-                    nullable = propInfo.nullable,
-                    apiEnabled = propInfo.apiEnabled
-                )
+                return StringListField(propInfo)
             } else {
                 return EmbeddedEntityListField(
-                    name = propInfo.name,
-                    label = propInfo.label,
-                    jvmType = propInfo.jvmType,
-                    nullable = propInfo.nullable,
-                    apiEnabled = propInfo.apiEnabled,
+                    propInfo,
                     constraints = mapOf(
                         "Entity" to listTypeName.split(".").last()
                     )

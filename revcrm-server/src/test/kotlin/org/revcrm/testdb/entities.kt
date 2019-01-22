@@ -50,7 +50,10 @@ class TestFieldsEntity(
 
     var enum_field: EnumFieldOptions,
     var related_field: TestEntity2
-) : Base()
+) : Base() {
+    val readonly_field: String
+        get() = this.string_field
+}
 
 abstract class ParentEntity {
     @Id
