@@ -4,12 +4,12 @@ import MUITabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import Card from "@material-ui/core/Card"
 import { IGridProps, GridItem, Grid } from "../Grid"
-import { CardContent } from "@material-ui/core"
+import { AppBar, CardContent } from "@material-ui/core"
 
 export interface ITabDefinition {
     label: string
-    grid?: boolean
-    component: React.ReactNode
+    disableGrid?: boolean
+    component: React.ComponentType
 }
 
 export interface ITabsProps extends IGridProps {
@@ -36,28 +36,29 @@ export class Tabs extends React.Component<ITabsProps, ITabsState> {
 
     render() {
         const selectedTab = this.props.tabs[this.state.selectedTab]
+        const Component = selectedTab.component
         return (
             <GridItem {...this.props}>
                 <Card>
-                    <MUITabs
-                        value={this.state.selectedTab}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        onChange={this.handleChange}
-                    >
-                    {this.props.tabs.map((tab) => (
-                        <Tab key={tab.label} label={tab.label} />
-                    ))}
-                    </MUITabs>
-                        {selectedTab.grid ?
-                            <CardContent>
-                                <Grid>
-                                    {selectedTab.component}
-                                </Grid>
-                            </CardContent>
-                            :
-                            selectedTab.component
-                        }
+                    <AppBar position="static" color="default">
+                        <MUITabs
+                            value={this.state.selectedTab}
+                            indicatorColor="primary"
+                            onChange={this.handleChange}
+                        >
+                        {this.props.tabs.map((tab) => (
+                            <Tab key={tab.label} label={tab.label} />
+                        ))}
+                        </MUITabs>
+                    </AppBar>
+                    {selectedTab.disableGrid
+                        ? <Component />
+                        : <CardContent>
+                            <Grid>
+                                <Component />
+                            </Grid>
+                        </CardContent>
+                    }
                 </Card>
             </GridItem>
         )

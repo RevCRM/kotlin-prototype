@@ -244,6 +244,8 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                 save: this.save
             }
 
+            const viewTitle = view.perspective.views[view.viewName].title
+
             return (
                 <FormContext.Provider value={formContext}>
                     <Paper square className={classes.formHeader}>
@@ -253,7 +255,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                             </IconButton>
                         </div>
                         <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                            {(view.context.id ? "" : "New ") + this.entityMeta.name}
+                            {viewTitle}
                         </Typography>
                         {mode == "view" &&
                             <Button color="inherit" onClick={this.onEditPressed}>
