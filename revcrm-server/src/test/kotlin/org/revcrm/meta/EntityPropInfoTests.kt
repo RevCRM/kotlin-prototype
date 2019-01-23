@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.annotations.APIDisabled
 import org.revcrm.annotations.Label
+import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Id
+import xyz.morphia.annotations.Reference
 import javax.validation.constraints.NotBlank
 import kotlin.reflect.full.findAnnotation
 
@@ -40,6 +42,18 @@ class EntityWithIdField(
     @Id
     var some_id_field: String,
     var other_field: String
+)
+
+class EntityWithEmbeddedEntityField(
+    var id: String,
+    @Embedded
+    var entity: EmbeddedEntity
+)
+
+class EntityWithEntityReferenceField(
+    var id: String,
+    @Reference
+    var entity: EntityWithIdField
 )
 
 class EntityPropInfoTests {
@@ -113,6 +127,38 @@ class EntityPropInfoTests {
         fun `Properties without @Id annotation have isIdField = false`() {
             val propInfo = getEntityPropInfo(EntityWithIdField::class, "other_field")
             assertThat(propInfo.isIdField).isFalse()
+        }
+    }
+
+    @Nested
+    inner class EmbeddedEntityFields {
+
+        @Test
+        fun `Properties with @Embedded annotation have isEmbedded = true`() {
+            val propInfo = getEntityPropInfo(EntityWithEmbeddedEntityField::class, "entity")
+            assertThat(propInfo.isEmbedded).isTrue()
+        }
+
+        @Test
+        fun `Properties without @Embedded annotation have isEmbedded = false`() {
+            val propInfo = getEntityPropInfo(EntityWithEmbeddedEntityField::class, "id")
+            assertThat(propInfo.isEmbedded).isFalse()
+        }
+    }
+
+    @Nested
+    inner class EntityReferenceFields {
+
+        @Test
+        fun `Properties with @Reference annotation have isReference = true`() {
+            val propInfo = getEntityPropInfo(EntityWithEntityReferenceField::class, "entity")
+            assertThat(propInfo.isReference).isTrue()
+        }
+
+        @Test
+        fun `Properties without @Reference annotation have isReference = false`() {
+            val propInfo = getEntityPropInfo(EntityWithEntityReferenceField::class, "id")
+            assertThat(propInfo.isReference).isFalse()
         }
     }
 }
