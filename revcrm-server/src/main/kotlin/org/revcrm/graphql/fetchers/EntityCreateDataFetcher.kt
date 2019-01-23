@@ -7,6 +7,7 @@ import org.revcrm.db.EntityValidationError
 import org.revcrm.graphql.APIContext
 import org.revcrm.meta.Entity
 import org.revcrm.util.getGson
+import xyz.morphia.mapping.MappingException
 
 class EntityCreateDataFetcher(
     private val entity: Entity
@@ -29,6 +30,12 @@ class EntityCreateDataFetcher(
             }
         } catch (e: EntityValidationError) {
             validationData = e.errorData
+        } catch (e: MappingException) {
+            if (e.cause is EntityValidationError) {
+                validationData = (e.cause as EntityValidationError).errorData
+            } else {
+                throw e
+            }
         }
 
         if (validationData == null) {

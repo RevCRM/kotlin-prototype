@@ -8,12 +8,14 @@ import org.revcrm.annotations.Validate
 import org.revcrm.annotations.ValidateDelete
 import org.revcrm.db.EntityValidationData
 import org.revcrm.entities.Base
+import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import javax.validation.Valid
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
@@ -121,12 +123,22 @@ class Account(
 @Entity
 class TestWithEmbeddedEntity(
     var label: String,
+    @Embedded
+    @field:Valid
+    var embedded: TestEmbeddedEntity?
+) : Base()
+
+@Entity
+class TestWithEmbeddedEntityList(
+    var label: String,
     var options: List<TestEmbeddedEntity>?
 ) : Base()
 
 @Entity
 class TestEmbeddedEntity(
-    var value: String
+    @field:NotBlank
+    var name: String,
+    var value: String = ""
 ) : Base()
 
 @Entity

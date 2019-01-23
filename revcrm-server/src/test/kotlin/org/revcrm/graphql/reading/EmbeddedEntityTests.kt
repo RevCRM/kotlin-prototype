@@ -9,7 +9,7 @@ import org.revcrm.meta.MetadataService
 import org.revcrm.testdb.TEST_EMBEDDED_ENTITIES
 import org.revcrm.testdb.TEST_STRING_LISTS
 import org.revcrm.testdb.TestDB
-import org.revcrm.testdb.TestWithEmbeddedEntity
+import org.revcrm.testdb.TestWithEmbeddedEntityList
 import org.revcrm.testdb.TestWithStringList
 import org.revcrm.testdb.resetEmbeddedEntityData
 import org.revcrm.testdb.resetStringListData
@@ -34,7 +34,7 @@ class EmbeddedEntityTests {
 
         val res = api.query("""
                 query {
-                    TestWithEmbeddedEntity {
+                    TestWithEmbeddedEntityList {
                         results {
                             label,
                             options {
@@ -44,7 +44,7 @@ class EmbeddedEntityTests {
                     }
                 }
             """.trimIndent(), mapOf())
-        val result = mapGraphQLQueryResult(res, "TestWithEmbeddedEntity", TestWithEmbeddedEntity::class.java)
+        val result = mapGraphQLQueryResult(res, "TestWithEmbeddedEntityList", TestWithEmbeddedEntityList::class.java)
 
         @Test
         fun `returns all rows`() {

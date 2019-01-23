@@ -92,7 +92,8 @@ class MetadataService(
             // TODO: Make this customisable
             return mapEmbeddedEntityField(this, propInfo)
         } else if (!jvmTypeMappers.containsKey(propInfo.jvmType))
-            throw Error("No mapper registered for JVM type '${propInfo.jvmType}'.")
+            throw Error("Error mapping property '${propInfo.name}'. No scalar type mapper registered for '${propInfo.jvmType}'." +
+                " You must use @Embedded or @Reference for related entity properties.")
         val mapper = jvmTypeMappers.get(propInfo.jvmType)!!
         return mapper(this, propInfo)
     }

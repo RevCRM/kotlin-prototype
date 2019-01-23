@@ -13,6 +13,7 @@ val TEST_DB_CONFIG = Config(
         "org.revcrm.testdb.SensitiveEntity",
         "org.revcrm.testdb.Account",
         "org.revcrm.testdb.TestWithEmbeddedEntity",
+        "org.revcrm.testdb.TestWithEmbeddedEntityList",
         "org.revcrm.testdb.TestWithStringList",
         "org.revcrm.testdb.TestWithValidatedDelete"
     ),
