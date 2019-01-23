@@ -14,7 +14,8 @@ import org.revcrm.testdb.testFieldsEntityDisabledFields
 class EntityMetadataInfo(
     val name: String,
     val idField: String,
-    val fields: List<EntityFieldInfo>
+    val fields: List<EntityFieldInfo>,
+    val isEmbedded: Boolean
 )
 
 class EntityFieldInfo(
@@ -66,12 +67,13 @@ class MetadataTests {
                             properties
                             constraints
                         }
+                        isEmbedded
                     }
                 }
             }
             """.trimIndent(), mapOf())
         val result = getResults(res)
-        val entities = meta.getEntities()
+        val entities = meta.getAllEntities()
 
         @Test
         fun `returns metadata for all registered entities`() {
@@ -81,7 +83,7 @@ class MetadataTests {
 
         @Test
         fun `does not include entities where apiEnabled = false`() {
-            val disabledEntity = entities.find { it.apiEnabled == false }!!
+            val disabledEntity = entities.find { it.isApiEnabled == false }!!
             assertThat(result).noneMatch { it.name == disabledEntity.name }
         }
 
@@ -98,6 +100,7 @@ class MetadataTests {
             assertThat(resultInfo.name).isEqualTo(entityInfo.name)
             assertThat(resultInfo.idField).isEqualTo(entityInfo.idField!!.name)
             assertThat(resultInfo.fields).hasSize(entityInfo.fields.size - testFieldsEntityDisabledFields)
+            assertThat(resultInfo.isEmbedded).isFalse()
 
             var entityFieldInfo = entityInfo.fields["string_field"]!!
             var resultFieldInfo = resultInfo.fields.find { it.name == "string_field" }!!
@@ -115,6 +118,12 @@ class MetadataTests {
             assertThat(field.constraints.get("NotBlank")).isEqualTo("true")
             assertThat(field.constraints.get("SizeMin")).isEqualTo("1")
             assertThat(field.constraints.get("SizeMax")).isEqualTo("10")
+        }
+
+        @Test
+        fun `Embedded entities have isEmbedded = true`() {
+            var resultInfo = result.find { it.name == "TestEmbeddedEntity" }!!
+            assertThat(resultInfo.isEmbedded).isTrue()
         }
     }
 }

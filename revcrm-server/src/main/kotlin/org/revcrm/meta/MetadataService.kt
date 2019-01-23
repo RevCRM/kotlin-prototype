@@ -50,11 +50,11 @@ class MetadataService(
 
     fun initialise() {
         db.getEmbeddedClassNames().forEach { className ->
-            val entityMeta = getEntityMetadata(className)
-            addEmbeddedEntity(entityMeta.name, entityMeta)
+            val entityMeta = getEntityMetadata(className, true)
+            addEntity(entityMeta.name, entityMeta)
         }
         db.getEntityClassNames().forEach { className ->
-            val entityMeta = getEntityMetadata(className)
+            val entityMeta = getEntityMetadata(className, false)
             if (entityMeta.idField == null) {
                 throw Error("Id field for entity '${entityMeta.name}' is not defined.")
             }
@@ -62,7 +62,7 @@ class MetadataService(
         }
     }
 
-    fun getEntityMetadata(className: String): Entity {
+    fun getEntityMetadata(className: String, isEmbedded: Boolean): Entity {
         val klass = Class.forName(className).kotlin
         val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
 
@@ -76,9 +76,10 @@ class MetadataService(
 
         return Entity(
             name = klass.simpleName!!,
-            apiEnabled = apiEnabled,
+            isApiEnabled = apiEnabled,
             className = className,
-            fields = fields.toMap()
+            fields = fields.toMap(),
+            isEmbedded = isEmbedded
         )
     }
 
@@ -106,23 +107,19 @@ class MetadataService(
         entities.put(name, entity)
     }
 
-    fun addEmbeddedEntity(name: String, entity: Entity) {
-        embeddedEntities.put(name, entity)
+    fun getEntities(): List<Entity> {
+        return entities.values.filter { !it.isEmbedded }
     }
 
-    fun getEntities(): List<Entity> {
+    fun getEmbeddedEntities(): List<Entity> {
+        return entities.values.filter { it.isEmbedded }
+    }
+
+    fun getAllEntities(): List<Entity> {
         return entities.values.toList()
     }
 
     fun getEntity(name: String): Entity? {
         return if (entities.containsKey(name)) entities[name] else null
-    }
-
-    fun getEmbeddedEntities(): List<Entity> {
-        return embeddedEntities.values.toList()
-    }
-
-    fun getEmbeddedEntity(name: String): Entity? {
-        return if (embeddedEntities.containsKey(name)) embeddedEntities[name] else null
     }
 }

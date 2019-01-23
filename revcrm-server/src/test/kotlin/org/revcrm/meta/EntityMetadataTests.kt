@@ -18,17 +18,17 @@ class EntityMetadataTests {
     inner class EntityMetadata {
 
         @Test
-        fun `returns only entities in the entityClasses list`() {
-            assertThat(meta.getEntity("TestFieldsEntity")).isNotNull()
-            assertThat(meta.getEntity("TestEntity2")).isNotNull()
+        fun `returns entities with expected isEmbedded setting`() {
+            assertThat(meta.getEntity("TestFieldsEntity")!!.isEmbedded).isFalse()
+            assertThat(meta.getEntity("TestEntity2")!!.isEmbedded).isFalse()
             assertThat(meta.getEntity("ParentEntity")).isNull()
-            assertThat(meta.getEntity("TestEmbeddedEntity")).isNull()
+            assertThat(meta.getEntity("TestEmbeddedEntity")!!.isEmbedded).isTrue()
         }
 
         @Test
         fun `apiEnabled defaults to true`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.apiEnabled).isTrue()
-            assertThat(meta.getEntity("TestEntity2")!!.apiEnabled).isTrue()
+            assertThat(meta.getEntity("TestFieldsEntity")!!.isApiEnabled).isTrue()
+            assertThat(meta.getEntity("TestEntity2")!!.isApiEnabled).isTrue()
         }
 
         @Test
@@ -70,23 +70,23 @@ class EntityMetadataTests {
 
         @Test
         fun `returns only entities in the embeddedClasses list`() {
-            assertThat(meta.getEmbeddedEntity("TestEmbeddedEntity")).isNotNull()
-            assertThat(meta.getEmbeddedEntity("TestFieldsEntity")).isNull()
+            assertThat(meta.getEntity("TestEmbeddedEntity")!!.isEmbedded).isTrue()
+            assertThat(meta.getEntity("TestFieldsEntity")!!.isEmbedded).isFalse()
         }
 
         @Test
         fun `entity name matches name`() {
-            assertThat(meta.getEmbeddedEntity("TestEmbeddedEntity")!!.name).isEqualTo("TestEmbeddedEntity")
+            assertThat(meta.getEntity("TestEmbeddedEntity")!!.name).isEqualTo("TestEmbeddedEntity")
         }
 
         @Test
         fun `entity className matches full class name`() {
-            assertThat(meta.getEmbeddedEntity("TestEmbeddedEntity")!!.className).isEqualTo("org.revcrm.testdb.TestEmbeddedEntity")
+            assertThat(meta.getEntity("TestEmbeddedEntity")!!.className).isEqualTo("org.revcrm.testdb.TestEmbeddedEntity")
         }
 
         @Test
         fun `returns Base entity fields`() {
-            assertThat(meta.getEmbeddedEntity("TestEmbeddedEntity")!!.fields)
+            assertThat(meta.getEntity("TestEmbeddedEntity")!!.fields)
                 .containsKey("id")
                 .containsKey("created_date")
                 .containsKey("updated_date")
@@ -94,7 +94,7 @@ class EntityMetadataTests {
 
         @Test
         fun `returns own fields`() {
-            assertThat(meta.getEmbeddedEntity("TestEmbeddedEntity")!!.fields)
+            assertThat(meta.getEntity("TestEmbeddedEntity")!!.fields)
                 .containsKey("value")
         }
     }
@@ -104,7 +104,7 @@ class EntityMetadataTests {
 
         @Test
         fun `entities annotated with @APIDisabled have apiEnabled = false`() {
-            assertThat(meta.getEntity("SensitiveEntity")!!.apiEnabled).isFalse()
+            assertThat(meta.getEntity("SensitiveEntity")!!.isApiEnabled).isFalse()
         }
     }
 }

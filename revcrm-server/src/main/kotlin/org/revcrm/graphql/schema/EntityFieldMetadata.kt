@@ -60,6 +60,11 @@ fun registerMetadataQueryType(
                 .name("fields")
                 .type(GraphQLList(entityFieldMetaType))
         )
+        .field(
+            GraphQLFieldDefinition.newFieldDefinition()
+                .name("isEmbedded")
+                .type(Scalars.GraphQLString)
+        )
         .build()
     code
         .dataFetcher(

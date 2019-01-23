@@ -9,6 +9,6 @@ class EntityMetadataFetcher : DataFetcher<Any> {
     override fun get(environment: DataFetchingEnvironment): Any {
         val ctx = environment.getContext<APIContext>()
 
-        return ctx.meta.getEntities().filter { it.apiEnabled == true }
+        return ctx.meta.getAllEntities().filter { it.isApiEnabled == true }
     }
 }

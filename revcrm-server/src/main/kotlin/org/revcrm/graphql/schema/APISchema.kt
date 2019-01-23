@@ -39,7 +39,7 @@ class APISchema(private val meta: MetadataService) {
         val entities = meta.getEntities()
         entities.forEach { entity ->
 
-            if (!entity.apiEnabled) return@forEach
+            if (!entity.isApiEnabled) return@forEach
 
             val resultsTypeName = entity.name + "Results"
             registerEntityObjectType(meta, entity, schema, code)

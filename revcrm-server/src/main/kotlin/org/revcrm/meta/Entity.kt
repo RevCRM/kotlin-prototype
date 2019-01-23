@@ -4,9 +4,10 @@ import org.revcrm.meta.fields.Field
 
 class Entity(
     val name: String,
-    val apiEnabled: Boolean,
     val className: String,
-    val fields: Map<String, Field>
+    val fields: Map<String, Field>,
+    val isApiEnabled: Boolean,
+    val isEmbedded: Boolean
 ) {
     val idField: Field?
         get() = fields.values.find { it.idField }
