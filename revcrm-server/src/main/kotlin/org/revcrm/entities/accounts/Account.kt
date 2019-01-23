@@ -6,6 +6,7 @@ import org.revcrm.annotations.Validate
 import org.revcrm.annotations.SelectionList
 import org.revcrm.db.EntityValidationData
 import org.revcrm.entities.Base
+import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Index
 import xyz.morphia.annotations.Indexes
@@ -63,12 +64,11 @@ class Account(
 
     @Label("Notes")
     @MultiLine
-    var notes: String?
+    var notes: String?,
 
-//    @ManyToOne
-//    @JoinColumn(name = "primary_address_id")
-//    @Label("Address")
-//    var primary_address: Address
+    @Label("Primary Address")
+    @Embedded
+    var primary_address: Address?
 
 ) : Base() {
 
