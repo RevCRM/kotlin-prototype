@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.revcrm.annotations.Label
+import org.revcrm.meta.EmbeddedEntity
 import org.revcrm.meta.Entity
 import org.revcrm.meta.MetadataService
 import org.revcrm.meta.getEntityPropInfo
@@ -15,10 +16,6 @@ import org.revcrm.meta.getEntityPropInfo
 class EntityWithEmbeddedEntityListField(
     @Label("Embedded Entity List")
     val entityList: List<EmbeddedEntity>
-)
-
-class EmbeddedEntity(
-    val value: String
 )
 
 class EntityWithStringListField(

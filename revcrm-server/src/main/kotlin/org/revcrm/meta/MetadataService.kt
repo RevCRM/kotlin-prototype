@@ -12,7 +12,7 @@ import org.revcrm.meta.fields.mapFloatField
 import org.revcrm.meta.fields.mapIDField
 import org.revcrm.meta.fields.mapIntegerField
 import org.revcrm.meta.fields.mapListField
-import org.revcrm.meta.fields.mapRelatedEntityField
+import org.revcrm.meta.fields.mapEmbeddedEntityField
 import org.revcrm.meta.fields.mapStringField
 import org.revcrm.meta.fields.mapTimeField
 import kotlin.reflect.KClass
@@ -88,10 +88,9 @@ class MetadataService(
         if (propInfo.isEnum) {
             // TODO: Make this customisable
             return mapEnumField(this, propInfo)
-        } else if (entityClassNames.contains(propInfo.jvmType)) {
+        } else if (propInfo.isEmbedded && db.classIsEmbeddedEntity(propInfo.jvmType)) {
             // TODO: Make this customisable
-            val relClass = Class.forName(propInfo.jvmType)
-            return mapRelatedEntityField(this, propInfo, relClass.simpleName)
+            return mapEmbeddedEntityField(this, propInfo)
         } else if (!jvmTypeMappers.containsKey(propInfo.jvmType))
             throw Error("No mapper registered for JVM type '${propInfo.jvmType}'.")
         val mapper = jvmTypeMappers.get(propInfo.jvmType)!!

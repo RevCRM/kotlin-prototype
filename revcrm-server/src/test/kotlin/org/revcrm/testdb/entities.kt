@@ -48,8 +48,7 @@ class TestFieldsEntity(
     @APIDisabled
     var api_disabled_field: String,
 
-    var enum_field: EnumFieldOptions,
-    var related_field: TestEntity2
+    var enum_field: EnumFieldOptions
 ) : Base() {
     val readonly_field: String
         get() = this.string_field

@@ -6,7 +6,7 @@ import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
 
-open class RelatedEntityField(
+open class EmbeddedEntityField(
     propInfo: EntityPropInfo,
     properties: Map<String, String> = mapOf(),
     constraints: Map<String, String> = mapOf()
@@ -24,11 +24,11 @@ open class RelatedEntityField(
 }
 
 @Suppress("UNUSED_PARAMETER")
-fun mapRelatedEntityField(meta: MetadataService, propInfo: EntityPropInfo, relatedEntity: String): Field {
-    return RelatedEntityField(
+fun mapEmbeddedEntityField(meta: MetadataService, propInfo: EntityPropInfo): Field {
+    return EmbeddedEntityField(
         propInfo,
         constraints = mapOf(
-            "Entity" to relatedEntity
+            "Entity" to propInfo.jvmType.split(".").last()
         )
     )
 }

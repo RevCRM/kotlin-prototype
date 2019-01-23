@@ -48,7 +48,6 @@ class TestFieldsEntity(
     var time_field: LocalTime,
     var datetime_field: LocalDateTime,
     var enum_field: EnumFieldOptions,
-    var related_field: TestConstraintsEntity,
     @APIDisabled
     var api_disabled_field: String
 )

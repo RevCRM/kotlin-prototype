@@ -12,7 +12,6 @@ import org.revcrm.meta.fields.EnumField
 import org.revcrm.meta.fields.FloatField
 import org.revcrm.meta.fields.IDField
 import org.revcrm.meta.fields.IntegerField
-import org.revcrm.meta.fields.RelatedEntityField
 import org.revcrm.meta.fields.TextField
 import org.revcrm.meta.fields.TimeField
 
@@ -125,13 +124,6 @@ class FieldMetadataTests {
             assertThat(fieldsEntity.fields["enum_field"]).isInstanceOf(EnumField::class.java)
             assertThat(fieldsEntity.fields["enum_field"]!!.type).isEqualTo("EnumField")
             assertThat(fieldsEntity.fields["enum_field"]!!.jvmType).isEqualTo("org.revcrm.testdb.EnumFieldOptions")
-        }
-
-        @Test
-        fun `Related field returns expected metadata`() {
-            assertThat(fieldsEntity.fields["related_field"]).isInstanceOf(RelatedEntityField::class.java)
-            assertThat(fieldsEntity.fields["related_field"]!!.type).isEqualTo("RelatedEntityField")
-            assertThat(fieldsEntity.fields["related_field"]!!.jvmType).isEqualTo("org.revcrm.testdb.TestEntity2")
         }
 
         @Test
