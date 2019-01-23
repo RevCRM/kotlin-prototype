@@ -79,7 +79,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             const fieldNames = this.entityMeta.fields.map((field) => field.name)
 
             this.query = getEntityQuery({
-                entity: this.props.entity,
+                entity: this.entityMeta,
                 fields: fieldNames,
             })
 
@@ -159,7 +159,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             if (isNew) {
                 const data = { ...this.entityData }
                 const mutationOptions: IEntityMutationOptions = {
-                    entity: this.props.entity,
+                    entity: this.entityMeta,
                     operation: "create",
                     resultFields: fieldNames
                 }
@@ -194,7 +194,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                     data[field] = this.entityData[field]
                 )
                 const mutationOptions: IEntityMutationOptions = {
-                    entity: this.props.entity,
+                    entity: this.entityMeta,
                     operation: "update",
                     resultFields: fieldNames
                 }
@@ -276,7 +276,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
                     </Paper>
                     <div style={{ margin: 16 }}>
-                        <Grid container spacing={16} className={classes.root}>
+                        <Grid container spacing={8} className={classes.root}>
                             {this.props.children}
                         </Grid>
                     </div>

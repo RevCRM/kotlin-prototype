@@ -1,8 +1,9 @@
 import { DocumentNode, SelectionSetNode } from "graphql"
-import { getFieldSelectionSet } from "./helpers"
+import { getFieldSelections, getSelectionSet } from "./helpers"
+import { IEntityMetadata } from "../components/meta/Metadata"
 
 export interface IEntityMutationOptions {
-    entity: string
+    entity: IEntityMetadata
     operation: "create" | "update" | "delete"
     resultFields: string[]
 }
@@ -54,10 +55,11 @@ export interface IEntityMutationResult<T = any> {
 export function getEntityMutation(options: IEntityMutationOptions): DocumentNode {
     const entityMutationName = getEntityMutationName(options)
     const entityInputType = options.entity + "Input"
-    const resultFieldSet = getFieldSelectionSet(options.resultFields)
+    const selections = getFieldSelections(options.entity, options.resultFields)
+    const resultFieldSet = getSelectionSet(selections)
     const validationFieldSet = getValidationSelectionSet()
 
-    const queryAST: DocumentNode = {
+    return {
         kind: "Document",
         definitions: [
             {
@@ -107,7 +109,6 @@ export function getEntityMutation(options: IEntityMutationOptions): DocumentNode
             }
         ],
     }
-    return queryAST
 }
 
 export function getEntityMutationName(options: IEntityMutationOptions): string {

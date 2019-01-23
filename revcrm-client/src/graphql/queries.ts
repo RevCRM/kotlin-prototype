@@ -1,8 +1,9 @@
 import { DocumentNode } from "graphql"
-import { getFieldSelectionSet } from "./helpers"
+import { getSelectionSet, IFieldSelections } from "./helpers"
+import { IEntityMetadata } from "../components/meta/Metadata"
 
 export interface IEntityQueryOptions {
-    entity: string
+    entity: IEntityMetadata
     fields: string[]
 }
 
@@ -36,9 +37,16 @@ export interface IEntityQueryResults<T = any> {
  * We dont use the gql tag here because the fields to be queried are metadata-driven
  */
 export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
-    const fieldSelectionSet = getFieldSelectionSet(options.fields)
-    const metaFieldSelectionSet = getFieldSelectionSet(["limit", "offset", "totalCount"])
-    const queryAST: DocumentNode = {
+    const selections: IFieldSelections = {}
+    options.fields.forEach(fieldName => {
+        const field = options.entity.fields.find(f => f.name == fieldName)!
+        if (field.type != "EmbeddedEntityField") {
+            selections[fieldName] = true
+        }
+    })
+    const fieldSelectionSet = getSelectionSet(selections)
+    const metaFieldSelectionSet = getSelectionSet({"limit": true, "offset": true, "totalCount": true})
+    return {
         kind: "Document",
         definitions: [
             {
@@ -66,7 +74,7 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
                     selections: [
                         {
                             kind: "Field",
-                            name: { kind: "Name", value: options.entity },
+                            name: { kind: "Name", value: options.entity.name },
                             arguments: [
                                 {
                                     kind: "Argument",
@@ -105,5 +113,4 @@ export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
             }
         ],
     }
-    return queryAST
 }
