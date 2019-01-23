@@ -24,7 +24,7 @@ fun setUpData(db: DBService): ObjectId {
     return entity.id!!
 }
 
-class UpdatingNestedDataTests {
+class UpdatingEmbeddedListTests {
 
     val testDB = TestDB.instance
     val meta = MetadataService(testDB)
@@ -36,7 +36,7 @@ class UpdatingNestedDataTests {
     }
 
     @Nested
-    inner class UpdateNestedData {
+    inner class UpdateEmbeddedListData {
         val recordId: ObjectId
 
         init {

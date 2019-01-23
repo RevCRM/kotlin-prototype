@@ -10,7 +10,7 @@ import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.TestWithStringList
 import org.revcrm.testdb.deleteStringListData
 
-class CreatingNestedDataTests {
+class CreatingWithEmbeddedListTests {
 
     val testDB = TestDB.instance
     val meta = MetadataService(testDB)
@@ -25,7 +25,7 @@ class CreatingNestedDataTests {
     }
 
     @Nested
-    inner class CreateNestedData {
+    inner class CreateEmbeddedList {
 
         val data = "\$data"
         val res = api.query("""
@@ -83,7 +83,7 @@ class CreatingNestedDataTests {
     }
 
     @Nested
-    inner class NestedDataValidationError {
+    inner class EmbeddedListValidationError {
 
         val data = "\$data"
         val res = api.query("""
