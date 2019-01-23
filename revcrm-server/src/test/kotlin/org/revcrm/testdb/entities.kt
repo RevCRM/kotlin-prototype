@@ -138,7 +138,7 @@ class TestWithEmbeddedEntityList(
 class TestEmbeddedEntity(
     @field:NotBlank
     var name: String,
-    var value: String = ""
+    var value: String? = null
 ) : Base()
 
 @Entity

@@ -12,7 +12,7 @@ import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.TestWithStringList
 import org.revcrm.testdb.deleteStringListData
 
-fun setUpData(db: DBService): ObjectId {
+fun setUpStringListData(db: DBService): ObjectId {
     val entity = TestWithStringList(
         name = "Initial Name",
         values = listOf("value1", "value2")
@@ -40,7 +40,7 @@ class UpdatingEmbeddedListTests {
         val recordId: ObjectId
 
         init {
-            recordId = setUpData(testDB)
+            recordId = setUpStringListData(testDB)
         }
 
         val data = "\$data"
