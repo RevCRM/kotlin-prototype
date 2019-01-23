@@ -1,5 +1,5 @@
 import { SelectionSetNode, FieldNode } from "graphql"
-import { IEntityMetadata } from "../components/meta/Metadata"
+import { IEntityMetadata, IMetadataContext } from "../components/meta/Metadata"
 
 export interface IFieldSelections {
     [fieldName: string]: boolean | IFieldSelections
@@ -45,11 +45,20 @@ export function getSelectionSet(selection: IFieldSelections): SelectionSetNode {
     }
 }
 
-export function getFieldSelections(entity: IEntityMetadata, fields: string[]): IFieldSelections {
+/**
+ * Return full entity field SelectionSet from list of top-level fields
+ */
+export function getFieldSelections(meta: IMetadataContext, entity: IEntityMetadata, fields: string[] | null = null): IFieldSelections {
     const selections: IFieldSelections = {}
-    fields.forEach(fieldName => {
+    const fieldList = fields || entity.fields.map(field => field.name)
+    fieldList.forEach(fieldName => {
         const field = entity.fields.find(f => f.name == fieldName)!
-        if (field.type != "EmbeddedEntityField") {
+        if (field.type == "EmbeddedEntityField") {
+            const relatedEntityName = field.constraints["Entity"]
+            const relatedEntity = meta.getEntity(relatedEntityName)!
+            selections[fieldName] = getFieldSelections(meta, relatedEntity)
+        }
+        else {
             selections[fieldName] = true
         }
     })

@@ -1,8 +1,9 @@
 import { DocumentNode } from "graphql"
-import { getSelectionSet, IFieldSelections } from "./helpers"
-import { IEntityMetadata } from "../components/meta/Metadata"
+import { getFieldSelections, getSelectionSet } from "./helpers"
+import { IEntityMetadata, IMetadataContext } from "../components/meta/Metadata"
 
 export interface IEntityQueryOptions {
+    meta: IMetadataContext
     entity: IEntityMetadata
     fields: string[]
 }
@@ -37,13 +38,7 @@ export interface IEntityQueryResults<T = any> {
  * We dont use the gql tag here because the fields to be queried are metadata-driven
  */
 export function getEntityQuery(options: IEntityQueryOptions): DocumentNode {
-    const selections: IFieldSelections = {}
-    options.fields.forEach(fieldName => {
-        const field = options.entity.fields.find(f => f.name == fieldName)!
-        if (field.type != "EmbeddedEntityField") {
-            selections[fieldName] = true
-        }
-    })
+    const selections = getFieldSelections(options.meta, options.entity, options.fields)
     const fieldSelectionSet = getSelectionSet(selections)
     const metaFieldSelectionSet = getSelectionSet({"limit": true, "offset": true, "totalCount": true})
     return {

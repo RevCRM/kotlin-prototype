@@ -79,6 +79,7 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
             }
 
             this.query = getEntityQuery({
+                meta: this.props.meta,
                 entity: this.entityMeta,
                 fields: fieldNames,
             })
