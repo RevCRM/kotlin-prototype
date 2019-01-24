@@ -10,6 +10,7 @@ import { getEntityQuery, IEntityQueryResults } from "../../graphql/queries"
 import { IApolloClientProp, withApolloClient } from "../../graphql/withApolloClient"
 import { LoadState } from "../utils/types"
 import { IEntityMutationResult, getEntityMutation, getEntityMutationName, IEntityMutationOptions } from "../../graphql/mutations"
+import { omitDeep } from "../../utils/objects"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -111,7 +112,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                         throw new Error("API did not return expected data: " + JSON.stringify(res))
                     }
                     else {
-                        this.entityData = res.data[this.props.entity].results[0]
+                        this.entityData = omitDeep(res.data[this.props.entity].results[0], "__typename")
                     }
                 }
                 else {
@@ -192,9 +193,9 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                 const data: any = {
                     [this.entityMeta.idField]: idValue
                 }
-                this.state.dirtyFields.forEach(field =>
+                this.state.dirtyFields.forEach(field => {
                     data[field] = this.entityData[field]
-                )
+                })
                 const mutationOptions: IEntityMutationOptions = {
                     meta: this.props.meta,
                     entity: this.entityMeta,
