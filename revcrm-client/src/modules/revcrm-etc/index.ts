@@ -13,14 +13,6 @@ export function register(ui: UIManager) {
         ]
     })
     ui.registerMenu({
-        id: "menu_opportunities",
-        label: "Sales & Marketing",
-        icon: "monetization_on_sharp",
-        subItems: [
-            { label: "Sales Opportunities", perspective: "opportunities", viewName: "list" },
-        ]
-    })
-    ui.registerMenu({
         id: "menu_cases",
         label: "Customer Service",
         icon: "assignment",

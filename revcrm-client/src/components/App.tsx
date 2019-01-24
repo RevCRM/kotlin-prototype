@@ -14,6 +14,7 @@ import { ViewManager } from "./views/ViewManager"
 import { View } from "./views/View"
 import { register as registerDashboard } from "../modules/revcrm-dashboard"
 import { register as registerAccounts } from "../modules/revcrm-accounts"
+import { register as registerInvoices } from "../modules/revcrm-invoices"
 import { register as registerEtc } from "../modules/revcrm-etc"
 import { UI } from "../UIManager"
 import { AuthProvider } from "../auth/AuthProvider"
@@ -43,6 +44,7 @@ const client = new ApolloClient({
 // register modules
 registerDashboard(UI)
 registerAccounts(UI)
+registerInvoices(UI)
 registerEtc(UI)
 
 export const App = () => (
