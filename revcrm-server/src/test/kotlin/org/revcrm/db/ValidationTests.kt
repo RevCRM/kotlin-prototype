@@ -8,6 +8,7 @@ import org.junit.jupiter.api.assertThrows
 import org.revcrm.testdb.TestConstraintsEntity
 import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.TestWithValidateMethod
+import org.revcrm.testdb.getTestGson
 
 class ValidationTests {
 
@@ -19,6 +20,8 @@ class ValidationTests {
             col.remove(BasicDBObject())
         }
     }
+
+    val gson = getTestGson()
 
     @Test
     fun `EntityValidationError is raised when trying to save invalid entity fields`() {
@@ -115,6 +118,35 @@ class ValidationTests {
             err.entityPath == "" &&
             err.code == "TestClassValidator" &&
             err.message == "TestClassValidator says this entity is invalid"
+        }
+    }
+
+    @Test
+    fun `EntityValidationError is raised when a non-nullable field is set to null`() {
+
+        // Use Gson to construct entity because Kotlin doesn't let us set non_nullable_field to null :)
+        val tree = gson.toJsonTree(mapOf(
+            "non_nullable_field" to null,
+            "nullable_field" to null,
+            "textField" to "short str",
+            "min_field" to 10,
+            "max_field" to 20
+        ))
+        val invalidEntity = gson.fromJson(tree, TestConstraintsEntity::class.java)
+
+        val exception = assertThrows<EntityValidationError> {
+            testDB.withDB { ds ->
+                ds.save(invalidEntity)
+            }
+        }
+        val errorData = exception.errorData
+        assertThat(errorData.entityErrors).hasSize(0)
+        assertThat(errorData.fieldErrors).hasSize(1)
+        assertThat(errorData.fieldErrors[0]).matches { err ->
+            err.entity == "TestConstraintsEntity" &&
+                err.fieldPath == "non_nullable_field" &&
+                err.code == "NotNull" &&
+                err.message == "must not be null"
         }
     }
 
