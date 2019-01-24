@@ -3,12 +3,14 @@ package org.revcrm.entities.invoices
 import org.revcrm.annotations.EmbeddedEntity
 import org.revcrm.annotations.Label
 import org.revcrm.entities.Base
+import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 import java.math.BigDecimal
 import java.time.LocalDate
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 import javax.validation.constraints.PositiveOrZero
+import javax.validation.constraints.Size
 
 @EmbeddedEntity
 class InvoiceLine(
@@ -20,7 +22,7 @@ class InvoiceLine(
     var quantity: BigDecimal,
 
     @Label("Unit Price") @field:PositiveOrZero
-    var unit_prive: BigDecimal,
+    var unit_price: BigDecimal,
 
     @Label("Line Tax") @field:PositiveOrZero
     var line_tax: BigDecimal,
@@ -49,9 +51,9 @@ class Invoice(
     @Label("Currency")
     var invoice_currency: String,
 
-//    @Embedded
-//    @Label("Invoice Lines") @field:Size(min = 1)
-//    var lines: List<InvoiceLine>,
+    @Embedded
+    @Label("Invoice Lines") @field:Size(min = 1)
+    var lines: List<InvoiceLine>,
 
     @Label("Invoice Total") @field:PositiveOrZero
     var invoice_total: BigDecimal,

@@ -53,7 +53,10 @@ export function getFieldSelections(meta: IMetadataContext, entity: IEntityMetada
     const fieldList = fields || entity.fields.map(field => field.name)
     fieldList.forEach(fieldName => {
         const field = entity.fields.find(f => f.name == fieldName)!
-        if (field.type == "EmbeddedEntityField") {
+        if (
+            field.type == "EmbeddedEntityField"
+            || field.type == "EmbeddedEntityListField"
+        ) {
             const relatedEntityName = field.constraints["Entity"]
             const relatedEntity = meta.getEntity(relatedEntityName)!
             selections[fieldName] = getFieldSelections(meta, relatedEntity)
