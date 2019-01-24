@@ -4,7 +4,7 @@ import { IFieldComponentProps } from "./props"
 import { FormContext, IFormContext } from "../../FormView"
 import { IEntityMetadata, IFieldMetadata } from "../../../meta/Metadata"
 import { Field } from "../Field"
-import { Grid } from "@material-ui/core"
+import { Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
 import { getGridWidthProps } from "../../Grid"
 
 export const EmbeddedEntityListControl =
@@ -12,8 +12,8 @@ export const EmbeddedEntityListControl =
     entity: string
     entityMeta: IEntityMetadata
     entityListData: any[]
+    fields: IFieldMetadata[] = []
     fieldComponents: React.ReactChild[]
-    fieldNames: string[] = []
 
     constructor(props: any) {
         super(props)
@@ -25,8 +25,12 @@ export const EmbeddedEntityListControl =
         this.fieldComponents = React.Children.toArray(this.props.children)
             .filter(child => {
                 if (typeof child == "object" && child.type == Field) {
-                    this.fieldNames.push(child.props.name)
-                    return true
+                    const field = this.entityMeta.fields.find(
+                        f => f.name == child.props.name)
+                    if (field) {
+                        this.fields.push(field)
+                        return true
+                    }
                 }
                 return false
             })
@@ -43,27 +47,48 @@ export const EmbeddedEntityListControl =
         const dirtyFields: string[] = [] // TODO
         const gridWidthProps = getGridWidthProps(this.props)
 
-        return this.entityListData.map((entityData, rowIdx) => {
+        return (
+            <Grid item {...gridWidthProps}>
+                <Table padding="dense">
+                    <TableHead>
+                        <TableRow>
+                            {this.fields.map(field => (
+                                <TableCell key={field.name}>
+                                    {field.label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {this.entityListData.map((entityData, rowIdx) => {
 
-            const formContext: IFormContext = {
-                loadState,
-                entity: this.entity,
-                mode,
-                entityData,
-                dirtyFields,
-                onFieldChange: this.onFieldChange.bind(this, rowIdx),
-                save: this.props.form.save
-            }
+                            const formContext: IFormContext = {
+                                loadState,
+                                entity: this.entity,
+                                mode,
+                                entityData,
+                                dirtyFields,
+                                onFieldChange: this.onFieldChange.bind(this, rowIdx),
+                                save: this.props.form.save
+                            }
 
-            return (
-                <FormContext.Provider value={formContext}>
-                    <Grid item {...gridWidthProps} container spacing={16}>
-                        {this.fieldComponents}
-                    </Grid>
-                </FormContext.Provider>
-            )
+                            return (
+                                <FormContext.Provider key={rowIdx} value={formContext}>
+                                    <TableRow>
+                                        {this.fieldComponents.map((fieldComponent, cellIdx) => (
+                                            <TableCell key={cellIdx}>
+                                                {fieldComponent}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                </FormContext.Provider>
+                            )
 
-        })
+                        })}
+                    </TableBody>
+                </Table>
+            </Grid>
+        )
 
     }
 }
