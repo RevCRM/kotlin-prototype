@@ -7,7 +7,7 @@ export function register(ui: UIManager) {
     ui.registerPerspective({
         id: "dashboard",
         title: "Dashboard",
-        model: "Dashboard",
+        entity: "Dashboard",
         views: {
             my: {
                 title: "My Dashboard",
@@ -19,7 +19,7 @@ export function register(ui: UIManager) {
 
     ui.registerView({
         id: "my_dashboard",
-        model: null,
+        entity: null,
         component: Dashboard
     })
 

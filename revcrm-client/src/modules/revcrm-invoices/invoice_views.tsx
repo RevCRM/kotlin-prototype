@@ -11,7 +11,7 @@ export function registerInvoiceViews(ui: UIManager) {
 
     ui.registerView({
         id: "invoices_list",
-        model: "Invoice",
+        entity: "Invoice",
         component: () =>
             <SearchView
                 entity="Invoice"
@@ -28,7 +28,7 @@ export function registerInvoiceViews(ui: UIManager) {
 
     ui.registerView({
         id: "invoices_form",
-        model: "Invoice",
+        entity: "Invoice",
         component: () => (
             <FormView entity="Invoice">
                 <Panel title="Invoice Summary" colspan={12}>

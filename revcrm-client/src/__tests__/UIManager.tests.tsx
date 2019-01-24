@@ -4,7 +4,7 @@ import { IPerspective, IView, UIManager } from "../UIManager"
 const mockPerspective: IPerspective = {
     id: "dashboard",
     title: "Dashboard",
-    model: "Dashboard",
+    entity: "Dashboard",
     views: {
         my: {
             title: "My Dashboard",
@@ -16,7 +16,7 @@ const mockPerspective: IPerspective = {
 
 const mockMyView: IView = {
     id: "dashboard",
-    model: null,
+    entity: null,
     component: () => <div id="mockMyDashboard" />
 }
 

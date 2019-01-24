@@ -19,7 +19,7 @@ describe("<ViewManager />", () => {
     const mockPerspective: IPerspective = {
         id: "dashboard",
         title: "Dashboard",
-        model: "Dashboard",
+        entity: "Dashboard",
         views: {
             my: {
                 title: "My Dashboard",
@@ -36,14 +36,14 @@ describe("<ViewManager />", () => {
 
     const mockMyView: IView = {
         id: "dashboard",
-        model: null,
+        entity: null,
         component: () => <div id="mockMyDashboard" />
     }
     UI.registerView(mockMyView)
 
     const mockTeamView: IView = {
         id: "dashboard_team",
-        model: null,
+        entity: null,
         component: () => <div id="mockTeamDashboard" />
     }
     UI.registerView(mockTeamView)

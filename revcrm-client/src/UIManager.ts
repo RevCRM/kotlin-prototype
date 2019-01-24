@@ -4,7 +4,7 @@ import { IMenuItem } from "./components/nav/types"
 export interface IPerspective {
     id: string
     title: string
-    model: string
+    entity: string
     where?: object
     views: {
         [viewName: string]: {
@@ -17,7 +17,7 @@ export interface IPerspective {
 
 export interface IView {
     id: string
-    model: string | null
+    entity: string | null
     component: React.ComponentType
 }
 

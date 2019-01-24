@@ -9,8 +9,7 @@ export function register(ui: UIManager) {
     ui.registerPerspective({
         id: "invoices",
         title: "Invoices",
-        model: "Invoices",
-        where: { is_company: true },
+        entity: "Invoices",
         views: {
             list: { viewId: "invoices_list", title: "Invoices" },
             form: { viewId: "invoices_form", title: "Invoice" },

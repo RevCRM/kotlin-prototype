@@ -11,7 +11,7 @@ export function registerCompanyViews(ui: UIManager) {
 
     ui.registerView({
         id: "accounts_company_list",
-        model: "account",
+        entity: "account",
         component: () =>
             <SearchView
                 entity="Account"
@@ -30,7 +30,7 @@ export function registerCompanyViews(ui: UIManager) {
 
     ui.registerView({
         id: "accounts_company_form",
-        model: "account",
+        entity: "account",
         component: () => (
             <FormView entity="Account">
                 <Panel title="Company Summary" colspan={12}>

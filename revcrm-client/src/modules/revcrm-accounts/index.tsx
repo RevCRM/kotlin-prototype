@@ -11,7 +11,7 @@ export function register(ui: UIManager) {
     ui.registerPerspective({
         id: "companies",
         title: "Companies",
-        model: "Account",
+        entity: "Account",
         where: { is_company: true },
         views: {
             list: { viewId: "accounts_company_list", title: "Companies" },
@@ -23,7 +23,7 @@ export function register(ui: UIManager) {
     ui.registerPerspective({
         id: "contacts",
         title: "Contacts",
-        model: "Account",
+        entity: "Account",
         where: { is_company: false },
         views: {
             list: { viewId: "accounts_contact_list", title: "Contacts" },

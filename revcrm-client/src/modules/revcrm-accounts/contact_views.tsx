@@ -10,7 +10,7 @@ export function registerContactViews(ui: UIManager) {
 
     ui.registerView({
         id: "accounts_contact_list",
-        model: "account",
+        entity: "account",
         component: () =>
             <SearchView
                 entity="Account"
@@ -29,7 +29,7 @@ export function registerContactViews(ui: UIManager) {
 
     ui.registerView({
         id: "accounts_contact_form",
-        model: "account",
+        entity: "account",
         component: () => (
             <FormView entity="Account">
                 <Panel title="Contact Summary" colspan={12}>
