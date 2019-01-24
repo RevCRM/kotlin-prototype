@@ -22,16 +22,16 @@ class InvoiceLine(
     var quantity: BigDecimal,
 
     @Label("Unit Price") @field:PositiveOrZero
-    var unit_price: BigDecimal,
+    var unit_price: BigDecimal
 
-    @Label("Line Tax") @field:PositiveOrZero
-    var line_tax: BigDecimal,
-
-    @Label("Discount (%)") @field:PositiveOrZero
-    var discount_percentage: BigDecimal,
-
-    @Label("Discount Amount") @field:PositiveOrZero
-    var discount_amount: BigDecimal
+//    @Label("Line Tax") @field:PositiveOrZero
+//    var line_tax: BigDecimal,
+//
+//    @Label("Discount (%)") @field:PositiveOrZero
+//    var discount_percentage: BigDecimal,
+//
+//    @Label("Discount Amount") @field:PositiveOrZero
+//    var discount_amount: BigDecimal
 
 )
 

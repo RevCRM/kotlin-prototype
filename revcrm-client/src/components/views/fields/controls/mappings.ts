@@ -4,6 +4,7 @@ import { TextControl } from "./TextControl"
 import { CheckboxControl } from "./CheckboxControl"
 import { SearchSelectControl } from "./SearchSelectControl"
 import { EmbeddedEntityControl } from "./EmbeddedEntity"
+import { EmbeddedEntityListControl } from "./EmbeddedEntityList"
 
 export function getFieldControlMapping(field: IFieldMetadata) {
 
@@ -21,6 +22,7 @@ export function getFieldControlMapping(field: IFieldMetadata) {
         DateTimeField: TextControl,
         EnumField: TextControl,
         EmbeddedEntityField: EmbeddedEntityControl,
+        EmbeddedEntityListField: EmbeddedEntityListControl
     }
 
     const control = mappings[field.type]
