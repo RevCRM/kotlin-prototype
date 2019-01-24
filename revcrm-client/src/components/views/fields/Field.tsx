@@ -36,9 +36,10 @@ export const Field = withMetadataContext(withFormContext(
         }
     }
 
-    onChange = (value: any) => {
+    onChange = (value: any, trackValue = true) => {
         this.props.form.onFieldChange(this.field, value)
-        this.setState({ value })
+        if (trackValue)
+            this.setState({ value })
     }
 
     render() {
@@ -49,6 +50,8 @@ export const Field = withMetadataContext(withFormContext(
         const readonly = this.props.form.mode == "view"
 
         const componentProps: IFieldComponentProps = {
+            meta: this.props.meta,
+            form: this.props.form,
             field: this.field,
             label: this.props.label || this.field.label,
             colspanNarrow: this.props.colspanNarrow || 12,
@@ -58,7 +61,8 @@ export const Field = withMetadataContext(withFormContext(
             errors,
             disabled,
             readonly,
-            onChange: this.onChange
+            onChange: this.onChange,
+            children: this.props.children
         }
         const standardProps = getStandardHTMLProps(this.props)
 

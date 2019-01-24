@@ -68,7 +68,7 @@ class Account(
 
     @Label("Primary Address")
     @Embedded
-    var primary_address: Address?
+    var primary_address: Address
 
 ) : Base() {
 

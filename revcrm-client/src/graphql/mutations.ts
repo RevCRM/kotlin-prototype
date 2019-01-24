@@ -55,7 +55,7 @@ export interface IEntityMutationResult<T = any> {
  */
 export function getEntityMutation(options: IEntityMutationOptions): DocumentNode {
     const entityMutationName = getEntityMutationName(options)
-    const entityInputType = options.entity + "Input"
+    const entityInputType = options.entity.name + "Input"
     const selections = getFieldSelections(options.meta, options.entity, options.resultFields)
     const resultFieldSet = getSelectionSet(selections)
     const validationFieldSet = getValidationSelectionSet()
@@ -113,7 +113,7 @@ export function getEntityMutation(options: IEntityMutationOptions): DocumentNode
 }
 
 export function getEntityMutationName(options: IEntityMutationOptions): string {
-    return options.operation + options.entity
+    return options.operation + options.entity.name
 }
 
 function getValidationSelectionSet(): SelectionSetNode {

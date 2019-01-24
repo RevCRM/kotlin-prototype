@@ -74,7 +74,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
         constructor(props: any) {
             super(props)
 
-            // TODO: This should neither be synchronous nor assume getEntity() returns an entity!
+            // TODO: This should not assume getEntity() returns an entity
             this.entityMeta = this.props.meta.getEntity(this.props.entity)!
             const fieldNames = this.entityMeta.fields.map((field) => field.name)
 
@@ -279,7 +279,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
                     </Paper>
                     <div style={{ margin: 16 }}>
-                        <Grid container spacing={8} className={classes.root}>
+                        <Grid container spacing={16} className={classes.root}>
                             {this.props.children}
                         </Grid>
                     </div>

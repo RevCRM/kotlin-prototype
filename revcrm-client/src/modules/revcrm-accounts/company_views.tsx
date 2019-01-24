@@ -44,11 +44,24 @@ export function registerCompanyViews(ui: UIManager) {
                     colspan={12}
                     tabs={[
                         {
+                            label: "Address",
+                            component: () => (
+                                <Field name="primary_address">
+                                    <Field name="name" colspan={12} />
+                                    <Field name="address" />
+                                    <Field name="city" />
+                                    <Field name="region" />
+                                    <Field name="postal_code" />
+                                    <Field name="country" />
+                                </Field>
+                            )
+                        },
+                        {
                             label: "Contact Details",
                             component: () => (<>
                                 <Field name="title" colspan={2} />
                                 <Field name="first_name" colspan={4} />
-                                <Field name="last_name" colspan={6} />
+                                <Field name="last_name" />
                                 <Field name="phone" />
                                 <Field name="email" />
                                 <Field name="mobile" />

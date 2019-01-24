@@ -3,6 +3,7 @@ import { IFieldComponentProps } from "./props"
 import { TextControl } from "./TextControl"
 import { CheckboxControl } from "./CheckboxControl"
 import { SearchSelectControl } from "./SearchSelectControl"
+import { EmbeddedEntityControl } from "./EmbeddedEntity"
 
 export function getFieldControlMapping(field: IFieldMetadata) {
 
@@ -19,7 +20,7 @@ export function getFieldControlMapping(field: IFieldMetadata) {
         TimeField: TextControl,
         DateTimeField: TextControl,
         EnumField: TextControl,
-        RelatedEntityField: TextControl,
+        EmbeddedEntityField: EmbeddedEntityControl,
     }
 
     const control = mappings[field.type]

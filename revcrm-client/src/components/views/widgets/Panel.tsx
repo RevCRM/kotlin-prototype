@@ -21,7 +21,9 @@ export const Panel = withStyles(styles)((props: IPanelProps) => {
             <Card classes={{ root: props.classes.cardRoot }}>
                 {props.title && <CardHeader title={props.title} />}
                 <CardContent>
-                    <Grid>{props.children}</Grid>
+                    <Grid>
+                        {props.children}
+                    </Grid>
                 </CardContent>
             </Card>
         </GridItem>

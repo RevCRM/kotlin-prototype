@@ -12,6 +12,8 @@ describe("CheckboxControl", () => {
 
     function getComponentProps(): IFieldComponentProps {
         return {
+            meta: null as any,
+            form: null as any,
             field: {
                 name: "checkbox",
                 label: "Field Label",
@@ -29,7 +31,8 @@ describe("CheckboxControl", () => {
             disabled: false,
             readonly: false,
             style: {marginTop: 10},
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            children: null
         }
     }
 

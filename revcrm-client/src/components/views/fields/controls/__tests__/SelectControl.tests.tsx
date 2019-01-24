@@ -18,6 +18,8 @@ describe("SelectControl", () => {
 
     function getComponentProps(): IFieldComponentProps {
         return {
+            meta: null as any,
+            form: null as any,
             field: {
                 name: "select",
                 label: "Field Label",
@@ -37,7 +39,8 @@ describe("SelectControl", () => {
             disabled: false,
             readonly: false,
             style: { marginTop: 10 },
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            children: null
         }
     }
 
