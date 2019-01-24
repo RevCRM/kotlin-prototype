@@ -4,7 +4,7 @@ package org.revcrm.testdb
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import org.bson.types.ObjectId
-import org.revcrm.util.objectIdDeserializer
+import org.revcrm.graphql.fetchers.objectIdDeserializer
 
 fun getTestGson(): Gson {
     return GsonBuilder()
