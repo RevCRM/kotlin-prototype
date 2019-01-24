@@ -40,10 +40,9 @@ export class Tabs extends React.Component<ITabsProps, ITabsState> {
         return (
             <GridItem {...this.props}>
                 <Card>
-                    <AppBar position="static" color="default">
+                    <AppBar position="static" color="primary">
                         <MUITabs
                             value={this.state.selectedTab}
-                            indicatorColor="primary"
                             onChange={this.handleChange}
                         >
                         {this.props.tabs.map((tab) => (

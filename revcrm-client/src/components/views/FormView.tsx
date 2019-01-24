@@ -278,7 +278,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                         </>}
 
                     </Paper>
-                    <div style={{ margin: 16 }}>
+                    <div style={{ margin: "16px auto", padding: "0 12px", maxWidth: "900px" }}>
                         <Grid container spacing={16} className={classes.root}>
                             {this.props.children}
                         </Grid>
