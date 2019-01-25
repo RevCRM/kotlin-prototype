@@ -7,6 +7,7 @@ import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 import java.math.BigDecimal
 import java.time.LocalDate
+import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 import javax.validation.constraints.PositiveOrZero
@@ -52,7 +53,7 @@ class Invoice(
     var invoice_currency: String,
 
     @Embedded
-    @Label("Invoice Lines") @field:Size(min = 1)
+    @Label("Invoice Lines") @field:Size(min = 1) @field:Valid
     var lines: List<InvoiceLine>,
 
     @Label("Invoice Total") @field:PositiveOrZero

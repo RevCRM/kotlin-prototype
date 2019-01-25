@@ -12,6 +12,7 @@ import xyz.morphia.annotations.Index
 import xyz.morphia.annotations.Indexes
 import xyz.morphia.annotations.Field as IndexField
 import xyz.morphia.utils.IndexType
+import javax.validation.Valid
 
 @Entity
 @Indexes(
@@ -67,7 +68,7 @@ class Account(
     var notes: String?,
 
     @Label("Primary Address")
-    @Embedded
+    @Embedded @field:Valid
     var primary_address: Address
 
 ) : Base() {
