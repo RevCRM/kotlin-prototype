@@ -112,7 +112,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                         throw new Error("API did not return expected data: " + JSON.stringify(res))
                     }
                     else {
-                        this.entityData = omitDeep(res.data[this.props.entity].results[0], "__typename")
+                        this.entityData = res.data[this.props.entity].results[0]
                     }
                 }
                 else {
@@ -153,13 +153,44 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             this.setState({ mode: "view" })
         }
 
+        cleanMutationData = (entityData: any) => {
+            // clean data ready for mutations
+            const newData = omitDeep(entityData, "__typename")
+            this.deleteReadonlyFields(this.entityMeta, newData)
+            return newData
+        }
+
+        deleteReadonlyFields(entity: IEntityMetadata, entityData: any) {
+            entity.fields.forEach(field => {
+                if (field.readonly) {
+                    delete entityData[field.name]
+                }
+                else if (
+                    field.type == "EmbeddedEntityField"
+                    || field.type == "EmbeddedEntityListField"
+                ) {
+                    const relatedEntityName = field.constraints["Entity"]
+                    const relatedEntity = this.props.meta.getEntity(relatedEntityName)!
+                    if (field.type == "EmbeddedEntityField") {
+                        this.deleteReadonlyFields(relatedEntity, entityData[field.name])
+                    }
+                    else if (field.type == "EmbeddedEntityListField" && entityData[field.name] instanceof Array) {
+                        entityData[field.name].forEach((rowData: any) => {
+                            this.deleteReadonlyFields(relatedEntity, rowData)
+                        })
+                    }
+                }
+
+            })
+        }
+
         save = async (): Promise<IEntityMutationResult> => {
             const fieldNames = this.entityMeta.fields.map((field) => field.name)
             const idValue = this.entityData[this.entityMeta.idField]
             const isNew = !idValue
             console.log("isNew", isNew)
             if (isNew) {
-                const data = { ...this.entityData }
+                const data = this.cleanMutationData(this.entityData)
                 const mutationOptions: IEntityMutationOptions = {
                     meta: this.props.meta,
                     entity: this.entityMeta,
@@ -190,12 +221,13 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                 }
             }
             else {
-                const data: any = {
+                let data: any = {
                     [this.entityMeta.idField]: idValue
                 }
                 this.state.dirtyFields.forEach(field => {
                     data[field] = this.entityData[field]
                 })
+                data = this.cleanMutationData(data)
                 const mutationOptions: IEntityMutationOptions = {
                     meta: this.props.meta,
                     entity: this.entityMeta,

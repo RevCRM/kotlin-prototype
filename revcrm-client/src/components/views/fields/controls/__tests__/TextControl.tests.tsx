@@ -20,6 +20,7 @@ describe("TextControl", () => {
                 label: "Field Label",
                 type: "TextField",
                 nullable: true,
+                readonly: false,
                 properties: {},
                 constraints: {}
             },

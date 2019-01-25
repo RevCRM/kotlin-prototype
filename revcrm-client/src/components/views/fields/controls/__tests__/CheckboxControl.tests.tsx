@@ -19,6 +19,7 @@ describe("CheckboxControl", () => {
                 label: "Field Label",
                 type: "BooleanField",
                 nullable: false,
+                readonly: false,
                 properties: {},
                 constraints: {}
             },

@@ -25,6 +25,7 @@ describe("SelectControl", () => {
                 label: "Field Label",
                 type: "SelectField",
                 nullable: true,
+                readonly: false,
                 properties: {},
                 constraints: {
                     SelectionList: "account_sources"

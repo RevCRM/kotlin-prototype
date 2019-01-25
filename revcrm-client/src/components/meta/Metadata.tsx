@@ -17,6 +17,7 @@ const METADATA_QUERY = gql`
                     label
                     type
                     nullable
+                    readonly
                     properties
                     constraints
                 }
@@ -36,6 +37,7 @@ export interface IFieldMetadata {
     label: string
     type: string
     nullable: boolean
+    readonly: boolean
     properties: {
         [propertyName: string]: string
     }

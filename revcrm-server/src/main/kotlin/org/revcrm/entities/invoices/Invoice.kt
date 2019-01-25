@@ -34,7 +34,10 @@ class InvoiceLine(
 //    @Label("Discount Amount") @field:PositiveOrZero
 //    var discount_amount: BigDecimal
 
-)
+) {
+    val quantity_price: BigDecimal
+    get() = quantity * unit_price
+}
 
 @Entity
 class Invoice(
