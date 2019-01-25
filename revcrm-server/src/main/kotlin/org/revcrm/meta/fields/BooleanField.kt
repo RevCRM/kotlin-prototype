@@ -15,6 +15,9 @@ open class BooleanField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLBoolean
     }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return Scalars.GraphQLBoolean
+    }
 }
 
 @Suppress("UNUSED_PARAMETER")

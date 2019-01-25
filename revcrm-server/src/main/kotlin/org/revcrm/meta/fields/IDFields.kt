@@ -15,6 +15,9 @@ open class IDField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return GraphQLObjectID
     }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return GraphQLObjectID
+    }
 }
 
 @Suppress("UNUSED_PARAMETER")

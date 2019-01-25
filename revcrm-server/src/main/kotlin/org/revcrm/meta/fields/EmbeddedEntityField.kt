@@ -16,7 +16,6 @@ open class EmbeddedEntityField(
         val relatedEntity = constraints.get("Entity")!!
         return GraphQLTypeReference(relatedEntity)
     }
-
     override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
         val relatedEntity = constraints.get("Entity")!! + "Input"
         return GraphQLTypeReference(relatedEntity)

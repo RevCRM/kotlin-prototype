@@ -17,6 +17,9 @@ open class DateTimeField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return GraphQLDateTime
     }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return GraphQLDateTime
+    }
 }
 
 open class DateField(
@@ -28,6 +31,9 @@ open class DateField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return GraphQLDate
     }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return GraphQLDate
+    }
 }
 
 open class TimeField(
@@ -37,6 +43,9 @@ open class TimeField(
 ) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+        return GraphQLTime
+    }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
         return GraphQLTime
     }
 }

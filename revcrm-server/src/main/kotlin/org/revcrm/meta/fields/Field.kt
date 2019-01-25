@@ -1,12 +1,11 @@
 package org.revcrm.meta.fields
 
-import graphql.Scalars
 import graphql.schema.GraphQLType
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
 
-open class Field {
+abstract class Field {
 
     val name: String
     val label: String
@@ -41,9 +40,7 @@ open class Field {
         propInfo: EntityPropInfo
     ): this(propInfo, mapOf(), mapOf())
 
-    open fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType =
-        Scalars.GraphQLString
+    abstract fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType
 
-    open fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType =
-        Scalars.GraphQLString
+    abstract fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType
 }

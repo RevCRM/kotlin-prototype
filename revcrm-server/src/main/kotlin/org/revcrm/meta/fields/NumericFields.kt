@@ -17,6 +17,9 @@ open class IntegerField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLInt
     }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return Scalars.GraphQLInt
+    }
 }
 
 open class FloatField(
@@ -28,6 +31,9 @@ open class FloatField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLFloat
     }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return Scalars.GraphQLFloat
+    }
 }
 
 open class DecimalField(
@@ -37,6 +43,9 @@ open class DecimalField(
 ) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+        return Scalars.GraphQLBigDecimal
+    }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLBigDecimal
     }
 }

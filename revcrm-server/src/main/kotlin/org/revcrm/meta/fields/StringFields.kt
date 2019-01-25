@@ -21,6 +21,9 @@ open class TextField(
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLString
     }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+        return Scalars.GraphQLString
+    }
 }
 
 open class SelectField(
@@ -30,6 +33,9 @@ open class SelectField(
 ) : Field(propInfo, properties, constraints) {
 
     override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+        return Scalars.GraphQLString
+    }
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
         return Scalars.GraphQLString
     }
 }

@@ -20,7 +20,6 @@ open class EnumField(
             enumBuilder.value(enumValue.toString()) }
         return enumBuilder.build()
     }
-
     override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
         val enumClass = Class.forName(jvmType)
         val enumBuilder = GraphQLEnumType.newEnum()
