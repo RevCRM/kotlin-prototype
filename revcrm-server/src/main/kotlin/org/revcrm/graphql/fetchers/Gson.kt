@@ -18,28 +18,10 @@ var objectIdDeserializer: JsonDeserializer<ObjectId> = object : JsonDeserializer
         return ObjectId(json.asString)
     }
 }
-var localDateDeserializer: JsonDeserializer<LocalDate> = object : JsonDeserializer<LocalDate> {
-    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): LocalDate {
-        return LocalDate.parse(json.asString)
-    }
-}
-var localTimeDeserializer: JsonDeserializer<LocalTime> = object : JsonDeserializer<LocalTime> {
-    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): LocalTime {
-        return LocalTime.parse(json.asString)
-    }
-}
-var localDateTimeDeserializer: JsonDeserializer<LocalDateTime> = object : JsonDeserializer<LocalDateTime> {
-    override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): LocalDateTime {
-        return LocalDateTime.parse(json.asString)
-    }
-}
 
 fun getGson(): Gson {
     return GsonBuilder()
         .registerTypeAdapter(ObjectId::class.java, objectIdDeserializer)
-        .registerTypeAdapter(LocalDate::class.java, localDateDeserializer)
-        .registerTypeAdapter(LocalTime::class.java, localTimeDeserializer)
-        .registerTypeAdapter(LocalDateTime::class.java, localDateTimeDeserializer)
         .create()
 }
 
@@ -47,9 +29,6 @@ fun getGsonForExistingObject(obj: Any): Gson {
     val adapter = ExistingObjectTypeAdapter(obj)
     return GsonBuilder()
         .registerTypeAdapter(obj::class.java, adapter)
-        .registerTypeAdapter(LocalDate::class.java, localDateDeserializer)
-        .registerTypeAdapter(LocalTime::class.java, localTimeDeserializer)
-        .registerTypeAdapter(LocalDateTime::class.java, localDateTimeDeserializer)
         .registerTypeAdapter(ObjectId::class.java, objectIdDeserializer)
         .create()
 }
