@@ -4,7 +4,7 @@ import { IFieldComponentProps } from "./props"
 import { FormContext, IFormContext } from "../../FormView"
 import { IEntityMetadata, IFieldMetadata } from "../../../meta/Metadata"
 import { Field } from "../Field"
-import { Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
+import { Button, Grid, Icon, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
 import { getGridWidthProps } from "../../Grid"
 
 export const EmbeddedEntityListControl =
@@ -41,6 +41,18 @@ export const EmbeddedEntityListControl =
         this.props.onChange(this.entityListData)
     }
 
+    onAddRow = () => {
+        this.entityListData.push({})
+        this.props.onChange(this.entityListData)
+        this.forceUpdate()
+    }
+
+    onDeleteRow = (rowIdx: number) => {
+        this.entityListData.splice(rowIdx, 1)
+        this.props.onChange(this.entityListData)
+        this.forceUpdate()
+    }
+
     render() {
 
         const { loadState, mode } = this.props.form
@@ -57,6 +69,7 @@ export const EmbeddedEntityListControl =
                                     {field.label}
                                 </TableCell>
                             ))}
+                            <TableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -80,6 +93,11 @@ export const EmbeddedEntityListControl =
                                                 {fieldComponent}
                                             </TableCell>
                                         ))}
+                                        <TableCell>
+                                            <IconButton onClick={this.onDeleteRow.bind(this, rowIdx)}>
+                                                <Icon>delete</Icon>
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 </FormContext.Provider>
                             )
@@ -87,6 +105,10 @@ export const EmbeddedEntityListControl =
                         })}
                     </TableBody>
                 </Table>
+                <Button
+                    variant="contained"
+                    onClick={this.onAddRow}
+                >Add Row</Button>
             </Grid>
         )
 

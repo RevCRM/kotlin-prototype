@@ -36,6 +36,15 @@ export const Field = withMetadataContext(withFormContext(
         }
     }
 
+    static getDerivedStateFromProps(props: IFieldProps, state: IFieldState): IFieldState | null {
+        if (state.value != props.form.entityData[props.name]) {
+            return {
+                value: props.form.entityData[props.name]
+            }
+        }
+        return null
+    }
+
     onChange = (value: any, trackValue = true) => {
         this.props.form.onFieldChange(this.field, value)
         if (trackValue)

@@ -43,9 +43,9 @@ export function registerInvoiceViews(ui: UIManager) {
                             label: "Items",
                             component: () => (<>
                                 <Field name="lines" colspan={12}>
-                                    <Field name="item" />
-                                    <Field name="quantity" />
-                                    <Field name="unit_price" />
+                                    <Field name="item" colspan={12} />
+                                    <Field name="quantity" colspan={12} />
+                                    <Field name="unit_price" colspan={12} />
                                 </Field>
                                 <Field name="invoice_total" />
                                 <Field name="invoice_net_total" />
