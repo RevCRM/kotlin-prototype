@@ -22,9 +22,10 @@ fun registerEntityInputObjectType(
 
     entity.fields.forEach { _, field ->
 
-        if (!field.apiEnabled) return@forEach
+        if (!field.apiEnabled || field.readonly)
+            return@forEach
 
-        var fieldType = field.getGraphQLInputType(meta, entity)
+        val fieldType = field.getGraphQLInputType(meta, entity)
 
         val fieldDef = GraphQLInputObjectField.newInputObjectField()
             .name(field.name)

@@ -23,6 +23,7 @@ class EntityFieldInfo(
     val label: String,
     val type: String,
     val nullable: Boolean,
+    val readonly: Boolean,
     val properties: Map<String, String>,
     val constraints: Map<String, String>
 )
@@ -64,6 +65,7 @@ class MetadataTests {
                             label
                             type
                             nullable
+                            readonly
                             properties
                             constraints
                         }
@@ -108,6 +110,7 @@ class MetadataTests {
             assertThat(resultFieldInfo.label).isEqualTo(entityFieldInfo.label)
             assertThat(resultFieldInfo.type).isEqualTo(entityFieldInfo.type)
             assertThat(resultFieldInfo.nullable).isEqualTo(entityFieldInfo.nullable)
+            assertThat(resultFieldInfo.readonly).isEqualTo(entityFieldInfo.readonly)
         }
 
         @Test
