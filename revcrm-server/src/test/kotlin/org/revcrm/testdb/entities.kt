@@ -151,8 +151,13 @@ class TestWithStringList(
 @Entity
 class TestWithReferencedEntity(
     var name: String,
+
     @Reference
-    var otherEntity: TestReferencedEntity?
+    var otherEntity: TestReferencedEntity? = null,
+
+    @Reference(ignoreMissing = true)
+    var maybeMissingEntity: TestReferencedEntity? = null
+
 ) : Base()
 
 @Entity
