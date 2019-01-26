@@ -1,26 +1,39 @@
 package org.revcrm.db
 
 import com.mongodb.MongoClient
-import org.revcrm.config.Config
+import org.revcrm.config.AppConfig
+import org.revcrm.config.DBConfig
 import xyz.morphia.AdvancedDatastore
 import xyz.morphia.Morphia
 
 class DBService {
     private val morphia = Morphia()
-    private lateinit var config: Config
+    private lateinit var config: DBConfig
     private lateinit var client: MongoClient
     private lateinit var datastore: AdvancedDatastore
 
+    val entityContextFIXME = EntityContext(
+        config = AppConfig()
+    )
+
     fun initialise(
-        newConfig: Config
+        newConfig: DBConfig
     ) {
         config = newConfig
         config.entityClasses.forEach { morphia.map(Class.forName(it)) }
 
         client = MongoClient(config.dbUrl)
 
+        // for multi-tenant we'll need a seperate Mapper + Datastore for each client
+        // Mappers contain an instance cache, and datastores obviously have the reference to the appropriate database
         morphia.mapper.options.setStoreEmpties(true)
+
+        // inject context - TODO: sort out multi-user and multi-tenant context
+        morphia.mapper.options.setObjectFactory(EntityCreator(entityContextFIXME))
+
+        // register validator
         morphia.mapper.addInterceptor(EntityValidator(this))
+
         datastore = morphia.createDatastore(client, config.dbName) as AdvancedDatastore
         datastore.ensureIndexes()
     }

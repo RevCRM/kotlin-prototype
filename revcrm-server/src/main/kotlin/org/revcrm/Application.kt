@@ -20,7 +20,7 @@ import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.installKoin
 import org.koin.log.Logger.SLF4JLogger
 import org.revcrm.auth.RevPrincipal
-import org.revcrm.config.Config
+import org.revcrm.config.DBConfig
 import org.revcrm.data.DataLoader
 import org.revcrm.db.DBService
 import org.revcrm.graphql.APIService
@@ -56,7 +56,7 @@ fun Application.main() {
 
     log.info("Loading Configuration...")
     val c = environment.config
-    val config = Config(
+    val config = DBConfig(
         dbUrl = c.property("revcrm.db.url").getString(),
         dbName = c.property("revcrm.db.name").getString(),
         entityClasses = c.property("revcrm.entityClasses").getList(),

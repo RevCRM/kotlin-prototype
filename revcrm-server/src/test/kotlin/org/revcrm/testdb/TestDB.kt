@@ -1,9 +1,9 @@
 package org.revcrm.testdb
 
-import org.revcrm.config.Config
+import org.revcrm.config.DBConfig
 import org.revcrm.db.DBService
 
-val TEST_DB_CONFIG = Config(
+val TEST_DB_CONFIG = DBConfig(
     dbUrl = "127.0.0.1:27017",
     dbName = "revcrm_tests",
     entityClasses = listOf(
