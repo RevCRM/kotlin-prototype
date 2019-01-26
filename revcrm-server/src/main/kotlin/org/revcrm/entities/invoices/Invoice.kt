@@ -3,15 +3,35 @@ package org.revcrm.entities.invoices
 import org.revcrm.annotations.EmbeddedEntity
 import org.revcrm.annotations.Label
 import org.revcrm.entities.Base
+import org.revcrm.entities.BaseEmbedded
 import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 import java.time.LocalDate
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Positive
 import javax.validation.constraints.PositiveOrZero
 import javax.validation.constraints.Size
+
+class TaxRate(
+    val percentage: Double
+) {
+    private val multiplier = BigDecimal(percentage).multiply(BigDecimal(0.01))
+
+    fun getTaxAmount(
+        value: BigDecimal,
+        precision: Int = 2,
+        roundingMode: RoundingMode = RoundingMode.DOWN
+    ): BigDecimal {
+        val mathCtx = MathContext(precision, roundingMode)
+        return value.multiply(multiplier, mathCtx)
+    }
+}
+
+val TAX_RATE = TaxRate(15.0)
 
 @EmbeddedEntity
 class InvoiceLine(
@@ -23,20 +43,30 @@ class InvoiceLine(
     var quantity: BigDecimal,
 
     @Label("Unit Price") @field:PositiveOrZero
-    var unit_price: BigDecimal
+    var unit_price: BigDecimal,
 
-//    @Label("Line Tax") @field:PositiveOrZero
-//    var line_tax: BigDecimal,
-//
-//    @Label("Discount (%)") @field:PositiveOrZero
-//    var discount_percentage: BigDecimal,
-//
-//    @Label("Discount Amount") @field:PositiveOrZero
-//    var discount_amount: BigDecimal
-
-) {
+    @Label("Line Discount") @field:PositiveOrZero
+    var discount_amount: BigDecimal
+)
+    : BaseEmbedded() {
+    @Label("Quantity Price")
     val quantity_price: BigDecimal
-    get() = quantity * unit_price
+        get() = quantity * unit_price
+
+    @Label("Net Total")
+    val net_total: BigDecimal
+        get() = quantity_price - discount_amount
+
+    @Label("Line Tax")
+    val line_tax: BigDecimal
+        get() {
+            val precision = this.context!!.config.getPrecision("InvoiceTotal")
+            return TAX_RATE.getTaxAmount(net_total, precision)
+        }
+
+    @Label("Gross Total")
+    val gross_total: BigDecimal
+        get() = net_total + line_tax
 }
 
 @Entity
