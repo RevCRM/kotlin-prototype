@@ -2,15 +2,18 @@ package org.revcrm.testdb
 
 import org.bson.types.ObjectId
 import org.revcrm.annotations.APIDisabled
+import org.revcrm.annotations.EmbeddedEntity
 import org.revcrm.annotations.Label
 import org.revcrm.annotations.MultiLine
 import org.revcrm.annotations.Validate
 import org.revcrm.annotations.ValidateDelete
 import org.revcrm.db.EntityValidationData
 import org.revcrm.entities.Base
+import org.revcrm.entities.BaseEmbedded
 import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 import xyz.morphia.annotations.Id
+import xyz.morphia.annotations.Reference
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -131,18 +134,30 @@ class TestWithEmbeddedEntityList(
     var options: List<TestEmbeddedEntity>?
 ) : Base()
 
-@Entity
+@EmbeddedEntity
 class TestEmbeddedEntity(
     @field:NotBlank
     var name: String,
     var value: String? = null
-) : Base()
+) : BaseEmbedded()
 
 @Entity
 class TestWithStringList(
     var name: String,
     @field:NotEmpty
     var values: List<String>
+) : Base()
+
+@Entity
+class TestWithReferencedEntity(
+    var name: String,
+    @Reference
+    var otherEntity: TestReferencedEntity?
+) : Base()
+
+@Entity
+class TestReferencedEntity(
+    var label: String
 ) : Base()
 
 @Entity

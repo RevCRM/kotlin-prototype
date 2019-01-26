@@ -15,6 +15,8 @@ val TEST_DB_CONFIG = DBConfig(
         "org.revcrm.testdb.TestWithEmbeddedEntity",
         "org.revcrm.testdb.TestWithEmbeddedEntityList",
         "org.revcrm.testdb.TestWithStringList",
+        "org.revcrm.testdb.TestWithReferencedEntity",
+        "org.revcrm.testdb.TestReferencedEntity",
         "org.revcrm.testdb.TestWithValidatedDelete"
     ),
     embeddedClasses = listOf(
