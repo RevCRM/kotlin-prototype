@@ -23,8 +23,6 @@ fun registerEntityObjectType(
 
     entity.fields.forEach { _, field ->
 
-        if (!field.apiEnabled) return@forEach
-
         var fieldType = field.getGraphQLType(meta, entity)
 
         val fieldDef = GraphQLFieldDefinition.newFieldDefinition()

@@ -9,7 +9,6 @@ abstract class Field {
 
     val name: String
     val label: String
-    val apiEnabled: Boolean
     val jvmType: String
     val nullable: Boolean
     val readonly: Boolean
@@ -27,7 +26,6 @@ abstract class Field {
     ) {
         name = propInfo.name
         label = propInfo.label
-        apiEnabled = propInfo.isApiEnabled
         jvmType = propInfo.jvmType
         nullable = propInfo.isNullable
         readonly = propInfo.isImmutable

@@ -55,7 +55,7 @@ class ValidationTests {
     }
 
     @Test
-    fun `EntityValidationError getValidationErrorData() returns expected data`() {
+    fun `EntityValidationError getValidationErrorData returns expected data`() {
 
         val invalidEntity = TestConstraintsEntity(
             non_nullable_field = "test",

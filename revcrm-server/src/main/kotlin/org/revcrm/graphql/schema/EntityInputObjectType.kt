@@ -22,8 +22,7 @@ fun registerEntityInputObjectType(
 
     entity.fields.forEach { _, field ->
 
-        if (!field.apiEnabled || field.readonly)
-            return@forEach
+        if (field.readonly) return@forEach
 
         val fieldType = field.getGraphQLInputType(meta, entity)
 

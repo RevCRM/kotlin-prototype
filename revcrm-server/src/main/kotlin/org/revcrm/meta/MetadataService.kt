@@ -15,8 +15,6 @@ import org.revcrm.meta.fields.mapListField
 import org.revcrm.meta.fields.mapEmbeddedEntityField
 import org.revcrm.meta.fields.mapStringField
 import org.revcrm.meta.fields.mapTimeField
-import kotlin.reflect.KClass
-import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 
@@ -70,8 +68,11 @@ class MetadataService(
 
         // Get Entity Property Metadata
         klass.memberProperties.forEach { property ->
-            val meta = getEntityField(klass, property)
-            fields.put(meta.name, meta)
+            val propInfo = EntityPropInfo(klass, property)
+            if (propInfo.isApiEnabled) {
+                val meta = getEntityField(propInfo)
+                fields.put(meta.name, meta)
+            }
         }
 
         return Entity(
@@ -83,8 +84,7 @@ class MetadataService(
         )
     }
 
-    private fun getEntityField(klass: KClass<*>, property: KProperty1<*, *>): Field {
-        val propInfo = EntityPropInfo(klass, property)
+    private fun getEntityField(propInfo: EntityPropInfo): Field {
         val entityClassNames = db.getEntityClassNames()
         if (propInfo.isEnum) {
             // TODO: Make this customisable

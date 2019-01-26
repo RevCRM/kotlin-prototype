@@ -73,7 +73,7 @@ fun registerMetadataQueryType(
         .dataFetcher(
             FieldCoordinates.coordinates("EntityMetadata", "fields"),
             PropertyDataFetcher.fetching<List<Field>, Entity> { entity ->
-                entity.fields.values.toList().filter { it.apiEnabled }
+                entity.fields.values.toList()
             }
         )
         .dataFetcher(

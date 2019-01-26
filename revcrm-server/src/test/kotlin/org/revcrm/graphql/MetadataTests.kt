@@ -9,7 +9,6 @@ import org.revcrm.meta.MetadataService
 import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.getTestGson
 import org.revcrm.testdb.numberOfApiDisabledEntities
-import org.revcrm.testdb.testFieldsEntityDisabledFields
 
 class EntityMetadataInfo(
     val name: String,
@@ -101,7 +100,7 @@ class MetadataTests {
             var resultInfo = result.find { it.name == "TestFieldsEntity" }!!
             assertThat(resultInfo.name).isEqualTo(entityInfo.name)
             assertThat(resultInfo.idField).isEqualTo(entityInfo.idField!!.name)
-            assertThat(resultInfo.fields).hasSize(entityInfo.fields.size - testFieldsEntityDisabledFields)
+            assertThat(resultInfo.fields).hasSize(entityInfo.fields.size)
             assertThat(resultInfo.isEmbedded).isFalse()
 
             var entityFieldInfo = entityInfo.fields["string_field"]!!
@@ -111,6 +110,12 @@ class MetadataTests {
             assertThat(resultFieldInfo.type).isEqualTo(entityFieldInfo.type)
             assertThat(resultFieldInfo.nullable).isEqualTo(entityFieldInfo.nullable)
             assertThat(resultFieldInfo.readonly).isEqualTo(entityFieldInfo.readonly)
+        }
+
+        @Test
+        fun `entity metadata does not include @APIDisabled fields`() {
+            var resultInfo = result.find { it.name == "TestFieldsEntity" }!!
+            assertThat(resultInfo.fields.find { it.name == "api_disabled_field" }).isNull()
         }
 
         @Test
