@@ -44,7 +44,7 @@ class EntityUpdateDataFetcher(
             return EntityMutationResult(null, validation)
         }
 
-        val gson = getGsonForExistingObject(record)
+        val gson = getGsonForExistingObject(record, ctx.db.entityContextFIXME)
         val tree = gson.toJsonTree(data)
         record = gson.fromJson(tree, klass)
         var validationData: EntityValidationData? = null

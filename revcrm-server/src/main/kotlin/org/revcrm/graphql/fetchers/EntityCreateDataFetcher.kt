@@ -16,7 +16,7 @@ class EntityCreateDataFetcher(
         val ctx = environment.getContext<APIContext>()
         val klass = Class.forName(entity.className)
 
-        val gson = getGson()
+        val gson = getGson(ctx.db.entityContextFIXME)
         val data = environment.getArgument<Map<Any, Any>>("data")
         val tree = gson.toJsonTree(data)
         val record = gson.fromJson(tree, klass)
