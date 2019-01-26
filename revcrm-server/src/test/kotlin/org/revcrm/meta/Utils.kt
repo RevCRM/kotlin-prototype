@@ -14,8 +14,8 @@ class EmbeddedEntity(
     val value: String
 )
 
-class RelatedEntity(
+class ReferencedEntity(
     @Id
-    val id: ObjectId,
-    val value: String
+    var id: ObjectId,
+    var name: String
 )
