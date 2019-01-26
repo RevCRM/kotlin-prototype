@@ -27,6 +27,7 @@ fun getGson(context: EntityContext): Gson {
     return GsonBuilder()
         .registerTypeAdapterFactory(GsonEntityContextProvider(context))
         .registerTypeAdapter(ObjectId::class.java, objectIdDeserializer)
+        .serializeNulls() // set / read null values (otherwise they are ignored)
         .create()
 }
 
@@ -35,6 +36,7 @@ fun getGsonForExistingObject(obj: Any, context: EntityContext): Gson {
         .registerTypeAdapterFactory(GsonEntityContextProvider(context))
         .registerTypeAdapter(obj::class.java, ExistingObjectTypeAdapter(obj))
         .registerTypeAdapter(ObjectId::class.java, objectIdDeserializer)
+        .serializeNulls() // set / read null values (otherwise they are ignored)
         .create()
 }
 

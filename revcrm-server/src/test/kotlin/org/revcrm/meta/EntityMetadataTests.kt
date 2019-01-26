@@ -79,9 +79,8 @@ class EntityMetadataTests {
         }
 
         @Test
-        fun `returns Base entity fields`() {
+        fun `returns BaseEmbedded entity fields`() {
             assertThat(meta.getEntity("TestEmbeddedEntity")!!.fields)
-                .containsKey("id")
                 .containsKey("created_date")
                 .containsKey("updated_date")
         }
