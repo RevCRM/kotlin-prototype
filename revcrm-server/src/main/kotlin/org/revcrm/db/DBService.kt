@@ -31,8 +31,9 @@ class DBService {
         // inject context - TODO: sort out multi-user and multi-tenant context
         morphia.mapper.options.setObjectFactory(EntityCreator(entityContextFIXME))
 
-        // register validator
+        // register validator and @Stored property interceptor
         morphia.mapper.addInterceptor(EntityValidator(this))
+        morphia.mapper.addInterceptor(EntityStoredPropertyPersister())
 
         datastore = morphia.createDatastore(client, config.dbName) as AdvancedDatastore
         datastore.ensureIndexes()
