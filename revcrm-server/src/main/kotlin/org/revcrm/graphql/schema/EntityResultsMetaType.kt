@@ -8,7 +8,7 @@ import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
 import graphql.schema.PropertyDataFetcher
 
-fun registerResultsMetaType(schema: GraphQLSchema.Builder, code: GraphQLCodeRegistry.Builder) {
+fun registerResultsMetaType(schema: GraphQLSchema.Builder) {
     schema.additionalType(
         GraphQLObjectType.newObject()
             .name("ResultsMeta")
@@ -28,17 +28,4 @@ fun registerResultsMetaType(schema: GraphQLSchema.Builder, code: GraphQLCodeRegi
                     .type(Scalars.GraphQLLong)
             )
             .build())
-    code
-        .dataFetcher(
-            FieldCoordinates.coordinates("ResultsMeta", "limit"),
-            PropertyDataFetcher.fetching<Any>("limit")
-        )
-        .dataFetcher(
-            FieldCoordinates.coordinates("ResultsMeta", "offset"),
-            PropertyDataFetcher.fetching<Any>("offset")
-        )
-        .dataFetcher(
-            FieldCoordinates.coordinates("ResultsMeta", "totalCount"),
-            PropertyDataFetcher.fetching<Any>("totalCount")
-        )
 }

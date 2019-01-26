@@ -1,6 +1,7 @@
 package org.revcrm.meta.fields
 
-import graphql.schema.GraphQLType
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLOutputType
 import org.revcrm.graphql.types.GraphQLDate
 import org.revcrm.graphql.types.GraphQLDateTime
 import org.revcrm.graphql.types.GraphQLTime
@@ -14,10 +15,10 @@ open class DateTimeField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return GraphQLDateTime
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return GraphQLDateTime
     }
 }
@@ -28,10 +29,10 @@ open class DateField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return GraphQLDate
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return GraphQLDate
     }
 }
@@ -42,10 +43,10 @@ open class TimeField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return GraphQLTime
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return GraphQLTime
     }
 }

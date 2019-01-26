@@ -1,7 +1,8 @@
 package org.revcrm.meta.fields
 
 import graphql.Scalars
-import graphql.schema.GraphQLType
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLOutputType
 import org.revcrm.annotations.MultiLine
 import org.revcrm.annotations.SelectionList
 import org.revcrm.meta.Entity
@@ -18,10 +19,10 @@ open class TextField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return Scalars.GraphQLString
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return Scalars.GraphQLString
     }
 }
@@ -32,10 +33,10 @@ open class SelectField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return Scalars.GraphQLString
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return Scalars.GraphQLString
     }
 }

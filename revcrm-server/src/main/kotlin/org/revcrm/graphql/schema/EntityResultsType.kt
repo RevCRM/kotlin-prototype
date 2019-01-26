@@ -13,8 +13,7 @@ import org.revcrm.meta.Entity
 fun registerEntityResultsType(
     entity: Entity,
     resultsTypeName: String,
-    schema: GraphQLSchema.Builder,
-    code: GraphQLCodeRegistry.Builder
+    schema: GraphQLSchema.Builder
 ) {
     schema.additionalType(GraphQLObjectType.newObject()
         .name(resultsTypeName)
@@ -29,14 +28,4 @@ fun registerEntityResultsType(
                 .type(GraphQLTypeReference("ResultsMeta"))
         )
         .build())
-
-    code
-        .dataFetcher(
-            FieldCoordinates.coordinates(resultsTypeName, "results"),
-            PropertyDataFetcher.fetching<Any>("results")
-        )
-        .dataFetcher(
-            FieldCoordinates.coordinates(resultsTypeName, "meta"),
-            PropertyDataFetcher.fetching<Any>("meta")
-        )
 }

@@ -1,6 +1,7 @@
 package org.revcrm.meta.fields
 
-import graphql.schema.GraphQLType
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLTypeReference
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
@@ -12,11 +13,11 @@ open class EmbeddedEntityField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         val relatedEntity = constraints.get("Entity")!!
         return GraphQLTypeReference(relatedEntity)
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         val relatedEntity = constraints.get("Entity")!! + "Input"
         return GraphQLTypeReference(relatedEntity)
     }

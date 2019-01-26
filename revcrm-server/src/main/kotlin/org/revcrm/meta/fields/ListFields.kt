@@ -1,7 +1,9 @@
 package org.revcrm.meta.fields
 
 import graphql.Scalars
+import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLList
+import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLType
 import graphql.schema.GraphQLTypeReference
 import java.lang.reflect.ParameterizedType
@@ -16,10 +18,10 @@ open class StringListField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return GraphQLList(Scalars.GraphQLString)
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return GraphQLList(Scalars.GraphQLString)
     }
 }
@@ -30,11 +32,11 @@ open class EmbeddedEntityListField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         val relatedEntity = constraints.get("Entity")!!
         return GraphQLList(GraphQLTypeReference(relatedEntity))
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         val relatedEntity = constraints.get("Entity")!! + "Input"
         return GraphQLList(GraphQLTypeReference(relatedEntity))
     }

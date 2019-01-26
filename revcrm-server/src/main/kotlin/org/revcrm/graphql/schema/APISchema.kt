@@ -19,7 +19,7 @@ class APISchema(private val meta: MetadataService) {
             .name("Query")
         val mutationType = GraphQLObjectType.newObject()
             .name("Mutation")
-        registerResultsMetaType(schema, code)
+        registerResultsMetaType(schema)
         registerMutationResultValidationType(schema, code)
         registerEntityDeleteResultType(schema)
         registerMetadataQueryType(schema, code, queryType)
@@ -29,8 +29,8 @@ class APISchema(private val meta: MetadataService) {
          */
         val embeddedEntities = meta.getEmbeddedEntities()
         embeddedEntities.forEach { entity ->
-            registerEntityObjectType(meta, entity, schema, code)
-            registerEntityInputObjectType(meta, entity, schema, code)
+            registerEntityObjectType(meta, entity, schema)
+            registerEntityInputObjectType(meta, entity, schema)
         }
 
         /**
@@ -40,11 +40,13 @@ class APISchema(private val meta: MetadataService) {
         entities.forEach { entity ->
 
             val resultsTypeName = entity.name + "Results"
-            registerEntityObjectType(meta, entity, schema, code)
-            registerEntityResultsType(entity, resultsTypeName, schema, code)
+            registerEntityObjectType(meta, entity, schema)
+            registerEntityResultsType(entity, resultsTypeName, schema)
             registerEntityQueryField(queryType, entity, resultsTypeName, code)
 
-            registerEntityInputObjectType(meta, entity, schema, code)
+            registerEntityInputObjectType(meta, entity, schema)
+            if (!entity.isEmbedded)
+                registerEntityReferenceType(meta, entity, schema)
             registerEntityMutations(mutationType, entity, schema, code)
         }
 

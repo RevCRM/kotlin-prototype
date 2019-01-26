@@ -14,8 +14,7 @@ import org.revcrm.meta.MetadataService
 fun registerEntityObjectType(
     meta: MetadataService,
     entity: Entity,
-    schema: GraphQLSchema.Builder,
-    code: GraphQLCodeRegistry.Builder
+    schema: GraphQLSchema.Builder
 ) {
 
     val entityTypeBuilder = GraphQLObjectType.newObject()
@@ -28,13 +27,8 @@ fun registerEntityObjectType(
         val fieldDef = GraphQLFieldDefinition.newFieldDefinition()
             .name(field.name)
 
-        code.dataFetcher(
-            FieldCoordinates.coordinates(entity.name, field.name),
-            PropertyDataFetcher.fetching<Any>(field.name)
-        )
-
         if (field.nullable) {
-            fieldDef.type(fieldType as GraphQLOutputType)
+            fieldDef.type(fieldType)
         } else {
             fieldDef.type(GraphQLNonNull(fieldType))
         }

@@ -1,7 +1,8 @@
 package org.revcrm.meta.fields
 
 import graphql.schema.GraphQLEnumType
-import graphql.schema.GraphQLType
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLOutputType
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
@@ -12,7 +13,7 @@ open class EnumField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         val enumClass = Class.forName(jvmType)
         val enumBuilder = GraphQLEnumType.newEnum()
             .name(enumClass.simpleName)
@@ -20,7 +21,7 @@ open class EnumField(
             enumBuilder.value(enumValue.toString()) }
         return enumBuilder.build()
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         val enumClass = Class.forName(jvmType)
         val enumBuilder = GraphQLEnumType.newEnum()
             .name(enumClass.simpleName + "Input")

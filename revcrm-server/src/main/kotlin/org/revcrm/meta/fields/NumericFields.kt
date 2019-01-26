@@ -1,6 +1,8 @@
 package org.revcrm.meta.fields
 
 import graphql.Scalars
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLType
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
@@ -14,10 +16,10 @@ open class IntegerField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return Scalars.GraphQLInt
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return Scalars.GraphQLInt
     }
 }
@@ -28,10 +30,10 @@ open class FloatField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return Scalars.GraphQLFloat
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return Scalars.GraphQLFloat
     }
 }
@@ -42,10 +44,10 @@ open class DecimalField(
     constraints: Map<String, String> = mapOf()
 ) : Field(propInfo, properties, constraints) {
 
-    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType {
         return Scalars.GraphQLBigDecimal
     }
-    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType {
+    override fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType {
         return Scalars.GraphQLBigDecimal
     }
 }

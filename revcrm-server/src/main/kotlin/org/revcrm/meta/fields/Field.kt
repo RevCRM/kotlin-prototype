@@ -1,6 +1,7 @@
 package org.revcrm.meta.fields
 
-import graphql.schema.GraphQLType
+import graphql.schema.GraphQLInputType
+import graphql.schema.GraphQLOutputType
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService
@@ -38,7 +39,7 @@ abstract class Field {
         propInfo: EntityPropInfo
     ): this(propInfo, mapOf(), mapOf())
 
-    abstract fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLType
+    abstract fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType
 
-    abstract fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLType
+    abstract fun getGraphQLInputType(meta: MetadataService, entity: Entity): GraphQLInputType
 }
