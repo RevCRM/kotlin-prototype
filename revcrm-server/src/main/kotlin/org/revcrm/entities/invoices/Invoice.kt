@@ -2,12 +2,12 @@ package org.revcrm.entities.invoices
 
 import org.revcrm.annotations.EmbeddedEntity
 import org.revcrm.annotations.Label
+import org.revcrm.annotations.Stored
 import org.revcrm.entities.Base
 import org.revcrm.entities.BaseEmbedded
 import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
 import java.math.BigDecimal
-import java.math.MathContext
 import java.math.RoundingMode
 import java.time.LocalDate
 import javax.validation.Valid
@@ -23,11 +23,10 @@ class TaxRate(
 
     fun getTaxAmount(
         value: BigDecimal,
-        precision: Int = 2,
+        decimalScale: Int = 2,
         roundingMode: RoundingMode = RoundingMode.DOWN
     ): BigDecimal {
-        val mathCtx = MathContext(precision, roundingMode)
-        return value.multiply(multiplier, mathCtx)
+        return (value * multiplier).setScale(decimalScale, roundingMode)
     }
 }
 
@@ -49,23 +48,31 @@ class InvoiceLine(
     var discount_amount: BigDecimal
 )
     : BaseEmbedded() {
+
     @Label("Quantity Price")
+    @Stored
     val quantity_price: BigDecimal
         get() = quantity * unit_price
 
     @Label("Net Total")
+    @Stored
     val net_total: BigDecimal
-        get() = quantity_price - discount_amount
+        get() {
+            val scale = this.context!!.config.getDecimalScale("InvoiceTotal")
+            return (quantity_price - discount_amount).setScale(scale, RoundingMode.UP)
+        }
 
     @Label("Line Tax")
+    @Stored
     val line_tax: BigDecimal
         get() {
-            val precision = this.context!!.config.getPrecision("InvoiceTotal")
+            val precision = this.context!!.config.getDecimalScale("InvoiceTotal")
             return TAX_RATE.getTaxAmount(net_total, precision)
         }
 
     @Label("Gross Total")
-    val gross_total: BigDecimal
+    @Stored
+    val line_total: BigDecimal
         get() = net_total + line_tax
 }
 
@@ -86,19 +93,33 @@ class Invoice(
     var invoice_currency: String,
 
     @Embedded
-    @Label("Invoice Lines") @field:Size(min = 1) @field:Valid
-    var lines: List<InvoiceLine>,
+    @Label("Invoice Lines")
+    @field:Size(min = 1) @field:Valid
+    var lines: List<InvoiceLine>
+)
+    : Base() {
 
-    @Label("Invoice Total") @field:PositiveOrZero
-    var invoice_total: BigDecimal,
+    @Label("Invoice Net Total")
+    @Stored
+    val invoice_net_total: BigDecimal
+        get() = lines.map { it.net_total }
+            .fold(BigDecimal.ZERO, BigDecimal::add)
 
-    @Label("Invoice Net Total") @field:PositiveOrZero
-    var invoice_net_total: BigDecimal,
+    @Label("Invoice Tax Total")
+    @Stored
+    val invoice_tax_total: BigDecimal
+        get() = lines.map { it.line_tax }
+            .fold(BigDecimal.ZERO, BigDecimal::add)
 
-    @Label("Invoice Tax Total") @field:PositiveOrZero
-    var invoice_tax_total: BigDecimal,
+    @Label("Total Discount")
+    @Stored
+    val invoice_discount_amount: BigDecimal
+        get() = lines.map { it.discount_amount }
+            .fold(BigDecimal.ZERO, BigDecimal::add)
 
-    @Label("Discount Amount") @field:PositiveOrZero
-    var discount_amount: BigDecimal
-
-) : Base()
+    @Label("Invoice Total")
+    @Stored
+    val invoice_total: BigDecimal
+        get() = lines.map { it.line_total }
+            .fold(BigDecimal.ZERO, BigDecimal::add)
+}

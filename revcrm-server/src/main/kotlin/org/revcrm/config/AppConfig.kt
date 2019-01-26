@@ -3,16 +3,16 @@ package org.revcrm.config
 import java.lang.IllegalArgumentException
 
 class AppConfig {
-    private val decimalPrecision: MutableMap<String, Int> = mutableMapOf(
+    private val decimalScale: MutableMap<String, Int> = mutableMapOf(
         "InvoiceUnitPrice" to 2,
         "InvoiceQuantity" to 2,
         "InvoiceTotal" to 2
     )
 
-    fun getPrecision(precisionName: String): Int {
-        val precision = decimalPrecision.get(precisionName)
-        if (precision == null)
-            throw IllegalArgumentException("Precision name '$precisionName' is not configured.")
-        return precision
+    fun getDecimalScale(name: String): Int {
+        val scale = decimalScale.get(name)
+        if (scale == null)
+            throw IllegalArgumentException("Decimal Scale '$name' is not configured.")
+        return scale
     }
 }

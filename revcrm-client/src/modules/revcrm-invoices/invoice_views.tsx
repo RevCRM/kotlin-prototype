@@ -47,11 +47,14 @@ export function registerInvoiceViews(ui: UIManager) {
                                     <Field name="quantity" colspan={12} />
                                     <Field name="unit_price" colspan={12} />
                                     <Field name="discount_amount" colspan={12} />
+                                    <Field name="net_total" colspan={12} />
+                                    <Field name="line_tax" colspan={12} />
+                                    <Field name="line_total" colspan={12} />
                                 </Field>
-                                <Field name="invoice_total" />
+                                <Field name="invoice_discount_amount" />
                                 <Field name="invoice_net_total" />
                                 <Field name="invoice_tax_total" />
-                                <Field name="discount_amount" />
+                                <Field name="invoice_total" />
                             </>)
                         },
                     ]} />
