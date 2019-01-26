@@ -17,6 +17,7 @@ export function registerInvoiceViews(ui: UIManager) {
                 entity="Invoice"
                 title="Invoices"
                 showFields={[
+                    "account",
                     "invoice_number",
                     "invoice_date",
                     "invoice_total",

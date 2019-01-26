@@ -5,8 +5,10 @@ import org.revcrm.annotations.Label
 import org.revcrm.annotations.Stored
 import org.revcrm.entities.Base
 import org.revcrm.entities.BaseEmbedded
+import org.revcrm.entities.accounts.Account
 import xyz.morphia.annotations.Embedded
 import xyz.morphia.annotations.Entity
+import xyz.morphia.annotations.Reference
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.time.LocalDate
@@ -79,9 +81,9 @@ class InvoiceLine(
 @Entity
 class Invoice(
 
-//    @Reference
-//    @Label("Account")
-//    var account: Account,
+    @Label("Account")
+    @Reference
+    var account: Account,
 
     @Label("Invoice Number")
     var invoice_number: String?,

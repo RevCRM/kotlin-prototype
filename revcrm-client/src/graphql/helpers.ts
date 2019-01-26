@@ -5,6 +5,9 @@ export interface IFieldSelections {
     [fieldName: string]: boolean | IFieldSelections
 }
 
+// TODO: "record_name" field name should probably come from an entity property
+export const RECORD_NAME_FIELD = "record_name"
+
 /**
  * Takes an object in the form:
  * {
@@ -56,10 +59,21 @@ export function getFieldSelections(meta: IMetadataContext, entity: IEntityMetada
         if (
             field.type == "EmbeddedEntityField"
             || field.type == "EmbeddedEntityListField"
+            || field.type == "ReferencedEntityField"
         ) {
             const relatedEntityName = field.constraints["Entity"]
             const relatedEntity = meta.getEntity(relatedEntityName)!
-            selections[fieldName] = getFieldSelections(meta, relatedEntity)
+
+            if (field.type == "ReferencedEntityField") {
+                const relatedFields = [relatedEntity.idField]
+                const recordNameField = relatedEntity.fields.find(f => f.name == RECORD_NAME_FIELD)
+                if (recordNameField)
+                    relatedFields.push(recordNameField.name)
+                selections[fieldName] = getFieldSelections(meta, relatedEntity, relatedFields)
+            }
+            else {
+                selections[fieldName] = getFieldSelections(meta, relatedEntity)
+            }
         }
         else {
             selections[fieldName] = true
