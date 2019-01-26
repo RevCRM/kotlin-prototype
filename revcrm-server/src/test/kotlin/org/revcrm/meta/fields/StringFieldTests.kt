@@ -31,8 +31,7 @@ class EntityWithSelectField(
 class StringFieldTests {
 
     val mockEntity = Entity(
-        name = "mock", isApiEnabled = true,
-        className = "Mock", fields = mapOf(),
+        name = "mock", className = "Mock", fields = mapOf(),
         isEmbedded = false
     )
 

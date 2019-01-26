@@ -16,7 +16,6 @@ import kotlin.reflect.jvm.javaGetter
  * Takes a KClass and a property name and extracts various
  * metadata needed by MetadataService and IFields
  */
-@Embedded
 class EntityPropInfo(
     val klass: KClass<*>,
     val property: KProperty1<*, *>

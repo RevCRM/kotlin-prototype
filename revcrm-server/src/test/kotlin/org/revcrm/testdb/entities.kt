@@ -22,8 +22,6 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Size
 
-val numberOfApiDisabledEntities = 1
-
 enum class EnumFieldOptions {
     OPTION1,
     OPTION2,

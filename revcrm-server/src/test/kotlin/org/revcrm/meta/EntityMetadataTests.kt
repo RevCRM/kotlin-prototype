@@ -26,12 +26,6 @@ class EntityMetadataTests {
         }
 
         @Test
-        fun `apiEnabled defaults to true`() {
-            assertThat(meta.getEntity("TestFieldsEntity")!!.isApiEnabled).isTrue()
-            assertThat(meta.getEntity("TestEntity2")!!.isApiEnabled).isTrue()
-        }
-
-        @Test
         fun `entity name matches name`() {
             assertThat(meta.getEntity("TestFieldsEntity")!!.name).isEqualTo("TestFieldsEntity")
             assertThat(meta.getEntity("TestEntity2")!!.name).isEqualTo("TestEntity2")
@@ -104,7 +98,7 @@ class EntityMetadataTests {
 
         @Test
         fun `entities annotated with @APIDisabled have apiEnabled = false`() {
-            assertThat(meta.getEntity("SensitiveEntity")!!.isApiEnabled).isFalse()
+            assertThat(meta.getEntity("SensitiveEntity")).isNull()
         }
     }
 }

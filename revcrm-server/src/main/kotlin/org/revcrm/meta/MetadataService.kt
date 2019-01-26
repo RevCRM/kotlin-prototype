@@ -1,6 +1,5 @@
 package org.revcrm.meta
 
-import org.revcrm.annotations.APIDisabled
 import org.revcrm.db.DBService
 import org.revcrm.meta.fields.Field
 import org.revcrm.meta.fields.mapBooleanField
@@ -15,13 +14,16 @@ import org.revcrm.meta.fields.mapListField
 import org.revcrm.meta.fields.mapEmbeddedEntityField
 import org.revcrm.meta.fields.mapStringField
 import org.revcrm.meta.fields.mapTimeField
-import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 
 typealias JvmTypeMapper = (
     (meta: MetadataService, propInfo: EntityPropInfo) -> Field
 )
 
+/**
+ * Responsible for inspecting all classes registered with DBService and extracting field metadata to be
+ * supplied to clients via the API
+ */
 class MetadataService(
     private val db: DBService
 ) {
@@ -47,28 +49,33 @@ class MetadataService(
     }
 
     fun initialise() {
+
         db.getEmbeddedClassNames().forEach { className ->
-            val entityMeta = getEntityMetadata(className, true)
-            addEntity(entityMeta.name, entityMeta)
-        }
-        db.getEntityClassNames().forEach { className ->
-            val entityMeta = getEntityMetadata(className, false)
-            if (entityMeta.idField == null) {
-                throw Error("Id field for entity '${entityMeta.name}' is not defined.")
+            val entityInfo = EntityInfo(className)
+            if (entityInfo.isApiEnabled) {
+                val entityMeta = getEntityMetadata(entityInfo, true)
+                addEntity(entityMeta.name, entityMeta)
             }
-            addEntity(entityMeta.name, entityMeta)
+        }
+
+        db.getEntityClassNames().forEach { className ->
+            val entityInfo = EntityInfo(className)
+            if (entityInfo.isApiEnabled) {
+                val entityMeta = getEntityMetadata(entityInfo, false)
+                if (entityMeta.idField == null) {
+                    throw Error("Id field for entity '${entityMeta.name}' is not defined.")
+                }
+                addEntity(entityMeta.name, entityMeta)
+            }
         }
     }
 
-    fun getEntityMetadata(className: String, isEmbedded: Boolean): Entity {
-        val klass = Class.forName(className).kotlin
-        val apiEnabled = (klass.findAnnotation<APIDisabled>() == null)
-
+    fun getEntityMetadata(entityInfo: EntityInfo, isEmbedded: Boolean): Entity {
         val fields = mutableMapOf<String, Field>()
 
         // Get Entity Property Metadata
-        klass.memberProperties.forEach { property ->
-            val propInfo = EntityPropInfo(klass, property)
+        entityInfo.klass.memberProperties.forEach { property ->
+            val propInfo = EntityPropInfo(entityInfo.klass, property)
             if (propInfo.isApiEnabled) {
                 val meta = getEntityField(propInfo)
                 fields.put(meta.name, meta)
@@ -76,9 +83,8 @@ class MetadataService(
         }
 
         return Entity(
-            name = klass.simpleName!!,
-            isApiEnabled = apiEnabled,
-            className = className,
+            name = entityInfo.entityName,
+            className = entityInfo.className,
             fields = fields.toMap(),
             isEmbedded = isEmbedded
         )

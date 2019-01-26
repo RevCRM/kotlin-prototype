@@ -6,7 +6,6 @@ class Entity(
     val name: String,
     val className: String,
     val fields: Map<String, Field>,
-    val isApiEnabled: Boolean,
     val isEmbedded: Boolean
 ) {
     val idField: Field?

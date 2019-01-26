@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.revcrm.meta.MetadataService
 import org.revcrm.testdb.TestDB
 import org.revcrm.testdb.getTestGson
-import org.revcrm.testdb.numberOfApiDisabledEntities
 
 class EntityMetadataInfo(
     val name: String,
@@ -79,13 +78,12 @@ class MetadataTests {
         @Test
         fun `returns metadata for all registered entities`() {
             assertThat(entities.size).isGreaterThan(0)
-            assertThat(result).hasSize(entities.size - numberOfApiDisabledEntities)
+            assertThat(result).hasSize(entities.size)
         }
 
         @Test
         fun `does not include entities where apiEnabled = false`() {
-            val disabledEntity = entities.find { it.isApiEnabled == false }!!
-            assertThat(result).noneMatch { it.name == disabledEntity.name }
+            assertThat(result).noneMatch { it.name == "SensitiveEntity" }
         }
 
         @Test
