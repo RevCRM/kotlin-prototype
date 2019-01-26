@@ -3,7 +3,6 @@ package org.revcrm.meta.fields
 import graphql.Scalars
 import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLType
 import org.revcrm.meta.Entity
 import org.revcrm.meta.EntityPropInfo
 import org.revcrm.meta.MetadataService

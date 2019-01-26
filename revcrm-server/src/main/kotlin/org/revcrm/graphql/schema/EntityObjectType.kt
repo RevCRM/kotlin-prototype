@@ -1,13 +1,9 @@
 package org.revcrm.graphql.schema
 
-import graphql.schema.FieldCoordinates
-import graphql.schema.GraphQLCodeRegistry
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLOutputType
 import graphql.schema.GraphQLSchema
-import graphql.schema.PropertyDataFetcher
 import org.revcrm.meta.Entity
 import org.revcrm.meta.MetadataService
 

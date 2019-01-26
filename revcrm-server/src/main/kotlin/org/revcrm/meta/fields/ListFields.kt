@@ -4,7 +4,6 @@ import graphql.Scalars
 import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLList
 import graphql.schema.GraphQLOutputType
-import graphql.schema.GraphQLType
 import graphql.schema.GraphQLTypeReference
 import java.lang.reflect.ParameterizedType
 import org.revcrm.meta.Entity

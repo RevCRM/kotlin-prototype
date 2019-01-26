@@ -2,7 +2,6 @@ package org.revcrm.graphql.schema
 
 import graphql.schema.GraphQLInputObjectField
 import graphql.schema.GraphQLInputObjectType
-import graphql.schema.GraphQLInputType
 import graphql.schema.GraphQLSchema
 import org.revcrm.meta.Entity
 import org.revcrm.meta.MetadataService

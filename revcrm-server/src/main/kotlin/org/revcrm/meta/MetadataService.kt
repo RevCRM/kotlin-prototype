@@ -12,6 +12,7 @@ import org.revcrm.meta.fields.mapIDField
 import org.revcrm.meta.fields.mapIntegerField
 import org.revcrm.meta.fields.mapListField
 import org.revcrm.meta.fields.mapEmbeddedEntityField
+import org.revcrm.meta.fields.mapReferencedEntityField
 import org.revcrm.meta.fields.mapStringField
 import org.revcrm.meta.fields.mapTimeField
 import kotlin.reflect.full.memberProperties
@@ -92,12 +93,13 @@ class MetadataService(
 
     private fun getEntityField(propInfo: EntityPropInfo): Field {
         val entityClassNames = db.getEntityClassNames()
+        // TODO: Make this more customisable
         if (propInfo.isEnum) {
-            // TODO: Make this customisable
             return mapEnumField(this, propInfo)
         } else if (propInfo.isEmbedded && db.classIsEmbeddedEntity(propInfo.jvmType)) {
-            // TODO: Make this customisable
             return mapEmbeddedEntityField(this, propInfo)
+        } else if (propInfo.isReference && db.classIsEntity(propInfo.jvmType)) {
+            return mapReferencedEntityField(this, propInfo)
         } else if (!jvmTypeMappers.containsKey(propInfo.jvmType))
             throw Error("Error mapping property '${propInfo.name}'. No scalar type mapper registered for '${propInfo.jvmType}'." +
                 " You must use @Embedded or @Reference for related entity properties.")
