@@ -5,6 +5,8 @@ import { getEntityQuery, IEntityQueryResults } from "../../graphql/queries"
 import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
 import { DocumentNode } from "graphql"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
+import {Field} from "./fields/Field"
+import {FormContext, IFormContext} from "./FormView"
 
 export const DEFAULT_LIMIT = 20
 
@@ -41,7 +43,6 @@ export interface IListViewProps extends
     WithStyles<typeof styles> {
     entity: string
     title?: string
-    fields: string[]
     where?: object
     detailView?: string
 }
@@ -54,8 +55,10 @@ export interface IListViewState {
 export const ListView = withStyles(styles)(withMetadataContext(withViewManagerContext(
     class extends React.Component<IListViewProps, IListViewState> {
         entityMeta: IEntityMetadata
-        selectedFields: IFieldMetadata[]
         query: DocumentNode
+        idField: IFieldMetadata
+        listFields: IFieldMetadata[] = []
+        fieldComponents: React.ReactChild[]
 
         constructor(props: any) {
             super(props)
@@ -67,16 +70,24 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
             // TODO: This should neither be synchronous nor assume getEntity() returns an entity!
             this.entityMeta = this.props.meta.getEntity(this.props.entity)!
-            this.selectedFields = this.props.fields.map(fieldName => {
-                const match = this.entityMeta.fields.find(field => field.name == fieldName)
-                if (!match) throw new Error(`Field '${fieldName}' does not exist on entity '${this.entityMeta.name}'`)
-                return match
-            })
 
-            const fieldNames = [...this.props.fields]
-            if (!fieldNames.includes("id")) {
-                fieldNames.push("id")
-            }
+            this.fieldComponents = React.Children.toArray(this.props.children)
+                .filter(child => {
+                    if (typeof child == "object" && child.type == Field) {
+                        const field = this.entityMeta.fields.find(
+                            f => f.name == child.props.name)
+                        if (field) {
+                            this.listFields.push(field)
+                            return true
+                        }
+                    }
+                    return false
+                })
+
+            this.idField = this.entityMeta.fields.find(f => f.name == this.entityMeta.idField)!
+
+            const fieldNames = this.listFields.map(f => f.name)
+            fieldNames.unshift(this.idField.name)
 
             this.query = getEntityQuery({
                 meta: this.props.meta,
@@ -166,29 +177,43 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
                                             <TableCell padding="checkbox">
                                                 <Checkbox />
                                             </TableCell>
-                                            {this.selectedFields.map((field) =>
+                                            {this.listFields.map((field) =>
                                                 <TableCell key={field.name} className={this.props.classes.listHeaderCell}>
                                                     {field.label}
                                                 </TableCell>)}
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {results.map((row: any, rowIdx: number) =>
-                                            <TableRow
-                                                key={rowIdx}
-                                                hover className={this.props.classes.listRow}
-                                                onClick={() => this.onRowClicked(row)}
-                                            >
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox />
-                                                </TableCell>
-                                                {this.selectedFields.map((field) =>
-                                                    <TableCell key={field.name} className={this.props.classes.listCell}>
-                                                        {row[field.name]}
-                                                    </TableCell>
-                                                )}
-                                            </TableRow>
-                                        )}
+                                        {results.map((row: any, rowIdx: number) => {
+
+                                            const formContext: IFormContext = {
+                                                loadState: "loaded",
+                                                entity: this.props.entity,
+                                                mode: "view",
+                                                entityData: row,
+                                                dirtyFields: [],
+                                                onFieldChange: () => null,
+                                                save: () => null as any
+                                            }
+
+                                            return (
+                                                <FormContext.Provider key={rowIdx} value={formContext}>
+                                                    <TableRow
+                                                        hover className={this.props.classes.listRow}
+                                                        onClick={() => this.onRowClicked(row)}
+                                                    >
+                                                        <TableCell padding="checkbox">
+                                                            <Checkbox/>
+                                                        </TableCell>
+                                                        {this.fieldComponents.map((fieldComponent, cellIdx) => (
+                                                            <TableCell key={cellIdx} className={this.props.classes.listCell}>
+                                                                {fieldComponent}
+                                                            </TableCell>
+                                                        ))}
+                                                    </TableRow>
+                                                </FormContext.Provider>
+                                            )
+                                        })}
                                     </TableBody>
                                 </Table>
                             </div>

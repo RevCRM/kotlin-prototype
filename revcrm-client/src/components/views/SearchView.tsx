@@ -4,6 +4,7 @@ import { FilterBar } from "./FilterBar"
 import { ListView } from "./ListView"
 import { IMetadataContextProp, withMetadataContext } from "../meta/Metadata"
 import { IViewManagerContextProp, withViewManagerContext } from "./ViewManager"
+import {Field} from "./fields/Field"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -61,10 +62,13 @@ export const SearchView = withStyles(styles)(withMetadataContext(withViewManager
                         <ListView
                             entity={this.props.entity}
                             title={this.props.title}
-                            fields={this.props.showFields}
                             where={this.state.where}
                             detailView={this.props.detailView}
-                        />
+                        >
+                            {this.props.showFields.map(field => (
+                                <Field name={field} />
+                            ))}
+                        </ListView>
                     </div>
                 </div>
             )
