@@ -1,6 +1,4 @@
 
-import { IMenuItem } from "./components/nav/types"
-
 export interface IPerspective {
     id: string
     title: string
@@ -10,6 +8,7 @@ export interface IPerspective {
         [viewName: string]: {
             title: string
             viewId: string
+            actions?: IAction[]
         };
     }
     defaultView: string
@@ -19,6 +18,27 @@ export interface IView {
     id: string
     entity: string | null
     component: React.ComponentType
+}
+
+export interface IMenuItem {
+    id: string
+    label: string
+    icon: string
+    subItems?: IMenuSubItem[]
+}
+
+export interface IMenuSubItem {
+    label: string
+    perspective: string
+    viewName?: string
+}
+
+export interface IAction {
+    label: string
+    icon: string
+    type: "open_view"  // there will most likely be more types in future
+    perspective: string
+    viewName: string
 }
 
 /**

@@ -4,8 +4,7 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import { Divider, createStyles, withStyles, WithStyles, Icon, Collapse, Typography } from "@material-ui/core"
-import { IMenuItem, IMenuSubItem } from "./types"
-import { UI } from "../../UIManager"
+import { IMenuItem, IMenuSubItem, UI } from "../../UIManager"
 import { withViewManagerContext, IViewManagerContextProp } from "../views/ViewManager"
 
 const styles = createStyles({

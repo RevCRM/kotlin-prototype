@@ -12,7 +12,20 @@ export function register(ui: UIManager) {
         entity: "Invoices",
         views: {
             list: { viewId: "invoices_list", title: "Invoices" },
-            form: { viewId: "invoices_form", title: "Invoice" },
+            form: {
+                viewId: "invoices_form",
+                title: "Invoice",
+                actions: [
+                    {
+                        label: "Print",
+                        icon: "print",
+                        type: "open_view",
+                        perspective: "invoices",
+                        viewName: "print"
+                    }
+                ]
+            },
+            print: { viewId: "invoices_print", title: "Print Invoice" }
         },
         defaultView: "list"
     })

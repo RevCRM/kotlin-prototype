@@ -1,7 +1,7 @@
 
 import * as React from "react"
 import { IViewContext } from "./types"
-import { IPerspective, IView, UI } from "../../UIManager"
+import { IAction, IPerspective, IView, UI } from "../../UIManager"
 import { History, Location, Action } from "history"
 import { Omit } from "../../types"
 import { buildQueryString, queryStringToObject } from "../../utils/urls"
@@ -19,6 +19,7 @@ export interface IViewManagerContext {
     context: IViewContext
 
     changePerspective(perspectiveId: string, viewId?: string, context?: IViewContext): void
+    runAction(action: IAction): void
 }
 
 export interface IViewManagerProps {
@@ -101,11 +102,19 @@ export class ViewManager extends React.Component<IViewManagerProps, IViewManager
         this.props.history.push(url)
     }
 
+    // TODO: Move this to an ActionManager, or something :)
+    runAction = (action: IAction) => {
+        if (action.type == "open_view") {
+            this.changePerspective(action.perspective, action.viewName, this.state.context)
+        }
+    }
+
     render() {
         const ctx: IViewManagerContext = {
             history: this.props.history,
             ...this.state,
-            changePerspective: this.changePerspective
+            changePerspective: this.changePerspective,
+            runAction: this.runAction
         }
         return (
             <ViewManagerContext.Provider value={ctx}>
