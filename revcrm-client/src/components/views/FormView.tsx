@@ -2,7 +2,7 @@
 import * as React from "react"
 import Grid from "@material-ui/core/Grid"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
-import { Theme, createStyles, Omit, Paper, IconButton, Icon, Typography, Button } from "@material-ui/core"
+import { Theme, createStyles, Omit, Icon, Button } from "@material-ui/core"
 import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 import { DocumentNode } from "graphql"
@@ -12,24 +12,10 @@ import { LoadState } from "../utils/types"
 import { IEntityMutationResult, getEntityMutation, getEntityMutationName, IEntityMutationOptions } from "../../graphql/mutations"
 import { omitDeep } from "../../utils/objects"
 import { RECORD_NAME_FIELD } from "../../graphql/helpers"
+import { ViewHeaderBar } from "./widgets/ViewHeaderBar"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
-    },
-    formHeader: {
-        padding: 12,
-        height: 60,
-        display: "flex",
-        alignItems: "center",
-        color: "#fff",
-        backgroundColor: theme.palette.primary.dark,
-        zIndex: theme.zIndex.appBar - 1,
-        position: "relative"
-    },
-    backButtonContainer: {
-        marginTop: -12,
-        marginBottom: -12,
-        marginRight: 12
     },
     actionButton: {
         marginLeft: 12
@@ -288,19 +274,21 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                 save: this.save
             }
 
-            const viewTitle = view.perspective.views[view.viewName].title
+            const perspectiveView = view.perspective.views[view.viewName]
+            const viewTitle = perspectiveView.title
 
             return (
                 <FormContext.Provider value={formContext}>
-                    <Paper square className={classes.formHeader}>
-                        <div className={classes.backButtonContainer}>
-                            <IconButton color="inherit" onClick={this.goBack}>
-                                <Icon>arrow_back</Icon>
-                            </IconButton>
-                        </div>
-                        <Typography variant="h6" color="inherit" style={{ flexGrow: 1 }}>
-                            {viewTitle}
-                        </Typography>
+                    <ViewHeaderBar
+                        backButtonEnabled={true}
+                        title={viewTitle}
+                    >
+                        {mode == "view" && perspectiveView.actions && perspectiveView.actions.map((action, idx) => (
+                            <Button key={idx} color="inherit" onClick={() => this.props.view.runAction(action)}>
+                                <Icon className={classes.actionButtonIcon}>{action.icon}</Icon>
+                                {action.label}
+                            </Button>
+                        ))}
                         {mode == "view" &&
                             <Button color="inherit" onClick={this.onEditPressed}>
                                 <Icon className={classes.actionButtonIcon}>edit</Icon>
@@ -317,9 +305,8 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                                 Save
                             </Button>
                         </>}
-
-                    </Paper>
-                    <div style={{ margin: "16px auto", padding: "0 12px", maxWidth: "900px" }}>
+                    </ViewHeaderBar>
+                    <div style={{ margin: "16px auto", padding: "0 12px", maxWidth: "1024px" }}>
                         <Grid container spacing={16} className={classes.root}>
                             {this.props.children}
                         </Grid>
