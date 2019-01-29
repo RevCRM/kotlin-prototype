@@ -11,6 +11,7 @@ import { IApolloClientProp, withApolloClient } from "../../graphql/withApolloCli
 import { LoadState } from "../utils/types"
 import { IEntityMutationResult, getEntityMutation, getEntityMutationName, IEntityMutationOptions } from "../../graphql/mutations"
 import { omitDeep } from "../../utils/objects"
+import { RECORD_NAME_FIELD } from "../../graphql/helpers"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -180,7 +181,14 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                         })
                     }
                 }
-
+                else if (
+                    field.type == "ReferencedEntityField"
+                ) {
+                    if (entityData[field.name]) {
+                        // make sure we dont try to save record_name field
+                        delete entityData[field.name][RECORD_NAME_FIELD]
+                    }
+                }
             })
         }
 

@@ -27,7 +27,7 @@ export interface IReferencedEntityControlProps extends
 
 export interface IReferencedEntityOptions {
     id: string
-    name: string
+    record_name: string
 }
 
 export interface IReferencedEntityControlState {
@@ -80,7 +80,7 @@ export const ReferencedEntityControl = withApolloClient(
                 console.log("referenced entity list loaded", res.data)
 
                 const options: IReferencedEntityOptions[] = res.data[this.entityMeta.name].results.map(r => (
-                    { id: r.id, name: this.getReferencedEntityName(r) }
+                    { id: r.id, record_name: this.getReferencedEntityName(r) }
                 ))
 
                 this.setState({
@@ -163,8 +163,8 @@ export const ReferencedEntityControl = withApolloClient(
                                 disabled={this.props.disabled}
                             >
                                 <MenuItem dense value=""></MenuItem>
-                                {opts.map(({ id, name }, index) => (
-                                    <MenuItem dense key={index} value={id}>{name}</MenuItem>
+                                {opts.map(({ id, record_name }, index) => (
+                                    <MenuItem dense key={index} value={id}>{record_name}</MenuItem>
                                 ))}
                             </Select>}
                         {this.props.readonly &&

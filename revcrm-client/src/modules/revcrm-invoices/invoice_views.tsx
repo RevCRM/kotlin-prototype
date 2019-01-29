@@ -33,6 +33,7 @@ export function registerInvoiceViews(ui: UIManager) {
         component: () => (
             <FormView entity="Invoice">
                 <Panel title="Invoice Summary" colspan={12}>
+                    <Field name="account" />
                     <Field name="invoice_number" />
                     <Field name="invoice_date" />
                     <Field name="invoice_currency" />
