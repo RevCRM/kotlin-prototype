@@ -65,8 +65,8 @@ export const SearchView = withStyles(styles)(withMetadataContext(withViewManager
                             where={this.state.where}
                             detailView={this.props.detailView}
                         >
-                            {this.props.showFields.map(field => (
-                                <Field name={field} />
+                            {this.props.showFields.map((field, idx) => (
+                                <Field name={field} key={idx} />
                             ))}
                         </ListView>
                     </div>
