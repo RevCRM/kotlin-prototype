@@ -6,6 +6,7 @@ import { FormView } from "../../components/views/FormView"
 import { Panel } from "../../components/views/widgets/Panel"
 import { Field } from "../../components/views/fields/Field"
 import { Tabs } from "../../components/views/widgets/Tabs"
+import { InvoicePrint } from "./invoice_print_view"
 
 export function registerInvoiceViews(ui: UIManager) {
 
@@ -62,5 +63,11 @@ export function registerInvoiceViews(ui: UIManager) {
                     ]} />
             </FormView>
         )
+    })
+
+    ui.registerView({
+        id: "invoices_print",
+        entity: "Invoice",
+        component: InvoicePrint
     })
 }
