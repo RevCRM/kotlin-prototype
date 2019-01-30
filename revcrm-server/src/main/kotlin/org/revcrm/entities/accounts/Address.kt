@@ -29,5 +29,12 @@ class Address(
     var country: String?
 ) {
     val record_name: String
-    get() = "${address?.lines()?.first() ?: "No Address"}, ${this.city} (${this.name})"
+        get() = "${address?.lines()?.first() ?: "No Address"}, ${this.city} (${this.name})"
+
+    val full_address: String
+        get() = """
+            $address
+            $city, $postal_code
+            $country
+        """.trimIndent()
 }

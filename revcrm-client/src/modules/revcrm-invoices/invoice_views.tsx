@@ -23,6 +23,7 @@ export function registerInvoiceViews(ui: UIManager) {
                     "invoice_date",
                     "invoice_total",
                     "invoice_currency",
+                    "payment_due_date",
                 ]}
                 detailView="invoices/form"
             />
@@ -38,6 +39,7 @@ export function registerInvoiceViews(ui: UIManager) {
                     <Field name="invoice_number" />
                     <Field name="invoice_date" />
                     <Field name="invoice_currency" />
+                    <Field name="payment_due_date" />
                 </Panel>
                 <Tabs
                     colspan={12}
@@ -48,6 +50,7 @@ export function registerInvoiceViews(ui: UIManager) {
                                 <Field name="lines" colspan={12}>
                                     <Field name="item" colspan={12} />
                                     <Field name="quantity" colspan={12} />
+                                    <Field name="unit" colspan={12} />
                                     <Field name="unit_price" colspan={12} />
                                     <Field name="discount_amount" colspan={12} />
                                     <Field name="net_total" colspan={12} />

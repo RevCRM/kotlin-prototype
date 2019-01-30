@@ -19,7 +19,7 @@ import javax.validation.constraints.PositiveOrZero
 import javax.validation.constraints.Size
 
 class TaxRate(
-    val percentage: Double
+    percentage: Double
 ) {
     private val multiplier = BigDecimal(percentage).multiply(BigDecimal(0.01))
 
@@ -42,6 +42,9 @@ class InvoiceLine(
 
     @Label("Quantity") @field:Positive
     var quantity: BigDecimal,
+
+    @Label("Unit") @field:NotBlank
+    var unit: String,
 
     @Label("Unit Price") @field:PositiveOrZero
     var unit_price: BigDecimal,
@@ -93,6 +96,9 @@ class Invoice(
 
     @Label("Currency")
     var invoice_currency: String,
+
+    @Label("Payment Due Date")
+    var payment_due_date: LocalDate,
 
     @Embedded
     @Label("Invoice Lines")
