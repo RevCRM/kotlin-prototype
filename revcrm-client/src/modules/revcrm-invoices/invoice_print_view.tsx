@@ -75,8 +75,12 @@ export const styles = (theme: Theme) => createStyles({
             padding: 0
         }
     },
+    itemNameCell: {
+        padding: "0 4px 0 0",
+        width: "45%"
+    },
     tableCell: {
-        padding: 0
+        padding: "0 4px 0 0"
     },
     temp: {
 
@@ -88,12 +92,14 @@ export interface IInvoicePrintProps extends
     WithStyles<typeof styles> {
 }
 
-// TODO: Number formatting should come from settings + an intl library
+// TODO: Number/Date formatting should come from settings + an intl library
 const toMoney = (num: any) =>
     Number(num).toLocaleString(undefined, {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     })
+const toDate = (date: string) =>
+    (new Date(date)).toLocaleDateString()
 
 export const InvoicePrint = withStyles(styles)(withViewManagerContext((props: IInvoicePrintProps) => {
 
@@ -123,9 +129,9 @@ export const InvoicePrint = withStyles(styles)(withViewManagerContext((props: II
 
                     const { account } = invoice
 
-                    const invoiceTo = `${account.title} ${account.first_name} ${account.last_name}`
+                    const invoiceTo = (`${account.title || ""} ${account.first_name || ""} ${account.last_name || ""}`
                         + `\n${account.company_name}`
-                        + `\n${account.primary_address.full_address}`
+                        + `\n${account.primary_address.full_address}`).trim()
 
                     return (
                         <div className={classes.invoiceWrapper}>
@@ -145,7 +151,7 @@ export const InvoicePrint = withStyles(styles)(withViewManagerContext((props: II
                                     <Grid item xs={6}><Typography variant="body1">{company.tax_id}</Typography></Grid>
 
                                     <Grid item xs={6}><Typography variant="body1"><b>Invoice Date:</b></Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1">{invoice.invoice_date}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">{toDate(invoice.invoice_date)}</Typography></Grid>
 
                                     <Grid item xs={6}><Typography variant="body1"><b>Invoice Number:</b></Typography></Grid>
                                     <Grid item xs={6}><Typography variant="body1">{invoice.invoice_number}</Typography></Grid>
@@ -165,7 +171,7 @@ export const InvoicePrint = withStyles(styles)(withViewManagerContext((props: II
                                         <TableBody>
                                             {invoice.lines.map((item: any, idx: number) => (
                                                 <TableRow key={idx}>
-                                                    <TableCell className={classes.tableCell}>{item.item}</TableCell>
+                                                    <TableCell className={classes.itemNameCell}>{item.item}</TableCell>
                                                     <TableCell className={classes.tableCell} align="right">{item.quantity}</TableCell>
                                                     <TableCell className={classes.tableCell} align="right">{item.unit}</TableCell>
                                                     <TableCell className={classes.tableCell} align="right">{toMoney(item.unit_price)}</TableCell>
@@ -189,7 +195,7 @@ export const InvoicePrint = withStyles(styles)(withViewManagerContext((props: II
                                     <Grid item xs={6}><Typography variant="body1" align="right"><b>{toMoney(invoice.invoice_total)} {invoice.invoice_currency}</b></Typography></Grid>
                                     <Grid item xs={12} style={{height: 10}} />
                                     <Grid item xs={6}><Typography variant="body1" align="right"><b>Payment Due:</b></Typography></Grid>
-                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>{invoice.payment_due_date}</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>{toDate(invoice.payment_due_date)}</b></Typography></Grid>
                                     <Grid item xs={12} style={{height: 20}} />
                                 </Grid>
                                 <Grid item xs={12}>
