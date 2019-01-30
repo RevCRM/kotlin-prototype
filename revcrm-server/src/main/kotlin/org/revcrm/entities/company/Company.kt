@@ -24,4 +24,4 @@ class Company(
     @field:NotBlank
     var payment_information: String
 
-): Base()
+) : Base()
