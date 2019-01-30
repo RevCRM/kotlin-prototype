@@ -3,8 +3,19 @@ import { ViewHeaderBar } from "../../components/views/widgets/ViewHeaderBar"
 import gql from "graphql-tag"
 import { Query } from "react-apollo"
 import { IEntityQueryResults } from "../../graphql/queries"
-import { withViewManagerContext } from "../../components/views/ViewManager"
-import { Divider, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core"
+import { IViewManagerContextProp, withViewManagerContext } from "../../components/views/ViewManager"
+import {
+    createStyles,
+    Divider,
+    Grid,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Theme,
+    Typography, WithStyles, withStyles
+} from "@material-ui/core"
 
 const INVOICE_QUERY = gql`
     query ($id: String!) {
@@ -49,11 +60,40 @@ const INVOICE_QUERY = gql`
     }
 `
 
-const tableCellStyle = {
-    padding: 0
+export const styles = (theme: Theme) => createStyles({
+    invoiceWrapper: {
+        margin: "16px auto",
+        maxWidth: 1024,
+        padding: 16,
+        boxShadow: "0px 1px 3px 0px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 2px 1px -1px rgba(0,0,0,0.12)",
+        borderRadius: 4,
+        backgroundColor: "#fff"
+    },
+    tableCell: {
+        padding: 0
+    },
+    temp: {
+        "@media print": {
+            maxWidth: "none"
+        }
+    }
+})
+
+export interface IInvoicePrintProps extends
+    IViewManagerContextProp,
+    WithStyles<typeof styles> {
 }
 
-export const InvoicePrint = withViewManagerContext((props) => {
+// TODO: Number formatting should come from settings + an intl library
+const toMoney = (num: any) =>
+    Number(num).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    })
+
+export const InvoicePrint = withStyles(styles)(withViewManagerContext((props: IInvoicePrintProps) => {
+
+    const { classes } = props
 
     return (
         <div>
@@ -84,83 +124,85 @@ export const InvoicePrint = withViewManagerContext((props) => {
                         + `\n${account.primary_address.full_address}`
 
                     return (
-                        <Grid container spacing={8}>
-                            <Grid item xs={12}>
-                                <Typography variant="display3">{company.name}</Typography>
-                                <Typography variant="subheading">{company.tagline}</Typography>
+                        <div className={classes.invoiceWrapper}>
+                            <Grid container spacing={8}>
+                                <Grid item xs={12}>
+                                    <Typography variant="display3">{company.name}</Typography>
+                                    <Typography variant="subheading">{company.tagline}</Typography>
 
-                                <Typography variant="headline" style={{marginTop: 30, marginBottom: 30, textAlign: "center"}}>TAX INVOICE</Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="body1"><b>To:</b></Typography>
-                                <Typography variant="body1" style={{ whiteSpace: "pre-line"}}>{invoiceTo}</Typography>
-                            </Grid>
-                            <Grid item xs={6} container>
-                                <Grid item xs={6}><Typography variant="body1"><b>GST Number:</b></Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">{company.tax_id}</Typography></Grid>
+                                    <Typography variant="headline" style={{marginTop: 30, marginBottom: 30, textAlign: "center"}}>TAX INVOICE</Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Typography variant="body1"><b>To:</b></Typography>
+                                    <Typography variant="body1" style={{ whiteSpace: "pre-line"}}>{invoiceTo}</Typography>
+                                </Grid>
+                                <Grid item xs={6} container>
+                                    <Grid item xs={6}><Typography variant="body1"><b>GST Number:</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">{company.tax_id}</Typography></Grid>
 
-                                <Grid item xs={6}><Typography variant="body1"><b>Invoice Date:</b></Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">{invoice.invoice_date}</Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1"><b>Invoice Date:</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">{invoice.invoice_date}</Typography></Grid>
 
-                                <Grid item xs={6}><Typography variant="body1"><b>Invoice Number:</b></Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1">{invoice.invoice_number}</Typography></Grid>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell style={tableCellStyle}>Item</TableCell>
-                                            <TableCell style={tableCellStyle} align="right">Quantity</TableCell>
-                                            <TableCell style={tableCellStyle} align="right">Unit</TableCell>
-                                            <TableCell style={tableCellStyle} align="right">Unit Price ({invoice.invoice_currency})</TableCell>
-                                            <TableCell style={tableCellStyle} align="right">Total (excl. GST)</TableCell>
-                                            <TableCell style={tableCellStyle} align="right">GST @ 15%</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {invoice.lines.map((item: any, idx: number) => (
-                                            <TableRow key={idx}>
-                                                <TableCell style={tableCellStyle}>{item.item}</TableCell>
-                                                <TableCell style={tableCellStyle} align="right">{item.quantity}</TableCell>
-                                                <TableCell style={tableCellStyle} align="right">{item.unit}</TableCell>
-                                                <TableCell style={tableCellStyle} align="right">{item.unit_price}</TableCell>
-                                                <TableCell style={tableCellStyle} align="right">{item.net_total}</TableCell>
-                                                <TableCell style={tableCellStyle} align="right">{item.line_tax}</TableCell>
+                                    <Grid item xs={6}><Typography variant="body1"><b>Invoice Number:</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1">{invoice.invoice_number}</Typography></Grid>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Table>
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell className={classes.tableCell}>Item</TableCell>
+                                                <TableCell className={classes.tableCell} align="right">Quantity</TableCell>
+                                                <TableCell className={classes.tableCell} align="right">Unit</TableCell>
+                                                <TableCell className={classes.tableCell} align="right">Unit Price ({invoice.invoice_currency})</TableCell>
+                                                <TableCell className={classes.tableCell} align="right">Total (excl. GST)</TableCell>
+                                                <TableCell className={classes.tableCell} align="right">GST @ 15%</TableCell>
                                             </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                                        </TableHead>
+                                        <TableBody>
+                                            {invoice.lines.map((item: any, idx: number) => (
+                                                <TableRow key={idx}>
+                                                    <TableCell className={classes.tableCell}>{item.item}</TableCell>
+                                                    <TableCell className={classes.tableCell} align="right">{item.quantity}</TableCell>
+                                                    <TableCell className={classes.tableCell} align="right">{item.unit}</TableCell>
+                                                    <TableCell className={classes.tableCell} align="right">{toMoney(item.unit_price)}</TableCell>
+                                                    <TableCell className={classes.tableCell} align="right">{toMoney(item.net_total)}</TableCell>
+                                                    <TableCell className={classes.tableCell} align="right">{toMoney(item.line_tax)}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </Grid>
+                                <Grid item xs={6} />
+                                <Grid item xs={6} container>
+                                    <Grid item xs={12} style={{height: 20}} />
+                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>Total (excl. GST):</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1" align="right">{toMoney(invoice.invoice_net_total)} {invoice.invoice_currency}</Typography></Grid>
+                                    <Grid item xs={12} style={{height: 10}} />
+                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>GST:</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1" align="right">{toMoney(invoice.invoice_tax_total)} {invoice.invoice_currency}</Typography></Grid>
+                                    <Grid item xs={12} style={{height: 10}} />
+                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>Invoice Total:</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>{toMoney(invoice.invoice_total)} {invoice.invoice_currency}</b></Typography></Grid>
+                                    <Grid item xs={12} style={{height: 10}} />
+                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>Payment Due:</b></Typography></Grid>
+                                    <Grid item xs={6}><Typography variant="body1" align="right"><b>{invoice.payment_due_date}</b></Typography></Grid>
+                                    <Grid item xs={12} style={{height: 20}} />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Divider />
+                                    <Grid item xs={12} style={{height: 20}} />
+                                    <Typography variant="title" style={{ marginBottom: 12 }}>
+                                        Payment Information
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        {company.payment_information}
+                                    </Typography>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={6} />
-                            <Grid item xs={6} container>
-                                <Grid item xs={12} style={{height: 20}} />
-                                <Grid item xs={6}><Typography variant="body1" align="right"><b>Total (excl. GST):</b></Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1" align="right">{invoice.invoice_net_total} {invoice.invoice_currency}</Typography></Grid>
-                                <Grid item xs={12} style={{height: 10}} />
-                                <Grid item xs={6}><Typography variant="body1" align="right"><b>GST:</b></Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1" align="right">{invoice.invoice_tax_total} {invoice.invoice_currency}</Typography></Grid>
-                                <Grid item xs={12} style={{height: 10}} />
-                                <Grid item xs={6}><Typography variant="body1" align="right"><b>Invoice Total:</b></Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1" align="right"><b>{invoice.invoice_total} {invoice.invoice_currency}</b></Typography></Grid>
-                                <Grid item xs={12} style={{height: 10}} />
-                                <Grid item xs={6}><Typography variant="body1" align="right"><b>Payment Due:</b></Typography></Grid>
-                                <Grid item xs={6}><Typography variant="body1" align="right"><b>{invoice.payment_due_date}</b></Typography></Grid>
-                                <Grid item xs={12} style={{height: 20}} />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Divider />
-                                <Grid item xs={12} style={{height: 20}} />
-                                <Typography variant="title" style={{ marginBottom: 12 }}>
-                                    Payment Information
-                                </Typography>
-                                <Typography variant="body1">
-                                    {company.payment_information}
-                                </Typography>
-                            </Grid>
-                        </Grid>
+                        </div>
                     )
                 }}
             </Query>
         </div>
     )
-})
+}))
