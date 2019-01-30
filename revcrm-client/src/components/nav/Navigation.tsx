@@ -28,11 +28,19 @@ export const styles = (theme: Theme) => createStyles({
             width: leftNavWidth,
             flexShrink: 0,
         },
+        "@media print": {
+            display: "none"
+        }
     },
     leftNavPaper: {
         width: leftNavWidth
     },
-    toolbar: theme.mixins.toolbar,
+    toolbar: {
+        ...theme.mixins.toolbar,
+        "@media print": {
+            display: "none"
+        }
+    },
     flex: {
         flex: 1,
     },

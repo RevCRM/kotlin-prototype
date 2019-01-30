@@ -12,7 +12,10 @@ export const styles = (theme: Theme) => createStyles({
         color: "#fff",
         backgroundColor: theme.palette.primary.dark,
         zIndex: theme.zIndex.appBar - 1,
-        position: "relative"
+        position: "relative",
+        "@media print": {
+            display: "none"
+        }
     },
     backButtonContainer: {
         marginTop: -12,
