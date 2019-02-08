@@ -1,6 +1,6 @@
 import { DocumentNode, SelectionSetNode } from "graphql"
 import { getFieldSelections, getSelectionSet } from "./helpers"
-import { IEntityMetadata, IMetadataContext } from "../components/meta/Metadata"
+import { IEntityMetadata, IMetadataContext } from "../components/data/Metadata"
 
 export interface IEntityMutationOptions {
     meta: IMetadataContext

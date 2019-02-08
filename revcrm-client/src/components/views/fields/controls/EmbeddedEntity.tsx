@@ -1,10 +1,10 @@
 
 import * as React from "react"
 import { IFieldComponentProps } from "./props"
-import { FormContext, IFormContext } from "../../FormView"
-import { IEntityMetadata, IFieldMetadata } from "../../../meta/Metadata"
+import { IEntityMetadata, IFieldMetadata } from "../../../data/Metadata"
 import { Grid } from "@material-ui/core"
 import { getGridWidthProps } from "../../Grid"
+import { EntityContext, IEntityContext } from "../../../data/EntityContext"
 
 export const EmbeddedEntityControl =
     class extends React.Component<IFieldComponentProps> {
@@ -27,26 +27,27 @@ export const EmbeddedEntityControl =
 
     render() {
 
-        const { loadState, mode } = this.props.form
+        const { loadState, mode } = this.props.entity
         const dirtyFields: string[] = [] // TODO
         const gridWidthProps = getGridWidthProps(this.props)
 
-        const formContext: IFormContext = {
+        const entityContext: IEntityContext = {
             loadState,
-            entity: this.entity,
+            name: this.entity,
+            meta: this.entityMeta,
             mode,
-            entityData: this.embeddedEntityData,
+            data: this.embeddedEntityData,
             dirtyFields,
             onFieldChange: this.onFieldChange,
-            save: this.props.form.save
+            save: this.props.entity.save
         }
 
         return (
-            <FormContext.Provider value={formContext}>
+            <EntityContext.Provider value={entityContext}>
                 <Grid item {...gridWidthProps} container spacing={16}>
                     {this.props.children}
                 </Grid>
-            </FormContext.Provider>
+            </EntityContext.Provider>
         )
     }
 }

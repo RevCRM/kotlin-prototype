@@ -2,8 +2,8 @@
 import * as React from "react"
 import Grid from "@material-ui/core/Grid"
 import withStyles, { WithStyles } from "@material-ui/core/styles/withStyles"
-import { Theme, createStyles, Omit, Icon, Button } from "@material-ui/core"
-import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
+import { Theme, createStyles, Icon, Button } from "@material-ui/core"
+import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../data/Metadata"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 import { DocumentNode } from "graphql"
 import { getEntityQuery, IEntityQueryResults } from "../../graphql/queries"
@@ -13,6 +13,7 @@ import { IEntityMutationResult, getEntityMutation, getEntityMutationName, IEntit
 import { omitDeep } from "../../utils/objects"
 import { RECORD_NAME_FIELD } from "../../graphql/helpers"
 import { ViewHeaderBar } from "./widgets/ViewHeaderBar"
+import { EntityViewMode, EntityContext, IEntityContext } from "../data/EntityContext"
 
 export const styles = (theme: Theme) => createStyles({
     root: {
@@ -33,25 +34,11 @@ export interface IFormViewProps extends
     entity: string
 }
 
-export type FormMode = "view" | "edit"
-
 export interface IFormViewState {
     loadState: LoadState
-    mode: FormMode
+    mode: EntityViewMode
     dirtyFields: string[]
 }
-
-export interface IFormContext {
-    loadState: LoadState
-    mode: FormMode
-    entity: string
-    entityData: any
-    dirtyFields: string[]
-    onFieldChange(field: IFieldMetadata, value: any): void
-    save(): Promise<IEntityMutationResult>
-}
-
-export const FormContext = React.createContext<IFormContext>(null as any)
 
 export const FormView = withStyles(styles)(withMetadataContext(withViewManagerContext(withApolloClient(
     class extends React.Component<IFormViewProps, IFormViewState> {
@@ -82,7 +69,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
         async initialise() {
             this.setState({ loadState: "loading" })
             const ctx = this.props.view.context
-            let mode: FormMode = "view"
+            let mode: EntityViewMode = "view"
             try {
                 if (ctx.id) {
                     const res = await this.props.client.query<IEntityQueryResults>({
@@ -153,8 +140,11 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                     delete entityData[field.name]
                 }
                 else if (
-                    field.type == "EmbeddedEntityField"
-                    || field.type == "EmbeddedEntityListField"
+                    entityData[field.name]
+                    && (
+                        field.type == "EmbeddedEntityField"
+                        || field.type == "EmbeddedEntityListField"
+                    )
                 ) {
                     const relatedEntityName = field.constraints["Entity"]
                     const relatedEntity = this.props.meta.getEntity(relatedEntityName)!
@@ -264,11 +254,12 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             const { entity, view, classes } = this.props
             if (loadState != "loaded") return null
 
-            const formContext: IFormContext = {
+            const entityContext: IEntityContext = {
                 loadState,
-                entity,
+                name: entity,
+                meta: this.entityMeta,
                 mode,
-                entityData: this.entityData,
+                data: this.entityData,
                 dirtyFields,
                 onFieldChange: this.onFieldChange,
                 save: this.save
@@ -278,7 +269,7 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
             const viewTitle = perspectiveView.title
 
             return (
-                <FormContext.Provider value={formContext}>
+                <EntityContext.Provider value={entityContext}>
                     <ViewHeaderBar
                         backButtonEnabled={true}
                         title={viewTitle}
@@ -311,25 +302,8 @@ export const FormView = withStyles(styles)(withMetadataContext(withViewManagerCo
                             {this.props.children}
                         </Grid>
                     </div>
-                    </FormContext.Provider>
+                </EntityContext.Provider>
             )
         }
 
     }))))
-
-export interface IFormContextProp {
-    form: IFormContext
-}
-
-export function withFormContext<
-    TComponentProps extends IFormContextProp,
-    TWrapperProps = Omit<TComponentProps, keyof IFormContextProp>
->(
-    Component: React.ComponentType<TComponentProps>
-): React.ComponentType<TWrapperProps> {
-    return (props: any): React.ReactElement<TComponentProps> => (
-        <FormContext.Consumer>{(form) => (
-            <Component form={form} {...props} />
-        )}</FormContext.Consumer>
-    )
-}

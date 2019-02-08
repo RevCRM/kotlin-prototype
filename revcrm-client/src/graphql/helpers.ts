@@ -1,5 +1,5 @@
 import { SelectionSetNode, FieldNode } from "graphql"
-import { IEntityMetadata, IMetadataContext } from "../components/meta/Metadata"
+import { IEntityMetadata, IMetadataContext } from "../components/data/Metadata"
 
 export interface IFieldSelections {
     [fieldName: string]: boolean | IFieldSelections

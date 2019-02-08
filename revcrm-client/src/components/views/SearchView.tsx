@@ -2,7 +2,7 @@ import * as React from "react"
 import { Theme, createStyles, withStyles, WithStyles } from "@material-ui/core"
 import { FilterBar } from "./FilterBar"
 import { ListView } from "./ListView"
-import { IMetadataContextProp, withMetadataContext } from "../meta/Metadata"
+import { IMetadataContextProp, withMetadataContext } from "../data/Metadata"
 import { IViewManagerContextProp, withViewManagerContext } from "./ViewManager"
 import {Field} from "./fields/Field"
 

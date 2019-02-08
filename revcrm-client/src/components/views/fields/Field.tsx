@@ -1,14 +1,14 @@
 import * as React from "react"
 import { IGridProps } from "../Grid"
-import { IMetadataContextProp, withMetadataContext, IFieldMetadata } from "../../meta/Metadata"
-import { IFormContextProp, withFormContext } from "../FormView"
+import { IFieldMetadata, IMetadataContextProp, withMetadataContext } from "../../data/Metadata"
 import { IFieldComponentProps, IFieldError, getStandardHTMLProps } from "./controls/props"
 import { getFieldControlMapping } from "./controls/mappings"
+import { IEntityContextProp, withEntityContext } from "../../data/EntityContext"
 
 export interface IFieldProps extends
                     IGridProps,
-                    IMetadataContextProp,
-                    IFormContextProp {
+                    IEntityContextProp,
+                    IMetadataContextProp {
     name: string
     label?: string
     component?: React.ComponentType<IFieldComponentProps>
@@ -18,35 +18,34 @@ export interface IFieldState {
     value: any
 }
 
-export const Field = withMetadataContext(withFormContext(
+export const Field = withEntityContext(withMetadataContext(
     class extends React.Component<IFieldProps, IFieldState> {
     field: IFieldMetadata
 
     constructor(props: any) {
         super(props)
 
-        const { meta, form } = this.props
-        const entity = meta.getEntity(form.entity)!
-        this.field = entity.fields.find(f => f.name == this.props.name)!
+        const { entity } = this.props
+        this.field = entity.meta.fields.find(f => f.name == this.props.name)!
         if (!this.field)
             throw new Error(`Field '${this.props.name}' not found in data for entity '${entity.name}'`)
 
         this.state = {
-            value: this.props.form.entityData[this.field.name]
+            value: this.props.entity.data[this.field.name]
         }
     }
 
     static getDerivedStateFromProps(props: IFieldProps, state: IFieldState): IFieldState | null {
-        if (state.value != props.form.entityData[props.name]) {
+        if (state.value != props.entity.data[props.name]) {
             return {
-                value: props.form.entityData[props.name]
+                value: props.entity.data[props.name]
             }
         }
         return null
     }
 
     onChange = (value: any, trackValue = true) => {
-        this.props.form.onFieldChange(this.field, value)
+        this.props.entity.onFieldChange(this.field, value)
         if (trackValue)
             this.setState({ value })
     }
@@ -56,11 +55,11 @@ export const Field = withMetadataContext(withFormContext(
         const { value } = this.state
         const errors: IFieldError[] = []
         const disabled = false
-        const readonly = this.props.form.mode == "view"
+        const readonly = this.props.entity.mode == "view"
 
         const componentProps: IFieldComponentProps = {
             meta: this.props.meta,
-            form: this.props.form,
+            entity: this.props.entity,
             field: this.field,
             label: this.props.label || this.field.label,
             colspanNarrow: this.props.colspanNarrow || 12,

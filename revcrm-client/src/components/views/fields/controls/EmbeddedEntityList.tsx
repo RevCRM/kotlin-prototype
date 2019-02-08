@@ -1,11 +1,11 @@
 
 import * as React from "react"
 import { IFieldComponentProps } from "./props"
-import { FormContext, IFormContext } from "../../FormView"
-import { IEntityMetadata, IFieldMetadata } from "../../../meta/Metadata"
+import { IEntityMetadata, IFieldMetadata } from "../../../data/Metadata"
 import { Field } from "../Field"
 import { Button, Grid, Icon, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from "@material-ui/core"
 import { getGridWidthProps } from "../../Grid"
+import { EntityContext, IEntityContext } from "../../../data/EntityContext"
 
 export const EmbeddedEntityListControl =
     class extends React.Component<IFieldComponentProps> {
@@ -55,7 +55,7 @@ export const EmbeddedEntityListControl =
 
     render() {
 
-        const { loadState, mode } = this.props.form
+        const { loadState, mode } = this.props.entity
         const dirtyFields: string[] = [] // TODO
         const gridWidthProps = getGridWidthProps(this.props)
 
@@ -73,20 +73,21 @@ export const EmbeddedEntityListControl =
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.entityListData.map((entityData, rowIdx) => {
+                        {this.entityListData.map((data, rowIdx) => {
 
-                            const formContext: IFormContext = {
+                            const entityContext: IEntityContext = {
                                 loadState,
-                                entity: this.entity,
+                                name: this.entity,
+                                meta: this.entityMeta,
                                 mode,
-                                entityData,
+                                data,
                                 dirtyFields,
                                 onFieldChange: this.onFieldChange.bind(this, rowIdx),
-                                save: this.props.form.save
+                                save: this.props.entity.save
                             }
 
                             return (
-                                <FormContext.Provider key={rowIdx} value={formContext}>
+                                <EntityContext.Provider key={rowIdx} value={entityContext}>
                                     <TableRow>
                                         {this.fieldComponents.map((fieldComponent, cellIdx) => (
                                             <TableCell key={cellIdx}>
@@ -99,7 +100,7 @@ export const EmbeddedEntityListControl =
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
-                                </FormContext.Provider>
+                                </EntityContext.Provider>
                             )
 
                         })}

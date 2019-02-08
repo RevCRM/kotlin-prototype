@@ -13,7 +13,7 @@ describe("CheckboxControl", () => {
     function getComponentProps(): IFieldComponentProps {
         return {
             meta: null as any,
-            form: null as any,
+            entity: null as any,
             field: {
                 name: "checkbox",
                 label: "Field Label",

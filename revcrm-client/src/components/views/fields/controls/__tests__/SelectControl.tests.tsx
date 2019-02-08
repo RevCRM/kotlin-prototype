@@ -19,7 +19,7 @@ describe("SelectControl", () => {
     function getComponentProps(): IFieldComponentProps {
         return {
             meta: null as any,
-            form: null as any,
+            entity: null as any,
             field: {
                 name: "select",
                 label: "Field Label",

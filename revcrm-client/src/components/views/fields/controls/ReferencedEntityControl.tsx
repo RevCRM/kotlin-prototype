@@ -18,7 +18,7 @@ import {
     IReferencedEntityResult
 } from "../../../../graphql/queries"
 import {DocumentNode} from "graphql"
-import {IEntityMetadata} from "../../../meta/Metadata"
+import {IEntityMetadata} from "../../../data/Metadata"
 
 export interface IReferencedEntityControlProps extends
     IFieldComponentProps,

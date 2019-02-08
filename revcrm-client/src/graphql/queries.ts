@@ -1,6 +1,6 @@
 import { DocumentNode } from "graphql"
 import {getFieldSelections, getSelectionSet, RECORD_NAME_FIELD} from "./helpers"
-import { IEntityMetadata, IMetadataContext } from "../components/meta/Metadata"
+import { IEntityMetadata, IMetadataContext } from "../components/data/Metadata"
 
 export interface IEntityQueryOptions {
     meta: IMetadataContext

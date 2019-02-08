@@ -2,11 +2,11 @@ import * as React from "react"
 import { Theme, createStyles, WithStyles, withStyles, Table, TableHead, TableRow, TableCell, Checkbox, TableBody, Toolbar, Typography, IconButton, Icon } from "@material-ui/core"
 import { Query } from "react-apollo"
 import { getEntityQuery, IEntityQueryResults } from "../../graphql/queries"
-import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../meta/Metadata"
+import { withMetadataContext, IMetadataContextProp, IEntityMetadata, IFieldMetadata } from "../data/Metadata"
 import { DocumentNode } from "graphql"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
-import {Field} from "./fields/Field"
-import {FormContext, IFormContext} from "./FormView"
+import { Field } from "./fields/Field"
+import { EntityContext, IEntityContext } from "../data/EntityContext"
 
 export const DEFAULT_LIMIT = 20
 
@@ -186,18 +186,19 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
                                     <TableBody>
                                         {results.map((row: any, rowIdx: number) => {
 
-                                            const formContext: IFormContext = {
+                                            const entityContext: IEntityContext = {
                                                 loadState: "loaded",
-                                                entity: this.props.entity,
+                                                name: this.props.entity,
+                                                meta: this.entityMeta,
                                                 mode: "view",
-                                                entityData: row,
+                                                data: row,
                                                 dirtyFields: [],
                                                 onFieldChange: () => null,
                                                 save: () => null as any
                                             }
 
                                             return (
-                                                <FormContext.Provider key={rowIdx} value={formContext}>
+                                                <EntityContext.Provider key={rowIdx} value={entityContext}>
                                                     <TableRow
                                                         hover className={this.props.classes.listRow}
                                                         onClick={() => this.onRowClicked(row)}
@@ -211,7 +212,7 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
                                                             </TableCell>
                                                         ))}
                                                     </TableRow>
-                                                </FormContext.Provider>
+                                                </EntityContext.Provider>
                                             )
                                         })}
                                     </TableBody>

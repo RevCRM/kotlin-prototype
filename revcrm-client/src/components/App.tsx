@@ -18,7 +18,7 @@ import { register as registerInvoices } from "../modules/revcrm-invoices"
 import { register as registerEtc } from "../modules/revcrm-etc"
 import { UI } from "../UIManager"
 import { AuthProvider } from "../auth/AuthProvider"
-import { MetadataContextProvider } from "./meta/Metadata"
+import { MetadataContextProvider } from "./data/Metadata"
 
 const theme = createMuiTheme()
 const history = createHashHistory()

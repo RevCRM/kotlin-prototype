@@ -2,7 +2,7 @@
 import * as React from "react"
 import { Paper, Input, InputAdornment, Icon, Theme, createStyles, withStyles, WithStyles, Button } from "@material-ui/core"
 import { fade } from "@material-ui/core/styles/colorManipulator"
-import { withMetadataContext, IMetadataContextProp } from "../meta/Metadata"
+import { withMetadataContext, IMetadataContextProp } from "../data/Metadata"
 import { debounce } from "debounce"
 import { IViewManagerContextProp, withViewManagerContext } from "./ViewManager"
 

@@ -3,7 +3,7 @@ import * as React from "react"
 import { Theme, createStyles, CircularProgress, withStyles, WithStyles, Typography, Button } from "@material-ui/core"
 import { withAuthContext, IAuthContextProp } from "./auth/AuthContext"
 import { CONFIG } from "../config"
-import { IMetadataContextProp, withMetadataContext } from "./meta/Metadata"
+import { IMetadataContextProp, withMetadataContext } from "./data/Metadata"
 
 const styles = (theme: Theme) => createStyles({
     root: {

@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ColspanOptions } from "../../Grid"
-import { IFieldMetadata, IMetadataContext } from "../../../meta/Metadata"
-import { IFormContext } from "../../FormView"
+import { IFieldMetadata, IMetadataContext } from "../../../data/Metadata"
+import { IEntityContext } from "../../../data/EntityContext"
 
 export interface IStandardComponentProps {
     style?: Partial<React.CSSProperties>
@@ -14,8 +14,8 @@ export interface IFieldError {
 }
 
 export interface IFieldComponentProps extends IStandardComponentProps  {
+    entity: IEntityContext
     meta: IMetadataContext
-    form: IFormContext
     field: IFieldMetadata
     label: string
     colspanNarrow: ColspanOptions

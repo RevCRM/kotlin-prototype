@@ -14,7 +14,7 @@ describe("TextControl", () => {
     function getComponentProps(): IFieldComponentProps {
         return {
             meta: null as any,
-            form: null as any,
+            entity: null as any,
             field: {
                 name: "text",
                 label: "Field Label",
