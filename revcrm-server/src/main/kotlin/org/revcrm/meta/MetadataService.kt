@@ -92,7 +92,6 @@ class MetadataService(
     }
 
     private fun getEntityField(propInfo: EntityPropInfo): Field {
-        val entityClassNames = db.getEntityClassNames()
         // TODO: Make this more customisable
         if (propInfo.isEnum) {
             return mapEnumField(this, propInfo)

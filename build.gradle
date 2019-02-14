@@ -16,6 +16,10 @@ plugins {
     id "name.remal.check-updates" version "1.0.94"
 }
 
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
 repositories {
     mavenCentral()
 }
