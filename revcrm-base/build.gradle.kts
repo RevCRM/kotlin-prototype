@@ -1,0 +1,6 @@
+
+description = "RevCRM Base Entities"
+
+//dependencies {
+//    implementation(project("revcrm-server"))
+//}
