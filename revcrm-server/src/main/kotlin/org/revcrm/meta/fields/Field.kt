@@ -37,7 +37,7 @@ abstract class Field {
 
     constructor(
         propInfo: EntityPropInfo
-    ): this(propInfo, mapOf(), mapOf())
+    ) : this(propInfo, mapOf(), mapOf())
 
     abstract fun getGraphQLType(meta: MetadataService, entity: Entity): GraphQLOutputType
 
