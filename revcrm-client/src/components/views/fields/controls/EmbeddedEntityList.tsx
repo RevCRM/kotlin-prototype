@@ -34,6 +34,10 @@ export const EmbeddedEntityListControl =
                 }
                 return false
             })
+            .map((child => React.cloneElement(child as React.ReactElement<IFieldComponentProps>, {
+                grid: null,
+                label: false
+            })))
     }
 
     onFieldChange = (rowIdx: number, field: IFieldMetadata, value: any) => {
