@@ -57,8 +57,8 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
         entityMeta: IEntityMetadata
         query: DocumentNode
         idField: IFieldMetadata
-        listFields: IFieldMetadata[] = []
-        fieldComponents: React.ReactChild[]
+        listFieldMeta: IFieldMetadata[] = []
+        listFieldComponents: React.ReactChild[]
 
         constructor(props: any) {
             super(props)
@@ -71,13 +71,13 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
             // TODO: This should neither be synchronous nor assume getEntity() returns an entity!
             this.entityMeta = this.props.meta.getEntity(this.props.entity)!
 
-            this.fieldComponents = React.Children.toArray(this.props.children)
+            this.listFieldComponents = React.Children.toArray(this.props.children)
                 .filter(child => {
                     if (typeof child == "object" && child.type == Field) {
-                        const field = this.entityMeta.fields.find(
+                        const fieldMeta = this.entityMeta.fields.find(
                             f => f.name == child.props.name)
-                        if (field) {
-                            this.listFields.push(field)
+                        if (fieldMeta) {
+                            this.listFieldMeta.push(fieldMeta)
                             return true
                         }
                     }
@@ -86,7 +86,7 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
 
             this.idField = this.entityMeta.fields.find(f => f.name == this.entityMeta.idField)!
 
-            const fieldNames = this.listFields.map(f => f.name)
+            const fieldNames = this.listFieldMeta.map(f => f.name)
             fieldNames.unshift(this.idField.name)
 
             this.query = getEntityQuery({
@@ -177,7 +177,7 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
                                             <TableCell padding="checkbox">
                                                 <Checkbox />
                                             </TableCell>
-                                            {this.listFields.map((field) =>
+                                            {this.listFieldMeta.map((field) =>
                                                 <TableCell key={field.name} className={this.props.classes.listHeaderCell}>
                                                     {field.label}
                                                 </TableCell>)}
@@ -206,7 +206,7 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
                                                         <TableCell padding="checkbox">
                                                             <Checkbox/>
                                                         </TableCell>
-                                                        {this.fieldComponents.map((fieldComponent, cellIdx) => (
+                                                        {this.listFieldComponents.map((fieldComponent, cellIdx) => (
                                                             <TableCell key={cellIdx} className={this.props.classes.listCell}>
                                                                 {fieldComponent}
                                                             </TableCell>

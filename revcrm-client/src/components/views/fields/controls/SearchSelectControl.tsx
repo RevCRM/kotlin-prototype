@@ -5,7 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import { withStyles, Theme, createStyles, WithStyles } from "@material-ui/core/styles"
 import { IFieldComponentProps } from "./props"
 import { Input, Grid, FormControl, InputLabel, InputAdornment, Icon } from "@material-ui/core"
-import { getGridWidthProps, IMUIGridProps } from "../../Grid"
+import { getGridWidthProps } from "../../Grid"
 import { ISelectionOption, IOptionsQueryResponse } from "./SelectControl"
 import gql from "graphql-tag"
 import { IApolloClientProp, withApolloClient } from "../../../../graphql/withApolloClient"
@@ -71,12 +71,10 @@ export const MAX_RESULTS = 8
 
 export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
     class extends React.Component<ISearchSelectControlProps, ISearchSelectControlState> {
-        gridWidthProps: IMUIGridProps
         searchInputRef!: HTMLInputElement
 
         constructor(props: any) {
             super(props)
-            this.gridWidthProps = getGridWidthProps(props)
             this.state = {
                 loadState: "not_loaded",
                 options: [],
@@ -215,9 +213,10 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                 minHeight: 64,
                 ...this.props.style
             }
-            return (
-                <Grid item {...this.gridWidthProps} style={style}>
-                    <FormControl fullWidth>
+
+            const control = (
+                <FormControl fullWidth>
+                    {!this.props.noLabel &&
                         <InputLabel
                             htmlFor={fieldId}
                             error={hasErrors}
@@ -225,42 +224,54 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                         >
                             {this.props.label}
                         </InputLabel>
-                        {!this.props.readonly &&
-                            <Autosuggest
-                                renderInputComponent={this.renderInputComponent}
-                                renderSuggestion={this.renderSuggestion}
-                                shouldRenderSuggestions={this.shouldRenderSuggestions}
-                                getSuggestionValue={this.getSuggestionValue}
-                                inputProps={{
-                                    value: this.state.search,
-                                    onChange: this.handleSearchChange,
-                                    onBlur: this.handleInputBlur
-                                }}
-                                theme={{
-                                    container: classes.container,
-                                    suggestionsContainerOpen: classes.suggestionsContainerOpen,
-                                    suggestionsList: classes.suggestionsList,
-                                    suggestion: classes.suggestion,
-                                }}
-                                renderSuggestionsContainer={options => (
-                                    <Paper {...options.containerProps} square>
-                                        {options.children}
-                                        {this.state.hasMore && <MenuItem dense>
-                                            <em style={{ fontWeight: 300 }}>
-                                                More...
-                                        </em>
-                                        </MenuItem>}
-                                    </Paper>
-                                )}
-                                suggestions={this.state.suggestions}
-                                onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
-                                onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
-                                onSuggestionSelected={this.onSuggestionSelected}
-                            />}
-                        {this.props.readonly &&
-                            <ReadOnlyValue>{this.state.search}</ReadOnlyValue>}
-                    </FormControl>
-                </Grid>
+                    }
+                    {!this.props.readonly &&
+                    <Autosuggest
+                        renderInputComponent={this.renderInputComponent}
+                        renderSuggestion={this.renderSuggestion}
+                        shouldRenderSuggestions={this.shouldRenderSuggestions}
+                        getSuggestionValue={this.getSuggestionValue}
+                        inputProps={{
+                            value: this.state.search,
+                            onChange: this.handleSearchChange,
+                            onBlur: this.handleInputBlur
+                        }}
+                        theme={{
+                            container: classes.container,
+                            suggestionsContainerOpen: classes.suggestionsContainerOpen,
+                            suggestionsList: classes.suggestionsList,
+                            suggestion: classes.suggestion,
+                        }}
+                        renderSuggestionsContainer={options => (
+                            <Paper {...options.containerProps} square>
+                                {options.children}
+                                {this.state.hasMore && <MenuItem dense>
+                                    <em style={{ fontWeight: 300 }}>
+                                        More...
+                                    </em>
+                                </MenuItem>}
+                            </Paper>
+                        )}
+                        suggestions={this.state.suggestions}
+                        onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+                        onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+                        onSuggestionSelected={this.onSuggestionSelected}
+                    />}
+                    {this.props.readonly &&
+                    <ReadOnlyValue>{this.state.search}</ReadOnlyValue>}
+                </FormControl>
             )
+
+            if (this.props.grid) {
+                const gridWidthProps = getGridWidthProps(this.props.grid)
+                return (
+                    <Grid item {...gridWidthProps} style={style}>
+                        {control}
+                    </Grid>
+                )
+            }
+            else {
+                return control
+            }
         }
     }))

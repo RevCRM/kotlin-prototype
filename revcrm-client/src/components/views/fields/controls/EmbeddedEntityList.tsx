@@ -12,8 +12,8 @@ export const EmbeddedEntityListControl =
     entity: string
     entityMeta: IEntityMetadata
     entityListData: any[]
-    fields: IFieldMetadata[] = []
-    fieldComponents: React.ReactChild[]
+    listFieldMeta: IFieldMetadata[] = []
+    listFieldComponents: React.ReactChild[]
 
     constructor(props: any) {
         super(props)
@@ -22,13 +22,13 @@ export const EmbeddedEntityListControl =
         this.entityMeta = this.props.meta.getEntity(this.entity)!
         this.entityListData = this.props.value || []
 
-        this.fieldComponents = React.Children.toArray(this.props.children)
+        this.listFieldComponents = React.Children.toArray(this.props.children)
             .filter(child => {
                 if (typeof child == "object" && child.type == Field) {
-                    const field = this.entityMeta.fields.find(
+                    const fieldMeta = this.entityMeta.fields.find(
                         f => f.name == child.props.name)
-                    if (field) {
-                        this.fields.push(field)
+                    if (fieldMeta) {
+                        this.listFieldMeta.push(fieldMeta)
                         return true
                     }
                 }
@@ -57,61 +57,72 @@ export const EmbeddedEntityListControl =
 
         const { loadState, mode } = this.props.entity
         const dirtyFields: string[] = [] // TODO
-        const gridWidthProps = getGridWidthProps(this.props)
 
-        return (
-            <Grid item {...gridWidthProps}>
-                <Table padding="dense">
-                    <TableHead>
-                        <TableRow>
-                            {this.fields.map(field => (
-                                <TableCell key={field.name}>
-                                    {field.label}
-                                </TableCell>
-                            ))}
-                            <TableCell />
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.entityListData.map((data, rowIdx) => {
+        const control = (<>
+            <Table padding="dense">
+                <TableHead>
+                    <TableRow>
+                        {this.listFieldMeta.map(field => (
+                            <TableCell key={field.name}>
+                                {field.label}
+                            </TableCell>
+                        ))}
+                        <TableCell />
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {this.entityListData.map((data, rowIdx) => {
 
-                            const entityContext: IEntityContext = {
-                                loadState,
-                                name: this.entity,
-                                meta: this.entityMeta,
-                                mode,
-                                data,
-                                dirtyFields,
-                                onFieldChange: this.onFieldChange.bind(this, rowIdx),
-                                save: this.props.entity.save
-                            }
+                        const entityContext: IEntityContext = {
+                            loadState,
+                            name: this.entity,
+                            meta: this.entityMeta,
+                            mode,
+                            data,
+                            dirtyFields,
+                            onFieldChange: this.onFieldChange.bind(this, rowIdx),
+                            save: this.props.entity.save
+                        }
 
-                            return (
-                                <EntityContext.Provider key={rowIdx} value={entityContext}>
-                                    <TableRow>
-                                        {this.fieldComponents.map((fieldComponent, cellIdx) => (
-                                            <TableCell key={cellIdx}>
-                                                {fieldComponent}
-                                            </TableCell>
-                                        ))}
-                                        <TableCell>
-                                            <IconButton onClick={this.onDeleteRow.bind(this, rowIdx)}>
-                                                <Icon>delete</Icon>
-                                            </IconButton>
+                        return (
+                            <EntityContext.Provider key={rowIdx} value={entityContext}>
+                                <TableRow>
+                                    {this.listFieldComponents.map((fieldComponent, cellIdx) => (
+                                        <TableCell key={cellIdx}>
+                                            {fieldComponent}
                                         </TableCell>
-                                    </TableRow>
-                                </EntityContext.Provider>
-                            )
+                                    ))}
+                                    <TableCell>
+                                        <IconButton onClick={this.onDeleteRow.bind(this, rowIdx)}>
+                                            <Icon>delete</Icon>
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            </EntityContext.Provider>
+                        )
 
-                        })}
-                    </TableBody>
-                </Table>
-                <Button
-                    variant="contained"
-                    onClick={this.onAddRow}
-                >Add Row</Button>
-            </Grid>
-        )
+                    })}
+                </TableBody>
+            </Table>
+            <Button
+                variant="contained"
+                onClick={this.onAddRow}
+            >Add Row</Button>
+        </>)
+
+        if (this.props.grid) {
+            const gridWidthProps = getGridWidthProps(this.props.grid)
+            return (
+                <Grid item {...gridWidthProps}>
+                    {control}
+                </Grid>
+            )
+        }
+        else {
+            return (
+                <div>{control}</div>
+            )
+        }
 
     }
 }

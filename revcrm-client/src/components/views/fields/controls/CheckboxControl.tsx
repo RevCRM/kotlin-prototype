@@ -7,7 +7,6 @@ import { Grid, FormControl, FormControlLabel, Checkbox, FormHelperText } from "@
 
 export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (props) => {
 
-    const gridWidthProps = getGridWidthProps(props)
     const fieldId = props.field.name
 
     let errorText = ""
@@ -15,12 +14,11 @@ export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (
         errorText += err.message + ". "
     })
 
-    const value = props.value ? true : false
+    const value = !!props.value
 
-    return (
-        <Grid item {...gridWidthProps} style={props.style}>
-
-            <FormControl>
+    const control = (
+        <FormControl>
+            {!props.noLabel &&
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -33,12 +31,24 @@ export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (
                     label={props.label}
                     disabled={props.disabled || props.readonly}
                 />
-                {errorText &&
-                    <FormHelperText error style={{ marginTop: 0 }}>
-                        {errorText}
-                    </FormHelperText>}
-            </FormControl>
-
-        </Grid>
+            }
+            {errorText &&
+            <FormHelperText error style={{ marginTop: 0 }}>
+                {errorText}
+            </FormHelperText>}
+        </FormControl>
     )
+
+    if (props.grid) {
+        const gridWidthProps = getGridWidthProps(props.grid)
+        return (
+            <Grid item {...gridWidthProps} style={props.style}>
+                {control}
+            </Grid>
+        )
+    }
+    else {
+        return control
+    }
+
 }

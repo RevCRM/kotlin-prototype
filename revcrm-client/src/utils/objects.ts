@@ -23,3 +23,7 @@ export function omitDeepArrayWalk<T extends any>(arr: T, key: string): T {
         return val
     })
 }
+
+export function isDefined(value: any): boolean {
+    return (typeof value != "undefined")
+}

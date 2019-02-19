@@ -8,7 +8,6 @@ import { ReadOnlyValue } from "./ReadOnlyValue"
 
 export const TextControl: React.StatelessComponent<IFieldComponentProps> = (props) => {
 
-    const gridWidthProps = getGridWidthProps(props)
     const fieldId = props.field.name
     const { MultiLine } = props.field.properties
 
@@ -23,10 +22,9 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
         ...props.style
     }
 
-    return (
-        <Grid item {...gridWidthProps} style={style}>
-
-            <FormControl fullWidth>
+    const control = (
+        <FormControl fullWidth>
+            {!props.noLabel &&
                 <InputLabel
                     htmlFor={fieldId}
                     error={hasErrors}
@@ -34,24 +32,35 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
                 >
                     {props.label}
                 </InputLabel>
-                {!props.readonly &&
-                    <Input
-                        id={fieldId}
-                        type="text"
-                        value={props.value || ""}
-                        onChange={(event) => props.onChange(event.target.value)}
-                        error={hasErrors}
-                        disabled={props.disabled}
-                        multiline={MultiLine == "true"}
-                    />}
-                {props.readonly &&
-                    <ReadOnlyValue>{props.value || ""}</ReadOnlyValue>}
-                {errorText &&
-                    <FormHelperText error>
-                        {errorText}
-                    </FormHelperText>}
-            </FormControl>
-
-        </Grid>
+            }
+            {!props.readonly &&
+            <Input
+                id={fieldId}
+                type="text"
+                value={props.value || ""}
+                onChange={(event) => props.onChange(event.target.value)}
+                error={hasErrors}
+                disabled={props.disabled}
+                multiline={MultiLine == "true"}
+            />}
+            {props.readonly &&
+            <ReadOnlyValue>{props.value || ""}</ReadOnlyValue>}
+            {errorText &&
+            <FormHelperText error>
+                {errorText}
+            </FormHelperText>}
+        </FormControl>
     )
+
+    if (props.grid) {
+        const gridWidthProps = getGridWidthProps(props.grid)
+        return (
+            <Grid item {...gridWidthProps} style={style}>
+                {control}
+            </Grid>
+        )
+    }
+    else {
+        return control
+    }
 }

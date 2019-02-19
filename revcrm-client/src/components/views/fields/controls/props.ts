@@ -18,13 +18,16 @@ export interface IFieldComponentProps extends IStandardComponentProps  {
     meta: IMetadataContext
     field: IFieldMetadata
     label: string
-    colspanNarrow: ColspanOptions
-    colspan: ColspanOptions
-    colspanWide: ColspanOptions
+    grid: {
+        colspanNarrow: ColspanOptions
+        colspan: ColspanOptions
+        colspanWide: ColspanOptions
+    } | null
     value: any
     errors: IFieldError[]
     disabled: boolean
     readonly: boolean
+    noLabel: boolean
     onChange: (value: any) => void
     children: any
 }

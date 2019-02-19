@@ -29,7 +29,6 @@ export const EmbeddedEntityControl =
 
         const { loadState, mode } = this.props.entity
         const dirtyFields: string[] = [] // TODO
-        const gridWidthProps = getGridWidthProps(this.props)
 
         const entityContext: IEntityContext = {
             loadState,
@@ -42,12 +41,23 @@ export const EmbeddedEntityControl =
             save: this.props.entity.save
         }
 
-        return (
+        const control = (
             <EntityContext.Provider value={entityContext}>
-                <Grid item {...gridWidthProps} container spacing={16}>
-                    {this.props.children}
-                </Grid>
+                {this.props.children}
             </EntityContext.Provider>
         )
+
+        if (this.props.grid) {
+            const gridWidthProps = getGridWidthProps(this.props.grid)
+            return (
+                <Grid item {...gridWidthProps} container spacing={16}>
+                    {control}
+                </Grid>
+            )
+        }
+        else {
+            return control
+        }
+
     }
 }

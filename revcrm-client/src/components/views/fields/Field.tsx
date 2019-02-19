@@ -4,6 +4,7 @@ import { IFieldMetadata, IMetadataContextProp, withMetadataContext } from "../..
 import { IFieldComponentProps, IFieldError, getStandardHTMLProps } from "./controls/props"
 import { getFieldControlMapping } from "./controls/mappings"
 import { IEntityContextProp, withEntityContext } from "../../data/EntityContext"
+import { isDefined } from "../../../utils/objects"
 
 export interface IFieldProps extends
                     IGridProps,
@@ -11,6 +12,8 @@ export interface IFieldProps extends
                     IMetadataContextProp {
     name: string
     label?: string
+    noLabel?: boolean
+    grid?: boolean
     component?: React.ComponentType<IFieldComponentProps>
 }
 
@@ -55,6 +58,7 @@ export const Field = withEntityContext(withMetadataContext(
         const { value } = this.state
         const errors: IFieldError[] = []
         const disabled = false
+        const noLabel = isDefined(this.props.noLabel) ? this.props.noLabel! : false
         const readonly = this.props.entity.mode == "view"
 
         const componentProps: IFieldComponentProps = {
@@ -62,13 +66,18 @@ export const Field = withEntityContext(withMetadataContext(
             entity: this.props.entity,
             field: this.field,
             label: this.props.label || this.field.label,
-            colspanNarrow: this.props.colspanNarrow || 12,
-            colspan: this.props.colspan || 6,
-            colspanWide: this.props.colspanWide || this.props.colspan || 6,
+            grid: (!isDefined(this.props.grid) || this.props.grid)
+                ? {
+                    colspanNarrow: this.props.colspanNarrow || 12,
+                    colspan: this.props.colspan || 6,
+                    colspanWide: this.props.colspanWide || this.props.colspan || 6,
+                }
+                : null,
             value,
             errors,
             disabled,
             readonly,
+            noLabel,
             onChange: this.onChange,
             children: this.props.children
         }

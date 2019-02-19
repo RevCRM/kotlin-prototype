@@ -8,7 +8,7 @@ import InputLabel from "@material-ui/core/InputLabel"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
 import { IFieldComponentProps } from "./props"
-import { getGridWidthProps, IMUIGridProps } from "../../Grid"
+import { getGridWidthProps } from "../../Grid"
 import { LoadState } from "../../../utils/types"
 import gql from "graphql-tag"
 import { withApolloClient, IApolloClientProp } from "../../../../graphql/withApolloClient"
@@ -58,11 +58,9 @@ export interface ISelectControlState {
 
 export const SelectControl = withApolloClient(
     class extends React.Component<ISelectControlProps, ISelectControlState> {
-        gridWidthProps: IMUIGridProps
 
         constructor(props: any) {
             super(props)
-            this.gridWidthProps = getGridWidthProps(props)
             this.state = {
                 loadState: "not_loaded",
                 options: []
@@ -111,10 +109,9 @@ export const SelectControl = withApolloClient(
                 ...this.props.style
             }
 
-            return (
-                <Grid item {...this.gridWidthProps} style={style}>
-
-                    <FormControl fullWidth>
+            const control = (
+                <FormControl fullWidth>
+                    {!this.props.noLabel &&
                         <InputLabel
                             htmlFor={fieldId}
                             error={hasErrors}
@@ -122,30 +119,41 @@ export const SelectControl = withApolloClient(
                         >
                             {this.props.label}
                         </InputLabel>
-                        {!this.props.readonly &&
-                            <Select
-                                value={this.props.value || ""}
-                                onChange={(event) => this.props.onChange(event.target.value || null)}
-                                inputProps={{
-                                    id: fieldId
-                                }}
-                                error={hasErrors}
-                                disabled={this.props.disabled}
-                            >
-                                <MenuItem dense value=""></MenuItem>
-                                {opts.map(({ code, label }, index) => (
-                                    <MenuItem dense key={index} value={code}>{label}</MenuItem>
-                                ))}
-                            </Select>}
-                        {this.props.readonly &&
-                            <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
-                        {errorText &&
-                            <FormHelperText error>
-                                {errorText}
-                            </FormHelperText>}
-                    </FormControl>
-
-                </Grid>
+                    }
+                    {!this.props.readonly &&
+                    <Select
+                        value={this.props.value || ""}
+                        onChange={(event) => this.props.onChange(event.target.value || null)}
+                        inputProps={{
+                            id: fieldId
+                        }}
+                        error={hasErrors}
+                        disabled={this.props.disabled}
+                    >
+                        <MenuItem dense value=""></MenuItem>
+                        {opts.map(({ code, label }, index) => (
+                            <MenuItem dense key={index} value={code}>{label}</MenuItem>
+                        ))}
+                    </Select>}
+                    {this.props.readonly &&
+                    <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
+                    {errorText &&
+                    <FormHelperText error>
+                        {errorText}
+                    </FormHelperText>}
+                </FormControl>
             )
+
+            if (this.props.grid) {
+                const gridWidthProps = getGridWidthProps(this.props.grid)
+                return (
+                    <Grid item {...gridWidthProps} style={style}>
+                        {control}
+                    </Grid>
+                )
+            }
+            else {
+                return control
+            }
         }
     })

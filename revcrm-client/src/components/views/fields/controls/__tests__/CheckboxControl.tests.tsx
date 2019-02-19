@@ -24,13 +24,16 @@ describe("CheckboxControl", () => {
                 constraints: {}
             },
             label: "Field Component Label",
-            colspanNarrow: 12,
-            colspan: 6,
-            colspanWide: 4,
+            grid: {
+                colspanNarrow: 12,
+                colspan: 6,
+                colspanWide: 4,
+            },
             value: true,
             errors: [],
             disabled: false,
             readonly: false,
+            noLabel: false,
             style: {marginTop: 10},
             onChange: jest.fn(),
             children: null
@@ -60,9 +63,9 @@ describe("CheckboxControl", () => {
         it("Grid component has column widths set correctly", () => {
             const grid = instance.findByType(Grid)
             expect(grid).toBeDefined()
-            expect(grid.props.xs).toEqual(props.colspanNarrow)
-            expect(grid.props.md).toEqual(props.colspan)
-            expect(grid.props.lg).toEqual(props.colspanWide)
+            expect(grid.props.xs).toEqual(props.grid!.colspanNarrow)
+            expect(grid.props.md).toEqual(props.grid!.colspan)
+            expect(grid.props.lg).toEqual(props.grid!.colspanWide)
         })
 
         it("renders an FormControlLabel component containing props.label and no error", () => {
