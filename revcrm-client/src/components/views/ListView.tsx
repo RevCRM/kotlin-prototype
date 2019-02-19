@@ -7,6 +7,7 @@ import { DocumentNode } from "graphql"
 import { withViewManagerContext, IViewManagerContextProp } from "./ViewManager"
 import { Field } from "./fields/Field"
 import { EntityContext, IEntityContext } from "../data/EntityContext"
+import { IFieldComponentProps } from "./fields/controls/props"
 
 export const DEFAULT_LIMIT = 20
 
@@ -83,6 +84,10 @@ export const ListView = withStyles(styles)(withMetadataContext(withViewManagerCo
                     }
                     return false
                 })
+                .map((child => React.cloneElement(child as React.ReactElement<IFieldComponentProps>, {
+                    grid: null,
+                    label: false
+                })))
 
             this.idField = this.entityMeta.fields.find(f => f.name == this.entityMeta.idField)!
 

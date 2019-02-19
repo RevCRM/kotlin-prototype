@@ -124,6 +124,7 @@ export const ReferencedEntityControl = withApolloClient(
 
             const fieldId = this.props.field.name
 
+            const hasLabel = this.props.label !== false
             const hasErrors = this.props.errors.length > 0
             let errorText = ""
             this.props.errors.forEach((err) => {
@@ -141,7 +142,7 @@ export const ReferencedEntityControl = withApolloClient(
 
             const control = (
                 <FormControl fullWidth>
-                    {!this.props.noLabel &&
+                    {this.props.label !== false &&
                         <InputLabel
                             htmlFor={fieldId}
                             error={hasErrors}
@@ -166,7 +167,7 @@ export const ReferencedEntityControl = withApolloClient(
                         ))}
                     </Select>}
                     {this.props.readonly &&
-                    <ReadOnlyValue>{readOnlyValue}</ReadOnlyValue>}
+                    <ReadOnlyValue hasLabel={hasLabel}>{readOnlyValue}</ReadOnlyValue>}
                     {errorText &&
                     <FormHelperText error>
                         {errorText}

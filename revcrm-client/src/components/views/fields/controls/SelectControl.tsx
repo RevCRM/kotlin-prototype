@@ -96,6 +96,7 @@ export const SelectControl = withApolloClient(
 
             const fieldId = this.props.field.name
 
+            const hasLabel = this.props.label !== false
             const hasErrors = this.props.errors.length > 0
             let errorText = ""
             this.props.errors.forEach((err) => {
@@ -111,7 +112,7 @@ export const SelectControl = withApolloClient(
 
             const control = (
                 <FormControl fullWidth>
-                    {!this.props.noLabel &&
+                    {hasLabel &&
                         <InputLabel
                             htmlFor={fieldId}
                             error={hasErrors}
@@ -136,7 +137,7 @@ export const SelectControl = withApolloClient(
                         ))}
                     </Select>}
                     {this.props.readonly &&
-                    <ReadOnlyValue>{this.props.value || ""}</ReadOnlyValue>}
+                    <ReadOnlyValue hasLabel={hasLabel}>{this.props.value || ""}</ReadOnlyValue>}
                     {errorText &&
                     <FormHelperText error>
                         {errorText}

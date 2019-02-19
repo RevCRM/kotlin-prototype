@@ -17,7 +17,7 @@ export interface IFieldComponentProps extends IStandardComponentProps  {
     entity: IEntityContext
     meta: IMetadataContext
     field: IFieldMetadata
-    label: string
+    label: string | false
     grid: {
         colspanNarrow: ColspanOptions
         colspan: ColspanOptions
@@ -27,7 +27,6 @@ export interface IFieldComponentProps extends IStandardComponentProps  {
     errors: IFieldError[]
     disabled: boolean
     readonly: boolean
-    noLabel: boolean
     onChange: (value: any) => void
     children: any
 }

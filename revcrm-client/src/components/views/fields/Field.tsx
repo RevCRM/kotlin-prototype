@@ -11,8 +11,7 @@ export interface IFieldProps extends
                     IEntityContextProp,
                     IMetadataContextProp {
     name: string
-    label?: string
-    noLabel?: boolean
+    label?: string | false
     grid?: boolean
     component?: React.ComponentType<IFieldComponentProps>
 }
@@ -58,14 +57,15 @@ export const Field = withEntityContext(withMetadataContext(
         const { value } = this.state
         const errors: IFieldError[] = []
         const disabled = false
-        const noLabel = isDefined(this.props.noLabel) ? this.props.noLabel! : false
         const readonly = this.props.entity.mode == "view"
 
         const componentProps: IFieldComponentProps = {
             meta: this.props.meta,
             entity: this.props.entity,
             field: this.field,
-            label: this.props.label || this.field.label,
+            label: isDefined(this.props.label)
+                ? this.props.label!
+                : this.field.label,
             grid: (!isDefined(this.props.grid) || this.props.grid)
                 ? {
                     colspanNarrow: this.props.colspanNarrow || 12,
@@ -77,7 +77,6 @@ export const Field = withEntityContext(withMetadataContext(
             errors,
             disabled,
             readonly,
-            noLabel,
             onChange: this.onChange,
             children: this.props.children
         }

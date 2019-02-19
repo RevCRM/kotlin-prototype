@@ -9,6 +9,7 @@ export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (
 
     const fieldId = props.field.name
 
+    const hasLabel = props.label !== false
     let errorText = ""
     props.errors.forEach((err) => {
         errorText += err.message + ". "
@@ -18,7 +19,7 @@ export const CheckboxControl: React.StatelessComponent<IFieldComponentProps> = (
 
     const control = (
         <FormControl>
-            {!props.noLabel &&
+            {hasLabel &&
                 <FormControlLabel
                     control={
                         <Checkbox

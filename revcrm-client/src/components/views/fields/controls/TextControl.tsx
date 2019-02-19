@@ -11,6 +11,7 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
     const fieldId = props.field.name
     const { MultiLine } = props.field.properties
 
+    const hasLabel = props.label !== false
     const hasErrors = props.errors.length > 0
     let errorText = ""
     props.errors.forEach((err) => {
@@ -24,7 +25,7 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
 
     const control = (
         <FormControl fullWidth>
-            {!props.noLabel &&
+            {hasLabel &&
                 <InputLabel
                     htmlFor={fieldId}
                     error={hasErrors}
@@ -44,7 +45,7 @@ export const TextControl: React.StatelessComponent<IFieldComponentProps> = (prop
                 multiline={MultiLine == "true"}
             />}
             {props.readonly &&
-            <ReadOnlyValue>{props.value || ""}</ReadOnlyValue>}
+            <ReadOnlyValue hasLabel={hasLabel}>{props.value || ""}</ReadOnlyValue>}
             {errorText &&
             <FormHelperText error>
                 {errorText}

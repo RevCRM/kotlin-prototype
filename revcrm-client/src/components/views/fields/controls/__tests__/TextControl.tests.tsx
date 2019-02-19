@@ -34,7 +34,6 @@ describe("TextControl", () => {
             errors: [],
             disabled: false,
             readonly: false,
-            noLabel: false,
             style: { marginTop: 10 },
             onChange: jest.fn(),
             children: null

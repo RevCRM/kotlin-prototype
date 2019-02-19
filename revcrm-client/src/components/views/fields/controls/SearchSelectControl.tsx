@@ -208,6 +208,7 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
         render() {
             const { classes } = this.props as any
             const fieldId = this.props.field.name
+            const hasLabel = this.props.label !== false
             const hasErrors = this.props.errors.length > 0
             const style = {
                 minHeight: 64,
@@ -216,7 +217,7 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
 
             const control = (
                 <FormControl fullWidth>
-                    {!this.props.noLabel &&
+                    {this.props.label !== false &&
                         <InputLabel
                             htmlFor={fieldId}
                             error={hasErrors}
@@ -258,7 +259,7 @@ export const SearchSelectControl: any = withStyles(styles)(withApolloClient(
                         onSuggestionSelected={this.onSuggestionSelected}
                     />}
                     {this.props.readonly &&
-                    <ReadOnlyValue>{this.state.search}</ReadOnlyValue>}
+                    <ReadOnlyValue hasLabel={hasLabel}>{this.state.search}</ReadOnlyValue>}
                 </FormControl>
             )
 
