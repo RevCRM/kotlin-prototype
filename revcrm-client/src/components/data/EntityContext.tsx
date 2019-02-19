@@ -5,7 +5,7 @@ import { IEntityMetadata, IFieldMetadata } from "./Metadata"
 import { IEntityMutationResult } from "../../graphql/mutations"
 import { Omit } from "../../types"
 
-export type EntityViewMode = "view" | "view_list" | "edit"
+export type EntityViewMode = "view" | "edit"
 
 export interface IEntityContext {
     name: string
