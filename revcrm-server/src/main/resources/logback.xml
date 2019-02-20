@@ -1,47 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} %-5level %logger{36} - %msg%n
-            </Pattern>
-        </encoder>
-    </appender>
-
-    <!--<appender name="FILE"-->
-              <!--class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-        <!--<file>c:/mkyongapp.log</file>-->
-        <!--<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">-->
-            <!--<Pattern>%d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n-->
-            <!--</Pattern>-->
-        <!--</encoder>-->
-    <!---->
-        <!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">-->
-            <!--<FileNamePattern>c:/mkyongapp.%i.log.zip</FileNamePattern>-->
-            <!--<MinIndex>1</MinIndex>-->
-            <!--<MaxIndex>10</MaxIndex>-->
-        <!--</rollingPolicy>-->
-    <!---->
-        <!--<triggeringPolicy-->
-                <!--class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
-            <!--<MaxFileSize>2MB</MaxFileSize>-->
-        <!--</triggeringPolicy>-->
-    <!--</appender>-->
-
-    <logger name="Koin" level="INFO" />
-    <logger name="org.hibernate" level="INFO" />
-    <logger name="org.hibernate.type.descriptor.sql" level="ALL" />
-    <logger name="org.hibernate.SQL" level="DEBUG" />
-    <logger name="com.zaxxer.hikari" level="INFO" />
-    <logger name="io.netty" level="INFO" />
-    <logger name="graphql" level="INFO" />
-    <logger name="io.mockk" level="INFO" />
-    <logger name="org.mongodb.driver" level="INFO" />
-
-    <root level="TRACE">
-        <!--<appender-ref ref="FILE" />-->
-        <appender-ref ref="STDOUT" />
-    </root>
-
-
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
 </configuration>
