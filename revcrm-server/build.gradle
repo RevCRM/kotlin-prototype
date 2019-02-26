@@ -9,4 +9,5 @@ dependencies {
     implementation "com.graphql-java:graphql-java-extended-scalars:1.0"
     implementation "com.google.code.gson:gson:2.8.5"
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation(project(':revcrm-client'))
 }
