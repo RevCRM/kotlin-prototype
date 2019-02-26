@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const outputPath = path.join(__dirname, 'dist');
+const outputPath = path.resolve(__dirname, '..', 'resources', 'public');
 
 module.exports = (env, args) => {
 
