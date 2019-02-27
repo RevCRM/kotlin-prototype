@@ -3,6 +3,7 @@ package org.revcrm.auth
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.JWTVerificationException
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -18,6 +19,8 @@ val AUTH_HEADER_PREFIX = "Bearer "
 
 class JWTAuthFilter(
     val jwkProvider: JwkProvider,
+    val jwtIssuer: String,
+    val jwtAudience: String,
     authenticationManager: AuthenticationManager
 ) : BasicAuthenticationFilter(authenticationManager) {
 
@@ -33,6 +36,11 @@ class JWTAuthFilter(
             val validatedJwt = JWT.require(algorithm)
                 .build()
                 .verify(decodedJwt)
+
+            if (validatedJwt.issuer != jwtIssuer)
+                throw JWTVerificationException("invalid jwt issuer: ${validatedJwt.issuer}")
+            if (validatedJwt.audience.size < 1 || validatedJwt.audience[0] != jwtAudience)
+                throw JWTVerificationException("invalid jwt audience: ${validatedJwt.audience}")
 
             val username = validatedJwt.subject
 

@@ -18,7 +18,13 @@ import java.net.URL
 class SecurityConfiguration : WebSecurityConfigurerAdapter() {
 
     @Value("\${jwt.jwksUrl}")
-    private val jwksUrl: String? = null
+    private lateinit var jwksUrl: String
+
+    @Value("\${jwt.issuer}")
+    private lateinit var jwtIssuer: String
+
+    @Value("\${jwt.audience}")
+    private lateinit var jwtAudience: String
 
     @Bean
     fun buildJwkProvider(): JwkProvider {
@@ -33,7 +39,11 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
             .httpBasic().disable()
             .formLogin().disable()
             .logout().disable()
-            .addFilter(JWTAuthFilter(buildJwkProvider(), authenticationManager()))
+            .addFilter(JWTAuthFilter(
+                buildJwkProvider(),
+                jwtIssuer,
+                jwtAudience,
+                authenticationManager()))
 
         http.authorizeRequests()
             .antMatchers("/").permitAll()
