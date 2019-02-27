@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "jwt.issuer",
+      "type": "java.lang.String",
+      "description": "JWT Issuer"
+    },
+    {
+      "name": "jwt.audience",
+      "type": "java.lang.String",
+      "description": "JWT Audience"
+    },
+    {
+      "name": "jwt.jwksUrl",
+      "type": "java.lang.String",
+      "description": "JWKS Url"
+    }
+  ]
+}

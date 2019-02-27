@@ -4,3 +4,7 @@ spring:
   output:
     ansi:
       enabled: always
+jwt:
+  issuer: ${REVCRM_JWT_ISSUER}
+  audience: ${REVCRM_JWT_AUDIENCE}
+  jwksUrl: ${REVCRM_JWT_JWKS_URL}
