@@ -15,6 +15,7 @@ import org.revcrm.meta.fields.mapEmbeddedEntityField
 import org.revcrm.meta.fields.mapReferencedEntityField
 import org.revcrm.meta.fields.mapStringField
 import org.revcrm.meta.fields.mapTimeField
+import org.springframework.stereotype.Service
 import kotlin.reflect.full.memberProperties
 
 typealias JvmTypeMapper = (
@@ -25,6 +26,7 @@ typealias JvmTypeMapper = (
  * Responsible for inspecting all classes registered with DBService and extracting field metadata to be
  * supplied to clients via the API
  */
+@Service
 class MetadataService(
     private val db: DBService
 ) {
@@ -106,7 +108,7 @@ class MetadataService(
         return mapper(this, propInfo)
     }
 
-    fun addJvmTypeMapper(jvmType: String, mapper: JvmTypeMapper) {
+    final fun addJvmTypeMapper(jvmType: String, mapper: JvmTypeMapper) {
         jvmTypeMappers.put(jvmType, mapper)
     }
 

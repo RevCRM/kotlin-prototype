@@ -3,9 +3,11 @@ package org.revcrm.db
 import com.mongodb.MongoClient
 import org.revcrm.config.AppConfig
 import org.revcrm.config.DBConfig
+import org.springframework.stereotype.Service
 import xyz.morphia.AdvancedDatastore
 import xyz.morphia.Morphia
 
+@Service
 class DBService {
     private val morphia = Morphia()
     private lateinit var config: DBConfig

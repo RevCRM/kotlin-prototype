@@ -7,6 +7,10 @@ import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
 import org.revcrm.config.DBConfig
 import org.revcrm.config.DataConfig
+import org.revcrm.data.DataLoader
+import org.revcrm.db.DBService
+import org.revcrm.graphql.APIService
+import org.revcrm.meta.MetadataService
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
@@ -22,11 +26,11 @@ class CRMApplication : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(CRMApplication::class.java)
 
-    @Autowired
-    private lateinit var dbConfig: DBConfig
-
-    @Autowired
-    private lateinit var dataConfig: DataConfig
+    @Autowired private lateinit var dbConfig: DBConfig
+    @Autowired private lateinit var dbService: DBService
+    @Autowired private lateinit var dataConfig: DataConfig
+    @Autowired private lateinit var metaService: MetadataService
+    @Autowired private lateinit var apiService: APIService
 
     @Bean
     fun buildGraphQLSchema(): GraphQL {
@@ -45,8 +49,19 @@ class CRMApplication : ApplicationRunner {
     }
 
     override fun run(args: ApplicationArguments?) {
-        log.info("Testing command line runner...")
-        log.info("Data: " + dataConfig.data.toString())
+
+        log.info("Initialising Database Connection...")
+        dbService.initialise(dbConfig)
+
+        log.info("Loading Data...")
+        val loader = DataLoader(dbService)
+        loader.import(dataConfig.data)
+
+        log.info("Initialising Metadata...")
+        metaService.initialise()
+
+        log.info("Initialising GraphQL Schema...")
+        apiService.initialise()
     }
 }
 
@@ -54,79 +69,6 @@ fun main(args: Array<String>) {
     runApplication<CRMApplication>(*args)
 }
 
-//    val data = c.property("revcrm.data").getList()
-//
-//    log.info("Initialising Database Connection...")
-//    val db: DBService by inject()
-//    db.initialise(config)
-//
-//    log.info("Loading Data...")
-//    val loader = DataLoader(db)
-//    loader.import(data)
-//
-//    log.info("Initialising Metadata...")
-//    val meta: MetadataService by inject()
-//    meta.initialise()
-//
-//    log.info("Initialising GraphQL Schema...")
-//    val schema: APIService by inject()
-//    schema.initialise()
-//
-//    install(DefaultHeaders) {
-//        header("Server", "RevCRM")
-//    }
-//
-//    val jwtIssuer = c.property("jwt.issuer").getString()
-//    val jwtAudience = c.property("jwt.audience").getString()
-//    val jwksUrl = c.property("jwt.jwksUrl").getString()
-//
-//    install(Authentication) {
-//        jwt("jwt") {
-//            verifier(makeJwtVerifier(jwksUrl), jwtIssuer)
-//            validate { credential ->
-//                if (!credential.payload.audience.contains(jwtAudience)) {
-//                    null
-//                } else {
-//                    val auth = db.withDB { ds ->
-//                        ds.createQuery(RevUserAuth::class.java)
-//                            .field("auth_type").equal(AuthType.GOOGLE)
-//                            .field("auth_id").equal(credential.payload.subject)
-//                            .get()
-//                    }
-//                    if (auth != null) {
-//                        RevPrincipal(credential.payload, auth)
-//                    } else {
-//                        null
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    install(CallLogging)
-//    install(ContentNegotiation) {
-//        gson {
-//            setDateFormat(DateFormat.LONG)
-//            setPrettyPrinting()
-//        }
-//    }
-//    install(Locations)
-//    install(StatusPages) {
-//        exception<Throwable> { cause ->
-//            call.respond(HttpStatusCode.InternalServerError, "Internal Server Error")
-//            throw cause
-//        }
-//        status(HttpStatusCode.NotFound) {
-//            call.respond(HttpStatusCode.NotFound, "Not Found")
-//        }
-//    }
-//
-//    routing {
-//        staticFiles()
-//        graphQL()
-//        graphiQL()
-//        healthCheck()
-//    }
-//
 //    log.info("TEMP: Ensuring test user...")
 //    val adminUser = db.withDB { ds ->
 //

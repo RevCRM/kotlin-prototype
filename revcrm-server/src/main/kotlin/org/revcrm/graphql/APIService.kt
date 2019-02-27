@@ -7,7 +7,9 @@ import graphql.schema.GraphQLSchema
 import org.revcrm.db.DBService
 import org.revcrm.graphql.schema.APISchema
 import org.revcrm.meta.MetadataService
+import org.springframework.stereotype.Service
 
+@Service
 class APIService(
     private val dbService: DBService,
     private val meta: MetadataService
