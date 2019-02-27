@@ -1,10 +1,5 @@
 package org.revcrm
 
-import graphql.GraphQL
-import graphql.Scalars.GraphQLString
-import graphql.schema.GraphQLFieldDefinition
-import graphql.schema.GraphQLObjectType
-import graphql.schema.GraphQLSchema
 import org.revcrm.config.DBConfig
 import org.revcrm.config.DataConfig
 import org.revcrm.data.DataLoader
@@ -18,10 +13,9 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
 
-@EnableConfigurationProperties(DBConfig::class, DataConfig::class)
 @SpringBootApplication
+@EnableConfigurationProperties(DBConfig::class, DataConfig::class)
 class CRMApplication : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(CRMApplication::class.java)
@@ -32,36 +26,11 @@ class CRMApplication : ApplicationRunner {
     @Autowired private lateinit var metaService: MetadataService
     @Autowired private lateinit var apiService: APIService
 
-    @Bean
-    fun buildGraphQLSchema(): GraphQL {
-        val queryType = GraphQLObjectType.newObject()
-            .name("helloWorldQuery")
-            .field(
-                GraphQLFieldDefinition.newFieldDefinition()
-                .type(GraphQLString)
-                .name("hello")
-                .staticValue("world"))
-            .build()
-        val schema = GraphQLSchema.newSchema()
-            .query(queryType)
-            .build()
-        return GraphQL.newGraphQL(schema).build()
-    }
-
     override fun run(args: ApplicationArguments?) {
-
-        log.info("Initialising Database Connection...")
-        dbService.initialise(dbConfig)
-
         log.info("Loading Data...")
         val loader = DataLoader(dbService)
         loader.import(dataConfig.data)
-
-        log.info("Initialising Metadata...")
-        metaService.initialise()
-
-        log.info("Initialising GraphQL Schema...")
-        apiService.initialise()
+        log.info("Data Loaded.")
     }
 }
 

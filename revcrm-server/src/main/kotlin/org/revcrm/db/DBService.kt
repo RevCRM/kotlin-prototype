@@ -8,20 +8,19 @@ import xyz.morphia.AdvancedDatastore
 import xyz.morphia.Morphia
 
 @Service
-class DBService {
+class DBService(
+    final val config: DBConfig
+) {
     private val morphia = Morphia()
-    private lateinit var config: DBConfig
-    private lateinit var client: MongoClient
-    private lateinit var datastore: AdvancedDatastore
+    private val client: MongoClient
+    private val datastore: AdvancedDatastore
 
-    val entityContextFIXME = EntityContext(
+    // TODO: Fix Me
+    final val entityContextFIXME = EntityContext(
         config = AppConfig()
     )
 
-    fun initialise(
-        newConfig: DBConfig
-    ) {
-        config = newConfig
+    init {
         config.entityClasses.forEach { morphia.map(Class.forName(it)) }
 
         client = MongoClient(config.url)

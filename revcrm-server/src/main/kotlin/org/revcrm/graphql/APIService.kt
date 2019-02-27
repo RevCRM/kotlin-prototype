@@ -14,27 +14,36 @@ class APIService(
     private val dbService: DBService,
     private val meta: MetadataService
 ) {
-    lateinit var graphQLSchema: GraphQLSchema
-    private lateinit var graphQLExecutor: GraphQL
-    private lateinit var schema: APISchema
 
-    fun initialise() {
+    private val graphQLSchema: GraphQLSchema
+    private val graphQLExecutor: GraphQL
+    private val schema: APISchema
+
+    init {
         schema = APISchema(meta)
         graphQLSchema = schema.build()
         graphQLExecutor = GraphQL.newGraphQL(graphQLSchema).build()
     }
 
-    fun query(query: String, variables: Map<String, Any>?): ExecutionResult {
+    private fun buildQuery(query: String, variables: Map<String, Any>?): ExecutionInput {
         val context = APIContext(
             db = dbService,
             meta = meta,
             defaultResultsLimit = 20 // TODO: Put this in config
         )
-        val execInput = ExecutionInput.newExecutionInput()
+
+        return ExecutionInput.newExecutionInput()
             .query(query)
             .variables(variables)
             .context(context)
             .build()
-        return graphQLExecutor.execute(execInput)
+    }
+
+    fun query(query: String, variables: Map<String, Any>?): ExecutionResult {
+        return graphQLExecutor.execute(
+            buildQuery(
+                query, variables
+            )
+        )
     }
 }
