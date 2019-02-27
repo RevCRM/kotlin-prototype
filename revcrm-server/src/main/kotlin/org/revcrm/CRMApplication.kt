@@ -6,7 +6,9 @@ import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
 import org.revcrm.config.DBConfig
+import org.revcrm.config.DataConfig
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -14,11 +16,17 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
-@EnableConfigurationProperties(DBConfig::class)
+@EnableConfigurationProperties(DBConfig::class, DataConfig::class)
 @SpringBootApplication
 class CRMApplication : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(CRMApplication::class.java)
+
+    @Autowired
+    private lateinit var dbConfig: DBConfig
+
+    @Autowired
+    private lateinit var dataConfig: DataConfig
 
     @Bean
     fun buildGraphQLSchema(): GraphQL {
@@ -38,6 +46,7 @@ class CRMApplication : ApplicationRunner {
 
     override fun run(args: ApplicationArguments?) {
         log.info("Testing command line runner...")
+        log.info("Data: " + dataConfig.data.toString())
     }
 }
 

@@ -15,14 +15,14 @@ revcrm:
     username: ${REVCRM_DB_USER}
     password: ${REVCRM_DB_PASS}
     entityClasses:
-    - org.revcrm.entities.RevUser
-    - org.revcrm.entities.accounts.Account
-    - org.revcrm.entities.company.Company
-    - org.revcrm.entities.common.SelectionList
-    - org.revcrm.entities.invoices.Invoice
+      - org.revcrm.entities.RevUser
+      - org.revcrm.entities.accounts.Account
+      - org.revcrm.entities.company.Company
+      - org.revcrm.entities.common.SelectionList
+      - org.revcrm.entities.invoices.Invoice
     embeddedClasses:
-    - org.revcrm.entities.common.SelectionOption
-    - org.revcrm.entities.accounts.Address
-    - org.revcrm.entities.invoices.InvoiceLine
+      - org.revcrm.entities.common.SelectionOption
+      - org.revcrm.entities.accounts.Address
+      - org.revcrm.entities.invoices.InvoiceLine
   data:
-  - /data/basedata.json
+    - /data/basedata.json
