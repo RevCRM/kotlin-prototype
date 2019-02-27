@@ -2,18 +2,45 @@
   "properties": [
     {
       "name": "jwt.issuer",
-      "type": "java.lang.String",
-      "description": "JWT Issuer"
+      "type": "java.lang.String"
     },
     {
       "name": "jwt.audience",
-      "type": "java.lang.String",
-      "description": "JWT Audience"
+      "type": "java.lang.String"
     },
     {
       "name": "jwt.jwksUrl",
-      "type": "java.lang.String",
-      "description": "JWKS Url"
+      "type": "java.lang.String"
+    },
+    {
+      "name": "revcrm.db.url",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "revcrm.db.name",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "revcrm.db.username",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "revcrm.db.password",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "revcrm.db.entityClasses",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "name": "revcrm.db.embeddedClasses",
+      "type": "java.util.List<java.lang.String>"
+    },
+    {
+      "name": "revcrm.data",
+      "type": "java.util.List<java.lang.String>"
     }
   ]
 }
+
+

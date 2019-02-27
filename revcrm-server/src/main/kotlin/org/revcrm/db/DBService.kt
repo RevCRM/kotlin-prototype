@@ -22,7 +22,7 @@ class DBService {
         config = newConfig
         config.entityClasses.forEach { morphia.map(Class.forName(it)) }
 
-        client = MongoClient(config.dbUrl)
+        client = MongoClient(config.url)
 
         // for multi-tenant we'll need a seperate Mapper + Datastore for each client
         // Mappers contain an instance cache, and datastores obviously have the reference to the appropriate database
@@ -35,7 +35,7 @@ class DBService {
         morphia.mapper.addInterceptor(EntityValidator(this))
         morphia.mapper.addInterceptor(EntityStoredPropertyPersister())
 
-        datastore = morphia.createDatastore(client, config.dbName) as AdvancedDatastore
+        datastore = morphia.createDatastore(client, config.name) as AdvancedDatastore
         datastore.ensureIndexes()
     }
 

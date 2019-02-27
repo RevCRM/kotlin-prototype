@@ -8,3 +8,21 @@ jwt:
   issuer: ${REVCRM_JWT_ISSUER}
   audience: ${REVCRM_JWT_AUDIENCE}
   jwksUrl: ${REVCRM_JWT_JWKS_URL}
+revcrm:
+  db:
+    url: ${REVCRM_DB_URL}
+    name: ${REVCRM_DB_NAME}
+    username: ${REVCRM_DB_USER}
+    password: ${REVCRM_DB_PASS}
+    entityClasses:
+    - org.revcrm.entities.RevUser
+    - org.revcrm.entities.accounts.Account
+    - org.revcrm.entities.company.Company
+    - org.revcrm.entities.common.SelectionList
+    - org.revcrm.entities.invoices.Invoice
+    embeddedClasses:
+    - org.revcrm.entities.common.SelectionOption
+    - org.revcrm.entities.accounts.Address
+    - org.revcrm.entities.invoices.InvoiceLine
+  data:
+  - /data/basedata.json

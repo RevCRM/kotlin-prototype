@@ -5,15 +5,23 @@ import graphql.Scalars.GraphQLString
 import graphql.schema.GraphQLFieldDefinition
 import graphql.schema.GraphQLObjectType
 import graphql.schema.GraphQLSchema
+import org.revcrm.config.DBConfig
+import org.slf4j.LoggerFactory
+import org.springframework.boot.ApplicationArguments
+import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 
+@EnableConfigurationProperties(DBConfig::class)
 @SpringBootApplication
-class CRMApplication {
+class CRMApplication : ApplicationRunner {
+
+    private val log = LoggerFactory.getLogger(CRMApplication::class.java)
 
     @Bean
-    fun getGraphQLSchema(): GraphQL {
+    fun buildGraphQLSchema(): GraphQL {
         val queryType = GraphQLObjectType.newObject()
             .name("helloWorldQuery")
             .field(
@@ -27,25 +35,16 @@ class CRMApplication {
             .build()
         return GraphQL.newGraphQL(schema).build()
     }
+
+    override fun run(args: ApplicationArguments?) {
+        log.info("Testing command line runner...")
+    }
 }
 
 fun main(args: Array<String>) {
     runApplication<CRMApplication>(*args)
 }
 
-// fun Application.main() {
-//
-//    log.info("Starting RevCRM...")
-//    installKoin(listOf(revCRMModule), logger = SLF4JLogger())
-//
-//    log.info("Loading Configuration...")
-//    val c = environment.config
-//    val config = DBConfig(
-//        dbUrl = c.property("revcrm.db.url").getString(),
-//        dbName = c.property("revcrm.db.name").getString(),
-//        entityClasses = c.property("revcrm.entityClasses").getList(),
-//        embeddedClasses = c.property("revcrm.embeddedClasses").getList()
-//    )
 //    val data = c.property("revcrm.data").getList()
 //
 //    log.info("Initialising Database Connection...")
