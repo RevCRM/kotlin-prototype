@@ -1,10 +1,16 @@
 
 description = 'RevCRM Client'
 
-task buildClient(type: NpmTask, dependsOn: npmInstall) {
+task installDeps(type: NpmTask, dependsOn: nodeSetup) {
+    workingDir = file("${project.projectDir}/src/main/webapp")
+    args = ['install']
+}
+
+task buildClient(type: NpmTask, dependsOn: installDeps) {
+    workingDir = file("${project.projectDir}/src/main/webapp")
     args = ['run', 'build']
-    inputs.dir file("src")
-    outputs.dirs file("${buildDir}/dist")
+    inputs.dir file("src/main/webapp")
+    outputs.dirs file("resources/public")
 }
 
 processResources {
