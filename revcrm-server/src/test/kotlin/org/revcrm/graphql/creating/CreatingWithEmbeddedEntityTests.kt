@@ -20,8 +20,6 @@ class CreatingWithEmbeddedEntityTests {
         testDB.withDB { ds ->
             deleteStringListData(ds)
         }
-        meta.initialise()
-        api.initialise()
     }
 
     @Nested

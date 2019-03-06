@@ -20,8 +20,6 @@ class CreatingWithEmbeddedListTests {
         testDB.withDB { ds ->
             deleteStringListData(ds)
         }
-        meta.initialise()
-        api.initialise()
     }
 
     @Nested

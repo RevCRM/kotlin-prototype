@@ -17,11 +17,6 @@ class DeletingDataTests {
     val meta = MetadataService(testDB)
     val api = APIService(testDB, meta)
 
-    init {
-        meta.initialise()
-        api.initialise()
-    }
-
     fun removeTestData() {
         testDB.withDB { ds ->
             val col = ds.getCollection(TestWithValidatedDelete::class.java)

@@ -15,7 +15,7 @@ class APIService(
     private val meta: MetadataService
 ) {
 
-    private val graphQLSchema: GraphQLSchema
+    val graphQLSchema: GraphQLSchema
     private val graphQLExecutor: GraphQL
     private val schema: APISchema
 

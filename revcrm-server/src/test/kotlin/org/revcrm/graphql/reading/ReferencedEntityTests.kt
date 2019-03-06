@@ -20,8 +20,6 @@ class ReferencedEntityTests {
         testDB.withDB { ds ->
             resetReferencedEntityData(ds)
         }
-        meta.initialise()
-        api.initialise()
     }
 
     val res = api.query("""

@@ -7,7 +7,7 @@ import graphql.schema.GraphQLList
 import graphql.schema.GraphQLNonNull
 import graphql.schema.GraphQLObjectType
 import io.mockk.every
-import io.mockk.mockkObject
+import io.mockk.mockkClass
 import org.assertj.core.api.Assertions.assertThat
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Nested
@@ -74,9 +74,7 @@ class APISchemaTests {
     /**
      * Create mock DBService
      */
-    val data = DBService().apply {
-        mockkObject(this)
-    }
+    val data = mockkClass(DBService::class)
     init {
         every { data.getEntityClassNames() } returns entityClasses
         every { data.getEmbeddedClassNames() } returns embeddedClasses
@@ -85,8 +83,8 @@ class APISchemaTests {
     /**
      * Instantiate MetadataService and APIService
      */
-    val meta = MetadataService(data).apply { initialise() }
-    val schema = APIService(data, meta).apply { initialise() }
+    val meta = MetadataService(data)
+    val schema = APIService(data, meta)
 
     val queryType = schema.graphQLSchema.queryType
     val testFieldsEntity = queryType.getFieldDefinition("TestFieldsEntity")

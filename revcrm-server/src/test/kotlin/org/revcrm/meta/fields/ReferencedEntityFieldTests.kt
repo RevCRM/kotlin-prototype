@@ -2,7 +2,7 @@ package org.revcrm.meta.fields
 
 import graphql.schema.GraphQLTypeReference
 import io.mockk.every
-import io.mockk.mockkObject
+import io.mockk.mockkClass
 import org.assertj.core.api.Assertions.assertThat
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Test
@@ -26,9 +26,7 @@ class ReferencedEntityFieldTests {
     /**
      * Create mock DBService
      */
-    val data = DBService().apply {
-        mockkObject(this)
-    }
+    val data = mockkClass(DBService::class)
     init {
         every { data.getEntityClassNames() } returns listOf(
             "org.revcrm.meta.fields.EntityWithReferencedEntityField"
@@ -39,7 +37,7 @@ class ReferencedEntityFieldTests {
         every { data.classIsEntity(any()) } returns true
     }
 
-    val meta = MetadataService(data).apply { initialise() }
+    val meta = MetadataService(data)
     val entity = meta.getEntity("EntityWithReferencedEntityField")!!
     val field = entity.fields["entity"]!!
 

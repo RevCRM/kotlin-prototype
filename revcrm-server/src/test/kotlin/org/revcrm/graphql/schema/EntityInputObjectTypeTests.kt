@@ -3,7 +3,7 @@ package org.revcrm.graphql.schema
 import graphql.Scalars
 import graphql.schema.GraphQLInputObjectType
 import io.mockk.every
-import io.mockk.mockkObject
+import io.mockk.mockkClass
 import org.assertj.core.api.Assertions
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Test
@@ -35,9 +35,7 @@ class EntityInputObjectTypeTests {
     /**
      * Create mock DBService
      */
-    val data = DBService().apply {
-        mockkObject(this)
-    }
+    val data = mockkClass(DBService::class)
     init {
         every { data.getEntityClassNames() } returns entityClasses
         every { data.getEmbeddedClassNames() } returns listOf()
@@ -46,8 +44,8 @@ class EntityInputObjectTypeTests {
     /**
      * Instantiate MetadataService and APIService
      */
-    val meta = MetadataService(data).apply { initialise() }
-    val api = APIService(data, meta).apply { initialise() }
+    val meta = MetadataService(data)
+    val api = APIService(data, meta)
 
     val inputType = api.graphQLSchema.getType("TestInputEntityInput") as GraphQLInputObjectType
 

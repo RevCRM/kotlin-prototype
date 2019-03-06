@@ -24,8 +24,6 @@ class CreatingWithReferencedEntityTests {
         testDB.withDB { ds ->
             resetReferencedEntityData(ds)
         }
-        meta.initialise()
-        api.initialise()
     }
 
     val referencedEntity = TEST_REFERENCED_ENTITIES[0]

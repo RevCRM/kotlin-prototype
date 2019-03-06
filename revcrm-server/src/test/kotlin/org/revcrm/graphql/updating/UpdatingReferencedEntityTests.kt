@@ -35,11 +35,6 @@ class UpdatingReferencedEntityTests {
     val meta = MetadataService(testDB)
     val api = APIService(testDB, meta)
 
-    init {
-        meta.initialise()
-        api.initialise()
-    }
-
     @Nested
     inner class UpdateReferencedEntityData {
         val recordId: ObjectId

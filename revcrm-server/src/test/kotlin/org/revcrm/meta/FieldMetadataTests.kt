@@ -20,10 +20,6 @@ class FieldMetadataTests {
     val testDB = TestDB.instance
     val meta = MetadataService(testDB)
 
-    init {
-        meta.initialise()
-    }
-
     @Nested
     inner class FieldMetadata_Types {
 

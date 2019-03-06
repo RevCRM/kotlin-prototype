@@ -20,8 +20,6 @@ class CreatingDataTests {
         testDB.withDB { ds ->
             deleteAccountData(ds)
         }
-        meta.initialise()
-        api.initialise()
     }
 
     @Nested

@@ -33,11 +33,6 @@ class MetadataTests {
     val api = APIService(testDB, meta)
     val gson = getTestGson()
 
-    init {
-        meta.initialise()
-        api.initialise()
-    }
-
     fun getResults(res: ExecutionResult): List<EntityMetadataInfo> {
         assertThat(res.errors).hasSize(0)
         val data = res.getData<Map<String, Map<String, Any>>>()

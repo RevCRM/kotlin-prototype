@@ -25,8 +25,6 @@ class EmbeddedEntityTests {
             resetEmbeddedEntityData(ds)
             resetStringListData(ds)
         }
-        meta.initialise()
-        api.initialise()
     }
 
     @Nested
