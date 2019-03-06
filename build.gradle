@@ -24,9 +24,6 @@ plugins {
     id "name.remal.check-updates" version "1.0.94"
 }
 
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-
 wrapper {
     distributionType = Wrapper.DistributionType.ALL
 }

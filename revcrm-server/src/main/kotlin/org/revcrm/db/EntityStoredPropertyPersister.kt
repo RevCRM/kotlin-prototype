@@ -18,7 +18,7 @@ class EntityStoredPropertyPersister : AbstractEntityInterceptor() {
         val clazz = ent.javaClass.kotlin
         clazz.memberProperties.forEach { prop ->
             if (
-                prop.javaField == null && prop.getter != null &&
+                prop.javaField == null &&
                 prop.findAnnotation<Stored>() != null
             ) {
                 val value = prop.get(ent)

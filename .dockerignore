@@ -1,4 +1,3 @@
 **
 !Dockerfile
-!revcrm-server/build/distributions/*
-!revcrm-client/dist
+!revcrm-server/build/libs/*
