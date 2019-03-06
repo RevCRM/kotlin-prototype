@@ -1,6 +1,7 @@
 package org.revcrm.db
 
 import com.mongodb.MongoClient
+import com.mongodb.MongoClientURI
 import org.revcrm.config.AppConfig
 import org.revcrm.config.DBConfig
 import org.springframework.stereotype.Service
@@ -23,7 +24,8 @@ class DBService(
     init {
         config.entityClasses.forEach { morphia.map(Class.forName(it)) }
 
-        client = MongoClient(config.url)
+        val uri = MongoClientURI(config.url)
+        client = MongoClient(uri)
 
         // for multi-tenant we'll need a seperate Mapper + Datastore for each client
         // Mappers contain an instance cache, and datastores obviously have the reference to the appropriate database
