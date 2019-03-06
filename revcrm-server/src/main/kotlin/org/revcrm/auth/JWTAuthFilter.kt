@@ -4,6 +4,9 @@ import com.auth0.jwk.JwkProvider
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.exceptions.JWTVerificationException
+import org.revcrm.db.DBService
+import org.revcrm.entities.AuthType
+import org.revcrm.entities.RevUserAuth
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -21,6 +24,7 @@ class JWTAuthFilter(
     val jwkProvider: JwkProvider,
     val jwtIssuer: String,
     val jwtAudience: String,
+    val dbService: DBService,
     authenticationManager: AuthenticationManager
 ) : BasicAuthenticationFilter(authenticationManager) {
 
@@ -42,10 +46,20 @@ class JWTAuthFilter(
             if (validatedJwt.audience.size < 1 || validatedJwt.audience[0] != jwtAudience)
                 throw JWTVerificationException("invalid jwt audience: ${validatedJwt.audience}")
 
-            val username = validatedJwt.subject
+            val userId = validatedJwt.subject
+
+            val auth = dbService.withDB { ds ->
+                ds.createQuery(RevUserAuth::class.java)
+                    .field("auth_type").equal(AuthType.GOOGLE)
+                    .field("auth_id").equal(userId)
+                    .get()
+            }
+
+            if (auth == null)
+                throw JWTVerificationException("unrecognised jwt sub: $userId")
 
             SecurityContextHolder.getContext().authentication =
-                UsernamePasswordAuthenticationToken(username, null, emptyList<GrantedAuthority>())
+                UsernamePasswordAuthenticationToken(userId, null, emptyList<GrantedAuthority>())
         }
         chain.doFilter(request, response)
     }
