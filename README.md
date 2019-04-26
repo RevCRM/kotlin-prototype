@@ -1,6 +1,6 @@
-# RevCRM
+# Kotlin CRM Prototype
 
-RevCRM is an open source (Apache 2.0 Licensed) CRM platform.
+Prototype of a new CRM system, created with Kotlin, React and TypeScript
 
 * Rock-solid JVM-based backend written in Kotlin
 * Easily define Entities and relationships using POJOs + Annotations
@@ -8,8 +8,6 @@ RevCRM is an open source (Apache 2.0 Licensed) CRM platform.
 * Entity Validation using JSR 380 Standard Annotations
 * Modern, responsive UI using React and TypeScript
 * Modular architecture. Only install the features the customer needs
-
-This project is still very much a work-in-progress but watch this space :)
 
 ## Developer Notes
 
